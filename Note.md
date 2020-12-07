@@ -4569,7 +4569,43 @@ class Solution {
 }
 ```
 
+## [861. 翻转矩阵后的得分](https://leetcode-cn.com/problems/score-after-flipping-matrix/)
 
+> 贪心算法
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.3 MB, 在所有 Java 提交中击败了65.25%的用户
+
+```java
+class Solution {
+    public int matrixScore(int[][] A) {
+        if (A.length == 0)
+            return 0;
+        int m = A.length, n = A[0].length, ans = 0;
+        if (n == 0)
+            return 0;
+        for (int i = 0; i < m; ++i) { // 首列均为1
+            if (A[i][0] == 0) { // 移动该行
+                A[i][0] = 1;
+                for (int j = 1; j < n; ++j) {
+                    A[i][j] = A[i][j] == 0 ? 1 : 0;
+                }
+            }
+        }
+        ans += m * Math.pow(2, (n - 1));
+        for (int j = 1; j < n; ++j) {
+            int count = 0;
+            for (int i = 0; i < m; ++i) {
+                count += A[i][j];
+            }
+            count = count >= m - count ? count : m - count;
+            ans += count * Math.pow(2, (n - j - 1));
+        }
+        return ans;
+    }
+}
+```
 
 
 
