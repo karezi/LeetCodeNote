@@ -4607,6 +4607,77 @@ class Solution {
 }
 ```
 
+## [842. 将数组拆分成斐波那契序列](https://leetcode-cn.com/problems/split-array-into-fibonacci-sequence/)
+
+> 贪心，字符串，回溯，dfs，剪枝
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.7 MB, 在所有 Java 提交中击败了96.10%的用户
+
+```java
+class Solution {
+    private String s = "";
+    private int slen = 0;
+
+    public List<Integer> splitIntoFibonacci(String S) {
+        // DFS+回溯+剪枝
+        // dfs表示从某个位置往后是否可以找到一个数加入结果列表
+        // dfs(结果列表，位置)->是否可分
+        // 结束条件：位置到末尾了，通过是否满足F.length>=3来判断true/false
+        // 剪枝1：计算出的数字大于前两数之和，可以提前false
+        // 剪枝2：计算出的数字首位为0，可以提前false
+        // 剪枝3：计算出的数字超出整数范围，可以提前false
+        // 回溯：如果后续无法分割，则结果列表最后一个删掉，再加个数字试试
+        this.slen = S.length();
+        this.s = S;
+        ArrayList<Integer> ret = new ArrayList<>(16);
+        return dfs(ret, 0) ? ret : new ArrayList<>();
+    }
+
+    private boolean dfs(ArrayList<Integer> ret, int index) {
+        if (index == slen) {
+            return ret.size() > 2;
+        }
+        long num = 0L;
+        for (int i = index; i < this.slen; ++i) {
+            num = 10 * num + (this.s.charAt(i) - '0');
+            if (num > Integer.MAX_VALUE) { // 剪枝3
+                return false;
+            }
+            if (i > index && this.s.charAt(index) == '0') { // 剪枝2
+                return false;
+            }
+            int size = ret.size();
+            if (size >= 2) {
+                int lastSum = ret.get(size - 1) + ret.get(size - 2);
+                if (lastSum == (int)num) {
+                    ret.add((int)num);
+                    if (dfs(ret, i + 1)) {
+                        return true;
+                    } else {
+                        ret.remove(ret.size() - 1);
+                    }
+                } else if (lastSum > (int)num) {
+                    continue;
+                } else { // 剪枝1
+                    return false;
+                }
+            }
+            if (size < 2) {
+                ret.add((int)num);
+                if (dfs(ret, i + 1)) {
+                    return true;
+                } else {
+                    ret.remove(ret.size() - 1);
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
 
 
 # Java算法模板
