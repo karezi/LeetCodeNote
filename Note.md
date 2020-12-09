@@ -4678,6 +4678,55 @@ class Solution {
 }
 ```
 
+## [62. 不同路径](https://leetcode-cn.com/problems/unique-paths/)
+
+> 数组，动态规划，数学
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.4 MB, 在所有 Java 提交中击败了49.21%的用户
+
+1. DP
+
+```java
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] nums = new int[m][n];
+        for (int i = 0; i < m; ++i) {
+            nums[i][0] = 1;
+        }
+        for (int j = 0; j < n; ++j) {
+            nums[0][j] = 1;
+        }
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                nums[i][j] = nums[i - 1][j] + nums[i][j - 1];
+            }
+        }
+        return nums[m - 1][n - 1];
+    }
+}
+```
+
+2. 数学
+
+从m+n-2条路径中选出m-1条向下的
+$$
+C^{m-1}_{m+n-2}=\frac{(m+n-2)!}{(m-1)!(n-1)!}=\frac{(m+n-2)(m+n-3)\cdot\cdot\cdot n}{(m-1)(m-2)\cdot\cdot\cdot 1}
+$$
+
+```java
+class Solution {
+    public int uniquePaths(int m, int n) {
+        long ans = 1;
+        for (int x = n, y = 1; y < m; ++x, ++y) {
+            ans = ans * x / y; // 必须先算乘，所以不能写成ans *= x / y
+        }
+        return (int)ans;
+    }
+}
+```
+
 
 
 # Java算法模板
