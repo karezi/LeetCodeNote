@@ -4830,6 +4830,24 @@ class Solution {
 }
 ```
 
+## [172. 阶乘后的零](https://leetcode-cn.com/problems/factorial-trailing-zeroes/)
+
+> 数学
+
+求n/(5的各个次幂)即可
+
+```java
+class Solution {
+    public int trailingZeroes(int n) {
+        int five = 0;
+        for (int j = 5; j <= n; j *= 5) {
+            five += n / j;
+        }
+        return five;
+    }
+}
+```
+
 
 
 # Java算法模板
