@@ -4727,6 +4727,109 @@ class Solution {
 }
 ```
 
+## [860. 柠檬水找零](https://leetcode-cn.com/problems/lemonade-change/)
+
+> 贪心
+
+执行用时：2 ms, 在所有 Java 提交中击败了99.72%的用户
+
+内存消耗：39.6 MB, 在所有 Java 提交中击败了55.38%的用户
+
+```java
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int[] store = new int[2];
+        if (bills.length == 0)
+            return true;
+        for (int i = 0; i < bills.length; ++i) {
+            if (bills[i] == 5) {
+                store[0]++;
+            } else if (bills[i] == 10) {
+                if (store[0] > 0) {
+                    store[0]--;
+                } else {
+                    return false;
+                }
+                store[1]++;
+            } else if (bills[i] == 20) { // 20=5+5+5/10+5
+                if (store[1] > 0 && store[0] > 0) {
+                    store[1]--;
+                    store[0]--;
+                } else if (store[0] > 2) {
+                    store[0] -= 3;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
+## [649. Dota2 参议院](https://leetcode-cn.com/problems/dota2-senate/)
+
+> 贪心
+
+```java
+class Solution {
+    public String predictPartyVictory(String senate) {
+        int len = senate.length();
+        Queue<Integer> qr = new LinkedList<>();
+        Queue<Integer> qd = new LinkedList<>();
+        for (int i = 0; i < len; ++i) {
+            if (senate.charAt(i) == 'R')
+                qr.offer(i);
+            else
+                qd.offer(i);
+        }
+        while (!qr.isEmpty() && !qd.isEmpty()) {
+            Integer qri = qr.poll(), qdi = qd.poll();
+            if (qri < qdi) { // R来投票
+                qr.offer(qri + len);
+            } else {
+                qd.offer(qdi + len);
+            }
+        }
+        return qr.isEmpty() ? "Dire" : "Radiant";
+    }
+}
+```
+
+## [376. 摆动序列](https://leetcode-cn.com/problems/wiggle-subsequence/)
+
+> dp，贪心
+>
+> TODO：还可以用DP或者贪心来做
+
+```java
+class Solution {
+    public int wiggleMaxLength(int[] nums) {
+        int len = nums.length;
+        if (len < 2)
+            return len;
+        if (len == 2) {
+            return nums[0] == nums[1] ? 1 : 2;
+        }
+        // 数组去重
+        ArrayList<Integer> al = new ArrayList<>();
+        for (int i: nums) {
+            if (al.isEmpty() || !al.isEmpty() && al.get(al.size() - 1) != i) {
+                al.add(i);
+            }
+        }
+        int count = al.size();
+        for (int i = 0; i < al.size() - 2; ++i) {
+            int a = al.get(i), b = al.get(i + 1), c = al.get(i + 2);
+            if (a < b && b < c || a > b && b > c) {
+                count--;
+            }
+        }
+        return count;
+    }
+}
+```
+
 
 
 # Java算法模板
