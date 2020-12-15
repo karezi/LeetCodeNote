@@ -4848,6 +4848,76 @@ class Solution {
 }
 ```
 
+## [217. 存在重复元素](https://leetcode-cn.com/problems/contains-duplicate/)
+
+> 哈希表，数组
+
+```java
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int i: nums) {
+            if (set.contains(i)) {
+                return true;
+            } else {
+                set.add(i);
+            }
+        }
+        return false;
+    }
+}
+```
+
+## [49. 字母异位词分组](https://leetcode-cn.com/problems/group-anagrams/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str: strs) {
+            char[] s = str.toCharArray();
+            Arrays.sort(s);
+            List<String> sameList = map.getOrDefault(new String(s), new ArrayList<>());
+            sameList.add(str);
+            map.put(new String(s), sameList);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+}
+```
+
+## [738. 单调递增的数字](https://leetcode-cn.com/problems/monotone-increasing-digits/)
+
+> 贪心
+
+```java
+class Solution {
+    public int monotoneIncreasingDigits(int N) {
+        char[] nChar = Integer.toString(N).toCharArray();
+        int len = nChar.length;
+        for (int i = 0; i < len - 1; ++i) {
+            if (nChar[i + 1] < nChar[i]) {
+                int start = i;
+                if(i - 1 >= 0 && nChar[i] == nChar[i - 1]) {
+                    start = i - 1;
+                    while (start > 0 && nChar[start] == nChar[start - 1]) {
+                        start--;
+                    }
+                }
+                nChar[start] -= 1;
+                for (int k = start + 1; k < len; ++k) {
+                    nChar[k] = '9';
+                }
+                break;
+            }
+        }
+        return Integer.parseInt(new String(nChar));
+    }
+}
+```
+
 
 
 # Java算法模板
