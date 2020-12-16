@@ -4918,6 +4918,45 @@ class Solution {
 }
 ```
 
+## [290. 单词规律](https://leetcode-cn.com/problems/word-pattern/)
+
+> 哈希表
+
+执行用时：1 ms, 在所有 Java 提交中击败了98.94%的用户
+
+内存消耗：36.4 MB, 在所有 Java 提交中击败了76.31%的用户
+
+```java
+class Solution {
+    public boolean wordPattern(String pattern, String s) {
+        Map<Character, String> map = new HashMap<>();
+        List<String> hasList = new ArrayList<>();
+        String[] sarr = s.split(" ");
+        int i = 0;
+        int len = pattern.length();
+        if (len != sarr.length) {
+            return false;
+        }
+        for (char c: pattern.toCharArray()) {
+            String tmp = map.get(c);
+            if (tmp != null) {
+                if (!tmp.equals(sarr[i])) {
+                    return false;
+                }
+            } else {
+                if (hasList.contains(sarr[i])) {
+                    return false;
+                }
+                map.put(c, sarr[i]);
+                hasList.add(sarr[i]);
+            }
+            i++;
+        }
+        return true;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -4992,7 +5031,7 @@ public static List<Integer> DFS(TreeNode root) {
 }
 ```
 
-- 二叉树非递归
+- 二叉树非递归 LinkedList
 
 ```java
 public static List<Integer> DFS(TreeNode root) {
