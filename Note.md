@@ -424,6 +424,33 @@ class Solution {
 }
 ```
 
+## [714. 买卖股票的最佳时机含手续费](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
+
+> dp
+
+```java
+class Solution {
+    public int maxProfit(int[] prices, int fee) {
+        // 定义dp[i][0]为第i天不持有最大收益，dp[i][1]为第i天持有最大收益
+        // dp[i + 1][0] = max(dp[i][0], dp[i][1] + prices[i + 1] - fee)
+        // dp[i + 1][1] = max(dp[i][1], dp[i][0] - prices[i + 1])
+        // 初始化：dp[1][0]= 0, dp[1][1]=prices[0]-fee
+        // 求：dp[n][0]
+        if (prices.length == 0)
+            return 0;
+        int dp_i_0 = 0, dp_i_1 = - prices[0];
+        for (int i = 0; i < prices.length; ++i) {
+            int tmp = dp_i_0;
+            dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i] - fee);
+            dp_i_1 = Math.max(dp_i_1, tmp - prices[i]);
+        }
+        return dp_i_0;
+    }
+}
+```
+
+
+
 ## [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
 
 > 双指针
@@ -4953,6 +4980,127 @@ class Solution {
             i++;
         }
         return true;
+    }
+}
+```
+
+## [389. 找不同](https://leetcode-cn.com/problems/find-the-difference/)
+
+> 哈希表，位运算
+
+```java
+class Solution {
+    public char findTheDifference(String s, String t) {
+        int[] charCount = new int[26];
+        for (char c: s.toCharArray()) {
+            charCount[c - 'a']++;
+        }
+        for (char c: t.toCharArray()) {
+            charCount[c - 'a']--;
+            if (charCount[c - 'a'] < 0) {
+                return c;
+            }
+        }
+        return '0';
+    }
+}
+```
+
+TODO：位运算、求和两种方法可以优化空间到O(1)
+
+## [48. 旋转图像](https://leetcode-cn.com/problems/rotate-image/)
+
+> 二维数组
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了95.26%的用户
+
+STEP1：找到旋转前后坐标变化：
+顺时针变换为(x, y) -> (y, N-x-1)，
+逆时针变换为(x, y) -> (N-y-1, x)。
+
+STEP2：找到最少的旋转组（左上，右上，右下，左下4个需要交换的数为一组），以左上坐标为代表分别为：
+(0,0)(0,1)...(0,N-2),
+(1,1)(1,1)...(1,N-3),
+...,
+((N-1)/2,(N-1)/2)...((N-1)/2,(N-1)/2)
+遍历所有旋转组分别进行四数交换处理即可。
+
+```java
+class Solution {
+    public void rotate(int[][] matrix) {
+        int N = matrix.length;
+        if (N == 0)
+            return;
+        int end = (N - 1) / 2;
+        int span = N - 2;
+        for (int i = 0; i <= end; ++i, --span) {
+            if (i == span && (N & 1) == 1)
+                return;
+            for (int j = i; j <= span; ++j) {
+                int tmp = matrix[i][j];
+                matrix[i][j] = matrix[N - j - 1][i];
+                matrix[N - j - 1][i] = matrix[N - i - 1][N - j - 1];
+                matrix[N - i - 1][N - j - 1] = matrix[j][N - i - 1];
+                matrix[j][N - i - 1] = tmp;
+            }
+        }
+    }
+}
+```
+
+## [316. 去除重复字母](https://leetcode-cn.com/problems/remove-duplicate-letters/)
+
+> 字符串，贪心，栈
+
+```java
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        int[] num = new int[26];
+        boolean[] visit = new boolean[26];
+        int len = s.length();
+        for (int i = 0; i < len; ++i) {
+            num[s.charAt(i) - 'a']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < len; ++i) {
+            char c = s.charAt(i);
+            if (!visit[c - 'a']) { // 栈中没出现过
+                while (sb.length() > 0 && sb.charAt(sb.length() - 1) > c) { // 当前字母比当前栈顶小
+                    if(num[sb.charAt(sb.length() - 1) - 'a'] > 0) { // 栈顶后续还有，访问记录设为false，不断删除栈顶元素
+                        visit[sb.charAt(sb.length() - 1) - 'a'] = false;
+                        sb.deleteCharAt(sb.length() - 1);
+                    } else {
+                        break;
+                    }
+                }
+                visit[c - 'a'] = true;
+                sb.append(c);
+            }
+            num[c - 'a']--;
+        }
+        return sb.toString();
+    }
+}
+```
+
+## [746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
+
+> 数组，DP
+
+```java
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        // 转移方程：dp[i] = min(dp[i-1]+cost[i], dp[i-2]+cost[i])
+        // 初始化：dp[0]=0/dp[1]=0
+        int dp_0 = cost[0], dp_1 = cost[1];
+        for (int i = 2; i < cost.length; ++i) {
+            int tmp = dp_1;
+            dp_1 = Math.min(dp_0 + cost[i], dp_1 + cost[i]);
+            dp_0 = tmp;
+        }
+        return Math.min(dp_1, dp_0);
     }
 }
 ```
