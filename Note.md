@@ -5105,6 +5105,90 @@ class Solution {
 }
 ```
 
+## [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+> 二叉树，BFS，双端队列
+
+TODO：可以用双端队列优化
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        boolean direction = true;
+        List<List<TreeNode>> retTree = new ArrayList<>();
+        List<TreeNode> rootList = new ArrayList<>();
+        rootList.add(root);
+        retTree.add(rootList);
+        int deep = 0;
+        while (retTree.get(deep).size() > 0) {
+            List<TreeNode> newList = new ArrayList<>();
+            for (int i = retTree.get(deep).size() - 1; i >= 0; --i) {
+                if (retTree.get(deep).get(i) != null) {
+                    if (direction) {
+                        newList.add(retTree.get(deep).get(i).right);
+                        newList.add(retTree.get(deep).get(i).left);
+                    } else {
+                        newList.add(retTree.get(deep).get(i).left);
+                        newList.add(retTree.get(deep).get(i).right);
+                    }
+                }
+            }
+            retTree.add(newList);
+            deep++;
+            direction = direction ? false : true;
+        }
+        List<List<Integer>> ret = new ArrayList<>();
+        for (List<TreeNode> lt: retTree) {
+            if (lt.size() == 0)
+                break;
+            List<Integer> l = new ArrayList<>();
+            for (TreeNode t: lt) {
+                if (t != null) {
+                    l.add(t.val);
+                }
+            }
+            if (l.size() > 0)
+                ret.add(l);
+            else
+                break;
+        }
+        return ret;
+    }
+}
+```
+
+## [387. 字符串中的第一个唯一字符](https://leetcode-cn.com/problems/first-unique-character-in-a-string/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public int firstUniqChar(String s) {
+        int[] count = new int[26];
+        char[] charArr = s.toCharArray();
+        for (char c: charArr) {
+            count[c - 'a']++;
+        }
+        for (int i = 0; i < charArr.length; ++i) {
+            if (count[charArr[i] - 'a'] == 1)
+                return i;
+        }
+        return -1;
+    }
+}
+```
+
+
+
 
 
 # Java算法模板
