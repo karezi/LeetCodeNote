@@ -5187,6 +5187,30 @@ class Solution {
 }
 ```
 
+## [455. 分发饼干](https://leetcode-cn.com/problems/assign-cookies/)
+
+> 贪心
+
+```java
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int i = 0, j = 0, count = 0;
+        while (i < g.length && j < s.length) {
+            if (g[i] > s[j]) {
+                ++j;
+            } else if (g[i] <= s[j]) {
+                count++;
+                ++i;
+                ++j;
+            }
+        }
+        return count;
+    }
+}
+```
+
 
 
 
@@ -5622,4 +5646,6 @@ public String minWindow(String s, String t) {
 ## [493. 翻转对](https://leetcode-cn.com/problems/reverse-pairs/)
 
 ## [147. 对链表进行插入排序](https://leetcode-cn.com/problems/insertion-sort-list/)
+
+## [135. 分发糖果](https://leetcode-cn.com/problems/candy/)
 
