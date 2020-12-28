@@ -5211,6 +5211,169 @@ class Solution {
 }
 ```
 
+## [85. 最大矩形](https://leetcode-cn.com/problems/maximal-rectangle/)
+
+> 单调栈，数组，哈希表，动态规划
+
+暴力法
+
+```java
+class Solution {
+    private void p(Object o) {
+        System.out.println(o.toString());
+    }
+
+    public int maximalRectangle(char[][] matrix) {
+        int rows = matrix.length; // 行数4
+        if (rows == 0)
+            return 0;
+        int cols = matrix[0].length; // 列数5
+        int max = 0;
+        for (int j = 0; j < rows; ++j) {
+            for (int i = 0; i < cols; ++i) {
+                if (matrix[j][i] == '0')
+                    continue; 
+                int w = 1;
+                int h = 1;
+                while (j + h - 1 < rows) {
+                    if (matrix[j + h - 1][i] == '0') {
+                        break;
+                    }
+                    if (w == 1 && h == 1) {
+                        while (i + w - 1 < cols && matrix[j + h - 1][i + w - 1] == '1') {
+                            w++;
+                        }
+                        w--;
+                    }
+                    int x = 1;
+                    while (x <= w && matrix[j + h - 1][i + x - 1] == '1') {
+                        x++;
+                    }
+                    w = Math.min(w, x - 1);
+                    max = Math.max(max, w * h);
+                    h++;
+                }
+                max = Math.max(max, w * (h - 1));
+            }
+        }
+        return max;
+    }
+}
+```
+
+单调栈（参考windliang）
+
+```java
+public int maximalRectangle(char[][] matrix) {
+    if (matrix.length == 0) {
+        return 0;
+    }
+    int[] heights = new int[matrix[0].length];
+    int maxArea = 0;
+    for (int row = 0; row < matrix.length; row++) {
+        //遍历每一列，更新高度
+        for (int col = 0; col < matrix[0].length; col++) {
+            if (matrix[row][col] == '1') {
+                heights[col] += 1;
+            } else {
+                heights[col] = 0;
+            }
+        }
+        maxArea = Math.max(maxArea, largestRectangleArea(heights));
+    }
+    return maxArea;
+}
+
+public int largestRectangleArea(int[] heights) {
+    int maxArea = 0;
+    Stack<Integer> stack = new Stack<>();
+    int p = 0;
+    while (p < heights.length) {
+        //栈空入栈
+        if (stack.isEmpty()) {
+            stack.push(p);
+            p++;
+        } else {
+            int top = stack.peek();
+            //当前高度大于栈顶，入栈
+            if (heights[p] >= heights[top]) {
+                stack.push(p);
+                p++;
+            } else {
+                //保存栈顶高度
+                int height = heights[stack.pop()];
+                //左边第一个小于当前柱子的下标
+                int leftLessMin = stack.isEmpty() ? -1 : stack.peek();
+                //右边第一个小于当前柱子的下标
+                int RightLessMin = p;
+                //计算面积
+                int area = (RightLessMin - leftLessMin - 1) * height;
+                maxArea = Math.max(area, maxArea);
+            }
+        }
+    }
+    while (!stack.isEmpty()) {
+        //保存栈顶高度
+        int height = heights[stack.pop()];
+        //左边第一个小于当前柱子的下标
+        int leftLessMin = stack.isEmpty() ? -1 : stack.peek();
+        //右边没有小于当前高度的柱子，所以赋值为数组的长度便于计算
+        int RightLessMin = heights.length;
+        int area = (RightLessMin - leftLessMin - 1) * height;
+        maxArea = Math.max(area, maxArea);
+    }
+    return maxArea;
+}
+```
+
+## [205. 同构字符串](https://leetcode-cn.com/problems/isomorphic-strings/)
+
+> 哈希
+
+```java
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        Map<Character, Character> map = new HashMap<>();
+        Set<Character> set = new HashSet<>();
+        if (s.length() != t.length())
+            return false;
+        for (int i = 0; i < s.length(); ++i) {
+            if (!map.containsKey(s.charAt(i))) {
+                if (set.contains(t.charAt(i)))
+                    return false;
+                map.put(s.charAt(i), t.charAt(i));
+                set.add(t.charAt(i));
+            } else {
+                if (t.charAt(i) != map.get(s.charAt(i)))
+                    return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+用数组（TODO）
+
+```java
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        char[] cs = s.toCharArray();
+        char[] ct = t.toCharArray();
+        int[] sa = new int[256];
+        int[] ta = new int[256];
+        for (int i = 0; i < cs.length; i++) {
+            if (sa[cs[i]] != ta[ct[i]]) {
+                return false;
+            }
+            sa[cs[i]] = i + 1;
+            ta[ct[i]] = i + 1;
+        }
+        return true;
+    }
+}
+```
+
 
 
 
@@ -5598,7 +5761,7 @@ public String minWindow(String s, String t) {
     }
 ```
 
-
+## 单调栈
 
 # Java常用数据结构
 
