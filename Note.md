@@ -1,3 +1,5 @@
+
+
 # 算法笔记
 
 > 来源：LeetCode&牛客网&剑指Offer
@@ -5374,6 +5376,244 @@ class Solution {
 }
 ```
 
+## [188. 买卖股票的最佳时机 IV](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/)
+
+> DP
+
+TODO 重点看一下
+
+```java
+class Solution {
+    public int maxProfit(int k, int[] prices) {
+        // 设dp_1[i][j]表示第i天买入/持有正好j次交易的最大收益， dp_0[i][j]表示第i天卖出/未持有正好j次交易的最大收益
+        // j \in [0, k]
+        // dp_1[i][j] = max(dp_0[i-1][j]-prices[i], dp_1[i-1][j])
+        // dp_0[i][j] = max(dp_0[i-1][j], dp_1[i-1][j-1]+prices[i])
+        // 求：max(dp_0[n-1][0...k])
+        // 初始化：dp_1[0][0]=-prices[0],dp_1[0][1...k]=-无穷；
+        //        dp_0[0][0]=0,dp_0[0][1...k]=-无穷；
+        if (prices.length == 0)
+            return 0;
+        int len = prices.length;
+        k = Math.min(k, len / 2);
+        int[][] dp_0 = new int[len][k + 1];
+        int[][] dp_1 = new int[len][k + 1];
+        dp_0[0][0] = 0;
+        dp_1[0][0] = -prices[0];
+        for (int i = 1; i <= k; ++i) {
+            dp_1[0][i] = dp_0[0][i] = Integer.MIN_VALUE / 2; // 防止越界
+        }
+        for (int i = 1; i < len; ++i) {
+            dp_1[i][0] = Math.max(dp_0[i - 1][0] - prices[i], dp_1[i - 1][0]); // j == 0讨论
+            for (int j = 1; j <= k; ++j) {
+                dp_1[i][j] = Math.max(dp_0[i - 1][j] - prices[i], dp_1[i - 1][j]);
+                dp_0[i][j] = Math.max(dp_0[i - 1][j], dp_1[i - 1][j - 1] + prices[i]);
+            }
+        }
+        int maxValue = 0;
+        for (int i = 0; i <= k; ++i) {
+            maxValue = Math.max(maxValue, dp_0[len - 1][i]);
+        }
+        return maxValue;
+    }
+}
+```
+
+## [330. 按要求补齐数组](https://leetcode-cn.com/problems/patching-array/)
+
+> 贪心
+
+TODO 主要是想法
+
+```java
+class Solution {
+    public int minPatches(int[] nums, int n) {
+        int patches = 0;
+        long x = 1;
+        int length = nums.length, index = 0;
+        while (x <= n) { // [1..x]都可以遍历到
+            if (index < length && nums[index] <= x) {
+                x += nums[index];
+                index++;
+            } else {
+                x *= 2;
+                patches++;
+            }
+        }
+        return patches;
+    }
+}
+```
+
+## [1046. 最后一块石头的重量](https://leetcode-cn.com/problems/last-stone-weight/)
+
+> 最大堆
+
+```java
+class Solution {
+    public int lastStoneWeight(int[] stones) {
+        PriorityQueue<Integer> pl = new PriorityQueue<>((x, y) -> y - x);
+        for (int i: stones) {
+            pl.offer(i);
+        }
+        while (pl.size() > 1) {
+            int y = pl.poll();
+            int x = pl.poll();
+            if (y != x) {
+                pl.offer(y - x);
+            }
+        }
+        return pl.isEmpty() ? 0 : pl.poll();
+    }
+}
+```
+
+## [435. 无重叠区间](https://leetcode-cn.com/problems/non-overlapping-intervals/)
+
+> 贪心
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.4 MB, 在所有 Java 提交中击败了69.35%的用户
+
+```java
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            public int compare(int[] a, int[] b) {
+                return a[0] - b[0];
+            }
+        });
+        int count = 0, i = 0, j = 1, n = intervals.length;
+        while (j < n) {
+            int[] a = intervals[i];
+            int[] b = intervals[j];
+            if (b[0] >= a[1]) { // a和b不覆盖，i=j，j++
+                i = j;
+            } else { // a和b覆盖，删除[1]大的，count++，i置为未删除的那个，j++
+                count++;
+                if (b[1] < a[1]) // 删除a
+                    i = j;
+            }
+            j++;
+        }
+        return count;
+    }
+}
+```
+
+## [605. 种花问题](https://leetcode-cn.com/problems/can-place-flowers/)
+
+> 数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39.8 MB, 在所有 Java 提交中击败了78.54%的用户
+
+```java
+class Solution {
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        int fn = flowerbed.length;
+        if (n == 0)
+            return true;
+        if (fn == 1)
+            return flowerbed[0] == 0;
+        for (int i = 0; i < fn; ++i) {
+            if ((i == 0 && flowerbed[0] == 0 && flowerbed[1] == 0) ||
+                (i == fn - 1 && flowerbed[i] == 0 && flowerbed[i - 1] == 0) ||
+                (i != 0 && i != fn - 1 && flowerbed[i] == 0 && flowerbed[i - 1] == 0 && flowerbed[i + 1] == 0)) {
+                flowerbed[i] = 1;
+                if (--n == 0) // 提前退出
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+
+
+## [239. 滑动窗口最大值](https://leetcode-cn.com/problems/sliding-window-maximum/)
+
+> 滑动窗口，单调栈
+
+先判断n==0和数组为1的情况。
+然后从第一个位置开始模拟种植，如有：
+1.刚开始种植且第一个和第二个位置都为0，即可种植在第一个位置
+2.最后位置种植且最后一个和倒数第二个位置都为0，即可种植在最后一个位置
+3.在中间种植且自己和前后都为0，即可种植在中间
+种植操作：
+1.修改当前位置为1
+2.n--，判断n已经扣减为0，是则返回true
+如果循环结束还无法返回true，则返回false
+
+```java
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int n = nums.length;
+        if (n < 2)
+            return nums;
+        int[] ans = new int[n - k + 1];
+        Deque<Integer> deque = new LinkedList<Integer>(); // k单调递减栈（存位置）
+        for (int i = 0; i < n; ++i) { // i表示右界
+            while(!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) { // 加入一个新值，维护栈
+                deque.pollLast();
+            }
+            deque.offerLast(i); // 加入新值
+            if (deque.peekFirst() <= i - k) { // 判断队首有效性
+                deque.pollFirst();
+            }
+            if (i >= k - 1) { // k-1后持续加入最大值
+                ans[i + 1 - k] = nums[deque.peekFirst()];
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [86. 分隔链表](https://leetcode-cn.com/problems/partition-list/)
+
+> 链表，双指针
+
+用ps记录小数链，pb记录大数链，将原始链条分开，然后大数链接到小数链尾部
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.4 MB, 在所有 Java 提交中击败了97.45%的用户
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode ps = new ListNode(0), pb = new ListNode(0);
+        ListNode psh = ps, pbh = pb;
+        while (head != null) {
+            if (head.val < x) {
+                ps.next = head;
+                ps = ps.next;
+            } else {
+                pb.next = head;
+                pb = pb.next;
+            }
+            ListNode tmp = head;
+            head = head.next;
+            tmp.next = null; // 打断原始连接，不然会有环
+        }
+        ps.next = pbh.next;
+        return psh.next;
+    }
+}
+```
+
 
 
 
@@ -5773,6 +6013,9 @@ public String minWindow(String s, String t) {
 - isEmpty 是否为空
 - size 长度
 
+- 最大堆 PriorityQueue<T>((a, b) -> b - a)
+- 最小堆 PriorityQueue<T>()
+
 ## ArrayList
 
 - 
@@ -5784,6 +6027,8 @@ public String minWindow(String s, String t) {
 # Java常见技巧
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
+
++ 数组复制：Arrays.copyOfRange(nums, 0, k)
 
 + ArrayList2int[]：list.stream().mapToInt(e->e).toArray()
 
@@ -5803,6 +6048,8 @@ public String minWindow(String s, String t) {
   		}
   })
   ```
+
+- 获取数组最大值：Arrays.stream(arr).max().getAsInt();
 
 # 未完成
 
