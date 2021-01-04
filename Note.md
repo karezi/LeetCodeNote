@@ -5614,6 +5614,26 @@ class Solution {
 }
 ```
 
+## [509. 斐波那契数](https://leetcode-cn.com/problems/fibonacci-number/)
+
+> 数组
+
+```java
+class Solution {
+    public int fib(int n) {
+        if (n < 2)
+            return n;
+        int a = 0, b = 1;
+        for (int i = 0; i < n - 2; ++i) {
+            int ans = a + b;
+            a = b;
+            b = ans;
+        }
+        return a + b;
+    }
+}
+```
+
 
 
 
