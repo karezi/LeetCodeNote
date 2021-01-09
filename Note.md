@@ -5634,7 +5634,332 @@ class Solution {
 }
 ```
 
+## [830. 较大分组的位置](https://leetcode-cn.com/problems/positions-of-large-groups/)
 
+> 数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了95.91%的用户
+
+```java
+class Solution {
+    public List<List<Integer>> largeGroupPositions(String s) {
+        List<List<Integer>> ans = new ArrayList<>();
+        int n = s.length();
+        if (n < 3)
+            return ans;
+        for (int i = 2; i < n; ++i) {
+            char c = s.charAt(i);
+            if (c == s.charAt(i - 1) && c == s.charAt(i - 2)) {
+                int j = i - 2;
+                while (i < n && s.charAt(i) == c) {
+                    ++i;
+                }
+                ans.add(Arrays.asList(j, i - 1));
+                i += 1;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [399. 除法求值](https://leetcode-cn.com/problems/evaluate-division/)
+
+> 并查集，图
+
+执行用时：1 ms, 在所有 Java 提交中击败了97.24%的用户
+
+内存消耗：37.3 MB, 在所有 Java 提交中击败了46.02%的用户
+
+```java
+class Solution {
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        // 第一步：构造并查集
+        int len = equations.size() * 2;
+        UnionFind unionFind = new UnionFind(len);
+        // 第二步：对equations中元素统一编码为int
+        Map<String, Integer> map = new HashMap<>(len);
+        int i = 0, j = 0;
+        for (List<String> equation: equations) {
+            String str1 = equation.get(0);
+            String str2 = equation.get(1);
+            if (!map.containsKey(str1)) {
+                map.put(str1, i);
+                ++i;
+            }
+            if (!map.containsKey(str2)) {
+                map.put(str2, i);
+                ++i;
+            }
+            unionFind.union(map.get(str1), map.get(str2), values[j++]);
+        }
+        // 第三步：根据提问查找结果
+        double[] res = new double[queries.size()];
+        int k = 0;
+        for (List<String> query: queries) {
+            Integer v1 = map.get(query.get(0));
+            Integer v2 = map.get(query.get(1));
+            if (v1 == null || v2 == null) {
+                res[k++] = -1.0d;
+            } else {
+                res[k++] = unionFind.isConnected(v1, v2);
+            }
+        }
+        return res;
+    }
+
+    private class UnionFind { // 并查集内部类
+        int[] parent; // 每个元素的直接父类集合
+        double[] weight; // 每个元素到直接父类的权重
+        
+        // 构造方法：根据容量构造出均指向自己的并查集
+        UnionFind(int n) {
+            parent = new int[n];
+            weight = new double[n];
+            for (int i = 0; i < n; ++i) {
+                parent[i] = i;
+                weight[i] = 1.0d;
+            }
+        }
+        
+        // 合并方法
+        public void union(int x, int y, double val) {
+            int px = find(x); // 找到x的直接父类
+            int py = find(y); // 找到y的直接父类
+            if (px == py)
+                return;
+            parent[px] = py;
+            weight[px] = val * weight[y] / weight[x];
+        }
+
+        // 查找直接父类并路径压缩
+        private int find(int x) {
+            if (x != parent[x]) { // 上面还有人
+                int tmpPx = parent[x]; // 记录临时的父元素
+                parent[x] = find(parent[x]); // 递归发现父元素并更新parent[]
+                weight[x] *= weight[tmpPx]; // 当前元素weight是乘上其原始父元素（可能已经变成子元素了）的weight值
+            }
+            return parent[x];
+        }
+
+        // 检查是否在一个集中（所有值合并后），在的话返回相除结果
+        public double isConnected(int x, int y) {
+            int px = find(x);
+            int py = find(y);
+            if (px == py) {
+                return weight[x] / weight[y];
+            }
+            return -1.0d;
+        }
+    }
+}
+```
+
+## [547. 省份数量](https://leetcode-cn.com/problems/number-of-provinces/)
+
+> 并查集，图，dfs
+
+执行用时：1 ms, 在所有 Java 提交中击败了99.49%的用户
+
+内存消耗：39.3 MB, 在所有 Java 提交中击败了69.07%的用户
+
+```java
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int n = isConnected.length;
+        int[] parents = new int[n];
+        // 并查集初始化
+        for (int i = 0; i < n; ++i) {
+            parents[i] = i;
+        }
+        // 并查集合并
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (isConnected[i][j] == 1)
+                    union(parents, i, j);
+            }
+        }
+        int count = 0;
+        for (int i = 0; i < n; ++i) {
+            if (i == parents[i])
+                count++;
+        }
+        return count;
+    }
+
+    // 并查集联合
+    private void union(int[] parents, int x, int y) {
+        parents[find(parents, x)] = find(parents, y);
+    }
+
+    // 并查集找父且压缩路径
+    private int find(int[] parents, int x) {
+        if (x != parents[x]) {
+            parents[x] = find(parents, parents[x]);
+        }
+        return parents[x];
+    }
+}
+```
+
+## [189. 旋转数组](https://leetcode-cn.com/problems/rotate-array/)
+
+> 数组
+
+整体移动法（效率不算高）
+
+执行用时：1 ms, 在所有 Java 提交中击败了54.78%的用户
+
+内存消耗：38.8 MB, 在所有 Java 提交中击败了81.24%的用户
+
+```java
+class Solution {
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+
+    // 整体浮动
+    private void blockFloat(int[] nums, int start, int end, int k, boolean direction) {
+        if (k == 0)
+            return;
+        while (end - start + 1 - k >= k) {
+            if (direction) { // 向左浮动
+                for (int j = 0; j < k; ++j) {
+                    swap(nums, end - j, end - j - k);
+                }
+                end -= k;
+            } else { // 向右浮动
+                for (int j = 0; j < k; ++j) {
+                    swap(nums, start + j, start + j + k);
+                }
+                start += k;
+            }
+        }
+        blockFloat(nums, start, end, end - start - k + 1, !direction);
+    }
+
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+        blockFloat(nums, 0, n - 1, k, true);
+    }
+}
+```
+
+使用额外数组
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39.1 MB, 在所有 Java 提交中击败了32.37%的用户
+
+```java
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        int[] newArr = new int[n];
+        for (int i = 0; i < n; ++i) {
+            newArr[(i + k) % n] = nums[i];
+        }
+        System.arraycopy(newArr, 0, nums, 0, n);
+    }
+}
+```
+
+环装替代
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.7 MB, 在所有 Java 提交中击败了93.74%的用户
+
+```java
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        k = k % n;
+        int count = gcd(k, n);
+        for (int start = 0; start < count; ++start) {
+            int current = start;
+            int prev = nums[start];
+            do {
+                int next = (current + k) % n;
+                int temp = nums[next];
+                nums[next] = prev;
+                prev = temp;
+                current = next;
+            } while (start != current);
+        }
+    }
+
+    public int gcd(int x, int y) {
+        return y > 0 ? gcd(y, x % y) : x;
+    }
+}
+```
+
+数组翻转
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.6 MB, 在所有 Java 提交中击败了96.24%的用户
+
+```java
+class Solution {
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        reverse(nums, 0, nums.length - 1);
+        reverse(nums, 0, k - 1);
+        reverse(nums, k, nums.length - 1);
+    }
+
+    public void reverse(int[] nums, int start, int end) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start += 1;
+            end -= 1;
+        }
+    }
+}
+```
+
+## [123. 买卖股票的最佳时机 III](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/)
+
+> dp
+
+```java
+class Solution {
+    public int maxProfit(int[] prices) {
+        // 递推方程:
+        // 状态分5种——
+        // 从未交易过:dp[i][0] = 0（不需要记录，最后比较0就行）
+        // 一次买入状态:dp[i][1] = max(dp[i-1][1],-prices[i]) 之前买入过不操作/今日买入
+        // 一次买卖状态:dp[i][2] = max(dp[i-1][2],dp[i-1][1]+prices[i]) 昨日一次买卖未操作/之前没卖，今天卖出
+        // 一次买卖后再买状态:dp[i][3] = max(dp[i-1][3],dp[i-1][2]-prices[i])
+        // 二次买卖状态:dp[i][4] = max(dp[i-1][4],dp[i-1][3]+prices[i])
+        
+        // 初始化dp[0][1]=-prices[0],dp[0][2]=-无穷,dp[0][3]=-无穷,dp[0][4]=-无穷
+        // 求max(0, dp[n-1][2], dp[n-1][4])
+        int n = prices.length;
+        if (n == 0)
+            return 0;
+        int dp_i_1 = -prices[0], dp_i_2 = -Integer.MIN_VALUE;
+        int dp_i_3 = -Integer.MIN_VALUE, dp_i_4 = -Integer.MIN_VALUE;
+        for (int i = 1; i < n; ++i) {
+            dp_i_1 = Math.max(dp_i_1, -prices[i]);
+            dp_i_2 = Math.max(dp_i_2, dp_i_1 + prices[i]);
+            dp_i_3 = Math.max(dp_i_3, dp_i_2 - prices[i]);
+            dp_i_4 = Math.max(dp_i_4, dp_i_3 + prices[i]);
+        }
+        int tmp = Math.max(dp_i_2, dp_i_4);
+        return tmp < 0 ? 0 : tmp;
+    }
+}
+```
 
 
 
@@ -6023,6 +6348,18 @@ public String minWindow(String s, String t) {
 
 ## 单调栈
 
+## 最大公约数gcd
+
+```java
+public int gcd(int x, int y) {
+    return y > 0 ? gcd(y, x % y) : x;
+}
+```
+
+## 最小公倍数lcm
+
+
+
 # Java常用数据结构
 
 ## Queue
@@ -6049,6 +6386,8 @@ public String minWindow(String s, String t) {
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
 
 + 数组复制：Arrays.copyOfRange(nums, 0, k)
+
++ ArrayList简单构造：Arrays.asList(a,b)
 
 + ArrayList2int[]：list.stream().mapToInt(e->e).toArray()
 
