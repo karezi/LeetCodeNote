@@ -5961,6 +5961,47 @@ class Solution {
 }
 ```
 
+## [228. 汇总区间](https://leetcode-cn.com/problems/summary-ranges/)
+
+> 数组
+
+TODO：使用StringBuilder可能会提高效率
+
+```java
+class Solution {
+    public List<String> summaryRanges(int[] nums) {
+        int n = nums.length;
+        List<String> ret = new ArrayList<>();
+        if (n == 0)
+            return ret;
+        if (n == 1) {
+            ret.add(nums[0] + "");
+            return ret;
+        }
+        int l = 0, r = 0;
+        for (int i = 1; i < n; ++i) {
+            if (nums[i] == nums[i - 1] + 1) {
+                r++;
+            } else {
+                if (l != i - 1) {
+                    ret.add(nums[l] + "->" + nums[i - 1]);
+                } else {
+                    ret.add(nums[l] + "");
+                }
+                l = i;
+                r = i;
+            }
+        }
+        if (l != n - 1) {
+            ret.add(nums[l] + "->" + nums[n - 1]);
+        } else {
+            ret.add(nums[l] + "");
+        }
+        return ret;
+    }
+}
+```
+
 
 
 # Java算法模板
