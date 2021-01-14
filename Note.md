@@ -6002,6 +6002,255 @@ class Solution {
 }
 ```
 
+## [1202. 交换字符串中的元素](https://leetcode-cn.com/problems/smallest-string-with-swaps/)
+
+> 并查集，数组
+
+```java
+class Solution {
+    private int[] parents; // 并查集(索引)
+    private int[] ranks; // 按秩合并
+
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        int n = s.length();
+        parents = new int[n];
+        ranks = new int[n];
+        // 并查集初始化
+        for (int i = 0; i < n; ++i) {
+            parents[i] = i;
+            ranks[i] = 1;
+        }
+        // 聚类合并
+        for (List<Integer> l: pairs) {
+            Integer v1 = l.get(0);
+            Integer v2 = l.get(1);
+            union(v1, v2);
+        }
+        // 每个类记录优先队列
+        Map<Integer, PriorityQueue<Character>> map = new HashMap<>(n);
+        for (int i = 0; i < n; ++i) {
+            // int pi = find(i);
+            // if (map.containsKey(pi)) {
+            //     Queue q = map.get(pi);
+            //     q.offer(s.charAt(i));
+            // } else {
+            //     PriorityQueue q = new PriorityQueue<>();
+            //     q.offer(s.charAt(i));
+            //     map.put(pi, q);
+            // }
+            map.computeIfAbsent(find(i), key -> new PriorityQueue<>()).offer(s.charAt(i)); // 一句话代替
+        }
+        // 组合字符串
+        StringBuilder sb = new StringBuilder(n);
+        for (int i = 0; i < n; ++i) {
+            int pi = find(i);
+            PriorityQueue pq = map.get(pi);
+            sb.append(pq.poll());
+        }
+        return sb.toString();
+    }
+
+    private int find(int x) {
+        if (parents[x] != x) {
+            parents[x] = find(parents[x]);
+        }
+        return parents[x];
+    }
+
+    private void union(int a, int b) {
+        int p1 = find(a);
+        int p2 = find(b);
+        if (p1 == p2)
+            return;
+        if (ranks[p1] == ranks[p2]) {
+            parents[p1] = p2;
+            ranks[p1]++;
+        } else if (ranks[p1] > ranks[p2]) {
+            parents[p2] = p1;
+        } else {
+            parents[p1] = p2;
+        }
+    }
+}
+```
+
+## [1672. 最富有客户的资产总量](https://leetcode-cn.com/problems/richest-customer-wealth/)
+
+> 数组
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.9 MB, 在所有 Java 提交中击败了89.55%的用户
+
+```java
+class Solution {
+    public int maximumWealth(int[][] accounts) {
+        int max = 0;
+        for (int i = 0; i < accounts.length; ++i) {
+            int tmpMax = 0;
+            for (int j = 0; j < accounts[0].length; ++j) {
+                tmpMax += accounts[i][j];
+            }
+            max = Math.max(max, tmpMax);
+        }
+        return max;
+    }
+}
+```
+
+## [1678. 设计 Goal 解析器](https://leetcode-cn.com/problems/goal-parser-interpretation/)
+
+> 字符串
+
+```java
+class Solution {
+    public String interpret(String command) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < command.length(); ++i) {
+            if (command.charAt(i) == 'G') {
+                sb.append('G');
+            } else {
+                if (command.charAt(i + 1) == ')') {
+                    sb.append('o');
+                    i++;
+                } else {
+                    sb.append("al");
+                    i += 3;
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+## [1203. 项目管理](https://leetcode-cn.com/problems/sort-items-by-groups-respecting-dependencies/)
+
+> 拓扑排序，BFS，图
+
+```java
+class Solution {
+    private ArrayList<Integer> topoLogicalSort(List<Integer>[] adj, int[] inDegree, int n) {
+        ArrayList<Integer> res = new ArrayList<>();
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; ++i) {
+            if (inDegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+        while (!q.isEmpty()) {
+            Integer item = q.poll();
+            res.add(item);
+            if (adj[item] != null) {
+                for (Integer i: adj[item]) {
+                    inDegree[i]--;
+                    if (inDegree[i] == 0) {
+                        q.offer(i);
+                    }
+                }
+            }
+        }
+        if (res.size() == n)
+            return res;
+        else
+            return new ArrayList<>();
+    }
+
+    public int[] sortItems(int n, int m, int[] group, List<List<Integer>> beforeItems) {
+        // 满足拓扑排序条件：有向无环图（DAG）先后排序
+        // 第一步：将所有无组的项目标注为某个独立组（小技巧）
+        for (int i = 0; i < n; ++i) {
+            if (group[i] == -1) {
+                group[i] = m;
+                m++;
+            }
+        }
+        // 第二步：构建组邻接表并拓扑排序
+        List<Integer>[] groupAdj = new ArrayList[m];
+        int[] groupInDegree = new int[m];
+        for (int i = 0; i < group.length; ++i) {
+            int currentGroup = group[i];
+            for (Integer j: beforeItems.get(i)) {
+                int jGroup = group[j];
+                if (currentGroup != jGroup) {
+                    if (groupAdj[jGroup] == null)
+                        groupAdj[jGroup] = new ArrayList<>();
+                    groupAdj[jGroup].add(currentGroup);
+                    groupInDegree[currentGroup]++;
+                }
+            }
+        }
+        ArrayList<Integer> groupTopo = topoLogicalSort(groupAdj, groupInDegree, m);
+        if (groupTopo.size() == 0)
+            return new int[0];
+        // 第三步：构建项目邻接表并拓扑排序
+        List<Integer>[] itemAdj = new ArrayList[n]; // 邻接表（后继）
+        int[] itemInDegree = new int[n]; // 入度
+        for (int i = 0; i < beforeItems.size(); ++i) {
+            for (Integer it: beforeItems.get(i)) {
+                if (itemAdj[it] == null)
+                    itemAdj[it] = new ArrayList<>();
+                itemAdj[it].add(i);
+                itemInDegree[i]++;
+            }
+        }
+        ArrayList<Integer> itemTopo = topoLogicalSort(itemAdj, itemInDegree, n);
+        if (itemTopo.size() == 0)
+            return new int[0];
+        // 第四步：组和项目关系
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (Integer item: itemTopo) {
+            map.computeIfAbsent(group[item], key -> new ArrayList<>()).add(item);
+        }
+        // 第五步：构造结果
+        int[] res = new int[n];
+        int count = 0;
+        for (int groupIndex: groupTopo) {
+            List<Integer> items = map.getOrDefault(groupIndex, new ArrayList<>());
+            for (Integer item: items)
+                res[count++] = item;
+        }
+        return res;
+    }
+}
+```
+
+## [684. 冗余连接](https://leetcode-cn.com/problems/redundant-connection/)
+
+> 并查集，树，图
+
+```java
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        // 并查集
+        // 初始时候，每个点单独是自己的连通分量
+        // 合并，如果两个点不属于一个连同分量则合并，否则有环
+        int n = edges.length; // 点和边数量一致，都是n
+        int[] parents = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            parents[i] = i;
+        }
+        for (int i = 0; i < n; ++i) {
+            int pu = find(parents, edges[i][0]);
+            int pv = find(parents, edges[i][1]);
+            if (pu != pv) {
+                parents[pu] = pv;
+            } else {
+                return edges[i]; // 因为只可能有一个环，成环必然是最后一个满足条件的边加入
+            }
+        }
+        return new int[0];
+    }
+
+    private int find(int[] parents, int x) {
+        if (parents[x] != x) {
+            parents[x] = find(parents, parents[x]);
+        }
+        return parents[x];
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -6430,7 +6679,7 @@ public int gcd(int x, int y) {
 
 + ArrayList简单构造：Arrays.asList(a,b)
 
-+ ArrayList2int[]：list.stream().mapToInt(e->e).toArray()
++ ArrayList2int[]：list.stream().mapToInt(e->e).toArray()或list.stream().mapToInt(Integer::valueOf).toArray();
 
 + 创建哑节点 `dummyHead`，令 `dummyHead.next = head`。引入哑节点是为了便于在 `head` 节点之前插入节点。
 
