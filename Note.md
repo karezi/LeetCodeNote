@@ -6251,6 +6251,126 @@ class Solution {
 }
 ```
 
+## [1018. 可被 5 整除的二进制前缀](https://leetcode-cn.com/problems/binary-prefix-divisible-by-5/)
+
+> 数组
+
+```java
+class Solution {
+    public List<Boolean> prefixesDivBy5(int[] A) {
+        List<Boolean> res = new ArrayList<>();
+        int n = A.length;
+        int tmp = 0;
+        for (int i = 0; i < n; ++i) {
+            tmp = ((tmp * 2) + A[i]) % 5; // 只保留余数
+            res.add(tmp == 0);
+        }
+        return res;
+    }
+}
+```
+
+## [947. 移除最多的同行或同列石头](https://leetcode-cn.com/problems/most-stones-removed-with-same-row-or-column/)
+
+> 并查集
+
+```java
+class Solution {
+    public int removeStones(int[][] stones) {
+        // 并查集
+        UnionFind uf = new UnionFind();
+        for (int[] stone: stones) {
+            uf.union(stone[0] + 10001, stone[1]);
+        }
+        return stones.length - uf.getCount();
+    }
+
+    class UnionFind {
+        private Map<Integer, Integer> parents;
+        private int count;
+
+        UnionFind() {
+            parents = new HashMap<>();
+            count = 0;
+        }
+
+        public int getCount() {
+            return this.count;
+        }
+        
+        public void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa != pb) {
+                parents.put(pa, pb);
+                count--;
+            }
+        }
+
+        public int find(int x) {
+            if (!parents.containsKey(x)) {
+                parents.put(x, x);
+                count++;
+            }
+            if (x != parents.get(x)) {
+                parents.put(x, find(parents.get(x)));
+            }
+            return parents.get(x);
+        }
+    }
+}
+```
+
+## [1232. 缀点成线](https://leetcode-cn.com/problems/check-if-it-is-a-straight-line/)
+
+> 数学
+
+向量法
+
+```java
+class Solution {
+    public boolean checkStraightLine(int[][] coordinates) {
+        int len = coordinates.length;
+        if (len == 2)
+            return true;
+        for (int i = 2; i < len; ++i) {
+            int[] x1 = coordinates[i - 2];
+            int[] x2 = coordinates[i - 1];
+            int[] x3 = coordinates[i];
+            int[] a1 = {x2[0] - x1[0], x2[1] - x1[1]};
+            int[] a2 = {x3[0] - x2[0], x3[1] - x2[1]};
+            if (a2[0] * a1[1] != a2[1] * a1[0])
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+坐标方程法
+
+```java
+
+class Solution {
+    public boolean checkStraightLine(int[][] coordinates) {
+        int deltaX = coordinates[0][0], deltaY = coordinates[0][1];
+        int n = coordinates.length;
+        for (int i = 0; i < n; i++) { // 变换到过O点的直线
+            coordinates[i][0] -= deltaX;
+            coordinates[i][1] -= deltaY;
+        }
+        int A = coordinates[1][1], B = -coordinates[1][0];
+        for (int i = 2; i < n; i++) {
+            int x = coordinates[i][0], y = coordinates[i][1];
+            if (A * x + B * y != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -6707,4 +6827,6 @@ public int gcd(int x, int y) {
 ## [147. 对链表进行插入排序](https://leetcode-cn.com/problems/insertion-sort-list/)
 
 ## [135. 分发糖果](https://leetcode-cn.com/problems/candy/)
+
+## [803. 打砖块](https://leetcode-cn.com/problems/bricks-falling-when-hit/)
 
