@@ -6371,6 +6371,81 @@ class Solution {
 }
 ```
 
+## [721. 账户合并](https://leetcode-cn.com/problems/accounts-merge/)
+
+> 并查集
+
+```java
+class Solution {
+    public List<List<String>> accountsMerge(List<List<String>> accounts) {
+        // 预处理：给emails编号，记录emails的账户名
+        Map<String, Integer> mapNumber = new HashMap<>();
+        Map<String, String> mapName = new HashMap<>();
+        int count = 0;
+        for (List<String> ls: accounts) {
+            String accName = ls.get(0);
+            for (int i = 1; i < ls.size(); ++i) {
+                String email = ls.get(i);
+                if (!mapNumber.containsKey(email)) {
+                    mapNumber.put(email, count++);
+                    mapName.put(email, accName);
+                }
+            }
+        }
+        // 对编完号的emails进行Union
+        int emailLen = mapNumber.keySet().size();
+        UnionFind uf = new UnionFind(emailLen);
+        for (List<String> ls: accounts) {
+            Integer first = mapNumber.get(ls.get(1));
+            for (int i = 2; i < ls.size(); ++i) {
+                uf.union(first, mapNumber.get(ls.get(i)));
+            }
+        }
+        // 记录所有的连通分量（爸爸和孩子们）
+        Map<Integer, List<String>> pcs = new HashMap<>();
+        for (String email: mapNumber.keySet()) {
+            Integer i = mapNumber.get(email);
+            int p = uf.find(i);
+            List<String> ls = pcs.getOrDefault(p, new ArrayList<>());
+            ls.add(email);
+            pcs.put(p, ls);
+        }
+        // 按照要求输出
+        List<List<String>> res = new ArrayList<>();
+        for (List<String> ls: pcs.values()) {
+            List<String> tmp = new ArrayList<>();
+            Collections.sort(ls);
+            tmp.add(mapName.get(ls.get(0)));
+            tmp.addAll(ls);
+            res.add(tmp);
+        }
+        return res;
+    }
+
+    private class UnionFind {
+        private int[] parents;
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+        }
+        
+        public int find(int x) {
+            if (parents[x] != x) {
+                parents[x] = find(parents[x]);
+            }
+            return parents[x];
+        }
+
+        public void union(int a, int b) {
+            parents[find(a)] = find(b);
+        }
+    }
+}
+```
+
 
 
 # Java算法模板
