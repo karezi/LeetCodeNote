@@ -6446,7 +6446,91 @@ class Solution {
 }
 ```
 
+## [1584. 连接所有点的最小费用](https://leetcode-cn.com/problems/min-cost-to-connect-all-points/)
 
+> 最小生成树，Prim，Kruskal，并查集
+
+```java
+class Solution {
+    private int getDis(int i, int j, int[][]  points) {
+        int xi = points[i][0];
+        int xj = points[j][0];
+        int yi = points[i][1];
+        int yj = points[j][1];
+        return Math.abs(xi - xj) + Math.abs(yi - yj);
+    }
+
+    public int minCostConnectPoints(int[][] points) {
+        // 初始化所有边
+        int n = points.length;
+        UnionFind uf = new UnionFind(n);
+        List<Edge> le = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                int d = getDis(i, j, points);
+                le.add(new Edge(d, i, j));
+            }
+        }
+        // 对列表排序
+        Collections.sort(le, new Comparator<Edge>(){
+            @Override
+            public int compare(Edge e1, Edge e2) {
+                return e1.dis - e2.dis;
+            }
+        });
+        // Kruskal：加小边，如果连通则加入
+        int res = 0, count = 1;
+        for (Edge e: le) {
+            if (uf.union(e.x, e.y)) {
+                res += e.dis;
+                count++;
+                if (count == n) {
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+    private class UnionFind {
+        int[] parents;
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+        }
+
+        public boolean union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa == pb)
+                return false;
+            parents[pa] = pb;
+            return true;
+        }
+
+        public int find(int x) {
+            if (parents[x] != x) {
+                parents[x] = find(parents[x]);
+            }
+            return parents[x];
+        }
+    }
+
+    private class Edge {
+        int dis, x, y;
+        Edge(int dis, int x, int y) {
+            this.dis = dis;
+            this.x = x;
+            this.y = y;
+        }
+    }
+}
+```
+
+TODO：Prim算法，图优化
 
 # Java算法模板
 
