@@ -6532,6 +6532,56 @@ class Solution {
 
 TODO：Prim算法，图优化
 
+## [628. 三个数的最大乘积](https://leetcode-cn.com/problems/maximum-product-of-three-numbers/)
+
+> 数组
+
+排序法
+
+```java
+class Solution {
+    public int maximumProduct(int[] nums) {
+        Arrays.sort(nums);
+        // 最大的三个 vs 最小两个*最大一个
+        int len = nums.length;
+        int tmp1 = nums[len - 1] * nums[len - 2] * nums[len - 3];
+        int tmp2 = nums[0] * nums[1] * nums[len - 1];
+        return Math.max(tmp1, tmp2);
+    }
+}
+```
+
+直接找到5个数
+
+```java
+class Solution {
+    public int maximumProduct(int[] nums) {
+        int min1 = 1000, min2 = 1000, max3 = -1000, max2 = -1000, max1 = -1000;
+        for (int num: nums) {
+            if (num < min1) {
+                min2 = min1;
+                min1 = num;
+            } else if (num < min2) {
+                min2 = num;
+            }
+            if (num > max1) {
+                max3 = max2;
+                max2 = max1;
+                max1 = num;
+            } else if (num > max2) {
+                max3 = max2;
+                max2 = num;
+            } else if (num > max3) {
+                max3 = num;
+            }
+        }
+        return Math.max(min1 * min2 * max1, max3 * max2 * max1);
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
