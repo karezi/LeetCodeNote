@@ -6580,6 +6580,54 @@ class Solution {
 }
 ```
 
+## [989. 数组形式的整数加法](https://leetcode-cn.com/problems/add-to-array-form-of-integer/)
+
+> 数组
+
+模拟相加
+
+```java
+class Solution {
+    public List<Integer> addToArrayForm(int[] A, int K) {
+        List<Integer> res = new ArrayList<>();
+        int len = A.length;
+        for (int i = len - 1; i >= 0; --i) {
+            int tmp = K % 10 + A[i];
+            K /= 10;
+            if (tmp >= 10) {
+                K++;
+                tmp -= 10;
+            }
+            res.add(tmp);
+        }
+        for (; K > 0; K /= 10) {
+            res.add(K % 10);
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}
+```
+
+把K加到数组最后一个
+
+```java
+class Solution {
+    public List<Integer> addToArrayForm(int[] A, int K) {
+        List<Integer> res = new ArrayList<Integer>();
+        int n = A.length;
+        for (int i = n - 1; i >= 0 || K > 0; --i, K /= 10) {
+            if (i >= 0) {
+                K += A[i];
+            }
+            res.add(K % 10);
+        }
+        Collections.reverse(res);
+        return res;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -7029,6 +7077,14 @@ public int gcd(int x, int y) {
 
 - 获取数组最大值：Arrays.stream(arr).max().getAsInt();
 
+- 数组复制
+
+  ```java
+  System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
+  ```
+
+- 
+
 # 未完成
 
 ## [493. 翻转对](https://leetcode-cn.com/problems/reverse-pairs/)
@@ -7037,5 +7093,7 @@ public int gcd(int x, int y) {
 
 ## [135. 分发糖果](https://leetcode-cn.com/problems/candy/)
 
-## [803. 打砖块](https://leetcode-cn.com/problems/bricks-falling-when-hit/)
+## 803. 打砖块
+
+## [1489. 找到最小生成树里的关键边和伪关键边](https://leetcode-cn.com/problems/bricks-falling-when-hit/)
 
