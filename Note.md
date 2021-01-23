@@ -6628,6 +6628,104 @@ class Solution {
 }
 ```
 
+## [1319. 连通网络的操作次数](https://leetcode-cn.com/problems/number-of-operations-to-make-network-connected/)
+
+> 并查集
+
+```java
+class Solution {
+    public int makeConnected(int n, int[][] connections) {
+      	if (connections.length < n - 1)
+            return -1;
+        UnionFind uf = new UnionFind(n);
+        int res = 0;
+        int freeLine = 0;
+        for (int[] connect: connections) {
+            if (uf.isConnected(connect[0], connect[1])) { // 已经连接
+                freeLine++;
+            }
+            uf.union(connect[0], connect[1]);
+        }
+        for (int i = 0; i < n; ++i) {
+            if (uf.find(i) != 0) {
+                if (freeLine > 0) {
+                    freeLine--;
+                    uf.union(i, 0);
+                    res++;
+                } else
+                    return -1;
+            }
+        }
+        return res;
+    }
+
+    private class UnionFind {
+        private int[] parents;
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+        }
+
+        public int find(int x) {
+            if (parents[x] != x) {
+                parents[x] = find(parents[x]);
+            }
+            return parents[x];
+        }
+
+        public boolean isConnected(int a, int b) {
+            return find(a) == find(b);
+        }
+
+        public void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pb != pa) {
+                if (pa > pb)
+                    parents[pa] = pb;
+                else
+                    parents[pb] = pa;
+            }
+        }
+    }
+}
+```
+
+## [1689. 十-二进制数的最少数目](https://leetcode-cn.com/problems/partitioning-into-minimum-number-of-deci-binary-numbers/)
+
+> 数组
+
+直接求
+
+```java
+class Solution {
+    public int minPartitions(String n) {
+        int res = 0;
+        for (char c: n.toCharArray()) {
+            int tmp = c - '0';
+            if (tmp > res)
+                res = tmp;
+        }
+        return res;
+    }
+}
+```
+
+排序后取最大
+
+```java
+class Solution {
+    public int minPartitions(String n) {
+        char[] nc = n.toCharArray();
+        Arrays.sort(nc);
+        return nc[nc.length - 1] - '0';
+    }
+}
+```
+
 
 
 # Java算法模板
