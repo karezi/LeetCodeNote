@@ -6726,6 +6726,31 @@ class Solution {
 }
 ```
 
+## [674. 最长连续递增序列](https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence/)
+
+> 数组
+
+```java
+class Solution {
+    public int findLengthOfLCIS(int[] nums) {
+        int res = 0, n = nums.length;
+        if (n <= 1)
+            return n;
+        int tmp = 1;
+        for (int i = 1; i < n; ++i) {
+            if (nums[i] > nums[i - 1]) {
+                tmp++;
+            } else {
+                res = Math.max(res, tmp);
+                tmp = 1;
+            }
+        }
+        res = Math.max(res, tmp);
+        return res;
+    }
+}
+```
+
 
 
 # Java算法模板
