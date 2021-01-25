@@ -6751,6 +6751,86 @@ class Solution {
 }
 ```
 
+## [959. 由斜杠划分区域](https://leetcode-cn.com/problems/regions-cut-by-slashes/)
+
+> 并查集
+
+```java
+class Solution {
+    // 顺时针：上面0-右边1-下面2-左边3
+    public int regionsBySlashes(String[] grid) {
+        int n = grid.length;
+        int N = n * n * 4;
+        UnionFind uf = new UnionFind(N);
+        for (int i = 0; i < n; ++i) { // 纵坐标
+            char[] row = grid[i].toCharArray();
+            for (int j = 0; j < n; ++j) { // 横坐标
+                int index = (i * n + j) * 4; // 0号坐标
+                char c = row[j];
+                if (c == '/') { // 合并0、3和1、2
+                    uf.union(index, index + 3);
+                    uf.union(index + 1, index + 2);
+                } else if (c == '\\') { // 合并0、1和2、3
+                    uf.union(index, index + 1);
+                    uf.union(index + 2, index + 3);
+                } else { // 合并0、1、2、3
+                    uf.union(index, index + 1);
+                    uf.union(index + 1, index + 2);
+                    uf.union(index + 2, index + 3);
+                }
+                // 向下试探
+                if (i < n - 1) {
+                    int downIndex = ((i + 1) * n + j) * 4;
+                    uf.union(index + 2, downIndex);
+                }
+                // 向右试探
+                if (j < n - 1) {
+                    int rightIndex = (i * n + j + 1) * 4 + 3;
+                    uf.union(index + 1, rightIndex);
+                }
+            }
+        }
+        return uf.getCount();
+    }
+
+    private class UnionFind {
+        private int[] parents;
+        private int count;
+
+        public int getCount() {
+            return this.count;
+        }
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+            count = n;
+        }
+
+        public void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa > pb) {
+                parents[pa] = pb;
+                count--;
+            } else if (pa < pb) {
+                parents[pb] = pa;
+                count--;
+            }
+        }
+
+        public int find(int x) {
+            if (parents[x] != x) {
+                parents[x] = find(parents[x]);
+            }
+            return parents[x];
+        }
+    }
+}
+```
+
 
 
 # Java算法模板
