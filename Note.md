@@ -6831,6 +6831,209 @@ class Solution {
 }
 ```
 
+## [1128. 等价多米诺骨牌对的数量](https://leetcode-cn.com/problems/number-of-equivalent-domino-pairs/)
+
+> 数组
+
+```java
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        int count = 0;
+        int[] num = new int[100];
+        for (int[] d: dominoes) {
+            int index = d[0] < d[1] ? d[0] * 10 + d[1] : d[1] * 10 + d[0];
+            count += num[index];
+            num[index]++;
+        }
+        return count;
+    }
+}
+```
+
+## [1579. 保证图可完全遍历](https://leetcode-cn.com/problems/remove-max-number-of-edges-to-keep-graph-fully-traversable/)
+
+> 并查集
+
+```java
+class Solution {
+    public int maxNumEdgesToRemove(int n, int[][] edges) {
+        UnionFind uf = new UnionFind(n + 1);
+        List<int[]> aList = new ArrayList<>();
+        List<int[]> bList = new ArrayList<>();
+        List<int[]> cList = new ArrayList<>();
+        for (int[] edge: edges) {
+            switch(edge[0]) {
+                case 1:
+                    aList.add(edge);
+                    break;
+                case 2:
+                    bList.add(edge);
+                    break;
+                default:
+                    cList.add(edge);
+            }
+        }
+        // 优先加入公共边
+        for (int[] edge: cList) {
+            int curCount = uf.union(edge[1], edge[2]);
+            if (curCount == 1) { // 通过公共边已经可以完全遍历
+                return edges.length - uf.getUnionCount() + uf.getDelCount();
+            }
+        }
+        int cDelCount = cList.size() - uf.getUnionCount() + uf.getDelCount();
+        int aDelCount = getDelInfo(uf, aList);
+        if (aDelCount == -1)
+            return -1;
+        int bDelCount = getDelInfo(uf, bList);
+        if (bDelCount == -1)
+            return -1;
+        return cDelCount + aDelCount + bDelCount;
+    }
+
+    private int getDelInfo(UnionFind uf, List<int[]> list) {
+        UnionFind ufx = uf.copyuf();
+        for (int[] edge: list) {
+            int curCount = ufx.union(edge[1], edge[2]);
+            if (curCount == 1) { // 通过x边已经可以完全遍历x点
+                return list.size() - ufx.getUnionCount() + ufx.getDelCount();
+            }
+        }
+        return -1;
+    }
+
+    private class UnionFind {
+        private int[] parents;
+        private int count; // 连通分量
+        private int unionCount; // 合并次数
+        private int delCount; // 删除的边数
+
+        public int getUnionCount() {
+            return this.unionCount;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public void setUnionCount(int unionCount) {
+            this.unionCount = unionCount;
+        }
+
+        public int getDelCount() {
+            return this.delCount;
+        }
+
+        public void setDelCount(int delCount) {
+            this.delCount = delCount;
+        }
+
+        public void setParents(int[] parents) {
+            this.parents = Arrays.copyOf(parents, parents.length);
+        }
+
+        public UnionFind copyuf() {
+            UnionFind uf = new UnionFind(this.parents.length);
+            uf.setCount(this.count);
+            uf.setParents(this.parents);
+            uf.setDelCount(0);
+            uf.setUnionCount(0);
+            return uf;
+        }
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 1; i < n; ++i) {
+                parents[i] = i;
+            }
+            count = n - 1;
+        }
+
+        public int union(int a, int b) {
+            this.unionCount++;
+            int pa = find(a);
+            int pb = find(b);
+            if (pa > pb) {
+                parents[pa] = pb;
+                count--;
+            } else if (pa < pb) {
+                parents[pb] = pa;
+                count--;
+            } else {
+                delCount++;
+            }
+            return this.count;
+        }
+
+        public int find(int x) {
+            if (parents[x] != x) {
+                parents[x] = find(parents[x]);
+            }
+            return parents[x];
+        }
+    }
+}
+```
+
+## [724. 寻找数组的中心索引](https://leetcode-cn.com/problems/find-pivot-index/)
+
+> 数组，前缀和
+
+左右前缀和比较
+
+```java
+class Solution {
+    public int pivotIndex(int[] nums) {
+        int len = nums.length;
+        int[] lSums = new int[len + 2];
+        lSums[0] = 0;
+        lSums[len + 1] = 0;
+        int[] rSums = new int[len + 2];
+        rSums[0] = 0;
+        rSums[len + 1] = 0;
+        int tmp = 0;
+        for (int i = 0; i < len; ++i) {
+            tmp += nums[i];
+            lSums[i + 1] = tmp;
+        }
+        tmp = 0;
+        for (int j = len - 1; j > 0; --j) {
+            tmp += nums[j];
+            rSums[j + 1] = tmp;
+        }
+        if (len == 0) {
+            return -1;
+        }
+        for (int i = 2; i < rSums.length; ++i) {
+            if (rSums[i] == lSums[i - 2]) {
+                return i - 2;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+巧用和
+
+```java
+class Solution {
+    public int pivotIndex(int[] nums) {
+        // int total = Arrays.stream(nums).sum(); // 可以但没必要，效率低
+        int total = 0;
+        for (int i: nums) {
+            total += i;
+        }
+        int sum = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (sum * 2 + nums[i] == total)
+                return i;
+            sum += nums[i];
+        }
+        return -1;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -7286,7 +7489,7 @@ public int gcd(int x, int y) {
   System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
   ```
 
-- 
+- 数组求和：int total = Arrays.stream(nums).sum();  // 效率偏低
 
 # 未完成
 
