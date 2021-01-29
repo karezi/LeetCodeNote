@@ -7034,6 +7034,222 @@ class Solution {
 }
 ```
 
+## [1631. 最小体力消耗路径](https://leetcode-cn.com/problems/path-with-minimum-effort/)
+
+> 并查集，二分，DFS，BFS
+
+直接DFS搜索，会超时，不保证正确
+
+```java
+class Solution {
+    private int tmp_max = Integer.MAX_VALUE;
+
+    public int minimumEffortPath(int[][] heights) {
+        int rows = heights.length;
+        int columns = heights[0].length;
+        int[][] visited = new int[rows][columns];
+        return dfs(0, 0, rows, columns, visited, heights, 0, heights[0][0]);
+    }
+
+    private int dfs(int i, int j, int rows, int columns, int[][] visited, int[][] heights, int max, int last) {
+        if (i == rows - 1 && j == columns - 1) { // 走到终点，在公共变量对比记录下最好成绩，并返回自身成绩
+            int m = Math.max(max, Math.abs(last - heights[i][j]));
+            tmp_max = Math.min(tmp_max, m);
+            return m;
+        }
+        if (i >= rows || j >= columns || i < 0 || j < 0 || visited[i][j] == 1) { // 走到不符合条件的点
+            return -1; // 表示绝路
+        }
+        int cur = Math.abs(last - heights[i][j]); // 当前差值
+        if (cur >= tmp_max) // 已经不比当前最好成绩好了就不用往下比了
+            return -1;
+        max = Math.max(max, cur);
+        int[] res = new int[4];
+        visited[i][j] = 1; // 标记已访问
+        res[0] = dfs(i + 1, j, rows, columns, visited, heights, max, heights[i][j]);
+        res[1] = dfs(i, j + 1, rows, columns, visited, heights, max, heights[i][j]);
+        res[2] = dfs(i - 1, j, rows, columns, visited, heights, max, heights[i][j]);
+        res[3] = dfs(i, j - 1, rows, columns, visited, heights, max, heights[i][j]);
+        int min = -1; // 默认走不通
+        for (int r: res) {
+            if (r != -1) { // 有能走通的更新走通的最小值
+                if (min == -1)
+                    min = r;
+                else
+                    min = Math.min(min, r);
+            }
+        }
+        visited[i][j] = 0; // 处理完了，标记未访问
+        return min;
+    }
+}
+```
+
+并查集
+
+```java
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        // 并查集：思路是权值从小到大加入并查集，如果0和len能联通，则返回最小的值
+        int rows = heights.length;
+        int columns = heights[0].length;
+        int len = rows * columns;
+        List<int[]> list = new ArrayList<>();
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < columns; ++j) {
+                int curIndex = i * columns + j;
+                if (j + 1 < columns) {
+                    int rightIndex = i * columns + j + 1;
+                    list.add(new int[]{curIndex, rightIndex, Math.abs(heights[i][j] - heights[i][j + 1])});
+                }
+                if (i + 1 < rows) {
+                    int bottomIndex = (i + 1) * columns + j;
+                    list.add(new int[]{curIndex, bottomIndex, Math.abs(heights[i][j] - heights[i + 1][j])});
+                }
+            }
+        }
+        Collections.sort(list, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return a[2] - b[2];
+            }
+        });
+        UnionFind uf = new UnionFind(len);
+        for (int[] item: list) {
+            uf.union(item[0], item[1]);
+            if (uf.isConnected(0, len - 1))
+                return item[2];
+        }
+        return 0;
+    }
+
+    private class UnionFind {
+        private int[] parents;
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+        }
+
+        public void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa > pb) {
+                parents[pb] = pa;
+            } else if (pb > pa) {
+                parents[pa] = pb;
+            }
+        }
+
+        public int find(int x) {
+            return parents[x] == x ? x : (parents[x] = find(parents[x]));
+        }
+
+        public boolean isConnected(int a, int b) {
+            return find(a) == find(b);
+        }
+    }
+}
+```
+
+二分+BFS
+
+```java
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        // 二分搜索，0~999999
+        int l = 0, r = 999999;
+        int rows = heights.length;
+        int columns = heights[0].length;
+        int res = 0;
+        while (l <= r) {
+            int mid = (l + r) / 2;
+            boolean[][] visited = new boolean[rows][columns];
+            visited[0][0] = true;
+            Queue<int[]> q = new LinkedList<>();
+            q.offer(new int[]{0, 0}); // 加入左上第一个坐标和值
+            while (!q.isEmpty()) {
+                int[] item = q.poll();
+                int x = item[0], y = item[1];
+                int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // 上下左右
+                for (int i = 0; i < 4; ++i) {
+                    int nx = dirs[i][0] + x;
+                    int ny = dirs[i][1] + y;
+                    if (nx < rows && ny < columns && nx >= 0 && ny >= 0 && !visited[nx][ny]) {
+                        int delta = Math.abs(heights[x][y] - heights[nx][ny]);
+                        if (delta <= mid) {
+                            q.offer(new int[]{nx, ny});
+                            visited[nx][ny] = true;
+                        }
+                    }
+                }
+            }
+            if (visited[rows - 1][columns - 1]) {
+                res = mid;
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return res;
+    }
+}
+```
+
+Dijkstra（效率最高）
+
+```java
+class Solution {
+    public int minimumEffortPath(int[][] heights) {
+        // Dijkstra算法
+        int rows = heights.length;
+        int columns = heights[0].length;
+        int n = rows * columns;
+        int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        // 初始化访问数组
+        boolean[] visited = new boolean[n];
+        // 初始化距离数组
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[0] = 0;
+        // 初始化OPEN优先队列
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>(new Comparator<int[]>() {
+            public int compare(int[] e1, int[] e2) {
+                return e1[2] - e2[2];
+            }
+        });
+        pq.offer(new int[]{0, 0, 0}); // 坐标(0,0)距离为0
+        // Dijkstra
+        while (!pq.isEmpty()) {
+            int[] item = pq.poll(); // 距离小的优先
+            int x = item[0], y = item[1], odist = item[2];
+            int id = x * columns + y;
+            if (visited[id])
+                continue;
+            if (x == rows - 1 && y == columns - 1)
+                break;
+            visited[id] = true;
+            for (int i = 0; i < 4; ++i) {
+                int nx = dirs[i][0] + x;
+                int ny = dirs[i][1] + y;
+                int nid = nx * columns + ny;
+                if (nx >=0 && ny >=0 && nx < rows && ny < columns) {
+                    int cost = Math.abs(heights[nx][ny] - heights[x][y]); // 差值(cost)计算
+                    int ndist = Math.max(odist, cost); // g(new)=g(old)[+]cost
+                    if (ndist < dist[nid]) { // g(new)<new的原本dist
+                        dist[nid] = ndist; // 更新dist
+                        pq.offer(new int[]{nx, ny, ndist});
+                    }  
+                }
+            }
+        }
+        return dist[n - 1];
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -7430,6 +7646,30 @@ public int gcd(int x, int y) {
 ```
 
 ## 最小公倍数lcm
+
+## A*算法
+
+参考https://zhuanlan.zhihu.com/p/108344917
+
+```java
+* 初始化open_set和close_set；
+* 将起点加入open_set中，并设置优先级为0（优先级最高）；
+* 如果open_set不为空，则从open_set中选取优先级最高的节点n：
+    * 如果节点n为终点，则：
+        * 从终点开始逐步追踪parent节点，一直达到起点；
+        * 返回找到的结果路径，算法结束；
+    * 如果节点n不是终点，则：
+        * 将节点n从open_set中删除，并加入close_set中；
+        * 遍历节点n所有的邻近节点：
+            * 如果邻近节点m在close_set中，则：
+                * 跳过，选取下一个邻近节点
+            * 如果邻近节点m在open_set中，则：
+                * 判断节点n到节点m的 F(n) + cost[n,m] 值是否 < 节点m的 F(m) 。来尝试更新该点，重新设置f值和父节点等数据
+            * 如果邻近节点m也不在open_set中，则：
+                * 设置节点m的parent为节点n
+                * 计算节点m的优先级
+                * 将节点m加入open_set中
+```
 
 
 
