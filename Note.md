@@ -7250,7 +7250,77 @@ class Solution {
 }
 ```
 
+## [778. 水位上升的泳池中游泳](https://leetcode-cn.com/problems/swim-in-rising-water/)
 
+> 并查集，二分，BFS，DFS
+
+并查集
+
+```java
+class Solution {
+    public int swimInWater(int[][] grid) {
+        int res = 0;
+        int N = grid.length;
+        int n = N * N;
+        UnionFind uf = new UnionFind(n);
+        int min = 0;
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < N; ++j) {
+                if (grid[i][j] < min)
+                    min = grid[i][j];
+            }
+        }
+        while (true) {
+            int curHeight = min + res;
+            for (int i = 0; i < N; ++i) {
+                for (int j = 0; j < N; ++j) {
+                    if (i - 1 >= 0 && curHeight >= grid[i - 1][j] &&  curHeight >= grid[i][j]) {
+                        uf.union((i - 1) * N + j, i * N + j);
+                    }
+                    if (j - 1 >= 0 && curHeight >= grid[i][j - 1] &&  curHeight >= grid[i][j]) {
+                        uf.union(i * N + j - 1, i * N + j);
+                    }
+                    if (uf.isConnectedZero(n - 1)) {
+                        return res;
+                    }
+                }
+            }
+            res++;
+        }
+    }
+
+    private class UnionFind {
+        private int[] parents;
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+        }
+
+        private int find(int x) {
+            return parents[x] == x ? x : (parents[x] = find(parents[x]));
+        }
+
+        private void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa > pb) {
+                parents[pa] = pb;
+            } else if (pa < pb) {
+                parents[pb] = pa;
+            }
+        }
+
+        private boolean isConnectedZero(int a) {
+            return find(a) == 0;
+        }
+    }
+}
+```
+
+TODO：更简单的并查集思路、二分+DFS/BFS、Dijkstra
 
 # Java算法模板
 
