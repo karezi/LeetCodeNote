@@ -7322,6 +7322,78 @@ class Solution {
 
 TODO：更简单的并查集思路、二分+DFS/BFS、Dijkstra
 
+## [839. 相似字符串组](https://leetcode-cn.com/problems/similar-string-groups/)
+
+> 并查集
+
+```java
+class Solution {
+    public int numSimilarGroups(String[] strs) {
+        int n = strs.length;
+        UnionFind uf = new UnionFind(n);
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (!uf.isConnected(i, j) && isSimilar(strs[i], strs[j])) {
+                    uf.union(i, j);
+                }
+            }
+        }
+        return uf.getRegion();
+    }
+
+    private boolean isSimilar(String s1, String s2) {
+        int count = 0;
+        for (int i = 0; i < s1.length(); ++i) {
+            if (s1.charAt(i) != s2.charAt(i)) {
+                count++;
+                if (count > 2)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private class UnionFind {
+        private int[] parents;
+        private int region;
+
+        public int getRegion() {
+            return this.region;
+        }
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+            region = n;
+        }
+
+        private void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa < pb) {
+                parents[pb] = pa;
+                region--;
+            } else if (pa > pb) {
+                parents[pa] = pb;
+                region--;
+            }
+        }
+
+        private int find(int x) {
+            return parents[x] == x ? x : (parents[x] = find(parents[x]));
+        }
+
+        private boolean isConnected(int a, int b) {
+            return find(a) == find(b);
+        }
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
