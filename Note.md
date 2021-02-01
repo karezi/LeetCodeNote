@@ -7392,6 +7392,35 @@ class Solution {
 }
 ```
 
+## [888. 公平的糖果棒交换](https://leetcode-cn.com/problems/fair-candy-swap/)
+
+> 数组
+
+```java
+class Solution {
+    public int[] fairCandySwap(int[] A, int[] B) {
+        boolean[] a = new boolean[100001];
+        boolean[] b = new boolean[100001];
+        int countA = 0, countB = 0;
+        for (int i = 0; i < A.length; ++i) {
+            countA += A[i];
+            a[A[i]] = true;
+        }
+        for (int i = 0; i < B.length; ++i) {
+            countB += B[i];
+            b[B[i]] = true;
+        }
+        int delta = (countA - countB) / 2;
+        for (int i = 0; i < 100001; ++i) {
+            if (i + delta < 100001 && i + delta > 0 && a[i + delta] && b[i]) {
+                return new int[]{i + delta, i};
+            }
+        }
+        return new int[0];
+    }
+}
+```
+
 
 
 # Java算法模板
