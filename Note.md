@@ -7421,6 +7421,129 @@ class Solution {
 }
 ```
 
+## [424. 替换后的最长重复字符](https://leetcode-cn.com/problems/longest-repeating-character-replacement/)
+
+> 双指针，滑动数组
+
+TODO：非传统意义滑动数组，有技巧
+
+```java
+class Solution {
+    public int characterReplacement(String s, int k) {
+        int[] nums = new int[26]; // 频数数组
+        int maxn = 0; // 历史最大值
+        char[] arr = s.toCharArray();
+        int n = s.length();
+        int left = 0, right = 0;
+        while (right < n) {
+            int tmp = ++nums[arr[right] - 'A']; // 更新纳入数组元素的频数
+            maxn = Math.max(maxn, tmp); // 更新历史最大值
+            if (right - left + 1 - maxn > k) { // 非重复元素大于k时同步右移左右指针
+                --nums[arr[left] - 'A'];
+                left++;
+            }
+            right++;
+        }
+        return right - left;
+    }
+}
+```
+
+## [295. 数据流的中位数](https://leetcode-cn.com/problems/find-median-from-data-stream/)
+
+> 堆，设计
+
+```java
+class MedianFinder {
+    private Queue<Integer> small;
+    private Queue<Integer> big;
+
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        small = new PriorityQueue<>(Collections.reverseOrder()); // 大顶堆
+        big = new PriorityQueue<>(); // 小顶堆
+    }
+    
+    public void addNum(int num) {
+        // 左右相等 >2，移左填右；其他情况，填左
+        // 左大右小 <1，移右填左；其他情况，填右
+        if (small.isEmpty()) { // 初始化
+            small.offer(num);
+            return;
+        }
+        if (small.size() == big.size()) {
+            if (num > big.peek()) {
+                small.offer(big.poll());
+                big.offer(num);
+            } else {
+                small.offer(num);
+            }
+        } else if (small.size() > big.size()) {
+            if (num < small.peek()) {
+                big.offer(small.poll());
+                small.offer(num);
+            } else {
+                big.offer(num);
+            }
+        }
+    }
+    
+    public double findMedian() {
+        if (small.size() == big.size())
+            return (small.peek() + big.peek()) / 2.0;
+        else
+            return small.peek();
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+```
+
+简单写法，效率偏低
+
+```java
+class MedianFinder {
+    private Queue<Integer> small;
+    private Queue<Integer> big;
+    private int count;
+
+    /** initialize your data structure here. */
+    public MedianFinder() {
+        small = new PriorityQueue<>(Collections.reverseOrder()); // 大顶堆
+        big = new PriorityQueue<>(); // 小顶堆
+        count = 0;
+    }
+    
+    public void addNum(int num) {
+        count++;
+        small.offer(num);
+        big.offer(small.poll());
+        if ((count & 1) == 1) {
+            small.offer(big.poll());
+        }
+    }
+    
+    public double findMedian() {
+        if ((count & 1) == 0)
+            return (small.peek() + big.peek()) / 2.0;
+        else
+            return small.peek();
+    }
+}
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder obj = new MedianFinder();
+ * obj.addNum(num);
+ * double param_2 = obj.findMedian();
+ */
+```
+
 
 
 # Java算法模板
@@ -7902,6 +8025,8 @@ public int gcd(int x, int y) {
 
 - 数组求和：int total = Arrays.stream(nums).sum();  // 效率偏低
 
+- 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
+
 # 未完成
 
 ## [493. 翻转对](https://leetcode-cn.com/problems/reverse-pairs/)
@@ -7913,4 +8038,6 @@ public int gcd(int x, int y) {
 ## 803. 打砖块
 
 ## [1489. 找到最小生成树里的关键边和伪关键边](https://leetcode-cn.com/problems/bricks-falling-when-hit/)
+
+## [480. 滑动窗口中位数](https://leetcode-cn.com/problems/sliding-window-median/)【重点看看】
 
