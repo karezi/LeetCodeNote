@@ -7544,6 +7544,87 @@ class MedianFinder {
  */
 ```
 
+## [643. 子数组最大平均数 I](https://leetcode-cn.com/problems/maximum-average-subarray-i/)
+
+> 数组，滑动窗口
+
+执行用时：2 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：42.6 MB, 在所有 Java 提交中击败了74.54%的用户
+
+```java
+class Solution {
+    public double findMaxAverage(int[] nums, int k) {
+        int sum = 0, n = nums.length;
+        for (int i = 0; i < k; ++i) {
+            sum += nums[i];
+        }
+        int tmp = sum;
+        for (int i = k; i < n; ++i) {
+            tmp -= nums[i - k] - nums[i];
+            if (tmp > sum)
+                sum = tmp;
+        }
+        return (double)sum / k;
+    }
+}
+```
+
+## [1208. 尽可能使字符串相等](https://leetcode-cn.com/problems/get-equal-substrings-within-budget/)
+
+> 数组，滑动窗口
+
+前缀和+二分查找（单调增序列）
+
+```java
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int n = s.length(), maxLen = 0;
+        int[] diff = new int[n + 1];
+        for (int i = 0; i < n; ++i) {
+            diff[i + 1] = diff[i] + Math.abs(s.charAt(i) - t.charAt(i));
+        }
+        for (int i = 1; i <= n; ++i) {
+            int start = bs(diff, 0, i, diff[i] - maxCost);
+            maxLen = Math.max(maxLen, i - start);
+        }
+        return maxLen;
+    }
+
+    private int bs(int[] arr, int l, int r, int target) {
+        while (l < r) {
+            int mid = (r - l) / 2 + l;
+            if (arr[mid] < target) {
+                l = mid + 1;
+            } else  {
+                r = mid;
+            }
+        }
+        return l;
+    }
+}
+```
+
+双指针
+
+```java
+class Solution {
+    public int equalSubstring(String s, String t, int maxCost) {
+        int l = 0, r = 0, curMaxCost = 0, maxLen = 0, n = s.length();
+        while (r < n) {
+            curMaxCost += Math.abs(s.charAt(r) - t.charAt(r));
+            while(curMaxCost > maxCost) {
+                curMaxCost -= Math.abs(s.charAt(l) - t.charAt(l));
+                l++;
+            }
+            maxLen = Math.max(maxLen, r - l + 1);
+            r++;
+        }
+        return maxLen;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -7643,6 +7724,24 @@ public static List<Integer> DFS(TreeNode root) {
 ```
 
 ## 二分查找
+
+简单版
+
+```java
+int bs(int[] arr, int l, int r, int target) { // 找到最靠近target且>=target的index
+    while (l < r) {
+        int mid = (r - l) / 2 + l;
+        if (arr[mid] < target) {
+            l = mid + 1;
+        } else  {
+            r = mid;
+        }
+    }
+    return l;
+}
+```
+
+完整版
 
 ```java
 int findBoundary(int[] nums, int target, int direction) {
@@ -7873,6 +7972,58 @@ public static ArrayList inOrder1(TreeNode root){
 ## 双指针
 
 ### 查找子字符串
+
+## 滑动窗口
+
+求最大窗口大小（for版本）
+
+```java
+int  maxLen = 0; // 窗口最大值
+int sum = 0; // 当前状态
+for(int l = 0, r = 0; r < arr.length; r++) {
+    sum += arr[r]; // 根据加入右指针更新状态
+    if (sum <= maxCost) { // 满足约束
+        maxLen = Math.max(maxLen, r - l + 1); // 更新窗口最大值
+    } else { // 不满足约束
+        sum -= arr[l]; // 根据去除左指针更新状态
+        l++; // 左指针右移
+    }
+}
+return maxLen;
+```
+
+求最大窗口大小（双while版本）
+
+```java
+int l = 0, r = 0, sum = 0, maxLen = 0; // 初始化左右指针，状态值，窗口大小
+while (r < n) { // 右指针不越界
+    sum += arr[r]; // 根据加入右指针更新状态
+    while(sum > maxCost) { // 不符合约束条件
+        sum -= arr[l]; // 根据去除左指针更新状态
+        l++; // 左指针右移
+    }
+    maxLen = Math.max(maxLen, r - l + 1); // 更新窗口最大值
+    r++; // 右指针右移
+}
+return maxLen;
+```
+
+窗口不需要减小
+
+```java
+int l = 0, r = 0, sum = 0;
+for(; r < n; r++) {
+    if(sum + arr[r] > maxCost) { // 不满足约束，左右指针同时移动
+        sum += arr[r] - arr[l]; // 更新状态
+        l++;
+    } else { // 满足约束，右指针移动
+        sum += arr[r]; // 更新状态
+    }
+}
+return r - l;
+```
+
+
 
 ## 动态规划
 
