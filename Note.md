@@ -7625,6 +7625,108 @@ class Solution {
 }
 ```
 
+## [1423. 可获得的最大点数](https://leetcode-cn.com/problems/maximum-points-you-can-obtain-from-cards/)
+
+> 数组，滑动数组
+
+逆向思维，取中间一段滑动
+
+```java
+class Solution {
+    public int maxScore(int[] cardPoints, int k) {
+        // int total = Arrays.stream(cardPoints).sum();
+        int sum = 0, n = cardPoints.length, w = n - k, total = 0;
+        for (int i = 0; i < n; ++i) {
+            total += cardPoints[i];
+            if (i == w - 1)
+                sum = total;
+        }
+        int tmp = sum;
+        for (int i = 0; i < k; ++i) {
+            tmp += cardPoints[i + w] - cardPoints[i];
+            sum = Math.min(sum, tmp);
+        }
+        return total - sum;
+    }
+}
+```
+
+## [771. 宝石与石头](https://leetcode-cn.com/problems/jewels-and-stones/)
+
+> 哈希表
+
+执行用时：1 ms, 在所有 Java 提交中击败了98.11%的用户
+
+内存消耗：36.5 MB, 在所有 Java 提交中击败了97.97%的用户
+
+```java
+class Solution {
+    public int numJewelsInStones(String jewels, String stones) {
+        boolean[] jc = new boolean[58]; // 'A'~'z'有58个元素
+        for (char c: jewels.toCharArray()) {
+            jc[c - 'A'] = true;
+        }
+        int ans = 0;
+        for (char c: stones.toCharArray()) {
+            if (jc[c - 'A'])
+                ans++;
+        }
+        return ans;
+    }
+}
+```
+
+## [1486. 数组异或操作](https://leetcode-cn.com/problems/xor-operation-in-an-array/)
+
+> 位运算，数组
+
+```java
+class Solution {
+    public int xorOperation(int n, int start) {
+        int res = 0;
+        for (int i = 0; i < n; ++i) {
+            res ^= start + 2 * i;
+        }
+        return res;
+    }
+}
+```
+
+## [1470. 重新排列数组](https://leetcode-cn.com/problems/shuffle-the-array/)
+
+> 数组
+
+```java
+class Solution {
+    public int[] shuffle(int[] nums, int n) {
+        int[] res = new int[2 * n];
+        for (int i = 0; i < n; ++i) {
+            res[i * 2] = nums[i];
+            res[i * 2 + 1] = nums[i + n];
+        }
+        return res;
+    }
+}
+```
+
+## [1720. 解码异或后的数组](https://leetcode-cn.com/problems/decode-xored-array/)
+
+> 位运算
+
+```java
+class Solution {
+    public int[] decode(int[] encoded, int first) {
+        int n = encoded.length;
+        int[] res = new int[n + 1];
+        res[0] = first;
+        for (int i = 0; i < n; ++i) {
+            res[i + 1] = res[i] ^ encoded[i];
+        }
+        return res;
+    }
+}
+```
+
 
 
 # Java算法模板
