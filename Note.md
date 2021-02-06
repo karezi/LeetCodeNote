@@ -7727,7 +7727,180 @@ class Solution {
 }
 ```
 
+## [1603. 设计停车系统](https://leetcode-cn.com/problems/design-parking-system/)
 
+> 设计
+
+```java
+class ParkingSystem {
+
+    private int[] capacity;
+
+    public ParkingSystem(int big, int medium, int small) {
+        capacity = new int[]{big, medium, small};
+    }
+    
+    public boolean addCar(int carType) {
+        if (capacity[carType - 1] == 0)
+            return false;
+        capacity[carType - 1]--;
+        return true;
+    }
+}
+```
+
+## [237. 删除链表中的节点](https://leetcode-cn.com/problems/delete-node-in-a-linked-list/)
+
+> 链表
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38 MB, 在所有 Java 提交中击败了18.55%的用户
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}	
+```
+
+## [1313. 解压缩编码列表](https://leetcode-cn.com/problems/decompress-run-length-encoded-list/)
+
+> 数组
+
+```java
+class Solution {
+    public int[] decompressRLElist(int[] nums) {
+        int n = nums.length, total = 0;
+        for (int i = 0; i < n; i += 2) {
+            total += nums[i];
+        }
+        int[] ret = new int[total];
+        int index = 0;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; i += 2) {
+            int freq = nums[i];
+            int val = nums[i + 1];
+            for (int j = 0; j < freq; ++j)
+                ret[index++] = val;
+        }
+        return ret;
+    }
+}
+```
+
+## [1662. 检查两个字符串数组是否相等](https://leetcode-cn.com/problems/check-if-two-string-arrays-are-equivalent/)
+
+> 字符串
+
+StringBuilder拼接
+
+```java
+class Solution {
+    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+        StringBuilder sb1 = new StringBuilder(), sb2 = new StringBuilder();
+        for (String str: word1) {
+            sb1.append(str);
+        }
+        for (String str: word2) {
+            sb2.append(str);
+        }
+        return sb1.toString().equals(sb2.toString());
+    }
+}
+```
+
+join
+
+```java
+class Solution {
+    public boolean arrayStringsAreEqual(String[] word1, String[] word2) {
+        return String.join("", word1).equals(String.join("", word2));
+    }
+}
+```
+
+## [627. 变更性别](https://leetcode-cn.com/problems/swap-salary/)
+
+> SQL
+
+巧用ASCII和【普通版】，使用CHAR()和ASCII()
+
+执行用时：194 ms, 在所有 MySQL 提交中击败了41.85%的用户
+
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+
+```sql
+UPDATE salary SET sex = CHAR(ASCII('m') + ASCII('f') - ASCII(sex));
+```
+
+巧用ASCII和【优化版】，使用CHAR()和ASCII()
+
+执行用时：156 ms, 在所有 MySQL 提交中击败了99.84%的用户
+
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+
+```sql
+UPDATE salary SET sex = CHAR(11 ^ ASCII(sex));
+```
+
+巧用REPLACE()【普通版】
+
+执行用时：206 ms, 在所有 MySQL 提交中击败了29.92%的用户
+
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+
+```sql
+UPDATE salary SET sex = REPLACE("fm", sex, "");
+```
+
+
+巧用REPLACE()【优化版】
+
+执行用时：175 ms, 在所有 MySQL 提交中击败了81.98%的用户
+
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+
+```sql
+UPDATE salary SET sex = REPLACE("fm", sex, "") WHERE sex != "";
+```
+
+
+使用IF()
+
+执行用时：156 ms, 在所有 MySQL 提交中击败了99.84%的用户
+
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+
+```sql
+UPDATE salary SET sex = IF(sex = 'm', 'f', 'm');
+```
+
+
+使用CASE...WHEN
+
+执行用时：192 ms, 在所有 MySQL 提交中击败了44.25%的用户
+
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+
+```sql
+UPDATE salary
+SET
+    sex = CASE sex
+        WHEN 'm' THEN 'f'
+        ELSE 'm'
+    END;
+```
 
 # Java算法模板
 
@@ -8249,7 +8422,9 @@ public int gcd(int x, int y) {
 
 + ArrayList简单构造：Arrays.asList(a,b)
 
-+ ArrayList2int[]：list.stream().mapToInt(e->e).toArray()或list.stream().mapToInt(Integer::valueOf).toArray();
++ List2int[]：list.stream().mapToInt(e->e).toArray()或list.stream().mapToInt(Integer::valueOf).toArray();
+
+	int[]2List: Arrays.asList(arr)或Collections.addAll(arr)，后者支持add()/remove()，前者不支持
 
 + 创建哑节点 `dummyHead`，令 `dummyHead.next = head`。引入哑节点是为了便于在 `head` 节点之前插入节点。
 
@@ -8279,6 +8454,8 @@ public int gcd(int x, int y) {
 - 数组求和：int total = Arrays.stream(nums).sum();  // 效率偏低
 
 - 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
+
+- String[]2String：String.join("", stringArr)
 
 # 未完成
 
