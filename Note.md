@@ -7902,6 +7902,46 @@ SET
     END;
 ```
 
+## [665. 非递减数列](https://leetcode-cn.com/problems/non-decreasing-array/)
+
+> 数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了99.54%的用户
+
+内存消耗：39.5 MB, 在所有 Java 提交中击败了94.30%的用户
+
+```java
+class Solution {
+    public boolean checkPossibility(int[] nums) {
+        int n = nums.length;
+        boolean flag = false;
+        if (n < 3)
+            return true;
+        for (int i = 2; i < n; ++i) {
+            int a = nums[i - 2], b = nums[i - 1], c = nums[i];
+            if (a <= b && b <= c || a == b && b <=c || a <= b && b == c) // 123 继续
+                continue;
+            if (flag)
+                return false;
+            flag = true;
+            if (a < b && b > c && a <= c) // 132 改第二个
+                nums[i - 1] = nums[i - 2];
+            else if (a > b && b < c && a <= c) // 213 改第二个
+                nums[i - 1] = nums[i - 2];
+            else if (a <= b && b > c && a >= c) // 231 改第三个
+                nums[i] = nums[i - 1];
+            else if (a > b && b <= c && a >= c) // 312/311 改第一个
+                nums[i - 2] = nums[i - 1];
+            else if (a > b && b > c) // 321 false
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
