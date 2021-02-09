@@ -7940,6 +7940,139 @@ class Solution {
 }
 ```
 
+## [978. 最长湍流子数组](https://leetcode-cn.com/problems/longest-turbulent-subarray/)
+
+> 数组，滑动数组，动态规划
+
+循环两遍
+
+```java
+class Solution {
+    public int maxTurbulenceSize(int[] arr) {
+        int n = arr.length;
+        if (n == 1)
+            return 1;
+        int maxLen = 1;
+        for (int l = 0, r = 1; r < n; ++r) { // 奇大
+            if ((r & 1) == 0 && arr[r] >= arr[r - 1] || (r & 1) == 1 && arr[r] <= arr[r - 1]) { // 不满足
+                maxLen = Math.max(maxLen, r - l);
+                l = r;
+                continue;
+            }
+            if (r == n - 1) // 最后一个特殊处理
+                maxLen = Math.max(maxLen, r - l + 1);
+        }
+        for (int l = 0, r = 1; r < n; ++r) { // 偶大
+            if ((r & 1) == 0 && arr[r] <= arr[r - 1] || (r & 1) == 1 && arr[r] >= arr[r - 1]) {
+                maxLen = Math.max(maxLen, r - l);
+                l = r;
+                continue;
+            }
+            if (r == n - 1)
+                maxLen = Math.max(maxLen, r - l + 1);
+        }
+        return maxLen;
+    }
+}
+```
+
+循环一遍，比较三者
+
+```java
+class Solution {
+    public int maxTurbulenceSize(int[] arr) {
+        int n = arr.length, ans = 1, l = 0, r = 0;
+        while (r < n - 1) {
+            if (l == r) {
+                if (arr[l] == arr[l + 1]) { // 相等同时右移
+                    l++;
+                }
+                r++;
+            } else {
+                if (arr[r - 1] < arr[r] && arr[r] > arr[r + 1] || arr[r - 1] > arr[r] && arr[r] < arr[r + 1])
+                    r++;
+                else
+                    l = r;
+            }
+            ans = Math.max(ans, r - l + 1);
+        }
+        return ans;
+    }
+}
+```
+
+动态规划
+
+执行用时：4 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：41.4 MB, 在所有 Java 提交中击败了86.69%的用户
+
+```java
+class Solution {
+    public int maxTurbulenceSize(int[] arr) {
+        // 1.DP含义
+        // dp[i][0]表示以arr[i]结尾在增长的最大长度
+        // dp[i][1]表示以arr[i]结尾在降低的最大长度
+        // 2.转移方程
+        // arr[i-1]<arr[i]满足增长:dp[i][0]=dp[i-1][1]+1; dp[i][1]=1
+        // arr[i-1]>arr[i]满足降低:dp[i][0]=1; dp[i][1]=dp[i-1][0]+1
+        // arr[i-1]==arr[i]:dp[i][0]=dp[i][1]=1
+        // 3.初始化
+        // dp[0][0]=dp[0][1]=1
+        // 4.结果
+        // dp[i]最大值
+        int max = 1, dp_i_0 = 1, dp_i_1 = 1, n = arr.length;
+        for (int i = 1; i < n; ++i) {
+            if (arr[i - 1] < arr[i]) {
+                dp_i_0 = dp_i_1 + 1;
+                dp_i_1 = 1;
+                max = Math.max(max, dp_i_0);
+            } else if (arr[i - 1] > arr[i]) {
+                dp_i_1 = dp_i_0 + 1;
+                dp_i_0 = 1;
+                max = Math.max(max, dp_i_1);
+            } else {
+                dp_i_0 = 1;
+                dp_i_1 = 1;
+            }
+        }
+        return max;
+    }
+}
+```
+
+## [992. K 个不同整数的子数组](https://leetcode-cn.com/problems/subarrays-with-k-different-integers/)
+
+> 双指针，滑动数组，频数数组
+
+```java
+class Solution {
+    public int subarraysWithKDistinct(int[] A, int K) {
+        // 恰好为K的个数 = [包含1~K的总数] - [包含1~K-1的总数]
+        return disTotal(A, K) - disTotal(A, K - 1); 
+    }
+
+    private int disTotal(int[] A, int K) {
+        int l = 0, r = 0, n = A.length, ans = 0, count = 0; // count:[l, r)里不同整数的个数
+        int[] freq = new int[n + 1]; // 频数数组
+        while (r < n) {
+            if (freq[A[r]] == 0) // 新数
+                count++;
+            freq[A[r]]++;
+            while (count > K) {
+                freq[A[l]]--;
+                if (freq[A[l]] == 0) // 只剩最后一个了
+                    count--;
+                l++; // 左指针右移
+            }
+            ans += r - l + 1; // [l, r]区间的长度就是对计数的贡献
+            r++; // 右指针右移
+        }
+        return ans;
+    }
+}
+```
+
 
 
 # Java算法模板
