@@ -8091,6 +8091,148 @@ class Solution {
 }
 ```
 
+## [567. 字符串的排列](https://leetcode-cn.com/problems/permutation-in-string/)
+
+> 双指针，滑动窗口
+
+执行用时：5 ms, 在所有 Java 提交中击败了92.74%的用户
+
+内存消耗：38.7 MB, 在所有 Java 提交中击败了35.09%的用户
+
+```java
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        int n1 = s1.length(), n2 = s2.length();
+        if (n1 > n2)
+            return false;
+        int[] freq = new int[26];
+        for (char c: s1.toCharArray()) {
+            freq[c - 'a']++;
+        }
+        int l = 0, r = n1 - 1;
+        int[] tmp = new int[26];
+        for (int i = 0; i < n1; ++i) {
+            tmp[s2.charAt(i) - 'a']++;
+        }
+        while (r < n2) {
+            if (!camp(tmp, freq)) {
+                tmp[s2.charAt(l) - 'a']--;
+                l++;
+                r++;
+                if (r == n2)
+                    return false;
+                tmp[s2.charAt(r) - 'a']++;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean camp(int[] a, int[] b) {
+        for (int i = 0; i < 26; ++i) {
+            if (a[i] != b[i])
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+TODO：可以记录窗口内不相等字符个数来减少比较（camp）次数 or 官方题解方法
+
+## [703. 数据流中的第 K 大元素](https://leetcode-cn.com/problems/kth-largest-element-in-a-stream/)
+
+> 堆，设计
+
+```java
+class KthLargest {
+    private PriorityQueue<Integer> pq;
+    private int k;
+
+    public KthLargest(int k, int[] nums) {
+        this.k = k;
+        pq = new PriorityQueue<>(k); // 构造k长的小顶堆
+        for (int num: nums) {
+            this.add(num);
+        }
+    }
+    
+    public int add(int val) {
+        pq.offer(val);
+        if (pq.size() > this.k)
+            pq.poll();
+        return pq.peek();
+    }
+}
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest obj = new KthLargest(k, nums);
+ * int param_1 = obj.add(val);
+ */
+```
+
+## [119. 杨辉三角 II](https://leetcode-cn.com/problems/pascals-triangle-ii/)
+
+> 数组，递归，递推
+
+递归
+
+```java
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> ret = new ArrayList<>();
+        ret.add(1);
+        if (rowIndex == 0)
+            return ret;
+        else if (rowIndex == 1) {
+            ret.add(1);
+            return ret;
+        }
+        List<Integer> lastRow = getRow(rowIndex - 1);
+        for (int i = 0; i < lastRow.size() - 1; ++i) {
+            ret.add(lastRow.get(i) + lastRow.get(i + 1));
+        }
+        ret.add(1);
+        return ret;
+    }
+}
+```
+
+递推（从后往前加）（TODO）
+
+```java
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> row = new ArrayList<Integer>();
+        row.add(1);
+        for (int i = 1; i <= rowIndex; ++i) {
+            row.add(0);
+            for (int j = i; j > 0; --j) {
+                row.set(j, row.get(j) + row.get(j - 1));
+            }
+        }
+        return row;
+    }
+}
+```
+
+数学（TODO）
+
+```java
+class Solution {
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> row = new ArrayList<Integer>();
+        row.add(1);
+        for (int i = 1; i <= rowIndex; ++i) {
+            row.add((int) ((long) row.get(i - 1) * (rowIndex - i + 1) / i));
+        }
+        return row;
+    }
+}
+```
+
 
 
 # Java算法模板
