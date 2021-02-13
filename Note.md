@@ -8233,6 +8233,30 @@ class Solution {
 }
 ```
 
+## [448. 找到所有数组中消失的数字](https://leetcode-cn.com/problems/find-all-numbers-disappeared-in-an-array/)
+
+> 数组
+
+巧妙利用原数组
+
+```java
+class Solution {
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        int n = nums.length;
+        for (int num: nums) {
+            int index = (num - 1) % n;
+            nums[index] += n;
+        }
+        List<Integer> ret = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] <= n)
+                ret.add(i + 1);
+        }
+        return ret;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -8733,19 +8757,103 @@ public int gcd(int x, int y) {
 - offer/add 添加
 - poll/remove 删除
 - peek/element 查询头部
-- isEmpty 是否为空
-- size 长度
-
-- 最大堆 PriorityQueue<T>((a, b) -> b - a)
-- 最小堆 PriorityQueue<T>()
+- size/isEmpty 容量
 
 ## ArrayList
 
-- 
+- add/addAll 添加
+- remove/removeAll/removeRange/removeIf/clear 删除
+- set/replaceAll 修改
+- get 获取查询
+- contains/containsAll/indexOf/lastIndexOf 存在查询
+- forEach/iterator/listIterator/spliterator 迭代查询
+- size/isEmpty/ensureCapacity/trimToSize 容量
+- clone 浅拷贝
+- subList/retainAll 截取
+- sort 排序
+- toArray/toString 转化
 
 ## HashMap
 
+- put/putAll/putIfAbsent/merge/compute/computeIfAbsent/computeIfPresent 添加
+- remove/clear 删除
+- replace/replaceAll 修改
+- get/getOrDefault 获取查询
+- containsKey/containsValue 存在查询
+- keySet/values/entrySet/forEach 迭代查询
+- size/isEmpty 容量
+- clone 浅拷贝
+
 ## HashSet
+
+- add 添加
+- remove/clear 删除
+- contains 存在查询
+- iterator/spliterator 迭代查询
+- size/isEmpty 容量
+- clone 浅拷贝
+
+# Java数据转化
+
+- `int[]` 转 `List<Integer>`
+
+```java
+List<Integer> list = Arrays.stream(intArr).boxed().collect(Collectors.toList());
+List<Integer> list = IntStream.of(intArr).boxed().collect(Collectors.toList());
+```
+
+- `int[]` 转 `Integer[]`
+
+```java
+Integer[] integerArr = Arrays.stream(intArr).boxed().toArray(Integer[]::new);
+```
+
+- `List<Integer>` 转 `Integer[]`
+
+```java
+Integer[] integerArr = integerList.toArray(new Integer[0]);
+```
+
+- `List<Integer>` 转 `int[]`
+
+```java
+int[] intArr = integerList.stream().mapToInt(Integer::valueOf).toArray();
+int[] intArr = integerList.stream().mapToInt(e->e).toArray();
+```
+
+- `Integer[]` 转 `int[]`
+
+```java
+int[] intArr = Arrays.stream(integerArr).mapToInt(Integer::valueOf).toArray();
+```
+
+- `Integer[]` 转 `List<Integer>`
+
+```java
+// 不支持add()/remove()
+List<Integer> integerList = Arrays.asList(integerArr);
+// 支持add()/remove()
+List<Integer> integerList = new ArrayList<>();
+boolean b = Collections.addAll(integerList, integersArr)
+```
+
+- `String[]` 转 `List<String>`
+
+```java
+List<String> stringList = Arrays.asList(stringArr);
+```
+
+- `List<String>`转`String[]`
+
+```java
+String[] stringArr = stringList.toArray(new String[0]);
+```
+
+- `String[]` 转 `String`
+
+```java
+String.join("", stringArr)
+```
 
 # Java常见技巧
 
@@ -8754,10 +8862,6 @@ public int gcd(int x, int y) {
 + 数组复制：Arrays.copyOfRange(nums, 0, k)
 
 + ArrayList简单构造：Arrays.asList(a,b)
-
-+ List2int[]：list.stream().mapToInt(e->e).toArray()或list.stream().mapToInt(Integer::valueOf).toArray();
-
-	int[]2List: Arrays.asList(arr)或Collections.addAll(arr)，后者支持add()/remove()，前者不支持
 
 + 创建哑节点 `dummyHead`，令 `dummyHead.next = head`。引入哑节点是为了便于在 `head` 节点之前插入节点。
 
@@ -8788,7 +8892,23 @@ public int gcd(int x, int y) {
 
 - 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
 
-- String[]2String：String.join("", stringArr)
+- 打印数组
+
+	```java
+	Object[] arr;
+	for (int i = 0; i < arr.length; i++) { 
+	    System.out.print(arr[i] + ", "); 
+	}
+	
+	for(Object item: arr) 
+	    System.out.println(item + ", ");
+	
+	System.out.println(Arrays.toString(arr));
+	
+	System.out.println(Arrays.asList(arr));
+	
+	Arrays.asList(arr).stream().forEach(item -> System.out.println(item));
+	```
 
 # 未完成
 
