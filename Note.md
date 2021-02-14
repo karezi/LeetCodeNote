@@ -8257,6 +8257,55 @@ class Solution {
 }
 ```
 
+## [765. 情侣牵手](https://leetcode-cn.com/problems/couples-holding-hands/)
+
+> 并查集，图
+
+```java
+class Solution {
+    public int minSwapsCouples(int[] row) {
+        // 情侣对数（最终连通分量）- 初始连通分量 = 最小交换次数
+        int len = row.length; // 座位数
+        int N = len / 2; // 情侣对数
+        UnionFind uf = new UnionFind(N);
+        for (int i = 0; i < len; i += 2) {
+            uf.union(row[i] / 2, row[i + 1] / 2);
+        }
+        return N - uf.getCount();
+    }
+
+    private class UnionFind {
+        private int[] parents;
+        private int count; // 连通分量
+
+        private int getCount() {
+            return this.count;
+        }
+
+        UnionFind(int n) {
+            parents = new int[n];
+            for (int i = 0; i < n; ++i) {
+                parents[i] = i;
+            }
+            this.count = n;
+        }
+
+        private void union(int a, int b) {
+            int pa = find(a);
+            int pb = find(b);
+            if (pa == pb)
+                return;
+            parents[pb] = pa;
+            this.count--;
+        }
+
+        private int find(int x) {
+            return parents[x] == x ? x : (parents[x] = find(parents[x]));
+        }
+    }
+}
+```
+
 
 
 # Java算法模板
