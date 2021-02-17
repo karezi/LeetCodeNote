@@ -8327,7 +8327,48 @@ class Solution {
 }
 ```
 
+## [561. 数组拆分 I](https://leetcode-cn.com/problems/array-partition-i/)
 
+> 数组
+
+```java
+class Solution {
+    public int arrayPairSum(int[] nums) {
+        Arrays.sort(nums);
+        int ans = 0;
+        for (int i = 0; i < nums.length; i += 2) {
+            ans += nums[i];
+        }
+        return ans;
+    }
+}
+```
+
+## [566. 重塑矩阵](https://leetcode-cn.com/problems/reshape-the-matrix/)
+
+> 数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39.5 MB, 在所有 Java 提交中击败了66.92%的用户
+
+```java
+class Solution {
+    public int[][] matrixReshape(int[][] nums, int r, int c) {
+        int ro = nums.length, co = nums[0].length;
+        if (r * c != ro * co)
+            return nums;
+        int[][] ans = new int[r][c];
+        for (int i = 0; i < ro; ++i) {
+            for (int j = 0; j < co; ++j) {
+                int flat = co * i + j;
+                ans[flat / c][flat % c] = nums[i][j];
+            }
+        }
+        return ans;
+    }
+}
+```
 
 # Java算法模板
 
