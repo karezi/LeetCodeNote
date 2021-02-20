@@ -8370,6 +8370,243 @@ class Solution {
 }
 ```
 
+## [995. K 连续位的最小翻转次数](https://leetcode-cn.com/problems/minimum-number-of-k-consecutive-bit-flips/)
+
+> 差分数组，滑动窗口
+
+差分数组（模）
+
+```java
+class Solution {
+    public int minKBitFlips(int[] A, int K) {
+        int n = A.length;
+        int[] diff = new int[n + 1]; // 相邻两个元素翻转次数的差
+        int ans = 0, revCnt = 0;
+        for (int i = 0; i < n; ++i) {
+            revCnt += diff[i]; // 累加和即当前元素的翻转次数
+            if ((A[i] + revCnt) % 2 == 0) { // （当前元素值+翻转次数）是偶数=>当前为0
+                if (i + K > n) { // 可翻转子数组超出限制
+                    return -1;
+                }
+                ++ans; // 实际翻转次数+1
+                ++revCnt; // 当前元素翻转次数+1
+                --diff[i + K]; // 最后一个元素翻转次数-1
+            }
+        }
+        return ans;
+    }
+}
+```
+
+差分数组（异或优化）
+
+```java
+class Solution {
+    public int minKBitFlips(int[] A, int K) {
+        int n = A.length;
+        int[] diff = new int[n + 1];
+        int ans = 0, revCnt = 0;
+        for (int i = 0; i < n; ++i) {
+            revCnt ^= diff[i];
+            if (A[i] == revCnt) { // A[i] ^ revCnt == 0
+                if (i + K > n) {
+                    return -1;
+                }
+                ++ans;
+                revCnt ^= 1;
+                diff[i + K] ^= 1;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+滑动窗口
+
+```java
+class Solution {
+    public int minKBitFlips(int[] A, int K) {
+        int n = A.length;
+        int ans = 0, revCnt = 0;
+        for (int i = 0; i < n; ++i) {
+            if (i >= K && A[i - K] > 1) {
+                revCnt ^= 1;
+                A[i - K] -= 2; // 复原数组元素，若允许修改数组 A，则可以省略
+            }
+            if (A[i] == revCnt) {
+                if (i + K > n) {
+                    return -1;
+                }
+                ++ans;
+                revCnt ^= 1;
+                A[i] += 2;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [1004. 最大连续1的个数 III](https://leetcode-cn.com/problems/max-consecutive-ones-iii/)
+
+> 滑动窗口，前缀和，BS
+
+不会变小的滑动窗口
+
+```java
+class Solution {
+    public int longestOnes(int[] A, int K) {
+        int l = 0, r = 0, n = A.length, count = 0, ans = 0;
+        boolean flag = false;
+        while (r < n) {
+            if (A[r] == 0) // 更新右状态
+                count++;
+            if (count <= K) { // 满足
+                ans = r - l + 1; // 更新结果
+            } else { // 不满足，步进左右
+                if (A[l++] == 0) // 移动左指针，更新左状态
+                    count--;
+            }
+            r++; // 移动右指针
+        }
+        return ans;
+    }
+}
+```
+
+构造前缀和数组 TODO
+
+前缀和+二分（经典）
+
+```java
+class Solution {
+    public int longestOnes(int[] A, int K) {
+        int n = A.length;
+        int[] P = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            P[i] = P[i - 1] + (1 - A[i - 1]);
+        }
+        int ans = 0;
+        for (int right = 0; right < n; ++right) {
+            int left = binarySearch(P, P[right + 1] - K);
+            ans = Math.max(ans, right - left + 1);
+        }
+        return ans;
+    }
+
+    public int binarySearch(int[] P, int target) {
+        int low = 0, high = P.length - 1;
+        while (low < high) {
+            int mid = (high - low) / 2 + low;
+            if (P[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+        return low;
+    }
+}
+```
+
+前缀和+滑动窗口
+
+```java
+class Solution {
+    public int longestOnes(int[] A, int K) {
+        int n = A.length;
+        int left = 0, lsum = 0, rsum = 0;
+        int ans = 0;
+        for (int right = 0; right < n; ++right) {
+            rsum += 1 - A[right];
+            while (lsum < rsum - K) {
+                lsum += 1 - A[left];
+                ++left;
+            }
+            ans = Math.max(ans, right - left + 1);
+        }
+        return ans;
+    }
+}
+```
+
+## [697. 数组的度](https://leetcode-cn.com/problems/degree-of-an-array/)
+
+> 滑动窗口
+
+用两个map
+
+执行用时：25 ms, 在所有 Java 提交中击败了73.47%的用户
+
+内存消耗：42.1 MB, 在所有 Java 提交中击败了61.59%的用户
+
+```java
+class Solution {
+    public int findShortestSubArray(int[] nums) {
+        int max = 0, n = nums.length;
+        Map<Integer, Integer> fMap = new HashMap<>();
+        for (int num: nums) {
+            int fraq = fMap.getOrDefault(num, 0) + 1;
+            fMap.put(num, fraq);
+            max = Math.max(max, fraq);
+        }
+
+        int l = 0, r = 0, minLen = Integer.MAX_VALUE;
+        Map<Integer, Integer> fCurMap = new HashMap<>();
+        while (r < n) {
+            // 当前r对应值频数+1
+            fCurMap.put(nums[r], fCurMap.getOrDefault(nums[r], 0) + 1);
+            if (fCurMap.get(nums[r]) != max) // 右移右指针
+                r++;
+            else {
+                while (fCurMap.get(nums[r]) == max) { // 满足条件，收缩左指针
+                    fCurMap.put(nums[l], fCurMap.get(nums[l]) - 1);
+                    l++;
+                }
+                r++;
+                minLen = Math.min(minLen, r - l + 1);
+            }
+        }
+        return minLen;
+    }
+}
+```
+
+每个数都记录频数和最早出现位置和最晚出现位置，代码更清晰 TODO
+
+```java
+class Solution {
+    public int findShortestSubArray(int[] nums) {
+        Map<Integer, int[]> map = new HashMap<Integer, int[]>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            if (map.containsKey(nums[i])) {
+                map.get(nums[i])[0]++;
+                map.get(nums[i])[2] = i;
+            } else {
+                map.put(nums[i], new int[]{1, i, i});
+            }
+        }
+        int maxNum = 0, minLen = 0;
+        for (Map.Entry<Integer, int[]> entry : map.entrySet()) {
+            int[] arr = entry.getValue();
+            if (maxNum < arr[0]) { // 更新最大值和最小长度
+                maxNum = arr[0];
+                minLen = arr[2] - arr[1] + 1;
+            } else if (maxNum == arr[0]) { // 更新最小长度
+                if (minLen > arr[2] - arr[1] + 1) {
+                    minLen = arr[2] - arr[1] + 1;
+                }
+            }
+        }
+        return minLen;
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
@@ -9020,6 +9257,18 @@ String.join("", stringArr)
 	
 	Arrays.asList(arr).stream().forEach(item -> System.out.println(item));
 	```
+
+- 复杂Map遍历
+
+	```java
+	// 例如Map<Integer, int[]>
+	for (Map.Entry<Integer, int[]> entry : map.entrySet()) {
+	    int[] arr = entry.getValue();
+	    //...
+	}
+	```
+
+	
 
 # 未完成
 
