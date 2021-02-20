@@ -8605,6 +8605,42 @@ class Solution {
 }
 ```
 
+## [682. 棒球比赛](https://leetcode-cn.com/problems/baseball-game/)
+
+> 栈，双端队列
+
+执行用时：3 ms, 在所有 Java 提交中击败了81.80%的用户
+
+内存消耗：37.5 MB, 在所有 Java 提交中击败了88.35%的用户
+
+```java
+class Solution {
+    public int calPoints(String[] ops) {
+        Deque<Integer> nums = new LinkedList<>();
+        for (String op: ops) {
+            if (op.equals("C")) {
+                nums.pollLast();
+            } else if (op.equals("D")) {
+                nums.offer(nums.peekLast() * 2);
+            } else if (op.equals("+")) {
+                int a = nums.pollLast();
+                int b = nums.peekLast();
+                int sum = a + b;
+                nums.offer(a);
+                nums.offer(sum);
+            } else {
+                nums.offer(Integer.valueOf(op));
+            }
+        }
+        int sum = 0;
+        for (Integer i: nums) {
+            sum += i;
+        }
+        return sum;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -9096,9 +9132,26 @@ public int gcd(int x, int y) {
                 * 将节点m加入open_set中
 ```
 
-
-
 # Java常用数据结构
+
+**Queue VS Deque**
+
+| `Queue` Method                                               | Equivalent `Deque` Method                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [`add(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#add(E)) | [`addLast(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#addLast(E)) |
+| [`offer(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#offer(E)) | [`offerLast(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#offerLast(E)) |
+| [`remove()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#remove()) | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
+| [`poll()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#poll()) | [`pollFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pollFirst()) |
+| [`element()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#element()) | [`getFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#getFirst()) |
+| [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek()) | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst()) |
+
+**Stack VS Deque**
+
+| Stack Method                                                 | Equivalent `Deque` Method                                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [`push(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#push(E)) | [`addFirst(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#addFirst(E)) |
+| [`pop()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pop()) | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
+| [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek()) | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst()) |
 
 ## Queue
 
@@ -9106,6 +9159,17 @@ public int gcd(int x, int y) {
 - poll/remove 删除
 - peek/element 查询头部
 - size/isEmpty 容量
+
+## Deque
+
+![image-20210221013330334](https://i.loli.net/2021/02/21/kEis72yF9G3Q8HM.png)
+
+- add/addAll/addFirst/addLast/offer/offerFirst/offerLast/push 添加
+- poll/pollFirst/pollLast/pop/remove/removeFirst/removeLast 删除
+- element/getFirst/getLast/peek/peekFirst/peekLast 获取查询
+- contains 存在查询
+- iterator/descendingIterator 迭代查询
+- size 容量
 
 ## ArrayList
 
@@ -9203,6 +9267,12 @@ String[] stringArr = stringList.toArray(new String[0]);
 String.join("", stringArr)
 ```
 
+- `String`转`Integer`
+
+```java
+Integer i = Integer.valueOf(str)
+```
+
 # Java常见技巧
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
@@ -9268,7 +9338,6 @@ String.join("", stringArr)
 	}
 	```
 
-	
 
 # 未完成
 
