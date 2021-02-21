@@ -8743,7 +8743,208 @@ class Solution {
 }
 ```
 
+## [766. 托普利茨矩阵](https://leetcode-cn.com/problems/toeplitz-matrix/)
 
+> 数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.6 MB, 在所有 Java 提交中击败了59.23%的用户
+
+```java
+class Solution {
+    public boolean isToeplitzMatrix(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                if (matrix[i][j] != matrix[i - 1][j - 1]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
+## [5685. 交替合并字符串](https://leetcode-cn.com/problems/merge-strings-alternately/)
+
+> 字符串
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37 MB, 在所有 Java 提交中击败了100.00%的用户
+
+```java
+class Solution {
+    public String mergeAlternately(String word1, String word2) {
+        StringBuilder sb = new StringBuilder();
+        int len1 = word1.length(), len2 = word2.length();
+        int len = Math.min(len1, len2);
+        int maxLen = Math.max(len1, len2);
+        for (int i = 0; i < len; ++i) {
+            sb.append(word1.charAt(i));
+            sb.append(word2.charAt(i));
+        }
+        for (int i = len; i < maxLen; ++i) {
+            if (len1 > len2) {
+                sb.append(word1.charAt(i));
+            } else {
+                sb.append(word2.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+## [5686. 移动所有球到每个盒子所需的最小操作数](https://leetcode-cn.com/problems/minimum-number-of-operations-to-move-all-balls-to-each-box/)
+
+> 贪心算法，数组
+
+执行用时：3 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39.2 MB, 在所有 Java 提交中击败了100.00%的用户
+
+```java
+class Solution {
+    public int[] minOperations(String boxes) {
+        int n = boxes.length();
+        int[] ans = new int[n];
+        int leftOne = 0, rightOne = 0;
+        for (int i = 0; i < n; ++i) {
+            if (boxes.charAt(i) == '1') {
+                rightOne++;
+                ans[0] += i;
+            }
+        }
+        if (boxes.charAt(0) == '1') {
+            leftOne++;
+            rightOne--;
+        }
+        for (int i = 1; i < n; ++i) {
+            if (boxes.charAt(i) == '1') {
+                rightOne--;
+                leftOne++;
+                ans[i] = ans[i - 1] + (leftOne - 1) - (rightOne + 1);
+            } else {
+                ans[i] = ans[i - 1] + leftOne - rightOne;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [5687. 执行乘法运算的最大分数](https://leetcode-cn.com/problems/maximum-score-from-performing-multiplication-operations/)
+
+> 动态规划
+
+执行用时：60 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：47.6 MB, 在所有 Java 提交中击败了100.00%的用户
+
+```java
+class Solution {
+    public int maximumScore(int[] nums, int[] multipliers) {
+        // 状态定义：dp[i][l][r]表示第i步后的最大分数，l、r表示执行后的左右坐标,r=n-i+l => dp[i][l]
+        // 转移方程：dp[i][l] = max(dp[i-1][l-1]+选左,dp[i-1][l]+选右)
+        // 初始化：dp[0][0~m]=0
+        //        dp[1~m][0~m]=-无穷
+        // 结果：max(dp[m])
+        int n = nums.length, m = multipliers.length;
+        int[][] dp = new int[m + 1][m + 1];
+        for (int i = 0; i < m; ++i)
+            for (int j = 0; j <= m; ++j)
+                dp[i + 1][j] = Integer.MIN_VALUE;
+        for (int i = 1; i <= m; ++i) { // [1,m]表示第1轮到第m轮
+            for (int j = 0; j <= i; ++j) { // 表示处理完之后左边删除了几个
+                int mul = multipliers[i - 1];
+                if (j == i) { // 全选左
+                    dp[i][j] = dp[i - 1][j - 1] + mul * nums[j - 1];
+                } else if (j == 0) { // 全选右
+                    dp[i][j] = dp[i - 1][j] + mul * nums[n - i + j];
+                } else {
+                    int left = dp[i - 1][j - 1] + mul * nums[j - 1];
+                    int right = dp[i - 1][j] + mul * nums[n - i + j];
+                    dp[i][j] = Math.max(left, right);
+                }
+            }
+        }
+        int ans = Integer.MIN_VALUE;
+        for (int i = 1; i <= m; ++i) {
+            ans = Math.max(ans, dp[m][i]);
+        }
+        return ans;
+    }
+}
+```
+
+## [516. 最长回文子序列](https://leetcode-cn.com/problems/longest-palindromic-subsequence/)
+
+> 动态规划，回文，最长子序列
+
+```java
+class Solution {
+    public int longestPalindromeSubseq(String s) {
+        // 定义：dp[i][j]表示从i字符到j字符的回文子序列长度
+        // 转移方程：char(i)==char(j) => dp[i][j]=dp[i+1][j-1]+2;
+        //         char(i)!=char(j) => dp[i][j]=max(dp[i+1][j],dp[i][j-1])
+        // 初始化：dp[i][i]=1
+        // 求：dp[0][n-1]
+        // 注意遍历顺序
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; ++i) {
+            dp[i][i] = 1;
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+}
+```
+
+## [5688. 由子序列构造的最长回文串的长度](https://leetcode-cn.com/problems/maximize-palindrome-length-from-subsequences/)
+
+> 动态规划，回文，最长子序列
+
+```java
+class Solution {
+    public int longestPalindrome(String word1, String word2) {
+        // 定义：dp[i][j]表示从i字符到j字符的回文子序列长度
+        // 转移方程：char(i)==char(j) => dp[i][j]=dp[i+1][j-1]+2;
+        //         char(i)!=char(j) => dp[i][j]=max(dp[i+1][j],dp[i][j-1])
+        // 初始化：dp[i][i]=1
+        // 求：dp[0][n-1]
+        String s = word1 + word2;
+        int n = s.length(), x = word1.length(), ans = 0;
+        int[][] dp = new int[n][n];
+        for (int i = n - 1; i >= 0; --i) {
+            dp[i][i] = 1;
+            for (int j = i + 1; j < n; ++j) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                    // 当i，j满足非空条件时才更新结果
+                    if (i < x && x <= j) {
+                        ans = Math.max(ans, dp[i][j]);
+                    }
+                } else {
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
 
 # Java算法模板
 
