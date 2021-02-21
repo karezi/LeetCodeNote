@@ -8641,6 +8641,108 @@ class Solution {
 }
 ```
 
+## [1438. 绝对差不超过限制的最长连续子数组](https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)
+
+> 滑动窗口，双端队列，单调队列
+
+两个优先队列
+
+执行用时：191 ms, 在所有 Java 提交中击败了20.44%的用户
+
+内存消耗：57 MB, 在所有 Java 提交中击败了40.04%的用户
+
+```java
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        PriorityQueue<Integer> spq = new PriorityQueue<>();
+        PriorityQueue<Integer> bpq = new PriorityQueue<>(Collections.reverseOrder());
+        int l = 0, r = 0, n = nums.length, ans = 0;
+        while (r < n) {
+            // 更新r状态
+            spq.offer(nums[r]);
+            bpq.offer(nums[r]);
+            while (bpq.peek() - spq.peek() > limit) { // 不满足，收缩l
+                spq.remove(nums[l]);
+                bpq.remove(nums[l]);
+                l++;
+            }
+            // 满足，更新
+            ans = Math.max(ans, r - l + 1);
+            r++;
+        }
+        return ans;
+    }
+}
+```
+
+两个双端队列（因为只需要最大值和最小值，所以维护大小两个单调队列即可）
+
+执行用时：33 ms, 在所有 Java 提交中击败了93.43%的用户
+
+内存消耗：47.8 MB, 在所有 Java 提交中击败了78.77%的用户
+
+```java
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        Deque<Integer> minDeque = new ArrayDeque<>(); // 维护最小单调队列，排除出现在中间的较大值，头部最小值
+        Deque<Integer> maxDeque = new ArrayDeque<>(); // 维护最大单调队列，排除出现在中间的较小值，头部最大值
+        int n = nums.length, l = 0, r = 0, ans = 0;
+        while (r < n) {
+            // 用r维护状态
+            while (!minDeque.isEmpty() && nums[r] < minDeque.peekLast())
+                minDeque.pollLast();
+            while (!maxDeque.isEmpty() && nums[r] > maxDeque.peekLast())
+                maxDeque.pollLast();
+            minDeque.offerLast(nums[r]);
+            maxDeque.offerLast(nums[r]);
+            while (maxDeque.peekFirst() - minDeque.peekFirst() > limit) {
+                // 收缩l
+                // minDeque.remove(nums[l]);
+                // maxDeque.remove(nums[l]);
+                // TODO 很妙
+                if (nums[l] == minDeque.peekFirst())
+                    minDeque.pollFirst();
+                if (nums[l] == maxDeque.peekFirst())
+                    maxDeque.pollFirst();
+                l++;
+            }
+            ans = Math.max(ans, r - l + 1);
+            r++;
+        }
+        return ans;
+    }
+}
+```
+
+用平衡树，如TreeMap
+
+执行用时：85 ms, 在所有 Java 提交中击败了32.85%的用户
+
+内存消耗：47.5 MB, 在所有 Java 提交中击败了82.68%的用户
+
+```java
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+        int l = 0, r = 0, n = nums.length, ans = 0;
+        while (r < n) {
+            // 更新r状态
+            map.put(nums[r], map.getOrDefault(nums[r], 0) + 1);
+            while (map.lastKey() - map.firstKey() > limit) { // 不满足，收缩l
+                map.put(nums[l], map.getOrDefault(nums[l], 0) - 1);
+                if (map.get(nums[l]) == 0)
+                    map.remove(nums[l]);
+                l++;
+            }
+            // 满足，更新
+            ans = Math.max(ans, r - l + 1);
+            r++;
+        }
+        return ans;
+    }
+}
+```
+
 
 
 # Java算法模板
@@ -9010,6 +9112,20 @@ return maxLen;
 
 求最大窗口大小（双while版本）
 
+模板
+
+```java
+while(r < n){
+    UPDATE STATE(r)
+    while(WRONG){
+        UPDATE STATE(l)
+        l++
+    }
+    MAXORMIN(ans)
+    r++
+}
+```
+
 ```java
 int l = 0, r = 0, sum = 0, maxLen = 0; // 初始化左右指针，状态值，窗口大小
 while (r < n) { // 右指针不越界
@@ -9020,6 +9136,20 @@ while (r < n) { // 右指针不越界
     }
     maxLen = Math.max(maxLen, r - l + 1); // 更新窗口最大值
     r++; // 右指针右移
+}
+return maxLen;
+```
+
+```java
+int l = 0, r = 0, sum = 0, maxLen = 0; // 初始化左右指针，状态值，窗口大小
+while (r < n) { // 右指针不越界
+    sum += arr[r]; // 根据加入右指针更新状态
+    r++; // 右指针右移
+    while(sum > maxCost) { // 不符合约束条件
+        sum -= arr[l]; // 根据去除左指针更新状态
+        l++; // 左指针右移
+    }
+    maxLen = Math.max(maxLen, r - l); // 更新窗口最大值（注意区别）
 }
 return maxLen;
 ```
@@ -9039,9 +9169,15 @@ for(; r < n; r++) {
 return r - l;
 ```
 
-
-
 ## 动态规划
+
+思考模板
+
+- 状态定义：一维还是二维？
+- 转移方程：有几种状态？状态之间依赖关系？
+- 初始条件
+- 结果表示
+- 是否可以采用优化：滚动数组/滚动变量
 
 ### 状态搜索
 
@@ -9153,14 +9289,14 @@ public int gcd(int x, int y) {
 | [`pop()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pop()) | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
 | [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek()) | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst()) |
 
-## Queue
+## Queue 队列
 
 - offer/add 添加
 - poll/remove 删除
 - peek/element 查询头部
 - size/isEmpty 容量
 
-## Deque
+## Deque 双端队列
 
 ![image-20210221013330334](https://i.loli.net/2021/02/21/kEis72yF9G3Q8HM.png)
 
@@ -9171,7 +9307,17 @@ public int gcd(int x, int y) {
 - iterator/descendingIterator 迭代查询
 - size 容量
 
-## ArrayList
+ArrayDeque 双端队列数组实现（几乎没有容量限制，线程不安全，禁止null）
+
+- 作为队列FIFO：add=addLast, offer=offerLast, remove=removeFirst, poll=pollFirst, element=getFirst, peek=peekFirst
+- 作为堆栈FILO（替代Stack）：push=addFirst, pop=removeFirst, peek=peekFirst
+- clear 删除
+- toArray 转化
+- clone 浅拷贝
+
+LinkedList 双端队列链表实现
+
+## ArrayList 动态数组
 
 - add/addAll 添加
 - remove/removeAll/removeRange/removeIf/clear 删除
@@ -9185,7 +9331,7 @@ public int gcd(int x, int y) {
 - sort 排序
 - toArray/toString 转化
 
-## HashMap
+## HashMap 散列表
 
 - put/putAll/putIfAbsent/merge/compute/computeIfAbsent/computeIfPresent 添加
 - remove/clear 删除
@@ -9196,13 +9342,28 @@ public int gcd(int x, int y) {
 - size/isEmpty 容量
 - clone 浅拷贝
 
-## HashSet
+## HashSet 散列集合
 
 - add 添加
 - remove/clear 删除
 - contains 存在查询
 - iterator/spliterator 迭代查询
 - size/isEmpty 容量
+- clone 浅拷贝
+
+## TreeMap 平衡树（红黑树）
+
+- put/putAll 添加
+- remove/clear 删除
+- replace/replaceAll 修改
+- entrySet/firstEntry/lastEntry/floorEntry/higherEntry/lowerEntry/ceilingEntry/descendingMap/pollFirstEntry/pollLastEntry 获取KV查询
+- keySet/firstKey/lastKey/floorKey/higherKey/lowerKey/ceilingKey/descendingKeySet/navigableKeySet 获取K查询
+- get/values 获取V查询
+- containsKey/containsValue 存在查询
+- forEach 迭代查询
+- headMap/tailMap/subMap 区间查询
+- comparator 获取排序
+- size 容量
 - clone 浅拷贝
 
 # Java数据转化
