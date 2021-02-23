@@ -8946,6 +8946,180 @@ class Solution {
 }
 ```
 
+## [1052. 爱生气的书店老板](https://leetcode-cn.com/problems/grumpy-bookstore-owner/)
+
+> 滑动窗口
+
+```java
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int X) {
+        int n = customers.length;
+        int sum = 0;
+        for (int i = 0; i < n; ++i) { // 原始结果
+            if (grumpy[i] == 0)
+                sum += customers[i];
+        }
+        int change = 0;
+        for (int i = 0; i < X; ++i) {
+            change += grumpy[i] * customers[i];
+        }
+        int maxChange = change;
+        for (int i = X; i < n; ++i) { // 求最大增长量
+            change += grumpy[i] * customers[i] - grumpy[i - X] * customers[i - X];
+            maxChange = Math.max(maxChange, change);
+        }
+        return sum + maxChange;
+    }
+}
+```
+
+## [面试题 02.03. 删除中间节点](https://leetcode-cn.com/problems/delete-middle-node-lcci/)
+
+> 链表
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.6 MB, 在所有 Java 提交中击败了93.45%的用户
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
+    }
+}
+```
+
+## [1684. 统计一致字符串的数目](https://leetcode-cn.com/problems/count-the-number-of-consistent-strings/)
+
+> 字符串，字符数组
+
+```java
+class Solution {
+    public int countConsistentStrings(String allowed, String[] words) {
+        int[] chars = new int[26];
+        for (char c: allowed.toCharArray()) {
+            chars[c - 'a']++;
+        }
+        int count = words.length;
+        for (String word: words) {
+            for (char c: word.toCharArray()) {
+                if (chars[c - 'a'] == 0) {
+                    count--;
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+}
+```
+
+## [1108. IP 地址无效化](https://leetcode-cn.com/problems/defanging-an-ip-address/)
+
+> 字符串
+
+```java
+class Solution {
+    public String defangIPaddr(String address) {
+        StringBuilder sb = new StringBuilder();
+        for (char c: address.toCharArray()) {
+            if (c == '.')
+                sb.append('[').append('.').append(']');
+            else
+                sb.append(c);
+        }
+        return sb.toString();
+    }
+}
+```
+
+## [1732. 找到最高海拔](https://leetcode-cn.com/problems/find-the-highest-altitude/)
+
+> 数组
+
+```java
+class Solution {
+    public int largestAltitude(int[] gain) {
+        int maxHeight = 0;
+        int height = 0;
+        for (int i: gain) {
+            height += i;
+            maxHeight = Math.max(maxHeight, height);
+        }
+        return maxHeight;
+    }
+}
+```
+
+## [1290. 二进制链表转整数](https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/)
+
+> 位运算，链表
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.7 MB, 在所有 Java 提交中击败了89.80%的用户
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int getDecimalValue(ListNode head) {
+        int ans = 0;
+        while (head != null) {
+            ans = ans * 2 + head.val;
+            head = head.next;
+        }
+        return ans;
+    }
+}
+```
+
+## [1688. 比赛中的配对次数](https://leetcode-cn.com/problems/count-of-matches-in-tournament/)
+
+> 递归
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.5 MB, 在所有 Java 提交中击败了9.78%的用户
+
+```java
+class Solution {
+    public int numberOfMatches(int n) {
+        int ans = 0;
+        while (n > 1) {
+            ans += n / 2;
+            n = ((n & 1) == 1) ? ((n - 1) / 2 + 1) : n / 2;
+        }
+        return ans;
+    }
+}
+```
+
+直接求
+
+```java
+class Solution {
+    public int numberOfMatches(int n) {
+        return n - 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
