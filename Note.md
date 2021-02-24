@@ -9120,6 +9120,33 @@ class Solution {
 }
 ```
 
+## [832. 翻转图像](https://leetcode-cn.com/problems/flipping-an-image/)
+
+> 数组
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.5 MB, 在所有 Java 提交中击败了79.36%的用户
+
+```java
+class Solution {
+    public int[][] flipAndInvertImage(int[][] A) {
+        int m = A.length;
+        int n = A[0].length;
+        for (int i = 0; i < m; ++i) {
+            int len = (n & 1) == 1 ? (n / 2 + 1) : n / 2;
+            for (int j = 0; j < len; ++j) {
+                if (A[i][j] == A[i][n - j - 1]) {
+                    A[i][j] ^= 1;
+                    A[i][n - j - 1] = A[i][j];
+                }
+            }
+        }
+        return A;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -9874,6 +9901,7 @@ Integer i = Integer.valueOf(str)
 	}
 	```
 
+- 0和1翻转：n ^= 1
 
 # 未完成
 
