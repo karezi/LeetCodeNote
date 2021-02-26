@@ -9167,6 +9167,64 @@ class Solution {
 }
 ```
 
+## [1178. 猜字谜](https://leetcode-cn.com/problems/number-of-valid-words-for-each-puzzle/)
+
+> 位运算，哈希表
+
+```java
+class Solution {
+    public List<Integer> findNumOfValidWords(String[] words, String[] puzzles) {
+        int wn = words.length, pn = puzzles.length;
+        Map<Integer, Integer> fraq = new HashMap<>(); // key:字符int编码，val:数量
+        for (int i = 0; i < wn; ++i) {
+            int key = 0;
+            for (char c: words[i].toCharArray())
+                key |= (1 << (c - 'a'));
+            if (Integer.bitCount(key) <= 7)
+                fraq.put(key, fraq.getOrDefault(key, 0) + 1);
+        }
+        List<Integer> res = new ArrayList<>();
+        for (String puzzle: puzzles) {
+            int count = 0;
+            // 枚举法1
+            // 枚举1-6的这6个位置的01情况，一共1<<6种选择
+            for (int choice = 0; choice < (1 << 6); ++choice) {
+                int mask = 0;
+                // 检查除了首位外每种情况下哪几位是1
+                for (int i = 0; i < 6; ++i) {
+                    if ((choice & (1 << i)) != 0) {
+                        mask |= (1 << (puzzle.charAt(i + 1) - 'a'));
+                    }
+                }
+                // 首位处理
+                mask |= (1 << (puzzle.charAt(0) - 'a'));
+                if (fraq.containsKey(mask)) {
+                    count+= fraq.get(mask);
+                }
+            }
+            // 枚举法2：通用“枚举二进制子集”
+            // int mask = 0;
+            // for (int i = 1; i < 7; ++i) {
+            //     mask |= (1 << (puzzle.charAt(i) - 'a'));
+            // }
+            // int subset = mask;
+            // do {
+            //     int s = subset | (1 << (puzzle.charAt(0) - 'a'));
+            //     if (fraq.containsKey(s)) {
+            //         count += fraq.get(s);
+            //     }
+            //     subset = (subset - 1) & mask;
+            // } while (subset != mask);
+            
+            res.add(count);
+        }
+        return res;
+    }
+}
+```
+
+TODO 字典树
+
 # Java算法模板
 
 ## BFS
@@ -9485,7 +9543,92 @@ public static ArrayList inOrder1(TreeNode root){
 
 ### 并查集
 
-### 前缀树
+不用计算连通量
+
+```java
+private class UnionFind {
+    private int[] parents;
+
+    UnionFind(int n) {
+        parents = new int[n];
+        for (int i = 0; i < n; ++i) {
+            parents[i] = i;
+        }
+    }
+
+    public int find(int x) {
+        return parents[x] == x ? x : parents[x] = find(parents[x]);
+    }
+
+    public void union(int a, int b) {
+        parents[find(a)] = find(b);
+    }
+}
+```
+
+计算连通量
+
+```java
+private class UnionFind {
+    private int[] parents;
+    private int count;
+
+    UnionFind(int n) {
+        parents = new int[n];
+        for (int i = 0; i < n; ++i) {
+            parents[i] = i;
+        }
+        count = n;
+    }
+
+    public int find(int x) {
+        return parents[x] == x ? x : parents[x] = find(parents[x]);
+    }
+
+    public void union(int a, int b) {
+        int pa = find(a);
+        int pb = find(b);
+        if (pa != pb) {
+            count--;
+        }
+        parents[pa] = pb;
+    }
+}
+```
+
+### Trie树
+
+> 又称字典树、前缀树、单词查找树、键树，多叉哈希树
+>
+> Trie树典型应用是用于快速检索（最长前缀匹配），统计，排序和保存大量的字符串，所以经常被搜索引擎系统用于文本词频统计，搜索提示等场景。它的优点是最大限度地减少无谓的字符串比较，查询效率比较高。
+
+```java
+public void add(TrieNode root, String word) {
+    TrieNode cur = root;
+    for (int i = 0; i < word.length(); ++i) {
+        char ch = word.charAt(i);
+        if (cur.child[ch - 'a'] == null) {
+            cur.child[ch - 'a'] = new TrieNode();
+        }
+        cur = cur.child[ch - 'a'];
+    }
+    ++cur.frequency;
+}
+
+public void find(TrieNode cur) {
+    // 常用树的回溯或者DFS进行搜索
+}
+
+class TrieNode {
+    int frequency; // 频数统计（可选）
+    TrieNode[] child;
+
+    public TrieNode() {
+        frequency = 0;
+        child = new TrieNode[26];
+    }
+}
+```
 
 ## 图
 
@@ -9766,8 +9909,8 @@ LinkedList 双端队列链表实现
 
 ## HashSet 散列集合
 
-- add 添加
-- remove/clear 删除
+- add/addAll 添加
+- remove/removeAll/retainAll/clear 删除
 - contains 存在查询
 - iterator/spliterator 迭代查询
 - size/isEmpty 容量
@@ -9856,6 +9999,12 @@ String.join("", stringArr)
 Integer i = Integer.valueOf(str)
 ```
 
+- `char[]`转`String`
+
+```java
+String str = new String(charArr)
+```
+
 # Java常见技巧
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
@@ -9867,6 +10016,13 @@ Integer i = Integer.valueOf(str)
 + 创建哑节点 `dummyHead`，令 `dummyHead.next = head`。引入哑节点是为了便于在 `head` 节点之前插入节点。
 
 + 计数哈希表构建：map.put(val, map.getOrDefault(val, 0) + 1);
+
++ 哈希表（复杂value）获取key并操作，eg：
+
+	```java
+	Map<Integer, PriorityQueue<Character>> map = new HashMap<>();
+	map.computeIfAbsent(key, key -> new PriorityQueue<>()).offer(ch);
+	```
 
 + 数组倒序：必须是Integer[]，Arrays.sort(A, Collections.reverseOrder()); 或者从后往前处理
 
@@ -9922,6 +10078,8 @@ Integer i = Integer.valueOf(str)
 	```
 
 - 0和1翻转：n ^= 1
+
+- int整数表示字符串字母集合（不考虑char出现的频数）：对每个ch计算mask |= (1 << (ch - 'a'))
 
 # 未完成
 
