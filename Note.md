@@ -9734,6 +9734,55 @@ for(; r < n; r++) {
 return r - l;
 ```
 
+复杂样板
+
+```java
+public String minWindow(String s, String t) {
+    int left = 0, right = 0; // 滑动窗口前后指针
+    int min = Integer.MAX_VALUE; // 最小子串的长度
+    int start = 0, end = 0; // 最小子串的左右位置
+    int count = 0; // 相同字符的个数
+
+    Map<Character, Integer> tMap = new HashMap<>(); // target串的字符计数（目标）
+    Map<Character, Integer> sMap = new HashMap<>(); // source串的字符计数（窗口）
+
+    // 初始化target串的字符计数
+    for (int i = 0; i < t.length(); ++i) {
+        tMap.put(t.charAt(i), tMap.getOrDefault(t.charAt(i), 0) + 1);
+    }
+
+    while (right < s.length()) {
+        char c = s.charAt(right);
+        // 更新窗口状态
+        if (tMap.containsKey(c)) { // 是所求字符
+            sMap.put(c, sMap.getOrDefault(c, 0) + 1); // 存字符进窗口
+            if (tMap.get(c).compareTo(sMap.get(c)) == 0) { // 看是不是该字符达标
+                count++;
+            }
+        }
+        right++; // 右滑动扩大
+        while (count == tMap.size()) {
+            // 满足条件，更新最值
+            if (min > right - left) {
+                end = right;
+                start = left;
+                min = right - left;
+            }
+            char d = s.charAt(left);
+            // 更新窗口状态
+            if (tMap.containsKey(d)) {
+                sMap.put(d, sMap.get(d) - 1);
+                if (tMap.get(d) > sMap.get(d)) {
+                    count--;
+                }
+            }
+            left++; //左滑动缩小
+        }
+    }
+    return min == Integer.MIN_VALUE ? "" : s.substring(start, end);
+}
+```
+
 ## 动态规划
 
 思考模板
@@ -9747,55 +9796,6 @@ return r - l;
 ### 状态搜索
 
 ### 贪心
-
-## 滑动窗口
-
-```java
-public String minWindow(String s, String t) {
-        int left = 0, right = 0; // 滑动窗口前后指针
-        int min = Integer.MAX_VALUE; // 最小子串的长度
-        int start = 0, end = 0; // 最小子串的左右位置
-        int count = 0; // 相同字符的个数
-
-        Map<Character, Integer> tMap = new HashMap<>(); // target串的字符计数（目标）
-        Map<Character, Integer> sMap = new HashMap<>(); // source串的字符计数（窗口）
-
-        // 初始化target串的字符计数
-        for (int i = 0; i < t.length(); ++i) {
-            tMap.put(t.charAt(i), tMap.getOrDefault(t.charAt(i), 0) + 1);
-        }
-
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            // 更新窗口状态
-            if (tMap.containsKey(c)) { // 是所求字符
-                sMap.put(c, sMap.getOrDefault(c, 0) + 1); // 存字符进窗口
-                if (tMap.get(c).compareTo(sMap.get(c)) == 0) { // 看是不是该字符达标
-                    count++;
-                }
-            }
-            right++; // 右滑动扩大
-            while (count == tMap.size()) {
-                // 满足条件，更新最值
-                if (min > right - left) {
-                    end = right;
-                    start = left;
-                    min = right - left;
-                }
-                char d = s.charAt(left);
-                // 更新窗口状态
-                if (tMap.containsKey(d)) {
-                    sMap.put(d, sMap.get(d) - 1);
-                    if (tMap.get(d) > sMap.get(d)) {
-                        count--;
-                    }
-                }
-                left++; //左滑动缩小
-            }
-        }
-        return min == Integer.MIN_VALUE ? "" : s.substring(start, end);
-    }
-```
 
 ## 单调栈
 
