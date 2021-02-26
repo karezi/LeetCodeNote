@@ -9225,6 +9225,57 @@ class Solution {
 
 TODO 字典树
 
+## [395. 至少有K个重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-with-at-least-k-repeating-characters/)
+
+> 递归，分治，滑动窗口
+
+执行用时：1 ms, 在所有 Java 提交中击败了78.51%的用户
+
+内存消耗：36.1 MB, 在所有 Java 提交中击败了95.23%的用户
+
+```java
+class Solution {
+    public int longestSubstring(String s, int k) {
+        // 分治法
+        int n = s.length();
+        return dfs(s, 0, n - 1, k);
+    }
+
+    private int dfs(String s, int l, int r, int k) {
+        int[] cnt = new int[26]; // 频数数组
+        for (int i = l; i <= r; ++i) {
+            cnt[s.charAt(i) - 'a']++;
+        }
+        char split = 0; // 分割字符
+        for (int i = 0; i < 26; ++i) {
+            if (cnt[i] != 0 && cnt[i] < k) {
+                split = (char)(i + 'a');
+            }
+        }
+        if (split == 0) { // 没有小于k的，满足要求
+            return r - l + 1;
+        }
+        // 有需要分割的
+        int start = l, end = l, status = 0, max = 0;
+        for (int i = l; i <= r; ++i) {
+            if (status == 0 && s.charAt(i) != split) {
+                status = 1;
+                start = i;
+            } else if (status == 1 && (s.charAt(i) == split || i == r)) {
+                end = s.charAt(i) != split ? i : i - 1;
+                if (end - start + 1 >= k)
+                    max = Math.max(max, dfs(s, start, end, k));
+                start = i;
+                status = 0;
+            }
+        }
+        return max;
+    }
+}
+```
+
+TODO 滑动窗口（不好理解）
+
 # Java算法模板
 
 ## BFS
