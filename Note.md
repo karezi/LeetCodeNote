@@ -9276,6 +9276,128 @@ class Solution {
 
 TODO 滑动窗口（不好理解）
 
+## [896. 单调数列](https://leetcode-cn.com/problems/monotonic-array/)
+
+> 数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：46.7 MB, 在所有 Java 提交中击败了56.41%的用户
+
+```java
+class Solution {
+    public boolean isMonotonic(int[] A) {
+        int state = 0; // 0表示之前为=或者还未设置，1表示之前为>=，2表示之前为<=
+        int n = A.length;
+        for (int i = 1; i < n; ++i) {
+            if (A[i] > A[i - 1]) {
+                if (state == 0)
+                    state = 1;
+                else if (state == 2)
+                    return false;
+            } else if (A[i] < A[i - 1]) {
+                if (state == 0)
+                    state = 2;
+                else if (state == 1)
+                    return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+执行用时：2 ms, 在所有 Java 提交中击败了40.70%的用户
+
+内存消耗：47 MB, 在所有 Java 提交中击败了8.92%的用户
+
+```java
+class Solution {
+    public boolean isMonotonic(int[] A) {
+        // 既遇到>又遇到<则不是
+        int n = A.length;
+        boolean asc = true, desc = true; // 1 1 1;1 0 1; 0 1 1;0 0 0
+        for (int i = 1; i < n; ++i) {
+            if (A[i] > A[i - 1]) {
+                asc = false;
+            } else if (A[i] < A[i - 1]) {
+                desc = false;
+            }
+        }
+        return asc || desc;
+    }
+}
+```
+
+## [303. 区域和检索 - 数组不可变](https://leetcode-cn.com/problems/range-sum-query-immutable/)
+
+> 前缀和
+
+执行用时：9 ms, 在所有 Java 提交中击败了99.83%的用户
+
+内存消耗：41 MB, 在所有 Java 提交中击败了97.71%的用户
+
+```java
+class NumArray {
+
+    private int[] prefix;
+
+    public NumArray(int[] nums) {
+        int tmp = 0;
+        int n = nums.length;
+        this.prefix = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            tmp += nums[i - 1];
+            this.prefix[i] = tmp;
+        }
+    }
+    
+    public int sumRange(int i, int j) {
+        return this.prefix[j + 1] - this.prefix[i];
+    }
+}
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray obj = new NumArray(nums);
+ * int param_1 = obj.sumRange(i,j);
+ */
+```
+
+## [304. 二维区域和检索 - 矩阵不可变](https://leetcode-cn.com/problems/range-sum-query-2d-immutable/)
+
+> 二维矩阵，前缀和
+
+```java
+class NumMatrix {
+
+    private int[][] preSum;
+
+    public NumMatrix(int[][] matrix) {
+        int m = matrix.length;
+        if (m > 0) {
+            int n = matrix[0].length;
+            preSum = new int[m + 1][n + 1];
+            for (int i = 0; i < m; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    preSum[i + 1][j + 1] = preSum[i + 1][j] + preSum[i][j + 1] - preSum[i][j] + matrix[i][j];
+                }
+            }
+        }
+    }
+    
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        return preSum[row2 + 1][col2 + 1] - preSum[row2 + 1][col1] - preSum[row1][col2 + 1] + preSum[row1][col1];
+    }
+}
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix obj = new NumMatrix(matrix);
+ * int param_1 = obj.sumRegion(row1,col1,row2,col2);
+ */
+```
+
 # Java算法模板
 
 ## BFS
@@ -9425,7 +9547,11 @@ int findBoundary(int[] nums, int target, int direction) {
 }
 ```
 
-## 快排
+## 排序
+
+<img src="https://i.loli.net/2021/02/28/iAOlWyNMd9tuwn3.png" alt="image-20210228093649556" style="zoom:50%;" />
+
+### 快排
 
 ```java
 void QuickSort(int arr, int left, int right) {
@@ -9594,7 +9720,7 @@ public static ArrayList inOrder1(TreeNode root){
 
 ### 并查集
 
-不用计算连通量
+- 不用计算连通量
 
 ```java
 private class UnionFind {
@@ -9617,7 +9743,7 @@ private class UnionFind {
 }
 ```
 
-计算连通量
+- 计算连通量
 
 ```java
 private class UnionFind {
@@ -9709,7 +9835,7 @@ class TrieNode {
 
 ## 滑动窗口
 
-求最大窗口大小（for版本）
+- 求最大窗口大小（for版本）
 
 ```java
 int  maxLen = 0; // 窗口最大值
@@ -9726,7 +9852,7 @@ for(int l = 0, r = 0; r < arr.length; r++) {
 return maxLen;
 ```
 
-求最大窗口大小（双while版本）
+- 求最大窗口大小（双while版本）
 
 模板
 
@@ -9770,7 +9896,7 @@ while (r < n) { // 右指针不越界
 return maxLen;
 ```
 
-窗口不需要减小
+- 窗口不需要减小
 
 ```java
 int l = 0, r = 0, sum = 0;
@@ -9785,7 +9911,7 @@ for(; r < n; r++) {
 return r - l;
 ```
 
-复杂样板
+- 复杂样板
 
 ```java
 public String minWindow(String s, String t) {
