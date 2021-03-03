@@ -9398,6 +9398,114 @@ class NumMatrix {
  */
 ```
 
+## [338. 比特位计数](https://leetcode-cn.com/problems/counting-bits/)
+
+> 位运算，动态规划
+
+找规律
+
+```java
+class Solution {
+    public int[] countBits(int num) {
+        // 0(0)
+        // 1	1(1)
+        // 2	1(2) 2(3)
+        // 4	1(4) 2(5) 2(6) 3(7)
+        // 8	1(8) 2(9) 2(10) 3(11) 2(12) 3(13) 3(14) 4(15)
+        // 16	1 2 2 3 2 3 3 4
+        // 32	1 2 2 3 2 3 3 4 2 3 3 4 3 4 4 5
+        int[] ans = new int[num + 1];
+        if (num == 0)
+            return ans;
+        ans[1] = 1;
+        int tmp = 2;
+        for (int i = 2; i <= num; ++i) {
+            if (i >= tmp && i < (int)tmp * 1.5) {
+                ans[i] = ans[i - tmp / 2];
+            } else {
+                if (i == tmp * 2) {
+                    tmp = i;
+                }
+                ans[i] = ans[i - tmp] + 1;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+暴力求解
+
+```java
+class Solution {
+    public int[] countBits(int num) {
+        int[] bits = new int[num + 1];
+        for (int i = 0; i <= num; i++) {
+            bits[i] = countOnes(i);
+        }
+        return bits;
+    }
+
+    public int countOnes(int x) {
+        // return Integer.bitCount(x);
+        int ones = 0;
+        while (x > 0) {
+            x &= (x - 1);
+            ones++;
+        }
+        return ones;
+    }
+}
+```
+
+TODO 以下各方法的分析和技巧
+
+动态规划——最高有效位
+
+```java
+class Solution {
+    public int[] countBits(int num) {
+        int[] bits = new int[num + 1];
+        int highBit = 0;
+        for (int i = 1; i <= num; i++) {
+            if ((i & (i - 1)) == 0) {
+                highBit = i;
+            }
+            bits[i] = bits[i - highBit] + 1;
+        }
+        return bits;
+    }
+}
+```
+
+动态规划——最低有效位
+
+```java
+class Solution {
+    public int[] countBits(int num) {
+        int[] bits = new int[num + 1];
+        for (int i = 1; i <= num; i++) {
+            bits[i] = bits[i >> 1] + (i & 1);
+        }
+        return bits;
+    }
+}
+```
+
+动态规划——最低设置位
+
+```java
+class Solution {
+    public int[] countBits(int num) {
+        int[] bits = new int[num + 1];
+        for (int i = 1; i <= num; i++) {
+            bits[i] = bits[i & (i - 1)] + 1;
+        }
+        return bits;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -10257,6 +10365,20 @@ String str = new String(charArr)
 - 0和1翻转：n ^= 1
 
 - int整数表示字符串字母集合（不考虑char出现的频数）：对每个ch计算mask |= (1 << (ch - 'a'))
+
+- int的bit数
+
+	```java
+	public int countOnes(int x) {
+	    // return Integer.bitCount(x);
+	    int ones = 0;
+	    while (x > 0) {
+	        x &= (x - 1); // 最低位的1变成0
+	        ones++;
+	    }
+	    return ones;
+	}
+	```
 
 # 未完成
 
