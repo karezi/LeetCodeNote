@@ -9506,6 +9506,151 @@ class Solution {
 }
 ```
 
+## [232. 用栈实现队列](https://leetcode-cn.com/problems/implement-queue-using-stacks/)
+
+> 栈，设计
+
+```java
+class MyQueue {
+    private Deque<Integer> dqHelper;
+    private Deque<Integer> dqMain;
+
+    /** Initialize your data structure here. */
+    public MyQueue() {
+        this.dqHelper = new LinkedList<>();
+        this.dqMain = new LinkedList<>();
+    }
+    
+    /** Push element x to the back of queue. */
+    public void push(int x) {
+        while (!this.dqMain.isEmpty()) {
+            this.dqHelper.offer(this.dqMain.pollLast());
+        }
+        dqMain.offer(x);
+        while (!this.dqHelper.isEmpty()) {
+            this.dqMain.offer(this.dqHelper.pollLast());
+        }
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    public int pop() {
+        return this.dqMain.pollLast();
+    }
+    
+    /** Get the front element. */
+    public int peek() {
+        return this.dqMain.peekLast();
+    }
+    
+    /** Returns whether the queue is empty. */
+    public boolean empty() {
+        return this.dqMain.isEmpty();
+    }
+}
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue obj = new MyQueue();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.peek();
+ * boolean param_4 = obj.empty();
+ */
+```
+
+不用每次都倒完，顺序栈取完了再倒
+
+```java
+class MyQueue {
+    Deque<Integer> inStack;
+    Deque<Integer> outStack;
+
+    public MyQueue() {
+        inStack = new LinkedList<Integer>();
+        outStack = new LinkedList<Integer>();
+    }
+    
+    public void push(int x) {
+        inStack.push(x);
+    }
+    
+    public int pop() {
+        if (outStack.isEmpty()) {
+            in2out();
+        }
+        return outStack.pop();
+    }
+    
+    public int peek() {
+        if (outStack.isEmpty()) {
+            in2out();
+        }
+        return outStack.peek();
+    }
+    
+    public boolean empty() {
+        return inStack.isEmpty() && outStack.isEmpty();
+    }
+
+    private void in2out() {
+        while (!inStack.isEmpty()) {
+            outStack.push(inStack.pop());
+        }
+    }
+}
+```
+
+## [503. 下一个更大元素 II](https://leetcode-cn.com/problems/next-greater-element-ii/)
+
+> 栈，循环数组，单调栈
+
+暴力法
+
+```java
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; ++i) {
+            int count = 0;
+            int tmp = nums[i];
+            while (count < n) {
+                int cur = nums[(i + count) % n];
+                if (cur > tmp) {
+                    ans[i] = cur;
+                    break;
+                }
+                count++;
+            }
+            if (count == n)
+                ans[i] = -1;
+        }
+        return ans;
+    }
+}
+```
+
+单调栈 + 拉直数组
+
+```java
+class Solution {
+    public int[] nextGreaterElements(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+        Deque<Integer> stack = new LinkedList<>();
+        // 把循环数组拉直，用单调栈（单调不增）
+        for (int i = 0; i < n * 2 - 1; ++i) {
+            while (!stack.isEmpty() && nums[stack.peek()] < nums[i % n]) { // 栈顶小于当前值，弹栈，并更新它对应位置结果
+                ans[stack.pop()] = nums[i % n];
+            }
+            stack.push(i % n);
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
