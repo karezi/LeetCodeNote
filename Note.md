@@ -9651,6 +9651,99 @@ class Solution {
 }
 ```
 
+## [131. 分割回文串](https://leetcode-cn.com/problems/palindrome-partitioning/)
+
+> 深度优先搜索，回溯，动态规划，记忆化搜索
+
+DP+DFS+回溯
+
+```java
+class Solution {
+    private List<List<String>> res = new ArrayList<>();
+    private List<String> tmp = new ArrayList<>();
+    private int n = 0;
+    private boolean[][] dp;
+
+    public List<List<String>> partition(String s) {
+        n = s.length();
+        // dp[i][j]表示[i,j]是否为回文串
+        dp = new boolean[n][n];
+        for (int i = 0; i < n; ++i) {
+            Arrays.fill(dp[i], true);
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                dp[i][j] = dp[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
+            }
+        }
+        // 搜索+回溯
+        dfs(s, 0);
+        return res;
+    }
+
+    private void dfs(String s, int i) {
+        if (i == n) { // 该分支检查完毕，保存路径
+            res.add(new ArrayList<String>(tmp));
+            return;
+        }
+        for (int j = i; j < n; ++j) { // 固定i，遍历每个j
+            if (dp[i][j]) {
+                tmp.add(s.substring(i, j + 1));
+                dfs(s, j + 1);
+                tmp.remove(tmp.size() - 1); // 回溯
+            }
+        }
+    }
+}
+```
+
+记忆化搜索
+
+```java
+class Solution {
+    private List<List<String>> res = new ArrayList<>();
+    private List<String> tmp = new ArrayList<>();
+    private int n = 0;
+    private int[][] mem; // 0表示未搜索，1表示是回文串，-1表示不是回文串
+
+    public List<List<String>> partition(String s) {
+        n = s.length();
+        mem = new int[n][n];
+        // 记忆化搜索+回溯
+        dfs(s, 0);
+        return res;
+    }
+
+    private void dfs(String s, int i) {
+        if (i == n) { // 该分支检查完毕，保存路径
+            res.add(new ArrayList<String>(tmp));
+            return;
+        }
+        for (int j = i; j < n; ++j) { // 固定i，遍历每个j
+            if (isPalindrome(s, i, j) == 1) {
+                tmp.add(s.substring(i, j + 1));
+                dfs(s, j + 1);
+                tmp.remove(tmp.size() - 1); // 回溯
+            }
+        }
+    }
+
+    private int isPalindrome(String s, int i, int j) {
+        if (mem[i][j] != 0) {
+            return mem[i][j];
+        }
+        if (i >= j) { // 只有一个数或者不存在
+            mem[i][j] = 1;
+        } else if (s.charAt(i) == s.charAt(j)) {
+            mem[i][j] = isPalindrome(s, i + 1, j - 1);
+        } else {
+            mem[i][j] = -1;
+        }
+        return mem[i][j];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -10524,6 +10617,23 @@ String str = new String(charArr)
 	    return ones;
 	}
 	```
+
+- 检查回文串（经典DP子串遍历）
+
+	```java
+	// dp[i][j]表示[i,j]是否为回文串
+	boolean[][] dp = new boolean[n][n];
+	for (int i = 0; i < n; ++i) {
+	    Arrays.fill(dp[i], true);
+	}
+	for (int i = n - 1; i >= 0; --i) { // 经典子串遍历
+	    for (int j = i + 1; j < n; ++j) {
+	        dp[i][j] = dp[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
+	    }
+	}
+	```
+
+	
 
 # 未完成
 
