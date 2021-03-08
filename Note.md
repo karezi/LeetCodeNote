@@ -9744,6 +9744,49 @@ class Solution {
 }
 ```
 
+## [132. 分割回文串 II](https://leetcode-cn.com/problems/palindrome-partitioning-ii/)
+
+> 动态规划
+
+两重DP
+
+```java
+class Solution {
+    public int minCut(String s) {
+        int n = s.length();
+        // 先记录所有子串是否是回文串
+        boolean[][] dpIsPal = new boolean[n][n];
+        for (int i = 0; i < n; ++i) {
+            Arrays.fill(dpIsPal[i], true);
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                dpIsPal[i][j] = (s.charAt(i) == s.charAt(j)) && dpIsPal[i + 1][j - 1];
+            }
+        }
+        // 计算最小dp
+        // 定义：dp[0...i]表示s[0,i]最小
+        // 递推：dp[0...i]=dp[0...i]是回文串=>0；dp[0...i]不是回文串=>min(dp[0...j]+1)(j<i && s[j+1,i]是回文串)
+        // 初始化：dp[0...i] = MAX
+        // 结果：dp[n - 1]
+        int[] dp = new int[n];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        for (int i = 0; i < n; ++i) {
+            if (dpIsPal[0][i]) {
+                dp[i] = 0;
+            } else {
+                for (int j = 0; j < i; ++j) {
+                    if (dpIsPal[j + 1][i]) {
+                        dp[i] = Math.min(dp[i], dp[j] + 1);
+                    }
+                }
+            }
+        }
+        return dp[n - 1];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
