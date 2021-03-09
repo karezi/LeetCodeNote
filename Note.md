@@ -9787,6 +9787,73 @@ class Solution {
 }
 ```
 
+## [1047. 删除字符串中的所有相邻重复项](https://leetcode-cn.com/problems/remove-all-adjacent-duplicates-in-string/)
+
+> 栈
+
+开一个栈
+
+```java
+class Solution {
+    public String removeDuplicates(String S) {
+        Deque<Character> stack = new LinkedList<>();
+        for (char c: S.toCharArray()) {
+            if (!stack.isEmpty() && stack.peekLast() == c) {
+                stack.pollLast();
+            } else {
+                stack.offerLast(c);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Character c: stack) {
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+}
+```
+
+直接用StringBuilder
+
+```java
+class Solution {
+    public String removeDuplicates(String S) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < S.length(); ++i) {
+            char c = S.charAt(i);
+            int last = sb.length() - 1;
+            if (last >= 0 && c == sb.charAt(last)) {
+                sb.deleteCharAt(last);
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+直接用字符数组
+
+```java
+class Solution {
+    public String removeDuplicates(String S) {
+        if(S.length() == 1) return S;
+        char[] ss = S.toCharArray();
+        int index = -1;
+        for (char c : ss) {
+            if (index != -1 && c == ss[index]) {
+                index--;
+            } else {
+                ++index;
+                ss[index] = c;
+            }
+        }
+        return new String(ss, 0, index + 1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
