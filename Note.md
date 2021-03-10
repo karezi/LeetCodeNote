@@ -9854,6 +9854,126 @@ class Solution {
 }
 ```
 
+## [224. 基本计算器](https://leetcode-cn.com/problems/basic-calculator/)
+
+> 栈，数学
+
+```java
+class Solution {
+    public int calculate(String s) {
+        StringBuilder symbols = new StringBuilder(); // 符号栈
+        Deque<Integer> nums = new LinkedList<>(); // 数字栈
+        int ans = 0;
+        char[] chs = s.toCharArray();
+        int len = chs.length;
+        boolean lastIsNum = false;
+        char lastChar = '^';
+        for (int i = 0; i < len; ++i) {
+            char ch = chs[i];
+            if (ch == '+' || ch == '-') { // 查看前面有+-不，有的话就求一下
+                if (lastChar == '^' || lastChar == '(') { // 前面为空或者左括号要做负数处理
+                    nums.offerLast(0);
+                }
+                if (symbols.length() != 0) {
+                    int lastIndex = symbols.length() - 1;
+                    char lastCh = symbols.charAt(lastIndex);
+                    if (lastCh == '+') {
+                        nums.offerLast(nums.pollLast() + nums.pollLast());
+                        symbols.deleteCharAt(lastIndex);
+                    } else if (lastCh == '-') {
+                        int tmp = nums.pollLast();
+                        nums.offerLast(nums.pollLast() - tmp);
+                        symbols.deleteCharAt(lastIndex);
+                    }
+                }
+                symbols.append(ch);
+                lastIsNum = false;
+                lastChar = ch;
+            } else if (ch == '(') {
+                symbols.append(ch);
+                lastIsNum = false;
+                lastChar = ch;
+            } else if (ch == ')') {
+                int lastIndex = symbols.length() - 1;
+                char lastCh = symbols.charAt(lastIndex);
+                if (lastCh == '+') {
+                    nums.offerLast(nums.pollLast() + nums.pollLast());
+                    symbols.deleteCharAt(lastIndex);
+                    symbols.deleteCharAt(lastIndex - 1); // 删除左括号
+                } else if (lastCh == '-') {
+                    int tmp = nums.pollLast();
+                    nums.offerLast(nums.pollLast() - tmp);
+                    symbols.deleteCharAt(lastIndex);
+                    symbols.deleteCharAt(lastIndex - 1); // 删除左括号
+                } else if (lastCh == '(')
+                    symbols.deleteCharAt(lastIndex); // 删除左括号
+                lastIsNum = false;
+                lastChar = ch;
+            } else if (ch - '0' >= 0 && ch - '0' <= 9) { // 数字
+                if (lastIsNum) {
+                    nums.offerLast(nums.pollLast() * 10 + (ch - '0'));
+                } else {
+                    nums.offerLast(ch - '0');
+                }
+                lastIsNum = true;
+                lastChar = ch;
+            } else { // 空格
+                lastIsNum = false;
+            }
+        }
+        if (symbols.length() != 0) {
+            int lastIndex = symbols.length() - 1;
+            char lastCh = symbols.charAt(lastIndex);
+            if (lastCh == '+') {
+                nums.offerLast(nums.pollLast() + nums.pollLast());
+            } else if (lastCh == '-') {
+                int tmp = nums.pollLast();
+                nums.offerLast(nums.pollLast() - tmp);
+            }
+        }
+        return nums.pop();
+    }
+}
+```
+
+括号展开，只用符号入栈
+
+```java
+class Solution {
+    public int calculate(String s) {
+        // 将源表达式展开，即(1-(-2+3)) => [+1] + ( [+2] + [-3] )
+        Deque<Integer> signs = new LinkedList<>(); // 正负栈 {-1, 1}
+        signs.push(1);
+        char[] chs = s.toCharArray();
+        int n = s.length();
+        int sign = 1;
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (chs[i] == ' ') {
+                continue;
+            } else if (chs[i] == '(') {
+                signs.push(sign);
+            } else if (chs[i] == ')') {
+                signs.pop();
+            } else if (chs[i] == '+') {
+                sign = signs.peek();
+            } else if (chs[i] == '-') {
+                sign = -signs.peek();
+            } else { // 数字
+                long num = 0;
+                while (i < n && Character.isDigit(s.charAt(i))) {
+                    num = num * 10 + (s.charAt(i) - '0');
+                    ++i;
+                }
+                ans += sign * num;
+                i--;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -10743,7 +10863,7 @@ String str = new String(charArr)
 	}
 	```
 
-	
+- 判断字符是否是数字：Character.isDigit(ch)
 
 # 未完成
 
