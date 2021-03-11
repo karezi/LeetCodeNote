@@ -9974,6 +9974,106 @@ class Solution {
 }
 ```
 
+## [227. 基本计算器 II](https://leetcode-cn.com/problems/basic-calculator-ii/)
+
+> 栈，字符串
+
+*/直接算，+-入栈
+
+```java
+class Solution {
+    public int calculate(String s) {
+        char[] chs = s.toCharArray();
+        Deque<Integer> nums = new LinkedList<>();
+        int n = s.length();
+        char lastOp = ' ';
+        int i = 0;
+        while (i < n) {
+            if (chs[i] == ' ') {
+                ++i;
+            } else {
+                char ch = chs[i];
+                i = Character.isDigit(ch) ? i : i + 1;
+                // 找到下一个整数
+                int nextNum = 0;
+                while (i < n) {
+                    if (Character.isDigit(chs[i]))
+                        nextNum = nextNum * 10 + (s.charAt(i) - '0');
+                    else if (chs[i] != ' ')
+                        break;
+                    i++;
+                }
+                if (Character.isDigit(ch)) {
+                    nums.push(nextNum);
+                } else { // 运算符
+                    if (ch == '*') {
+                        nums.push(nums.pop() * nextNum);
+                    } else if (ch == '/') {
+                        nums.push(nums.pop() / nextNum);
+                    } else {
+                        if (lastOp != ' ') {
+                            int tmp = nums.pop();
+                            if (lastOp == '+')
+                                nums.push(nums.pop() + tmp);
+                            else
+                                nums.push(nums.pop() - tmp);
+                        }
+                        nums.push(nextNum);
+                        lastOp = ch;
+                    }
+                }
+            }
+        }
+        if (nums.size() > 1) {
+            int tmp = nums.pop();
+            return lastOp == '+' ? (tmp + nums.pop()) : (nums.pop() - tmp);
+        }
+        return nums.pop();
+    }
+}
+```
+
+更清晰的写法
+
+```java
+class Solution {
+    public int calculate(String s) {
+        Deque<Integer> nums = new LinkedList<>();
+        s = s + '+'; // 便于结束
+        char[] chs = s.toCharArray();
+        char preSign = '+'; // 前面一个符号
+        int num = 0; // 计算整数
+        for (int i = 0; i < s.length(); ++i) {
+            char ch = s.charAt(i);
+            if (Character.isDigit(ch)) { // 数字
+                num = num * 10 + (ch - '0');
+            } else if (ch != ' '){ // 符号
+                switch(preSign) {
+                    case '+':
+                        nums.push(num);
+                        break;
+                    case '-':
+                        nums.push(-num);
+                        break;
+                    case '*':
+                        nums.push(nums.pop() * num);
+                        break;
+                    default:
+                        nums.push(nums.pop() / num);
+                }
+                preSign = ch;
+                num = 0;
+            }
+        }
+        int ans = 0;
+        while (!nums.isEmpty()) {
+            ans += nums.pop();
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
