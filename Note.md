@@ -10074,6 +10074,95 @@ class Solution {
 }
 ```
 
+## [331. 验证二叉树的前序序列化](https://leetcode-cn.com/problems/verify-preorder-serialization-of-a-binary-tree/)
+
+> 栈
+
+用栈的核心原因是前序遍历的本质是递归，可以用栈模拟递归
+
+栈：split+槽位
+
+```java
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        String[] nodes = preorder.split(",");
+        Deque<Integer> stack = new LinkedList<>();
+        stack.push(1);
+        for (int i = 0; i < nodes.length; ++i) {
+            if (stack.isEmpty())
+                return false;
+            int top = stack.pop() - 1; // 占一个槽位
+            if (top > 0) {
+                stack.push(top);
+            }
+            if (!nodes[i].equals("#")) { // 栈顶-1，push(2)
+                stack.push(2);
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+```
+
+栈：直接char+槽位（快一些）
+
+```java
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        Deque<Integer> stack = new LinkedList<>();
+        int n = preorder.length();
+        stack.push(1);
+        for (int i = 0; i < n; ++i) {
+            if (stack.isEmpty())
+                return false;
+            int top = stack.pop() - 1; // 栈顶-1
+            if (top > 0) {
+                stack.push(top);
+            }
+            if (preorder.charAt(i) != '#') { // push(2)
+                stack.push(2);
+                while (i < n && preorder.charAt(i) != ',') {
+                    i++;
+                }
+            } else { // 跳过逗号
+                ++i;
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+```
+
+计数替代栈
+
+```java
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        int n = preorder.length();
+        int i = 0;
+        int slots = 1;
+        while (i < n) {
+            if (slots == 0) {
+                return false;
+            }
+            if (preorder.charAt(i) == ',') {
+                i++;
+            } else if (preorder.charAt(i) == '#') {
+                slots--;
+                i++;
+            } else {
+                while (i < n && preorder.charAt(i) != ',') // 读一个数字
+                    i++;
+                slots++; // slots = slots - 1 + 2
+            }
+        }
+        return slots == 0;
+    }
+}
+```
+
+TODO 入度出度计算、反向替代、正向替代（x##->#）
+
 # Java算法模板
 
 ## BFS
