@@ -10163,6 +10163,65 @@ class Solution {
 
 TODO 入度出度计算、反向替代、正向替代（x##->#）
 
+## [705. 设计哈希集合](https://leetcode-cn.com/problems/design-hashset/)
+
+> 设计，哈希表
+
+```java
+class MyHashSet {
+    private static final int CAP = 769; // 默认容量
+    private LinkedList[] data;
+
+    /** Initialize your data structure here. */
+    public MyHashSet() {
+        data = new LinkedList[CAP];
+        for (int i = 0; i < CAP; ++i) {
+            data[i] = new LinkedList<Integer>();           
+        }
+    }
+    
+    public void add(int key) {
+        LinkedList<Integer> node = data[hash(key)];
+        if (node.size() != 0) {
+            if (node.indexOf(key) != -1)
+                return;
+        }
+        node.push(key);
+    }
+    
+    public void remove(int key) {
+        LinkedList<Integer> node = data[hash(key)];
+        if (node.size() != 0) {
+            int index = node.indexOf(key);
+            if (index != -1)
+                node.remove(index);
+        }
+    }
+    
+    /** Returns true if this set contains the specified element */
+    public boolean contains(int key) {
+        LinkedList<Integer> node = data[hash(key)];
+        if (node.size() != 0) {
+            if (node.indexOf(key) != -1)
+                return true;
+        }
+        return false;
+    }
+
+    private int hash(int key) {
+        return key % CAP;
+    }
+}
+
+/**
+ * Your MyHashSet object will be instantiated and called as such:
+ * MyHashSet obj = new MyHashSet();
+ * obj.add(key);
+ * obj.remove(key);
+ * boolean param_3 = obj.contains(key);
+ */
+```
+
 # Java算法模板
 
 ## BFS
