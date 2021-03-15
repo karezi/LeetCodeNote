@@ -10360,7 +10360,80 @@ class Solution {
 }
 ```
 
+## [59. 螺旋矩阵 II](https://leetcode-cn.com/problems/spiral-matrix-ii/)
 
+> 数组
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.4 MB, 在所有 Java 提交中击败了87.57%的用户
+
+```java
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int count = 1;
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int dir = 0;
+        boolean[][] visited = new boolean[n][n];
+        int[][] ans = new int[n][n];
+        int i = 0, j = 0;
+        while(true) {
+            if (i < 0 || j < 0 || i >= n || j >= n)
+                break;
+            if (!visited[j][i]) {
+                visited[j][i] = true;
+                ans[j][i] = count;
+                count++;
+                if ((dir == 0 && i == n - 1) ||
+                    (dir == 1 && j == n - 1) ||
+                    (dir == 2 && i == 0) ||
+                    (dir == 3 && j == 0)) {
+                        dir = (dir + 1) & 3;
+                    }
+                j += directions[dir][0];
+                i += directions[dir][1];
+            } else {
+                j -= directions[dir][0];
+                i -= directions[dir][1];
+                dir = (dir + 1) & 3;
+                j += directions[dir][0];
+                i += directions[dir][1];
+                if (visited[j][i])
+                    break;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+简洁写法
+
+```java
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int max = n * n;
+        int cur = 1;
+        int[][] matrix = new int[n][n];
+        int row = 0, col = 0;
+        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int dirIdx = 0;
+        while (cur <= max) {
+            matrix[row][col] = cur;
+            cur++;
+            int nextRow = row + dirs[dirIdx][0], nextCol = col + dirs[dirIdx][1];
+            if (nextRow < 0 || nextRow >= n ||
+                nextCol < 0 || nextCol >= n || 
+                matrix[nextRow][nextCol] != 0) {
+                dirIdx = (dirIdx + 1) & 3;
+            }
+            row += dirs[dirIdx][0];
+            col += dirs[dirIdx][1];
+        }
+        return matrix;
+    }
+}
+```
 
 # Java算法模板
 
