@@ -10313,6 +10313,55 @@ class MyHashMap {
  */
 ```
 
+## [54. 螺旋矩阵](https://leetcode-cn.com/problems/spiral-matrix/)
+
+> 数组
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.8 MB, 在所有 Java 提交中击败了16.53%的用户
+
+```java
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] direction = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int cur = 0;
+        List<Integer> ans = new ArrayList<>();
+        int i = 0, j = 0;
+        boolean[][] visited = new boolean[m][n];
+        while (true) {
+            if (i < 0 || j < 0 || i == n || j == m)
+                break;
+            if (!visited[j][i]) {
+                ans.add(matrix[j][i]);
+                visited[j][i] = true;
+                if ((cur == 2 && i == 0) ||
+                    (cur == 3 && j == 0) || 
+                    (cur == 0 && i == n - 1) ||
+                    (cur == 1 && j == m - 1))
+                    cur = (cur + 1) & 3;
+                j += direction[cur][0];
+                i += direction[cur][1];
+            } else {
+                j -= direction[cur][0];
+                i -= direction[cur][1];
+                cur = (cur + 1) & 3;
+                j += direction[cur][0];
+                i += direction[cur][1];
+                if (visited[j][i]) {
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
