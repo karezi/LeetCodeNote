@@ -10435,6 +10435,41 @@ class Solution {
 }
 ```
 
+## [115. 不同的子序列](https://leetcode-cn.com/problems/distinct-subsequences/)
+
+> 字符串，动态规划
+
+```java
+class Solution {
+    public int numDistinct(String s, String t) {
+        // 定义：dp[i][j]表示[i~m][j~n]匹配的次数
+        // 递推：dp[i][j] = dp[i+1][j]
+        // 初始化：dp[i][n] = 
+        // 求：dp[0][0]
+        int m = s.length(), n = t.length();
+        if (m < n) {
+            return 0;
+        }
+        int[][] dp = new int[m + 1][n + 1];
+        for (int i = 0; i <= m; i++) {
+            dp[i][n] = 1;
+        }
+        for (int i = m - 1; i >= 0; i--) {
+            char sChar = s.charAt(i);
+            for (int j = n - 1; j >= 0; j--) {
+                char tChar = t.charAt(j);
+                if (sChar == tChar) {
+                    dp[i][j] = dp[i + 1][j + 1] + dp[i + 1][j];
+                } else {
+                    dp[i][j] = dp[i + 1][j];
+                }
+            }
+        }
+        return dp[0][0];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
