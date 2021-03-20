@@ -10543,6 +10543,34 @@ class Solution {
     }
 ```
 
+## [150. 逆波兰表达式求值](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
+
+> 栈
+
+```java
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Deque<Integer> nums = new LinkedList<>();
+        for (String token: tokens) {
+            if (token.equals("+")) {
+                nums.push(nums.pop() + nums.pop());
+            } else if (token.equals("-")) {
+                Integer tmp = nums.pop();
+                nums.push(nums.pop() - tmp);
+            } else if (token.equals("*")) {
+                nums.push(nums.pop() * nums.pop());
+            } else if (token.equals("/")) {
+                Integer tmp = nums.pop();
+                nums.push(nums.pop() / tmp);
+            } else {
+                nums.push(Integer.valueOf(token));
+            }
+        }
+        return Integer.valueOf(nums.pop());
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -11318,7 +11346,8 @@ String.join("", stringArr)
 - `String`转`Integer`
 
 ```java
-Integer i = Integer.valueOf(str)
+Integer i = Integer.valueOf(str);
+Integer i = Integer.parseInt(str);
 ```
 
 - `char[]`转`String`
