@@ -10679,6 +10679,57 @@ class Solution {
 }
 ```
 
+## [191. 位1的个数](https://leetcode-cn.com/problems/number-of-1-bits/)
+
+> 位运算
+
+直接用函数
+
+执行用时：1 ms, 在所有 Java 提交中击败了95.76%的用户
+
+内存消耗：35.3 MB, 在所有 Java 提交中击败了61.15%的用户
+
+```java
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        return Integer.bitCount(n);
+    }
+}
+```
+
+循环检查
+
+```java
+public class Solution {
+    public int hammingWeight(int n) {
+        int count = 0;
+        for (int i = 0; i < 32; i++) {
+            if ((n & (1 << i)) != 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+```
+
+位运算求1个数的技巧
+
+```java
+
+public class Solution {
+    public int hammingWeight(int n) {
+        int count = 0;
+        while (n != 0) {
+            n &= n - 1;
+            count++;
+        }
+        return count;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
