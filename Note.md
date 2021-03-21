@@ -10571,6 +10571,114 @@ class Solution {
 }
 ```
 
+## [73. 矩阵置零](https://leetcode-cn.com/problems/set-matrix-zeroes/)
+
+> 数组
+
+用hashset存储O(m+n)
+
+```java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        Set<Integer> row = new HashSet<>();
+        Set<Integer> col = new HashSet<>();
+        int m = matrix.length;
+        int n = matrix[0].length;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (matrix[i][j] == 0) {
+                    if (!row.contains(i)) {
+                        row.add(i);
+                        for (int k = 0; k < n; ++k) {
+                            matrix[i][k] = 0;
+                        }
+                    }
+                    if (!col.contains(j)) {
+                        col.add(j);
+                        for (int k = 0; k < m; ++k) {
+                            matrix[k][j] = 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+用一个变量O(1)
+
+```java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        // 用1个变量存储第一行原本是否有0
+        boolean isZero = false;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        for (int j = 0; j < n; ++j) {
+            if (matrix[0][j] == 0)
+                isZero = true;
+        }
+        for (int i = 1; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (j == 0 && matrix[i][0] == 0) {
+                    matrix[0][0] = 0;
+                }
+                if (matrix[i][j] == 0) {
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
+                }
+            }
+        }
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0)
+                    matrix[i][j] = 0;
+            }
+        }
+        if (matrix[0][0] == 0) {
+            for (int i = 1; i < m; ++i)
+                matrix[i][0] = 0;
+        }
+        if (isZero) {
+            for (int j = 0; j < n; ++j)
+                matrix[0][j] = 0;
+        }
+    }
+}
+```
+
+优化版
+
+```java
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        boolean flagCol0 = false;
+        for (int i = 0; i < m; i++) {
+            if (matrix[i][0] == 0) {
+                flagCol0 = true;
+            }
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = matrix[0][j] = 0;
+                }
+            }
+        }
+        for (int i = m - 1; i >= 0; i--) { // 保证第一行不先更新覆盖了，最后再处理第一行
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+            if (flagCol0) {
+                matrix[i][0] = 0;
+            }
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
