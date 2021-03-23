@@ -10730,6 +10730,132 @@ public class Solution {
 }
 ```
 
+## [341. 扁平化嵌套列表迭代器](https://leetcode-cn.com/problems/flatten-nested-list-iterator/)
+
+> 栈，dfs，设计
+
+DFS
+
+```java
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     public List<NestedInteger> getList();
+ * }
+ */
+public class NestedIterator implements Iterator<Integer> {
+
+    private List<Integer> data = new LinkedList<>();
+    private Iterator<Integer> dataIt;
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        dfs(nestedList);
+        dataIt = this.data.iterator();
+    }
+
+    private void dfs(List<NestedInteger> list) {
+        for (NestedInteger ni: list) {
+            if (ni.isInteger()) {
+                data.add(ni.getInteger());
+            } else {
+                dfs(ni.getList());
+            }
+        }
+    }
+
+    @Override
+    public Integer next() {
+        return dataIt.next();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return dataIt.hasNext();
+    }
+}
+
+/**
+ * Your NestedIterator object will be instantiated and called as such:
+ * NestedIterator i = new NestedIterator(nestedList);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
+```
+
+栈 TODO
+
+```java
+/**
+ * // This is the interface that allows for creating nested lists.
+ * // You should not implement it, or speculate about its implementation
+ * public interface NestedInteger {
+ *
+ *     // @return true if this NestedInteger holds a single integer, rather than a nested list.
+ *     public boolean isInteger();
+ *
+ *     // @return the single integer that this NestedInteger holds, if it holds a single integer
+ *     // Return null if this NestedInteger holds a nested list
+ *     public Integer getInteger();
+ *
+ *     // @return the nested list that this NestedInteger holds, if it holds a nested list
+ *     // Return null if this NestedInteger holds a single integer
+ *     public List<NestedInteger> getList();
+ * }
+ */
+public class NestedIterator implements Iterator<Integer> {
+    // 存储列表的当前遍历位置
+    private Deque<Iterator<NestedInteger>> stack;
+
+    public NestedIterator(List<NestedInteger> nestedList) {
+        stack = new LinkedList<Iterator<NestedInteger>>();
+        stack.push(nestedList.iterator());
+    }
+
+    @Override
+    public Integer next() {
+        // 由于保证调用 next 之前会调用 hasNext，直接返回栈顶列表的当前元素
+        return stack.peek().next().getInteger();
+    }
+
+    @Override
+    public boolean hasNext() {
+        while (!stack.isEmpty()) {
+            Iterator<NestedInteger> it = stack.peek();
+            if (!it.hasNext()) { // 遍历到当前列表末尾，出栈
+                stack.pop();
+                continue;
+            }
+            // 若取出的元素是整数，则通过创建一个额外的列表将其重新放入栈中
+            NestedInteger nest = it.next();
+            if (nest.isInteger()) {
+                List<NestedInteger> list = new ArrayList<NestedInteger>();
+                list.add(nest);
+                stack.push(list.iterator());
+                return true;
+            }
+            stack.push(nest.getList().iterator());
+        }
+        return false;
+    }
+}
+
+/**
+ * Your NestedIterator object will be instantiated and called as such:
+ * NestedIterator i = new NestedIterator(nestedList);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
+```
+
 # Java算法模板
 
 ## BFS
@@ -11604,6 +11730,8 @@ String str = new String(charArr)
 	    return ones;
 	}
 	```
+
+- [Integer常用函数和位运算技巧](https://blog.csdn.net/youyou1543724847/article/details/52385775)
 
 - 检查回文串（经典DP子串遍历）
 
