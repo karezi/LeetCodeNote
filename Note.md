@@ -10856,6 +10856,60 @@ public class NestedIterator implements Iterator<Integer> {
  */
 ```
 
+## [456. 132 模式](https://leetcode-cn.com/problems/132-pattern/)
+
+> 栈，单调栈
+
+遍历1
+
+```java
+class Solution {
+    public boolean find132pattern(int[] nums) {
+        int n = nums.length;
+        if (n < 3)
+            return false;
+        int candidateC = -1; // 候选次大下标
+        Deque<Integer> stack = new LinkedList<>();
+        for (int i = n - 1; i >= 0; --i) { // 从后往前维护单调递增栈，栈顶为候选最大值的下标
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                candidateC = stack.pop(); // 最后一个弹出的就是相对栈顶小的最大值（候选次大）下标
+            }
+            stack.push(i);
+            if (candidateC != -1 && nums[candidateC] > nums[i]) // 如果当前遍历到的值比候选次大值下，则存在
+                return true;
+        }
+        return false;
+    }
+}
+```
+
+遍历2、3 TODO
+
+## [84. 柱状图中最大的矩形](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
+
+> 栈，单调栈，数组
+
+```java
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int n = heights.length;
+        int nn = n + 2;
+        int[] newHeights = new int[nn];
+        System.arraycopy(heights, 0, newHeights, 1, n);
+        Deque<Integer> stack = new ArrayDeque<>();
+        int area = 0;
+        for (int i = 0; i < nn; ++i) {
+            while (!stack.isEmpty() && newHeights[stack.peek()] > newHeights[i]) {
+                int h = newHeights[stack.pop()];
+                area = Math.max(area, (i - stack.peek() - 1) * h);
+            }
+            stack.push(i);
+        }
+        return area;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -11645,7 +11699,7 @@ String str = new String(charArr)
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
 
-+ 数组复制：Arrays.copyOfRange(nums, 0, k)
++ 数组复制：Arrays.copyOfRange(nums, 0, k) 或者 System.arraycopy(srcArr, srcPos, destArr, destPos, length)
 
 + ArrayList简单构造：Arrays.asList(a,b)
 
