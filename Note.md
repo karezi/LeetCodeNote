@@ -10910,6 +10910,76 @@ class Solution {
 }
 ```
 
+## [82. 删除排序链表中的重复元素 II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)
+
+> 链表
+
+非递归
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null)
+            return null;
+        ListNode dummyNode = new ListNode(0, head);
+        ListNode curNode = dummyNode;
+        while (curNode.next != null && curNode.next.next != null) {
+            if (curNode.next.val == curNode.next.next.val) {
+                // 删除后续所有重复的值
+                int x = curNode.next.val;
+                while (curNode.next != null && x == curNode.next.val) {
+                    curNode.next = curNode.next.next; // 删除下一个
+                }
+            } else {
+                curNode = curNode.next;
+            }
+        }
+        return dummyNode.next;
+    }
+}
+```
+
+递归
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        if (head.val != head.next.val) {
+            head.next = deleteDuplicates(head.next);
+            return head;
+        } else {
+            int x = head.val;
+            while (head != null && head.val == x) {
+                head = head.next;
+            }
+            return deleteDuplicates(head);
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
