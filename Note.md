@@ -11009,6 +11009,53 @@ class Solution {
 }
 ```
 
+## [61. 旋转链表](https://leetcode-cn.com/problems/rotate-list/)
+
+> 链表，双指针
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.9 MB, 在所有 Java 提交中击败了42.07%的用户
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null)
+            return null;
+        ListNode p = head, tail = head;
+        int n = 0;
+        while (p != null) {
+            if (n > 0)
+                tail = tail.next;
+            p = p.next;
+            n++;
+        }
+        p = head;
+        tail.next = head;
+        n = n - k % n - 1;
+        while (n > 0) {
+            p = p.next;
+            n--;
+        }
+        ListNode res = p.next;
+        p.next = null;
+        return res;
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
