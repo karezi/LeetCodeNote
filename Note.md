@@ -10980,6 +10980,35 @@ class Solution {
 }
 ```
 
+## [1773. 统计匹配检索规则的物品数量](https://leetcode-cn.com/problems/count-items-matching-a-rule/)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int countMatches(List<List<String>> items, String ruleKey, String ruleValue) {
+        int ans = 0;
+        int index = 0;
+        switch(ruleKey) {
+            case "color":
+                index = 1;
+                break;
+            case "name":
+                index = 2;
+                break;
+            default:
+                index = 0;
+        }
+        for (List<String> item: items) {
+            if (item.get(index).equals(ruleValue)) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
