@@ -11054,7 +11054,127 @@ class Solution {
 }
 ```
 
+## [173. 二叉搜索树迭代器](https://leetcode-cn.com/problems/binary-search-tree-iterator/)
 
+> 栈，树，设计
+
+用链表
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class BSTIterator {
+
+    List<Integer> nodes = new LinkedList<>();
+    Iterator<Integer> it;
+
+    public BSTIterator(TreeNode root) {
+        nodes = init(root);
+        it = nodes.iterator();
+    }
+
+    private List<Integer> init(TreeNode root) {
+        if (root == null)
+            return new LinkedList<>();
+        else {
+            List<Integer> tmp = new LinkedList<>();
+            tmp.addAll(init(root.left));
+            tmp.add(root.val);
+            tmp.addAll(init(root.right));
+            return tmp;
+        }
+    }
+    
+    public int next() {
+        return it.next();
+    }
+    
+    public boolean hasNext() {
+        return it.hasNext();
+    }
+}
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator obj = new BSTIterator(root);
+ * int param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */
+```
+
+用数组
+
+```java
+class BSTIterator {
+    private int idx;
+    private List<Integer> arr;
+
+    public BSTIterator(TreeNode root) {
+        idx = 0;
+        arr = new ArrayList<Integer>();
+        inorderTraversal(root, arr);
+    }
+
+    public int next() {
+        return arr.get(idx++);
+    }
+
+    public boolean hasNext() {
+        return idx < arr.size();
+    }
+
+    private void inorderTraversal(TreeNode root, List<Integer> arr) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left, arr);
+        arr.add(root.val);
+        inorderTraversal(root.right, arr);
+    }
+}
+```
+
+栈（节省空间）
+
+```java
+class BSTIterator {
+    Deque<TreeNode> stack;
+    TreeNode cur;
+
+    public BSTIterator(TreeNode root) {
+        cur = root;
+        stack = new LinkedList<>();
+    }
+    
+    public int next() {
+        while (cur != null) { // 找到最左
+            stack.push(cur);
+            cur = cur.left;
+        }
+        cur = stack.pop(); // 取出最左的值
+        int ret = cur.val;
+        cur = cur.right; // 更新到最左的右节点作为下一个
+        return ret;
+    }
+    
+    public boolean hasNext() {
+        return !stack.isEmpty() || cur != null;
+    }
+}
+```
 
 # Java算法模板
 
