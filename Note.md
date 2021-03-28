@@ -11176,6 +11176,84 @@ class BSTIterator {
 }
 ```
 
+## [190. 颠倒二进制位](https://leetcode-cn.com/problems/reverse-bits/)
+
+> 位运算
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了21.25%的用户
+
+用2的n次方和long
+
+```java
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int i = 0;
+        long res = 0;
+        while (i < 32) {
+            if ((n & 1) == 1) {
+                res += (long)Math.pow(2, 31 - i);
+            }
+            n >>= 1;
+            i++;
+        }
+        return (int)res;
+    }
+}
+```
+
+用逻辑右移
+
+```java
+public class Solution {
+    public int reverseBits(int n) {
+        int res = 0;
+        for (int i = 0; i < 32 && n != 0; ++i) {
+            res |= (n & 1) << (31 - i);
+            n >>>= 1;
+        }
+        return res;
+    }
+}
+```
+
+空出一位
+
+```java
+public class Solution {
+    public int reverseBits(int n) {
+        int res = 0;
+        for (int i = 0; i < 32; i++) {
+            res <<= 1; //空出一位
+            res += n & 1; //加上n最后一位
+            n >>= 1;
+        }
+        return res;
+    }
+}
+```
+
+分治
+
+```java
+public class Solution {
+    private static final int M1 = 0x55555555; // 01010101010101010101010101010101
+    private static final int M2 = 0x33333333; // 00110011001100110011001100110011
+    private static final int M4 = 0x0f0f0f0f; // 00001111000011110000111100001111
+    private static final int M8 = 0x00ff00ff; // 00000000111111110000000011111111
+
+    public int reverseBits(int n) {
+        n = n >>> 1 & M1 | (n & M1) << 1; // 偶数位和奇数位交换位置
+        n = n >>> 2 & M2 | (n & M2) << 2;
+        n = n >>> 4 & M4 | (n & M4) << 4;
+        n = n >>> 8 & M8 | (n & M8) << 8;
+        return n >>> 16 | n << 16;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
