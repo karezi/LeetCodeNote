@@ -11254,6 +11254,143 @@ public class Solution {
 }
 ```
 
+## [74. 搜索二维矩阵](https://leetcode-cn.com/problems/search-a-2d-matrix/)
+
+> 二维数组，二分查找，BS
+
+一遍二分
+
+```java
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length, n = matrix[0].length;
+        int l = 0, r = m * n - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            int candidate = matrix[mid / n][mid % n];
+            if (target < candidate) {
+                r = mid - 1;
+            } else if (target > candidate){
+                l = mid + 1;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+两遍二分
+
+```java
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int rowIndex = binarySearchFirstColumn(matrix, target);
+        if (rowIndex < 0) {
+            return false;
+        }
+        return binarySearchRow(matrix[rowIndex], target);
+    }
+
+    public int binarySearchFirstColumn(int[][] matrix, int target) {
+        int low = -1, high = matrix.length - 1;
+        while (low < high) {
+            int mid = (high - low + 1) / 2 + low;
+            if (matrix[mid][0] <= target) {
+                low = mid;
+            } else {
+                high = mid - 1;
+            }
+        }
+        return low;
+    }
+
+    public boolean binarySearchRow(int[] row, int target) {
+        int low = 0, high = row.length - 1;
+        while (low <= high) {
+            int mid = (high - low) / 2 + low;
+            if (row[mid] == target) {
+                return true;
+            } else if (row[mid] > target) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return false;
+    }
+}
+```
+
+## [90. 子集 II](https://leetcode-cn.com/problems/subsets-ii/)
+
+> 数组，回溯，DFS，二进制枚举
+
+二进制枚举
+
+```java
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        // 先排序，如果前一个相同的数没有选择，则可以忽略掉
+        List<List<Integer>> res = new ArrayList<>();
+        int n = nums.length;
+        Arrays.sort(nums);
+        int len = 1 << n;
+        for (int mask = 0; mask < len; ++mask) { // 用二进制遍历所有情况，mask有n位
+            boolean flag = true;
+            List<Integer> tmp = new ArrayList<>();
+            for (int i = 0; i < n; ++i) {
+                if ((mask & (1 << i)) != 0) { // 第i位为1
+                    if (i > 0 && nums[i - 1] == nums[i] && (mask & (1 << (i - 1))) == 0) { // 第i-1位
+                        flag = false;
+                        break;
+                    }
+                    tmp.add(nums[i]);
+                }
+            }
+            if (flag) {
+                res.add(tmp);
+            }
+        }
+        return res;
+    }
+}
+```
+
+DFS+回溯
+
+```java
+class Solution {
+    List<List<Integer>> res = new ArrayList<>();
+    List<Integer> tmp = new ArrayList<>();
+
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        dfs(false, 0, nums);
+        return res;
+    }
+
+    private void dfs(boolean lastChoose, int cur, int[] nums) { // 前一个是否选择，当前选择，所有选择
+        // 走到结束
+        if (cur == nums.length) {
+            res.add(new ArrayList<>(tmp)); // 注意新建对象
+            return;
+        }
+        // 不选择
+        dfs(false, cur + 1, nums);
+        // 选择
+        if (cur > 0 && !lastChoose && nums[cur - 1] == nums[cur]) { // 无论之后怎么选都是重复的
+            return;
+        }
+        tmp.add(nums[cur]);
+        dfs(true, cur + 1, nums);
+        // 回溯
+        tmp.remove(tmp.size() - 1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
