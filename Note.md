@@ -11391,6 +11391,112 @@ class Solution {
 }
 ```
 
+## [面试题 17.21. 直方图的水量](https://leetcode-cn.com/problems/volume-of-histogram-lcci/)
+
+> 数组，栈，动态规划，双指针
+
+双指针（可以背诵）
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        int left = 0, right = height.length - 1;
+        int leftMax = 0, rightMax = 0;
+        int ans = 0;
+        while (left < right) {
+            leftMax = Math.max(leftMax, height[left]);
+            rightMax = Math.max(rightMax, height[right]);
+            if (height[left] < height[right]) {
+                ans += leftMax - height[left];
+                left++;
+            } else {
+                ans += rightMax - height[right];
+                right--;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+动态规划（其实就是用两个数组记忆最大值）
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        int n = height.length;
+        if (n == 0)
+            return 0;
+        int[] leftMax = new int[n];
+        leftMax[0] = height[0];
+        for (int i = 1; i < n; ++i) {
+            leftMax[i] = Math.max(height[i], leftMax[i - 1]);
+        }
+        int[] rightMax = new int[n];
+        rightMax[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; --i) {
+            rightMax[i] = Math.max(height[i], rightMax[i + 1]);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans += Math.min(leftMax[i], rightMax[i]) - height[i];
+        }
+        return ans;
+    }
+}
+```
+
+单调栈 TODO
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        int n = height.length;
+        for (int i = 0; i < n; ++i) {
+            while (!stack.isEmpty() && height[i] > height[stack.peek()]) {
+                int top = stack.pop();
+                if (stack.isEmpty()) {
+                    break;
+                }
+                int left = stack.peek();
+                int currWidth = i - left - 1;
+                int currHeight = Math.min(height[left], height[i]) - height[top];
+                ans += currWidth * currHeight;
+            }
+            stack.push(i);
+        }
+        return ans;
+    }
+}
+```
+
+面向行求解
+
+```java
+class Solution {
+    public int trap(int[] height) {
+        int ans = 0;
+        int n = height.length;
+        int l = 0, r = height.length - 1;
+        int blackSum = 0;
+        for (int i = 0; i < n; ++i) {
+            blackSum += height[i];
+        }
+        int level = 0;
+        int allSum = 0;
+        while (l <= r) {
+            level++;
+            while (l <= r && height[l] < level) l++;
+            while (l <= r && height[r] < level) r--;
+            allSum += r - l + 1;
+        }
+        return allSum - blackSum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -12300,4 +12406,6 @@ String str = new String(charArr)
 ## [480. 滑动窗口中位数](https://leetcode-cn.com/problems/sliding-window-median/)【重点看看】
 
 ## [354. 俄罗斯套娃信封问题](https://leetcode-cn.com/problems/russian-doll-envelopes/)【重点看看】
+
+## [1006. 笨阶乘](https://leetcode-cn.com/problems/clumsy-factorial/)
 
