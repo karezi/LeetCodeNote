@@ -11528,6 +11528,69 @@ class Solution {
 }
 ```
 
+## [781. 森林中的兔子](https://leetcode-cn.com/problems/rabbits-in-forest/)
+
+> 哈希表，数学
+
+执行用时：1 ms, 在所有 Java 提交中击败了96.97%的用户
+
+内存消耗：37.8 MB, 在所有 Java 提交中击败了60.98%的用户
+
+```java
+class Solution {
+    // 开1000的数组统计不同报数者的数量，因为不同报数者必然不是一个颜色。
+    // 然后遍历所有报数者大于0的报数：
+    // 情况一：如果报数者数量多于报数：
+    // 1）恰好可以分成几组，那所有兔子都可以在组内，那结果就是报数者数量；
+    // 2）分组后还有剩余，排除分组后的余数满足情况二
+    // 情况二：如果报数者数量少于等于报数：
+    // 结果为(报数+1)只
+    public int numRabbits(int[] answers) {
+        int[] count = new int[1000];
+        for (int i = 0; i < answers.length; ++i) {
+            count[answers[i]]++;
+        }
+        int ans = 0;
+        for (int i = 0; i < 1000; ++i) {
+            if (count[i] > 0) {
+                if (count[i] > i) { // 报数者数量多于报的数字
+                    if (count[i] % (i + 1) == 0) // 正好可以分成count[i]/(i+1)组
+                        ans += count[i];
+                    else { // 分成count[i]/(i+1)组后还有剩余兔子
+                        int tmp = i + 1;
+                        ans += count[i] / tmp * tmp + tmp;
+                    }
+                } else { // 报数者数量少于等于报的数字
+                    ans += i + 1;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+一个公式 TODO
+
+```java
+class Solution {
+    public int numRabbits(int[] answers) {
+        int[] count = new int[1000];
+        for (int i = 0; i < answers.length; ++i) {
+            count[answers[i]]++;
+        }
+        int ans = 0;
+        for (int i = 0; i < 1000; ++i) {
+            if (count[i] > 0) {
+                int tmp = i + 1;
+                ans += (count[i] + i) / tmp * tmp;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
