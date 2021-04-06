@@ -11591,6 +11591,73 @@ class Solution {
 }
 ```
 
+## [1450. 在既定时间做作业的学生人数](https://leetcode-cn.com/problems/number-of-students-doing-homework-at-a-given-time/)
+
+> 数组
+
+```java
+class Solution {
+    public int busyStudent(int[] startTime, int[] endTime, int queryTime) {
+        int ans = 0;
+        for (int i = 0; i < startTime.length; ++i) {
+            if (startTime[i] <= queryTime && queryTime <= endTime[i]) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [80. 删除有序数组中的重复项 II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii/)
+
+> 数组，双指针
+
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        int state = 1; // 1表示一个，2表示两个，3表示多个
+        int last = nums[0];
+        int len = 1;
+        for (int i = 1; i < n; ++i) {
+            if (last == nums[i]) {
+                state++;
+            } else {
+                state = 1;
+            }
+            if (state <= 2) {
+                nums[len++] = nums[i];
+            }
+            last = nums[i];
+        }
+        return len;
+    }
+}
+```
+
+快慢指针简单写法
+
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        if (n <= 2) {
+            return n;
+        }
+        int slow = 2, fast = 2;
+        while (fast < n) {
+            if (nums[slow - 2] != nums[fast]) {
+                nums[slow] = nums[fast];
+                ++slow;
+            }
+            ++fast;
+        }
+        return slow;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
