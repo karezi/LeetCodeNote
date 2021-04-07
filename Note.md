@@ -11658,6 +11658,71 @@ class Solution {
 }
 ```
 
+## [81. 搜索旋转排序数组 II](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/)
+
+> 数组，二分查找
+
+执行用时：1 ms, 在所有 Java 提交中击败了88.78%的用户
+
+内存消耗：38 MB, 在所有 Java 提交中击败了90.96%的用户
+
+```java
+class Solution {
+    public boolean search(int[] nums, int target) {
+        int n = nums.length;
+        int binIndex = 0;
+        for (int i = 1; i < n; ++i) {
+            if (nums[i] < nums[i - 1]) {
+                binIndex = i;
+            }
+        }
+        if (binIndex == 0)
+            return bs(nums, 0, n, target);
+        else if (target > nums[0])
+            return bs(nums, 0, binIndex, target);
+        else if (target < nums[0])
+            return bs(nums, binIndex, n, target);
+        else
+            return true;
+    }
+
+    private boolean bs(int[] nums, int l, int r, int target) { // [l,r)
+        if (l == r) {
+            if (l < nums.length)
+                return nums[l] == target;
+            else
+                return false;
+        }
+        int mid = l + (r - l) / 2;
+        if (nums[mid] < target) {
+            return bs(nums, mid + 1, r, target);
+        } else if (nums[mid] > target) {
+            return bs(nums, l, mid, target);
+        } else {
+            return true;
+        }
+    }
+}
+```
+
+直接暴力
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了28.49%的用户
+
+```java
+class Solution {
+    public boolean search(int[] nums, int target) {
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] == target)
+                return true;
+        }
+        return false;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
