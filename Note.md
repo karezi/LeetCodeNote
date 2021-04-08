@@ -11723,6 +11723,48 @@ class Solution {
 }
 ```
 
+## [153. 寻找旋转排序数组中的最小值](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/)
+
+> 数组，二分查找
+
+暴力方法
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38 MB, 在所有 Java 提交中击败了33.82%的用户
+
+```java
+class Solution {
+    public int findMin(int[] nums) {
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] < nums[0])
+                return nums[i];
+        }
+        return nums[0];
+    }
+}
+```
+
+二分 TODO
+
+```java
+class Solution {
+    public int findMin(int[] nums) {
+        int low = 0;
+        int high = nums.length - 1;
+        while (low < high) {
+            int pivot = low + (high - low) / 2;
+            if (nums[pivot] < nums[high]) {
+                high = pivot;
+            } else {
+                low = pivot + 1;
+            }
+        }
+        return nums[low];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
