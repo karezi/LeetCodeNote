@@ -11805,6 +11805,52 @@ class Solution {
 }
 ```
 
+## [263. 丑数](https://leetcode-cn.com/problems/ugly-number/)
+
+> 数学
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.8 MB, 在所有 Java 提交中击败了5.44%的用户
+
+```java
+class Solution {
+    public boolean isUgly(int n) {
+        if (n <= 0)
+            return false;
+        while (n != 1) {
+            if ((n & 1) == 0) {
+                n >>= 1;
+            } else if (n % 3 == 0) {
+                n /= 3;
+            } else if (n % 5 == 0){
+                n /= 5;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+官方写法（更简单）
+
+```java
+class Solution {
+    public boolean isUgly(int n) {
+        if (n <= 0)
+            return false;
+        int[] factors = {2, 3, 5};
+        for (int factor: factors) {
+            while (n % factor == 0)
+                n /= factor;
+        }
+        return n == 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
