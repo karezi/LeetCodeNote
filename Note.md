@@ -11851,6 +11851,65 @@ class Solution {
 }
 ```
 
+## [264. 丑数 II](https://leetcode-cn.com/problems/ugly-number-ii/)
+
+> 堆，数学，动态规划
+
+最小堆 TODO
+
+```java
+class Solution {
+    public int nthUglyNumber(int n) {
+        // 每次把最小值的2x/3x/5x放入最小堆
+        int[] factors = {2, 3, 5};
+        Set<Long> unique = new HashSet<>();
+        PriorityQueue<Long> pq = new PriorityQueue<>();
+        unique.add(1L);
+        pq.offer(1L);
+        int ugly = 0;
+        for (int i = 0; i < n; ++i) {
+            long top = pq.poll();
+            ugly = (int)top;
+            for (int factor: factors) {
+                long num = top * factor;
+                if (unique.add(num)) // 小技巧
+                    pq.offer(num);
+            }
+        }
+        return ugly;
+    }
+}
+```
+
+动态规划
+
+```java
+class Solution {
+    public int nthUglyNumber(int n) {
+        // 谁乘了最小就把谁的指针前移一个数
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        int p2 = 1, p3 = 1, p5 = 1;
+        for (int i = 2; i <= n; ++i) {
+            int n2 = dp[p2] * 2, n3 = dp[p3] * 3, n5 = dp[p5] * 5;
+            dp[i] = Math.min(Math.min(n2, n3), n5);
+            if (dp[i] == n2) {
+                p2++; 
+            }
+            if (dp[i] == n3) {
+                p3++;
+            }
+            if (dp[i] == n5) {
+                p5++;
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
