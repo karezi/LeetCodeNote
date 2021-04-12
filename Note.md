@@ -11908,7 +11908,74 @@ class Solution {
 }
 ```
 
+## [179. 最大数](https://leetcode-cn.com/problems/largest-number/)
 
+> 排序
+
+正反拼接字符串排序（注意删除前导0）
+
+用PriorityQueue
+
+```java
+class Solution {
+    public String largestNumber(int[] nums) {
+        int n = nums.length;
+        PriorityQueue<String> pq = new PriorityQueue<>((x, y) -> {
+            if (x.compareTo(y) == 0)
+                return 0;
+            String str1 = x + y;
+            String str2 = y + x;
+            for (int i = 0; i < str1.length(); ++i) {
+                if (str1.charAt(i) > str2.charAt(i)) {
+                    return -1;
+                } else if (str1.charAt(i) < str2.charAt(i)) {
+                    return 1;
+                }
+            }
+            return 0;
+        });
+        for (int num: nums) {
+            pq.offer(num + "");
+        }
+        StringBuilder ans = new StringBuilder();
+        while (!pq.isEmpty()) {
+            ans.append(pq.poll());
+        }
+        while(ans.length() > 1 && ans.charAt(0) == '0') {
+            ans.deleteCharAt(0);
+        }
+        return ans.toString();
+    }
+}
+```
+
+直接用排序
+
+执行用时：6 ms, 在所有 Java 提交中击败了91.49%的用户
+
+内存消耗：37.9 MB, 在所有 Java 提交中击败了69.86%的用户
+
+```java
+class Solution {
+    public String largestNumber(int[] nums) {
+        int n = nums.length;
+        String[] numStrs = new String[n];
+        for (int i = 0; i < n; ++i) {
+            numStrs[i] = String.valueOf(nums[i]);
+        }
+        Arrays.sort(numStrs, (x, y) -> (y + x).compareTo(x + y));
+        int len = numStrs.length;
+        StringBuilder ans = new StringBuilder();
+        int k = 0;
+        while (k < len - 1 && numStrs[k].equals("0"))
+            k++;
+        for (int i = k; i < len; ++i) {
+            ans.append(numStrs[i]);
+        }
+        return ans.toString();
+    }
+}
+```
 
 # Java算法模板
 
@@ -12693,6 +12760,12 @@ Integer i = Integer.parseInt(str);
 
 ```java
 String str = new String(charArr)
+```
+
+- `int`转`String`
+
+```java
+String str = String.valueOf(i)
 ```
 
 # Java常见技巧
