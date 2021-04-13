@@ -11977,6 +11977,105 @@ class Solution {
 }
 ```
 
+## [783. 二叉搜索树节点最小距离](https://leetcode-cn.com/problems/minimum-distance-between-bst-nodes/)
+
+> 树，DFS，递归
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36 MB, 在所有 Java 提交中击败了57.79%的用户
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private static final int MAX = 100001;
+
+    public int minDiffInBST(TreeNode root) {
+        if (root == null) {
+            return MAX;
+        }
+        int left = MAX, right = MAX, minLeft = MAX, minRight = MAX;
+        if (root.left != null) {
+            left = root.val - max(root.left);
+            minLeft = minDiffInBST(root.left);
+        }
+        if (root.right != null) {
+            right = min(root.right) - root.val;
+            minRight = minDiffInBST(root.right);
+        }
+        return Math.min(Math.min(left, right), Math.min(minLeft, minRight));
+    }
+
+    private int max(TreeNode root) { // 左子树的最大值
+        int ans = root.val;
+        while (root.right != null) {
+            ans = root.right.val;
+            root = root.right;
+        }
+        return ans;
+    }
+
+    private int min(TreeNode root) { // 右子树的最小值
+        int ans = root.val;
+        while (root.left != null) {
+            ans = root.left.val;
+            root = root.left;
+        }
+        return ans;
+    }
+}
+```
+
+中序遍历 TODO
+
+**二叉搜索树中序遍历得到的值序列是递增有序的**
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.1 MB, 在所有 Java 提交中击败了47.38%的用户
+
+```java
+class Solution {
+    int pre;
+    int ans;
+
+    public int minDiffInBST(TreeNode root) {
+        ans = Integer.MAX_VALUE;
+        pre = -1;
+        dfs(root);
+        return ans;
+    }
+
+    public void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left);
+        if (pre == -1) {
+            pre = root.val;
+        } else {
+            ans = Math.min(ans, root.val - pre);
+            pre = root.val;
+        }
+        dfs(root.right);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
