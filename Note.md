@@ -12076,6 +12076,131 @@ class Solution {
 }
 ```
 
+## [208. 实现 Trie (前缀树)](https://leetcode-cn.com/problems/implement-trie-prefix-tree/)
+
+> 设计，字典树，前缀树，Trie
+
+执行用时：38 ms, 在所有 Java 提交中击败了96.74%的用户
+
+内存消耗：49.6 MB, 在所有 Java 提交中击败了12.38%的用户
+
+```java
+class Trie {
+
+    private TrieNode head;
+
+    /** Initialize your data structure here. */
+    public Trie() {
+        head = new TrieNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TrieNode p = head;
+        for (char c: word.toCharArray()) {
+            TrieNode[] ts = p.children;
+            if (ts[c - 'a'] == null) {
+                ts[c - 'a'] = new TrieNode();
+            }
+            p = ts[c - 'a'];
+        }
+        p.isTail = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TrieNode p = head;
+        for (char c: word.toCharArray()) {
+            TrieNode[] ts = p.children;
+            if (ts[c - 'a'] == null) {
+                return false;
+            }
+            p = ts[c - 'a'];
+        }
+        return p.isTail;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TrieNode p = head;
+        for (char c: prefix.toCharArray()) {
+            TrieNode[] ts = p.children;
+            if (ts[c - 'a'] == null) {
+                return false;
+            }
+            p = ts[c - 'a'];
+        }
+        return true;
+    }
+
+    private class TrieNode {
+        public TrieNode[] children;
+        public boolean isTail = false; // 是否有该字符串结尾的单词
+
+        TrieNode() {
+            this.children = new TrieNode[27];
+        }
+    }
+}
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
+```
+
+官方写法更简单
+
+```java
+class Trie {
+    private Trie[] children;
+    private boolean isEnd;
+
+    public Trie() {
+        children = new Trie[26];
+        isEnd = false;
+    }
+    
+    public void insert(String word) {
+        Trie node = this;
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            int index = ch - 'a';
+            if (node.children[index] == null) {
+                node.children[index] = new Trie();
+            }
+            node = node.children[index];
+        }
+        node.isEnd = true;
+    }
+    
+    public boolean search(String word) {
+        Trie node = searchPrefix(word);
+        return node != null && node.isEnd;
+    }
+    
+    public boolean startsWith(String prefix) {
+        return searchPrefix(prefix) != null;
+    }
+
+    private Trie searchPrefix(String prefix) {
+        Trie node = this;
+        for (int i = 0; i < prefix.length(); i++) {
+            char ch = prefix.charAt(i);
+            int index = ch - 'a';
+            if (node.children[index] == null) {
+                return null;
+            }
+            node = node.children[index];
+        }
+        return node;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
