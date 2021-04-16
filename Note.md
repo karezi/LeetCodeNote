@@ -12201,6 +12201,43 @@ class Trie {
 }
 ```
 
+## [213. 打家劫舍 II](https://leetcode-cn.com/problems/house-robber-ii/)
+
+> 动态规划
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36 MB, 在所有 Java 提交中击败了22.84%的用户
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        // dp[i]表示当前i位置盗窃的最高金额
+        // dp[i] = max(dp[i-2]+nums[i], dp[i-1])
+        // dp[i] = 0
+        // dp[n-1]
+        int n = nums.length;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+        if (n == 3)
+            return Math.max(nums[0], Math.max(nums[1], nums[2]));
+        return Math.max(getDpI(nums[0], 1, n - 1, nums), getDpI(0, 1, n, nums)); // 第一个取不取分开讨论
+    }
+
+    private int getDpI(int dp_i, int start, int end, int[] nums) {
+        int dp_i_1 = 0;
+        for (int i = start; i < end; ++i) {
+            int dp_old = dp_i;
+            dp_i = Math.max(dp_i_1 + nums[i], dp_i);
+            dp_i_1 = dp_old;
+        }
+        return dp_i;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -13118,4 +13155,6 @@ String str = String.valueOf(i)
 ## [354. 俄罗斯套娃信封问题](https://leetcode-cn.com/problems/russian-doll-envelopes/)【重点看看】
 
 ## [1006. 笨阶乘](https://leetcode-cn.com/problems/clumsy-factorial/)
+
+## [87. 扰乱字符串](https://leetcode-cn.com/problems/scramble-string/)
 
