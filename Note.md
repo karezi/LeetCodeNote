@@ -12238,6 +12238,65 @@ class Solution {
 }
 ```
 
+## [220. 存在重复元素 III](https://leetcode-cn.com/problems/contains-duplicate-iii/)
+
+> 排序，TreeSet，滑动窗口，桶
+
+TreeSet
+
+```java
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        TreeSet<Long> set = new TreeSet<>();
+        for (int i = 0; i < nums.length; ++i) {
+            long num = (long)nums[i];
+            // 用ceiling函数查找大于或等于给定的元素的最小元素或null
+            Long min = set.ceiling(num - (long)t);
+            if (min != null && min <= (num + (long)t))
+                return true;
+            set.add(num);
+            if (i >= k) // 维护窗口
+                set.remove((long)nums[i - k]);
+        }
+        return false;
+    }
+}
+```
+
+桶
+
+```java
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        // bucket .../-1[-t-1,0)/0[0, t+1)/1[t+1, 2t+2)/....
+        // 滑动数组内，属于一个桶，必然满足条件，在不相邻桶，必然不满足条件，在相邻桶，需要比较后判断
+        int n = nums.length;
+        Map<Long, Long> bucket = new HashMap<>(); // Map<getId(v), v>
+        long w = (long)(t + 1);
+        for (int i = 0; i < n; ++i) {
+            long num = (long)nums[i];
+            long id = getId(num, w);
+            if (bucket.containsKey(id))
+                return true;
+            if (bucket.containsKey(id - 1) && num - bucket.get(id - 1) < w)
+                return true;
+            if (bucket.containsKey(id + 1) && bucket.get(id + 1) - num < w)
+                return true;
+            bucket.put(id, num);
+            if (i >= k)
+                bucket.remove(getId((long)nums[i - k], w));
+        }
+        return false;
+    }
+
+    private long getId(long x, long w) {
+        if (x >= 0)
+            return x / w;
+        return (x + 1) / w - 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -12946,6 +13005,17 @@ LinkedList 双端队列链表实现
 - headMap/tailMap/subMap 区间查询
 - comparator 获取排序
 - size 容量
+- clone 浅拷贝
+
+## TreeSet 有序集合
+
+- add/addAll 添加
+- pollFirst/pollLast/remove/clear 删除
+- first/last/floor/ceiling/higher/lower 获取查询
+- contains 存在查询
+- iterator/descendingIterator 获取迭代器
+- descendingSet/headSet/subSet/tailSet 获取视图
+- size/isEmpty 容量
 - clone 浅拷贝
 
 # Java数据转化
