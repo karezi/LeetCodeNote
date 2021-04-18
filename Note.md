@@ -12297,6 +12297,33 @@ class Solution {
 }
 ```
 
+## [26. 删除有序数组中的重复项](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/)
+
+> 数组，双指针
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：40.1 MB, 在所有 Java 提交中击败了81.61%的用户
+
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length;
+        if (n <= 1)
+            return n;
+        int fast = 1, slow = 0;
+        while (fast != n) {
+            if (nums[fast] != nums[slow]) {
+                slow++;
+                nums[slow] = nums[fast];
+            }
+            fast++;
+        }
+        return slow + 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
