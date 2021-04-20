@@ -13311,3 +13311,5 @@ String str = String.valueOf(i)
 
 ## [87. 扰乱字符串](https://leetcode-cn.com/problems/scramble-string/)
 
+## [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
+
