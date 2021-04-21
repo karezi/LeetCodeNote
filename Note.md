@@ -12380,6 +12380,45 @@ class Solution {
 }
 ```
 
+## [91. 解码方法](https://leetcode-cn.com/problems/decode-ways/)
+
+> 字符串，动态规划
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.5 MB, 在所有 Java 提交中击败了92.22%的用户
+
+```java
+class Solution {
+    public int numDecodings(String s) {
+        // 求DP步骤数的经典题目，用递归也可以但是会超时，TODO 细节多建议默写
+        // 表示：dp[i]表示s[0,i-1]的解码个数
+        // 方程：dp[i]=dp[i-1] <s[i-1]是>或dp[i]=dp[i-2] <s[i-2]s[i-1]是> 这些都加一起
+        // 初始化：dp[0]=1 表示第一个为空字符串，有一种解码方式
+        // 结果：dp[n]
+        int n = s.length();
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= n; ++i) {
+            if (s.charAt(i - 1) != '0') {
+                dp[i] += dp[i - 1];
+            }
+            if (i > 1 && check(s.charAt(i - 2), s.charAt(i - 1))) {
+                dp[i] += dp[i - 2];
+            }
+        }
+        return dp[n];
+    }
+
+    private boolean check(char a, char b) {
+        if (a == '0')
+            return false;
+        int num = (a - '0') * 10 + (b - '0');
+        return num > 0 && num <= 26;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -13311,5 +13350,5 @@ String str = String.valueOf(i)
 
 ## [87. 扰乱字符串](https://leetcode-cn.com/problems/scramble-string/)
 
-## [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)
+## [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)【重点看看】
 
