@@ -12419,6 +12419,76 @@ class Solution {
 }
 ```
 
+## [363. 矩形区域不超过 K 的最大数值和](https://leetcode-cn.com/problems/max-sum-of-rectangle-no-larger-than-k/)
+
+> 二分查找，动态规划，前缀和
+
+前缀和
+
+```java
+class Solution {
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        int m = matrix.length, n = matrix[0].length;
+        int[][] pref = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                pref[i][j] = pref[i - 1][j] + pref[i][j - 1] - pref[i - 1][j - 1] + matrix[i - 1][j - 1];
+            }
+        }
+        int max = Integer.MIN_VALUE;
+        for (int x1 = 0; x1 < m; ++x1) {
+            for (int y1 = 0; y1 < n; ++y1) {
+                for (int x2 = x1 + 1; x2 <= m; ++x2) {
+                    for (int y2 = y1 + 1; y2 <= n; ++y2) {
+                        int area = getArea(pref, x1, y1, x2, y2);
+                        if (area == k)
+                            return k;
+                        else if (area < k)
+                            max = Math.max(max, area);
+                    }
+                }
+            }
+        }
+        return max;
+    }
+
+    private int getArea(int[][] pref, int x1, int y1, int x2, int y2) {
+        return pref[x2][y2] - pref[x1][y2] - pref[x2][y1] + pref[x1][y1];
+    }
+}
+```
+
+又用到set.ceiling->二分查找 TODO
+
+```java
+class Solution {
+    public int maxSumSubmatrix(int[][] matrix, int k) {
+        int ans = Integer.MIN_VALUE;
+        int m = matrix.length, n = matrix[0].length;
+        for (int i = 0; i < m; ++i) { // 枚举上边界
+            int[] sum = new int[n];
+            for (int j = i; j < m; ++j) { // 枚举下边界
+                for (int c = 0; c < n; ++c) {
+                    sum[c] += matrix[j][c]; // 更新每列的元素和(a0,a1,...,an-1)
+                }
+                TreeSet<Integer> sumSet = new TreeSet<Integer>();
+                sumSet.add(0);
+                int s = 0; // Sr
+                for (int v : sum) {
+                    s += v;
+                    Integer ceil = sumSet.ceiling(s - k); // >=s-k的最小值
+                    if (ceil != null) {
+                        ans = Math.max(ans, s - ceil);
+                    }
+                    sumSet.add(s);
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
