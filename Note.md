@@ -12489,6 +12489,49 @@ class Solution {
 }
 ```
 
+## [368. 最大整除子集](https://leetcode-cn.com/problems/largest-divisible-subset/)
+
+```java
+class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        // 含义：dp[i]表示包含nums[i]且以nums[i]为最大值的集合长度
+        // 转移方程：dp[i]=max(满足(j<i&&dp[i]%dp[j]==0)]的值+1)
+        // 初始化：dp[i]=1
+        // 结果：先找到max(dp[i])，然后逆序倒推出结果
+        Arrays.sort(nums);
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        int maxIndex = 0;
+        int maxDp = 1;
+        for (int i = 1; i < nums.length; ++i) {
+            for (int j = i - 1; j >= 0; --j) {
+                if (nums[i] % nums[j] == 0)
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+            }
+            if (dp[i] > maxDp) {
+                maxDp = dp[i];
+                maxIndex = i;
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        int maxVal = nums[maxIndex];
+        ans.add(maxVal);
+        int cur = maxDp - 1;
+        for (int i = maxIndex - 1; i >= 0; --i) {
+            if (dp[i] == cur && (maxVal % nums[i] == 0)) {
+                ans.add(nums[i]);
+                maxVal = nums[i];
+                cur--;
+            }
+            if (cur == 0)
+                break;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
