@@ -12628,8 +12628,6 @@ class Solution {
 }
 ```
 
-
-
 # Java算法模板
 
 ## BFS
