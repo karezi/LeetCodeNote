@@ -12532,6 +12532,104 @@ class Solution {
 }
 ```
 
+## [377. 组合总和 Ⅳ](https://leetcode-cn.com/problems/combination-sum-iv/)
+
+> 动态规划
+
+```java
+class Solution {
+    public int combinationSum4(int[] nums, int target) {
+        // dp[i]表示和为i的组合个数
+        // dp[i]=sum(dp[i-num])以num作为结尾（TODO 很妙）
+        // dp[0]=1
+        // dp[target]
+        int n = nums.length;
+        int[] dp = new int[target + 1];
+        dp[0] = 1;
+        for (int i = 1; i <= target; ++i) {
+            for (int num: nums) {
+                if (i - num >= 0) {
+                    dp[i] += dp[i - num];
+                }
+            }
+        }
+        return dp[target];
+    }
+}
+```
+
+## [897. 递增顺序搜索树](https://leetcode-cn.com/problems/increasing-order-search-tree/)
+
+> 树，深度优先搜索，递归
+
+中序遍历之后生成新的树
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private TreeNode cur;
+
+    public TreeNode increasingBST(TreeNode root) {
+        cur = new TreeNode(0);
+        TreeNode res = cur;
+        dfs(root);
+        return res.right;
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null)
+            return;
+        dfs(root.left);
+        cur.right = new TreeNode(root.val);
+        cur = cur.right;
+        dfs(root.right);
+    }
+}
+```
+
+在中序遍历的过程中改变节点指向
+
+```java
+class Solution {
+    private TreeNode cur;
+
+    public TreeNode increasingBST(TreeNode root) {
+        TreeNode dummyNode = new TreeNode(-1);
+        cur = dummyNode;
+        inorder(root);
+        return dummyNode.right;
+    }
+
+    public void inorder(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        inorder(node.left);
+        // 在中序遍历的过程中修改节点指向
+        cur.right = node;
+        node.left = null;
+        cur = node;
+        inorder(node.right);
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
