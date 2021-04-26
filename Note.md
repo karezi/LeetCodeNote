@@ -12628,6 +12628,87 @@ class Solution {
 }
 ```
 
+## [1011. 在 D 天内送达包裹的能力](https://leetcode-cn.com/problems/capacity-to-ship-packages-within-d-days/)
+
+> 数组，二分查找
+
+```java
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        // 二分
+        // 查找内容：最低运载能力min(Smax)
+        // 左边界：数组最大值；右边界：数组和
+        int total = weights[0];
+        int maxVal = weights[0];
+        int n = weights.length;
+        for (int i = 1; i < n; ++i) {
+            if (weights[i] > maxVal)
+                maxVal = weights[i];
+            total += weights[i];
+        }
+        int l = maxVal, r = total;
+        while (l < r) {
+            int mid = l + (r - l) / 2; // 每天能运送的能力
+            if(getMinD(mid, weights, n) > D) { // 能力太小
+                l = mid + 1;
+            } else if (getMinD(mid, weights, n) <= D) { // 能力太大或者正好
+                r = mid;
+            }
+        }
+        return l;
+    }
+
+    private int getMinD(int ab, int[] weights, int n) {
+        int count = 0;
+        int index = 0;
+        int curSum = 0;
+        while (index < n) {
+            curSum += weights[index];
+            if (curSum > ab) {
+                count++;
+                curSum = 0;
+            } else if (curSum == ab) {
+                count++;
+                curSum = 0;
+                index++;
+            } else {
+                index++;
+            }
+        }
+        return curSum == 0 ? count : (count + 1);
+    }
+}
+```
+
+官方简单写法
+
+```java
+class Solution {
+    public int shipWithinDays(int[] weights, int D) {
+        int l = Arrays.stream(weights).max().getAsInt();
+        int r = Arrays.stream(weights).sum();
+        while (l < r) {
+            int mid = (l + r) >>> 1;
+            int need = 1; // 需运送天数（初始就一定有一次）
+            int cur = 0; // 当前这一天已经运送的包裹重量之和
+            for (int weight : weights) {
+                if (cur + weight > mid) {
+                    ++need;
+                    cur = 0;
+                }
+                cur += weight;
+            }
+            if (need <= D) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -13470,7 +13551,13 @@ String str = String.valueOf(i)
   System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
   ```
 
-- 数组求和：int total = Arrays.stream(nums).sum();  // 效率偏低
+- 数组求和、找最大、找最小（效率不高）
+
+	```java
+	int max = Arrays.stream(arr).max().getAsInt();
+	int min = Arrays.stream(arr).min().getAsInt();
+	int total = Arrays.stream(arr).sum()
+	```
 
 - 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
 
