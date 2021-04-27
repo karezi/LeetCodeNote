@@ -12558,6 +12558,71 @@ class Solution {
 }
 ```
 
+## [938. 二叉搜索树的范围和](https://leetcode-cn.com/problems/range-sum-of-bst/)
+
+> 树，深度优先搜索，广度优先搜索，递归，二叉搜索树
+
+深度优先搜索（时间效率高）
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        if (root == null)
+            return 0;
+        if (root.val > high) {
+            return rangeSumBST(root.left, low, high);
+        } else if (root.val < low) {
+            return rangeSumBST(root.right, low, high); 
+        } else {
+            return rangeSumBST(root.left, low, high) + root.val + rangeSumBST(root.right, low, high);
+        }
+    }
+}
+```
+
+广度优先搜索（空间效率高）
+
+```java
+class Solution {
+    public int rangeSumBST(TreeNode root, int low, int high) {
+        int sum = 0;
+        Queue<TreeNode> q = new LinkedList<TreeNode>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+            if (node == null) {
+                continue;
+            }
+            if (node.val > high) {
+                q.offer(node.left);
+            } else if (node.val < low) {
+                q.offer(node.right);
+            } else {
+                sum += node.val;
+                q.offer(node.left);
+                q.offer(node.right);
+            }
+        }
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
