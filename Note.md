@@ -12623,6 +12623,64 @@ class Solution {
 }
 ```
 
+## [633. 平方数之和](https://leetcode-cn.com/problems/sum-of-square-numbers/)
+
+> 数学
+
+sqrt
+
+```java
+class Solution {
+    public boolean judgeSquareSum(int c) {
+        for (long a = 0; a * a <= c; ++a) {
+            double b = Math.sqrt(c - a * a);
+            if (b == (int)b)
+                return true;
+        }
+        return false;
+    }
+}
+```
+
+双指针
+
+```java
+class Solution {
+    public boolean judgeSquareSum(int c) {
+        long l = 0, r = (long)Math.sqrt(c);
+        while (l <= r) {
+            long sum = l * l + r * r;
+            if (sum == c) {
+                return true;
+            } else if (sum < c) {
+                l++;
+            } else {
+                r--;
+            }
+        }
+        return false;
+    }
+}
+```
+
+费马平方和定理 TODO
+
+> 一个非负整数c如果能够表示为两个整数的平方和，当且仅当c的所有形如4k+3的**质因子**的幂均为偶数。
+
+```java
+class Solution {
+    public boolean judgeSquareSum(int c) {
+        for (int i = 2, cnt = 0; i * i <= c; i++, cnt = 0) {
+            while (c % i == 0 && ++cnt > 0)
+                c /= i;
+            if (i % 4 == 3 && cnt % 2 != 0)
+                return false;
+        }
+        return c % 4 != 3;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
