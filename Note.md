@@ -12815,6 +12815,76 @@ class Solution {
 }
 ```
 
+## [403. 青蛙过河](https://leetcode-cn.com/problems/frog-jump/)
+
+> DFS，记忆化，递归，动态规划
+
+记忆化+DFS
+
+```java
+class Solution {
+    private Map<Integer, Integer> stoneMap;
+    private Boolean[][] mem;
+
+    public boolean canCross(int[] stones) {
+        if (stones[0] != 0 || stones[1] != 1)
+            return false;
+        int n = stones.length;
+        mem = new Boolean[n][n]; // 注意一定要用Boolean可以通过null判断是否记忆，数组大小也注意下
+        stoneMap = new HashMap<>();
+        for (int i = 0; i < n; ++i) {
+            stoneMap.put(stones[i], i);
+        }
+        return dfs(stones, 1, 1);
+    }
+
+    private boolean dfs(int[] stones, int index, int lastK) {
+        if (stones.length - 1 == index)
+            return true;
+        if (mem[index][lastK] != null)
+            return mem[index][lastK];
+        for (int i = -1; i <= 1; ++i) {
+            int k = lastK + i;
+            if (k > 0 && stoneMap.containsKey(stones[index] + k)) { // 用map或者二分搜索都可以
+                if (dfs(stones, stoneMap.get(stones[index] + k), k))
+                    return mem[index][lastK] = true;
+            }
+        }
+        return mem[index][lastK] = false;
+    }
+}
+```
+
+动态规划 TODO
+
+```java
+class Solution {
+    public boolean canCross(int[] stones) {
+        int n = stones.length;
+        boolean[][] dp = new boolean[n][n];
+        dp[0][0] = true;
+        for (int i = 1; i < n; ++i) {
+            if (stones[i] - stones[i - 1] > i) {
+                return false;
+            }
+        }
+        for (int i = 1; i < n; ++i) {
+            for (int j = i - 1; j >= 0; --j) {
+                int k = stones[i] - stones[j];
+                if (k > j + 1) {
+                    break;
+                }
+                dp[i][k] = dp[j][k - 1] || dp[j][k] || dp[j][k + 1];
+                if (i == n - 1 && dp[i][k]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -12912,6 +12982,12 @@ public static List<Integer> DFS(TreeNode root) {
 ```
 
 ## 二分查找
+
+直接用函数
+
+```java
+Arrays.binarySearch(arr, fromIndex, toIndex, key)
+```
 
 简单版
 
