@@ -12885,6 +12885,110 @@ class Solution {
 }
 ```
 
+## [137. 只出现一次的数字 II](https://leetcode-cn.com/problems/single-number-ii/)
+
+> 哈希表，位运算
+
+哈希表
+
+执行用时：6 ms, 在所有 Java 提交中击败了24.03%的用户
+
+内存消耗：38 MB, 在所有 Java 提交中击败了89.67%的用户
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num: nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        for (Integer num: map.keySet()) {
+            if (map.get(num) == 1)
+                return num;
+        }
+        return 0;
+    }
+}
+```
+
+位运算
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        int ans = 0;
+        // 32位逐个相加模3
+        for (int i = 0; i <= 32; ++i) {
+            int total = 0;
+            for (int num: nums) {
+                total += (num >> i) & 1;
+            }
+            if (total % 3 != 0) { // 非0即1
+                ans |= (1 << i);
+            }
+        }
+        return ans;
+    }
+}
+```
+
+数字电路设计（优化上一个方法）TODO
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        int a = 0, b = 0;
+        for (int num : nums) {
+            b = ~a & (b ^ num);
+            a = ~b & (a ^ num);
+        }
+        return b;
+    }
+}
+```
+
+## [690. 员工的重要性](https://leetcode-cn.com/problems/employee-importance/)
+
+> 深度优先搜索，广度优先搜索，哈希表
+
+执行用时：5 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39.4 MB, 在所有 Java 提交中击败了98.83%的用户
+
+```java
+/*
+// Definition for Employee.
+class Employee {
+    public int id;
+    public int importance;
+    public List<Integer> subordinates;
+};
+*/
+
+class Solution {
+    public int getImportance(List<Employee> employees, int id) {
+        Map<Integer, Employee> map = new HashMap<>();
+        for (Employee em: employees) {
+            map.put(em.id, em);
+        }
+        return dfs(map, id);
+    }
+
+    private int dfs(Map<Integer, Employee> map, int id) {
+        Employee e = map.get(id);
+        int subImportance = 0;
+        for (Integer emId: e.subordinates) {
+            subImportance += dfs(map, emId);
+        }
+        return e.importance + subImportance;
+    }
+}
+```
+
+
+
+
+
 # Java算法模板
 
 ## BFS
