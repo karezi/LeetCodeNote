@@ -12985,9 +12985,35 @@ class Solution {
 }
 ```
 
+## [554. 砖墙](https://leetcode-cn.com/problems/brick-wall/)
 
+> 哈希表
 
+执行用时：14 ms, 在所有 Java 提交中击败了83.74%的用户
 
+内存消耗：41.4 MB, 在所有 Java 提交中击败了79.55%的用户
+
+```java
+class Solution {
+    public int leastBricks(List<List<Integer>> wall) {
+        int n = wall.size();
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (List<Integer> line: wall) {
+            int sum = 0;
+            for (int i = 0; i < line.size() - 1; ++i) {
+                sum += line.get(i);
+                freq.put(sum, freq.getOrDefault(sum, 0) + 1);
+            }
+        }
+        int maxCount = 0;
+        for (Integer i: freq.keySet()) {
+            if (freq.get(i) > maxCount)
+                maxCount = freq.get(i);
+        }
+        return n - maxCount;
+    }
+}
+```
 
 # Java算法模板
 
@@ -13680,6 +13706,15 @@ LinkedList 双端队列链表实现
 - keySet/values/entrySet/forEach 迭代查询
 - size/isEmpty 容量
 - clone 浅拷贝
+
+哈希表的遍历
+
+```java
+for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+    Integer val = entry.getValue();
+    // ...
+}
+```
 
 ## HashSet 散列集合
 
