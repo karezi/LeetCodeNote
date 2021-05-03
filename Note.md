@@ -13015,6 +13015,22 @@ class Solution {
 }
 ```
 
+## [1844. 将所有数字用字符替换](https://leetcode-cn.com/problems/replace-all-digits-with-characters/)
+
+> 字符串
+
+```java
+class Solution {
+    public String replaceDigits(String s) {
+        char[] ca = s.toCharArray();
+        for (int i = 1; i < ca.length; i += 2) {
+            ca[i] = (char)(ca[i - 1] + (ca[i] - '0'));
+        }
+        return String.valueOf(ca); // 比new String好
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
