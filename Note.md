@@ -13031,6 +13031,40 @@ class Solution {
 }
 ```
 
+## [740. 删除并获得点数](https://leetcode-cn.com/problems/delete-and-earn/)
+
+> 动态规划
+
+```java
+class Solution {
+    // 转化成和数组就是《打家劫舍（经典）》那道题
+    public int deleteAndEarn(int[] nums) {
+        // 分组求和
+        int[] sum = new int[10001];
+        for (int num: nums) {
+            sum[num] += num;
+        }
+        return rob(sum);
+    }
+
+    private int rob(int[] arr) {
+        // dp[i]表示点数和
+        // dp[i]=max(dp[i-1], dp[i-2]+arr[i])  0old 1old(0) 1
+        // dp[0]=arr[0],dp[1]=max(arr[0],arr[1])
+        // dp[1]
+        int dp_0 = arr[0], dp_1 = Math.max(arr[0], arr[1]);
+        for (int i = 2; i < arr.length; ++i) {
+            int tmp = dp_1;
+            dp_1 = Math.max(dp_1, dp_0 + arr[i]);
+            dp_0 = tmp;
+        }
+        return dp_1;
+    }
+}
+```
+
+可以拆分成子数组优化 TODO
+
 # Java算法模板
 
 ## BFS
@@ -13984,4 +14018,6 @@ String str = String.valueOf(i)
 ## [87. 扰乱字符串](https://leetcode-cn.com/problems/scramble-string/)
 
 ## [28. 实现 strStr()](https://leetcode-cn.com/problems/implement-strstr/)【重点看看】
+
+## [1473. 粉刷房子 III](https://leetcode-cn.com/problems/paint-house-iii/)
 
