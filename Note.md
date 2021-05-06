@@ -13065,6 +13065,26 @@ class Solution {
 
 可以拆分成子数组优化 TODO
 
+## [1822. 数组元素积的符号](https://leetcode-cn.com/problems/sign-of-the-product-of-an-array/)
+
+> 数学
+
+```java
+class Solution {
+    public int arraySign(int[] nums) {
+        boolean isNeg = false;
+        for (int num: nums) {
+            if (num == 0) {
+                return 0;
+            } else if (num < 0) {
+                isNeg = !isNeg;
+            }
+        }
+        return isNeg ? -1 : 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
