@@ -7680,6 +7680,8 @@ class Solution {
 
 > 位运算，数组
 
+暴力法
+
 ```java
 class Solution {
     public int xorOperation(int n, int start) {
@@ -7688,6 +7690,33 @@ class Solution {
             res ^= start + 2 * i;
         }
         return res;
+    }
+}
+```
+
+数学法
+
+```java
+class Solution {
+    public int xorOperation(int n, int start) {
+        // ans = (n&1)+2*(f(start/2-1)^f(start/2+n-1))
+        // f(x)={x[4k],1[4k+1],x+1[4k+2],0[4k+3]}
+        int s = start >> 1;
+        return (n & start & 1) | (func(s - 1) ^ func(s + n - 1)) << 1;
+    }
+
+    private int func(int x) {
+        int remainder = x & 3;
+        switch(remainder) {
+            case 0:
+                return x;
+            case 1:
+                return 1;
+            case 2:
+                return x + 1;
+            default:
+                return 0;
+        }
     }
 }
 ```
@@ -13081,6 +13110,67 @@ class Solution {
             }
         }
         return isNeg ? -1 : 1;
+    }
+}
+```
+
+## [1832. 判断句子是否为全字母句](https://leetcode-cn.com/problems/check-if-the-sentence-is-pangram/)
+
+> 字符串
+
+HashSet
+
+```java
+class Solution {
+    public boolean checkIfPangram(String sentence) {
+        Set<Character> s = new HashSet<Character>();
+        for (char c = 'a'; c <= 'z'; ++c) {
+            s.add(c);
+        }
+        for (char c: sentence.toCharArray()) {
+            if (s.contains(c)) {
+                s.remove(c);
+                if (s.size() == 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+字符数组
+
+```java
+class Solution {
+    public boolean checkIfPangram(String sentence) {
+        int[] freq = new int[26];
+        for (char c: sentence.toCharArray()) {
+            if (freq[c - 'a'] == 0)
+                freq[c - 'a'] = 1;
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (freq[i] == 0)
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+位运算
+
+```java
+class Solution {
+    public boolean checkIfPangram(String sentence) {
+        int res = 0;
+        for ( char c : sentence.toCharArray()) {
+            res |= 1 << (c - 'a');
+            if ((res ^ 0x3ffffff) == 0) { // (1 << 26) - 1 => 26个1
+                return true;
+            }
+        }
+        return false;
     }
 }
 ```
