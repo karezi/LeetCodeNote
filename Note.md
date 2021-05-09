@@ -13175,6 +13175,102 @@ class Solution {
 }
 ```
 
+## [1723. 完成所有工作的最短时间](https://leetcode-cn.com/problems/find-minimum-time-to-finish-all-jobs/)
+
+> 递归，回溯，动态规划，状态压缩
+
+dp+状压
+
+```java
+class Solution {
+    public int minimumTimeRequired(int[] jobs, int k) {
+        // dp[i][j]表示0~i-1个工人分配方案位j时的最大工作时间的最小值
+        // dp[i][j]=min(max(dp[i-1][j*]<前i-1个人用j的某个子集>,jobSum(~j*)<第i个人用j的某个子集的补集>))
+        // dp[0][j]=jobSum[j]
+        // dp[k-1][(1<<n)-1]
+        // 预先生成jobSum
+        int n = jobs.length;
+        int len = 1 << n;
+        int[] jobSum = new int[len];
+        for (int i = 1; i < len; ++i) { // 遍历子集并计算每一位
+            int lastOne = Integer.numberOfTrailingZeros(i);
+            int lastI = i - (1 << lastOne);
+            jobSum[i] = jobSum[lastI] + jobs[lastOne];
+        }
+        // 定义
+        int[][] dp = new int[k][len];
+        // 初始化
+        for (int j = 0; j < len; ++j) {
+            dp[0][j] = jobSum[j];
+        }
+        // 递推
+        for (int i = 1; i < k; ++i) {
+            for (int j = 0; j < len; ++j) {
+                int min = Integer.MAX_VALUE;
+                for (int x = j; x != 0; x = (x - 1) & j) { // 状态子集遍历技巧
+                    min = Math.min(min, Math.max(dp[i - 1][x], jobSum[j - x]));
+                }
+                dp[i][j] = min;
+            }
+        }
+        return dp[k - 1][len - 1];
+    }
+}
+```
+
+二分查找 + 回溯 + 剪枝 TODO
+
+## [1482. 制作 m 束花所需的最少天数](https://leetcode-cn.com/problems/minimum-number-of-days-to-make-m-bouquets/)
+
+> 数组，二分查找，滑动数组
+
+满足条件的最小或者满足条件的最大，这种题大概率二分
+
+执行用时：17 ms, 在所有 Java 提交中击败了97.94%的用户
+
+内存消耗：47.2 MB, 在所有 Java 提交中击败了64.12%的用户
+
+```java
+class Solution {
+    public int minDays(int[] bloomDay, int m, int k) {
+        // 二分
+        int n = bloomDay.length;
+        int l = bloomDay[0], r = bloomDay[0];
+        for (int i = 0; i < n; ++i) {
+            l = Math.min(l, bloomDay[i]);
+            r = Math.max(r, bloomDay[i]);
+        }
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (check(mid, bloomDay, n, m, k)) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return check(l, bloomDay, n, m, k) ? l : -1;
+    }
+
+    private boolean check(int day, int[] bloomDay, int n, int m, int k) {
+        int count = 0;
+        int l = 0, r = k;
+        while (r <= n) {
+            while (l < r && bloomDay[l] <= day)
+                l++;
+            if (l == r) {
+                count++;
+                if (count >= m)
+                    return true;
+            } else {
+                l++;
+            }
+            r = l + k;
+        }
+        return false;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -14090,6 +14186,10 @@ String str = String.valueOf(i)
 
 - [Integer常用函数和位运算技巧](https://blog.csdn.net/youyou1543724847/article/details/52385775)
 
+  ```java
+  Integer.numberOfTrailingZeros 最后一个1的位置（最后一个1后面又几个0）
+  ```
+
 - 检查回文串（经典DP子串遍历）
 
 	```java
@@ -14106,6 +14206,14 @@ String str = String.valueOf(i)
 	```
 
 - 判断字符是否是数字：Character.isDigit(ch)
+
+- 二进制子集遍历
+
+  ```java
+  for (int x = mask; x != 0; x = (x - 1) & mask) {
+      System.out.println(x);
+  }
+  ```
 
 # 未完成
 
