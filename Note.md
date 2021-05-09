@@ -13271,6 +13271,53 @@ class Solution {
 }
 ```
 
+## [872. 叶子相似的树](https://leetcode-cn.com/problems/leaf-similar-trees/)
+
+> 树，深度优先搜索
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.8 MB, 在所有 Java 提交中击败了98.61%的用户
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        List<Integer> list1 = new ArrayList<>();
+        dfs(root1, list1);
+        List<Integer> list2 = new ArrayList<>();
+        dfs(root2, list2);
+        return list1.equals(list2); // 直接比较
+    }
+
+    private void dfs(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        if (root.left == null && root.right == null) {
+            list.add(root.val);
+            return;
+        }
+        dfs(root.left, list);
+        dfs(root.right, list);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
