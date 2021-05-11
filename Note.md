@@ -13318,6 +13318,41 @@ class Solution {
 }
 ```
 
+## [1734. 解码异或后的排列](https://leetcode-cn.com/problems/decode-xored-permutation/)
+
+> 位运算
+
+妙！
+
+```java
+class Solution {
+    public int[] decode(int[] encoded) {
+        // e[0]=p[0]^p[1]
+        // e[1]=p[1]^p[2]
+        // e[2]=p[2]^p[3]
+        // e[3]=p[3]^p[4]
+        // p[0]^p[1]^...^p[n-1]=1^2^3...^n
+        // p[1]^p[2]^...^p[n-1]=e[1]^e[3]^...^e[n-2]
+        int n = encoded.length + 1;
+        int total = 0;
+        for (int i = 1; i <= n; ++i) {
+            total ^= i;
+        }
+        int odd = 0;
+        for (int i = 1; i < n - 1; i += 2) {
+            odd ^= encoded[i];
+        }
+        int first = total ^ odd;
+        int[] ans = new int[n];
+        ans[0] = first;
+        for (int i = 1; i < n; ++i) {
+            ans[i] = encoded[i - 1] ^ ans[i - 1];
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
