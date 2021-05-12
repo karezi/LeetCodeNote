@@ -13353,6 +13353,29 @@ class Solution {
 }
 ```
 
+## [1310. 子数组异或查询](https://leetcode-cn.com/problems/xor-queries-of-a-subarray/)
+
+> 位运算，前缀
+
+```java
+class Solution {
+    public int[] xorQueries(int[] arr, int[][] queries) {
+        int n = arr.length;
+        int[] preXor = new int[n + 1]; // 前缀异或
+        preXor[0] = 0;
+        for (int i = 0; i < n; ++i) {
+            preXor[i + 1] = preXor[i] ^ arr[i];
+        }
+        int m = queries.length;
+        int[] ans = new int[m];
+        for (int i = 0; i < m; ++i) {
+            ans[i] = preXor[queries[i][0]] ^ preXor[queries[i][1] + 1];
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
