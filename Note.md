@@ -13376,6 +13376,40 @@ class Solution {
 }
 ```
 
+## [1269. 停在原地的方案数](https://leetcode-cn.com/problems/number-of-ways-to-stay-in-the-same-place-after-some-steps/)
+
+> 动态规划，二维动态规划
+
+```java
+class Solution {
+    public int numWays(int steps, int arrLen) {
+        // dp[i][j]表示第i步走到j位置的时候的方案数，0<=i<=steps，0=<j<=min(arrLen-1, steps/2+1)
+        // dp[i][j]=dp[i-1][j-1]+dp[i-1][j]+dp[i-1][j+1]
+        // dp[0][0]=1,dp[0][j]=0
+        // dp[steps][0]
+        // i可以优化掉
+        int mo = 1000000007;
+        int len = Math.min(arrLen - 1, steps / 2 + 1) + 1; // 最远距离
+        int[] dp = new int[len];
+        dp[0] = 1;
+        for (int i = 1; i <= steps; ++i) { // 执行steps步骤
+            int[] dpn = new int[len]; // 下一状态
+            for (int j = 0; j < len; ++j) {
+                dpn[j] = dp[j];
+                if (j - 1 >= 0) { // 考虑-1
+                    dpn[j] = (dp[j - 1] + dpn[j]) % mo;
+                }
+                if (j + 1 < len) { // 考虑+1
+                    dpn[j] = (dp[j + 1] + dpn[j]) % mo;
+                }
+            }
+            dp = dpn; // 更新
+        }
+        return dp[0];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
