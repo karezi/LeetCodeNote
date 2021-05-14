@@ -13410,6 +13410,29 @@ class Solution {
 }
 ```
 
+## [12. 整数转罗马数字](https://leetcode-cn.com/problems/integer-to-roman/)
+
+> 数学，字符串
+
+```java
+class Solution {
+    public String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        int[] n = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] strs = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        for (int i = 0; i < 13; ++i) {
+            while (num >= n[i]) {
+                sb.append(strs[i]);
+                num -= n[i];
+            }
+            if (num == 0)
+                break;
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
