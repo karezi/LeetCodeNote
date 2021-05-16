@@ -13433,6 +13433,160 @@ class Solution {
 }
 ```
 
+## [1854. 人口最多的年份](https://leetcode-cn.com/problems/maximum-population-year/)
+
+> 数组，差分数组
+
+暴力
+
+```java
+class Solution {
+    public int maximumPopulation(int[][] logs) {
+        int maxCount = 0;
+        int ans = -1;
+        for (int i = 1950; i <= 2050; ++i) {
+            int count = 0;
+            for (int[] log: logs) {
+                if (log[0] <= i && i < log[1])
+                    count++;
+            }
+            if (count > maxCount) {
+                maxCount = count;
+                ans = i;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+差分数组
+
+「差分」也是「前缀和」的逆运算
+
+```java
+class Solution {
+    public int maximumPopulation(int[][] logs) {
+        int offset = 1950;
+        int[] delta = new int[101];
+        for (int[] log: logs) {
+            ++delta[log[0] - offset];
+            --delta[log[1] - offset];
+        }
+        int preSum = 0;
+        int maxIndex = 0;
+        int maxDelta = 0;
+        for (int i = 0; i < 101; ++i) {
+            preSum += delta[i];
+            if (preSum > maxDelta) {
+                maxIndex = i;
+                maxDelta = preSum;
+            }
+        }
+        return maxIndex + offset;
+    }
+}
+```
+
+## [421. 数组中两个数的最大异或值](https://leetcode-cn.com/problems/maximum-xor-of-two-numbers-in-an-array/)
+
+> 位运算，字典树
+
+HashSet
+
+```java
+class Solution {
+    public int findMaximumXOR(int[] nums) {
+        // 从高位到低位求最大ans，即高位尽可能是1
+        int ans = 0;
+        for (int i = 30; i >= 0; --i) {
+            Set<Integer> s = new HashSet<>();
+            for (int num: nums) {
+                s.add(num >> i);
+            }
+            ans = ans * 2 + 1;
+            boolean success = false;
+            for (int num: nums) {
+                if (s.contains(ans ^ (num >> i))) {
+                    success = true;
+                    break;
+                }
+            }
+            if (!success)
+                ans -= 1;
+        }
+        return ans;
+    }
+}
+```
+
+Trie
+
+```java
+class Solution {
+    private Trie t = new Trie();
+
+    public int findMaximumXOR(int[] nums) {
+        int ans = 0;
+        for (int i = 1; i < nums.length; ++i) { // 两两比较的技巧
+            add(nums[i - 1]);
+            ans = Math.max(ans, getMax(nums[i]));
+        }
+        return ans;
+    }
+
+    private void add(int num) {
+        Trie cur = t;
+        for (int i = 30; i >= 0; --i) {
+            int p = (num >> i) & 1; // 取出第i位
+            if (p == 0) {
+                if (cur.left == null) {
+                    cur.left = new Trie();
+                }
+                cur = cur.left;
+            } else {
+                if (cur.right == null) {
+                    cur.right = new Trie();
+                }
+                cur = cur.right;
+            }
+        }
+    }
+
+    private int getMax(int num) {
+        // 通过num求可以得到的最大x
+        int x = 0;
+        Trie cur = t;
+        for (int i = 30; i >= 0; --i) {
+            int p = (num >> i) & 1;
+            if (p == 0) {
+                if (cur.right != null) {
+                    x = x * 2 + 1;
+                    cur = cur.right;
+                } else {
+                    x *= 2;
+                    cur = cur.left;
+                }
+            } else {
+                if (cur.left != null) {
+                    x = x * 2 + 1;
+                    cur = cur.left;
+                } else {
+                    x *= 2;
+                    cur = cur.right;
+                }
+            }
+        }
+        return x;
+    }
+
+    class Trie {
+        Trie left = null; // left!=null表示0
+        Trie right = null; // right!=null表示1
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
