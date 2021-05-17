@@ -13587,6 +13587,57 @@ class Solution {
 }
 ```
 
+## [993. 二叉树的堂兄弟节点](https://leetcode-cn.com/problems/cousins-in-binary-tree/)
+
+> 树，深度优先搜索，广度优先搜索
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int[] f = new int[2];
+    private int[] d = new int[2];
+
+    public boolean isCousins(TreeNode root, int x, int y) {
+        dfs(root, x, -1, 0, 0);
+        dfs(root, y, -1, 0, 1);
+        return f[0] != f[1] && d[0] == d[1];
+    }
+
+    private void dfs(TreeNode root, int a, int father, int depth, int offset) {
+        if (root == null) {
+            return;
+        }
+        if (root.val == a) {
+            d[offset] = depth;
+            f[offset] = father;
+            return;
+        }
+        if (root.left != null) {
+            dfs(root.left, a, root.val, depth + 1, offset);
+        }
+        if (root.right != null) {
+            dfs(root.right, a, root.val, depth + 1, offset);
+        }
+    }
+}
+```
+
+可以提前结束
+
 # Java算法模板
 
 ## BFS
