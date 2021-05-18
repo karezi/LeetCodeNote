@@ -13638,6 +13638,32 @@ class Solution {
 
 可以提前结束
 
+## [1442. 形成两个异或相等数组的三元组数目](https://leetcode-cn.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/)
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.6 MB, 在所有 Java 提交中击败了100.00%的用户
+
+```java
+class Solution {
+    public int countTriplets(int[] arr) {
+        int ans = 0;
+        int n = arr.length;
+        for (int i = n - 2; i >= 0; i--) {
+            int cur = arr[i];
+            for (int j = i + 1; j < n; ++j) {
+                cur ^= arr[j];
+                if (cur == 0)
+                    ans += j - i;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+Hash号称可以降低复杂度TODO
+
 # Java算法模板
 
 ## BFS
