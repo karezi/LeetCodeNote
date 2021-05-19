@@ -13664,6 +13664,50 @@ class Solution {
 
 Hash号称可以降低复杂度TODO
 
+## [1738. 找出第 K 大的异或坐标值](https://leetcode-cn.com/problems/find-kth-largest-xor-coordinate-value/)
+
+> 数组，优先队列，前缀和，排序，快速选择算法
+
+优先队列
+
+```java
+class Solution {
+    public int kthLargestValue(int[][] matrix, int k) {
+        int m = matrix.length, n = matrix[0].length;
+        int[][] cache = new int[m][n];
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+        cache[0][0] = matrix[0][0];
+        putIn(pq, k, cache[0][0]);
+        for (int i = 1; i < m; ++i) {
+            cache[i][0] = cache[i - 1][0] ^ matrix[i][0];
+            putIn(pq, k, cache[i][0]);
+        }
+        for (int i = 1; i < n; ++i) {
+            cache[0][i] = cache[0][i - 1] ^ matrix[0][i];
+            putIn(pq, k, cache[0][i]);
+        }
+        for (int a = 1; a < m; ++a) {
+            for (int b = 1; b < n; ++b) {
+                cache[a][b] = cache[a - 1][b] ^ cache[a][b - 1] ^ cache[a - 1][b - 1] ^ matrix[a][b];
+                putIn(pq, k, cache[a][b]);
+            }
+        }
+        return pq.poll();
+    }
+
+    private void putIn(PriorityQueue<Integer> pq, int k, int x) {
+        if (pq.size() < k) {
+            pq.offer(x);
+        } else if (pq.peek() < x){
+            pq.poll();
+            pq.offer(x);
+        }
+    }
+}
+```
+
+排序、快速选择算法TODO
+
 # Java算法模板
 
 ## BFS
@@ -13841,6 +13885,41 @@ void QuickSort(int arr, int left, int right) {
     QuickSort(arr, i + 1, right);
 }
 ```
+
+快速选择算法（求第k大元素）
+
+```java
+public void nthElement(List<Integer> results, int left, int kth, int right) {
+    if (left == right)
+        return;
+    int pivot = (int) (left + Math.random() * (right - left + 1));
+    swap(results, pivot, right);
+    // 三路划分（three-way partition）
+    int sepl = left - 1, sepr = left - 1;
+    for (int i = left; i <= right; i++) {
+        if (results.get(i) > results.get(right)) {
+            swap(results, ++sepr, i);
+            swap(results, ++sepl, sepr);
+        } else if (results.get(i) == results.get(right)) {
+            swap(results, ++sepr, i);
+        }
+    }
+    if (sepl < left + kth && left + kth <= sepr) {
+        return;
+    } else if (left + kth <= sepl) {
+        nthElement(results, left, kth, sepl);
+    } else {
+        nthElement(results, sepr + 1, kth - (sepr - left + 1), right);
+    }
+}
+public void swap(List<Integer> results, int index1, int index2) {
+    int temp = results.get(index1);
+    results.set(index1, results.get(index2));
+    results.set(index2, temp);
+}
+```
+
+
 
 ## 回溯法
 
