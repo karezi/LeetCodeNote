@@ -13708,6 +13708,49 @@ class Solution {
 
 排序、快速选择算法TODO
 
+## [692. 前K个高频单词](https://leetcode-cn.com/problems/top-k-frequent-words/)
+
+> 堆，字典树，哈希表，优先队列
+
+执行用时：7 ms, 在所有 Java 提交中击败了91.95%的用户
+
+内存消耗：38.4 MB, 在所有 Java 提交中击败了91.91%的用户
+
+```java
+class Solution {
+    public List<String> topKFrequent(String[] words, int k) {
+        Map<String, Integer> map = new HashMap<>(); // 计数
+        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
+            public int compare(String x, String y) {
+                if (map.get(x) == map.get(y)) {
+                    return y.compareTo(x);
+                }
+                return map.get(x) - map.get(y);
+            }
+        }); // 维护前k个
+        for (String word: words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+        for (String key: map.keySet()) {
+            if (pq.size() < k) {
+                pq.offer(key);
+            } else if (
+                (map.get(key) > map.get(pq.peek())) 
+                 || (map.get(key) == map.get(pq.peek()) && key.compareTo(pq.peek()) < 0)
+            ) {
+                pq.poll();
+                pq.offer(key);
+            }
+        }
+        List<String> res = new ArrayList<>(); // 倒序插入list的技巧
+        for (int i = 0; i < k; ++i) {
+            res.add(0, pq.poll());
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
