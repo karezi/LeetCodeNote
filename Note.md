@@ -13778,6 +13778,63 @@ class Solution {
 }
 ```
 
+## [810. 黑板异或游戏](https://leetcode-cn.com/problems/chalkboard-xor-game/)
+
+> 数学，异或
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.1 MB, 在所有 Java 提交中击败了65.42%的用户
+
+```java
+class Solution {
+    public boolean xorGame(int[] nums) {
+        // 在偶数情况下不可能存在删除任意数，异或都为0的情况（数学反证可以证明），而且两轮之后又是偶数，立于不败之地
+        if (nums.length % 2 == 0) {
+            return true;
+        }
+        int xor = 0;
+        for (int num : nums) {
+            xor ^= num;
+        }
+        return xor == 0;
+    }
+}
+```
+
+## [664. 奇怪的打印机](https://leetcode-cn.com/problems/strange-printer/)
+
+> 动态规划，字符串，区间DP
+
+```java
+class Solution {
+    public int strangePrinter(String s) {
+        // dp[i][j]表示i到j的最少打印次数
+        // dp[i][j]=(s[i]=s[j]=>dp[i][j-1] || s[i]<>s[j]=>min(dp[i][k]+dp[k+1][j]))
+        // dp[i][i]=1
+        // dp[0][n-1]
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        // 区间遍历常用方法（保证动态规划的计算过程满足无后效性）
+        for (int i = n - 1; i >= 0; --i) {
+            dp[i][i] = 1;
+            for (int j = i + 1; j < n; ++j) {
+                if (s.charAt(i) == s.charAt(j))
+                    dp[i][j] = dp[i][j - 1];
+                else {
+                    int minVal = Integer.MAX_VALUE;
+                    for (int k = i; k < j; ++k) {
+                        minVal = Math.min(minVal, dp[i][k] + dp[k + 1][j]);
+                    }
+                    dp[i][j] = minVal;
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -14729,7 +14786,8 @@ String str = String.valueOf(i)
 - [Integer常用函数和位运算技巧](https://blog.csdn.net/youyou1543724847/article/details/52385775)
 
   ```java
-  Integer.numberOfTrailingZeros 最后一个1的位置（最后一个1后面又几个0）
+  前导0计数:Integer.numberOfLeadingZeros
+  后缀0计数:Integer.numberOfTailingzeros（最后一个1的位置）
   ```
 
 - 检查回文串（经典DP子串遍历）
@@ -14781,3 +14839,4 @@ String str = String.valueOf(i)
 
 ## [1473. 粉刷房子 III](https://leetcode-cn.com/problems/paint-house-iii/)
 
+## [1707. 与数组中元素的最大异或值](https://leetcode-cn.com/problems/maximum-xor-with-an-element-from-array/)
