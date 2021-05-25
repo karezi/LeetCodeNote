@@ -13835,6 +13835,52 @@ class Solution {
 }
 ```
 
+## [1787. 使所有区间的异或结果为零](https://leetcode-cn.com/problems/make-the-xor-of-all-segments-equal-to-zero/)
+
+> 动态规划，异或
+
+TODO
+
+```java
+class Solution {
+    public int minChanges(int[] nums, int k) {
+        // dp[i][xor]表示修改第i组后结果为xor，0<=i<k，0<=xor<=1024
+        // dp[i][xor]=min(dp[i-1][xor^x]+cnt-count[i,x])
+        // dp[0][xor]=min(cnt-count[i,x])
+        // dp[k-1][0]
+        // 第一维用滚动数组优化
+        int n = nums.length, m = 1024;
+        int[] dp = new int[m];
+        int min = Integer.MAX_VALUE; // 当前组的最小值
+        for (int i = 0; i < k; ++i) {
+            int cnt = 0; // 每组的个数
+            int[] counter = new int[m]; // 组内每个数的个数
+            for (int l = i; l < n; l += k, ++cnt)
+                ++counter[nums[l]];
+            if (i == 0) { // 首组初始化
+                for (int j = 0; j < m; ++j) {
+                    dp[j] = cnt - counter[j];
+                    min = Math.min(min, dp[j]);
+                }
+            } else {
+                int[] curDp = new int[m];
+                int curMin = Integer.MAX_VALUE;
+                for (int j = 0; j < m; ++j) {
+                    curDp[j] = min + cnt; // 整列替换
+                    for (int l = i; l < n; l += k) { // 某个数替换
+                        curDp[j] = Math.min(curDp[j], dp[j ^ nums[l]] + cnt - counter[nums[l]]);
+                    }
+                    curMin = Math.min(curMin, curDp[j]);
+                }
+                dp = curDp;
+                min = curMin;
+            }
+        }
+        return dp[0];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
