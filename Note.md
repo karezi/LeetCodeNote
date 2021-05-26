@@ -13881,6 +13881,106 @@ class Solution {
 }
 ```
 
+## [1190. 反转每对括号间的子串](https://leetcode-cn.com/problems/reverse-substrings-between-each-pair-of-parentheses/)
+
+> 栈
+
+用两个栈
+
+执行用时：5 ms, 在所有 Java 提交中击败了53.18%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了39.36%的用户
+
+TODO 注意是不是要Last
+
+```java
+class Solution {
+    public String reverseParentheses(String s) {
+        LinkedList<Character> stack = new LinkedList<>();
+        LinkedList<Character> tmp = new LinkedList<>();
+        int n = s.length();
+        if (n == 0)
+            return "";
+        for (char c: s.toCharArray()) {
+            if (c == ')') {
+                while (stack.peek() != '(') {
+                    tmp.offerFirst(stack.poll());
+                }
+                stack.poll();
+                while (!tmp.isEmpty()) {
+                    stack.offerFirst(tmp.pollLast());
+                }
+                continue;
+            }
+            stack.offerFirst(c);
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pollLast());
+        }
+        return sb.toString();
+    }
+}
+```
+
+用一个栈 TODO
+
+```java
+class Solution {
+    public String reverseParentheses(String s) {
+        Deque<String> stack = new LinkedList<String>();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                stack.push(sb.toString());
+                sb.setLength(0);
+            } else if (ch == ')') {
+                sb.reverse();
+                sb.insert(0, stack.pop());
+            } else {
+                sb.append(ch);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+预处理括号 TODO 找到遍历的规律
+
+```java
+class Solution {
+    public String reverseParentheses(String s) {
+        int n = s.length();
+        int[] pair = new int[n];
+        Deque<Integer> stack = new LinkedList<Integer>();
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else if (s.charAt(i) == ')') {
+                int j = stack.pop();
+                pair[i] = j;
+                pair[j] = i;
+            }
+        }
+
+        StringBuffer sb = new StringBuffer();
+        int index = 0, step = 1;
+        while (index < n) {
+            if (s.charAt(index) == '(' || s.charAt(index) == ')') {
+                index = pair[index];
+                step = -step;
+            } else {
+                sb.append(s.charAt(index));
+            }
+            index += step;
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
