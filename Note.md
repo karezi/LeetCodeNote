@@ -13981,6 +13981,51 @@ class Solution {
 }
 ```
 
+## [461. 汉明距离](https://leetcode-cn.com/problems/hamming-distance/)
+
+> 位运算
+
+```java
+class Solution {
+    public int hammingDistance(int x, int y) {
+        int res = 0;
+        for (int i = 0; i < 31; ++i) {
+            if ((x & 1) != (y & 1))
+                res++;
+            x >>= 1;
+            y >>= 1;
+        }
+        return res;
+    }
+}
+```
+
+利用异或
+
+```java
+class Solution {
+    public int hammingDistance(int x, int y) {
+        return Integer.bitCount(x ^ y);
+    }
+}
+```
+
+lowbit算法（x&=x-1去除最后一个1）
+
+```java
+class Solution {
+    public int hammingDistance(int x, int y) {
+        int s = x ^ y;
+        int ans = 0;
+        while (s != 0) {
+            s &= s - 1;
+            ans++;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
