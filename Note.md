@@ -14026,6 +14026,50 @@ class Solution {
 }
 ```
 
+## [477. 汉明距离总和](https://leetcode-cn.com/problems/total-hamming-distance/)
+
+> 位运算
+
+暴力
+
+```java
+class Solution {
+    public int totalHammingDistance(int[] nums) {
+        int n = nums.length;
+        int sum = 0;
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i + 1; j < n; ++j) {
+                sum += Integer.bitCount(nums[i] ^ nums[j]);
+            }
+        }
+        return sum;
+    }
+}
+```
+
+按位计算
+
+执行用时：5 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39.5 MB, 在所有 Java 提交中击败了48.59%的用户
+
+```java
+class Solution {
+    public int totalHammingDistance(int[] nums) {
+        int sum = 0;
+        int n = nums.length;
+        for (int i = 0; i < 30; ++i) { // 10^9只需要到29
+            int one = 0;
+            for (int num: nums) {
+                one += (num >> i) & 1;
+            }
+            sum += one * (n - one);
+        }
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
