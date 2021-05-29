@@ -14142,6 +14142,21 @@ class Solution {
 }
 ```
 
+## [231. 2的幂](https://leetcode-cn.com/problems/power-of-two/)
+
+>位运算，数学
+
+```java
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0; // 最低位的1变成0后直接为0说明只有一位是1
+        // return n > 0 && Integer.bitCount(n) == 1;
+        // return n > 0 && (n & -n) == n;
+        // return n > 0 && (1 << 30) % n == 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
