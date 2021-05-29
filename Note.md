@@ -14070,6 +14070,78 @@ class Solution {
 }
 ```
 
+## [1074. 元素和为目标值的子矩阵数量](https://leetcode-cn.com/problems/number-of-submatrices-that-sum-to-target/)
+
+> 数组，前缀和
+
+暴力前缀和
+
+```java
+class Solution {
+    public int numSubmatrixSumTarget(int[][] matrix, int target) {
+        int ans = 0;
+        int m = matrix.length, n = matrix[0].length;
+        int[][] preSum = new int[m + 1][n + 1];
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                preSum[i][j] = preSum[i - 1][j] + preSum[i][j - 1] - preSum[i - 1][j - 1] + matrix[i - 1][j - 1];
+            }
+        }
+        for (int x1 = m; x1 >= 1; --x1) {
+            for (int x2 = x1; x2 <= m; ++x2) {
+                for (int y1 = n; y1 >= 1; --y1) {
+                    for (int y2 = y1; y2 <= n; ++y2) {
+                        if (preSum[x2][y2] - preSum[x2][y1 - 1] - preSum[x1 - 1][y2] + preSum[x1 - 1][y1 - 1] == target)
+                            ans++;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+前缀和+哈希表
+
+```java
+class Solution {
+    public int numSubmatrixSumTarget(int[][] matrix, int target) {
+        int ans = 0;
+        int m = matrix.length, n = matrix[0].length;
+        boolean flag = m > n;
+        int[] len = flag ? new int[]{n, m} : new int[]{m, n}; // 复杂度优化
+        for (int i = 0; i < len[0]; ++i) { // 上界
+            int[] flatSum = new int[len[1]];
+            for (int j = i; j < len[0]; ++j) { // 下界
+                for (int k = 0; k < len[1]; ++k) {
+                    if (flag)
+                        flatSum[k] += matrix[j][k];
+                    else
+                        flatSum[k] += matrix[k][j];
+                }
+                ans += countTarget(flatSum, target);
+            }
+        }
+        return ans;
+    }
+
+    private int countTarget(int[] flatSum, int target) {
+        int count = 0, pre = 0;
+        Map<Integer,Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for (int flatVal: flatSum) {
+            pre += flatVal;
+            if (map.containsKey(pre - target)) {
+                count += map.get(pre - target);
+            }
+            map.put(pre, map.getOrDefault(pre, 0) + 1);
+        }
+        return count;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
