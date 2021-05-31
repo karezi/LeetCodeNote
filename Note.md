@@ -14157,6 +14157,22 @@ class Solution {
 }
 ```
 
+## [342. 4的幂](https://leetcode-cn.com/problems/power-of-four/)
+
+> 位运算
+
+```java
+class Solution {
+    public boolean isPowerOfFour(int n) {
+        // 执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+        // 内存消耗：35.5 MB, 在所有 Java 提交中击败了54.88%的用户
+        return n > 0 && (n & (n - 1)) == 0 && ((n & 0x55555555) > 0);
+        // return n > 0 && (n & (n - 1)) == 0 && (n & 0xaaaaaaaa) == 0;
+        // return n > 0 && (n & (n - 1)) == 0 && n % 3 == 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
