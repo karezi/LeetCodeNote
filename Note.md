@@ -14173,6 +14173,36 @@ class Solution {
 }
 ```
 
+## [1744. 你能在你最喜欢的那天吃到你最喜欢的糖果吗？](https://leetcode-cn.com/problems/can-you-eat-your-favorite-candy-on-your-favorite-day/)
+
+> 数组，数学，前缀和
+
+```java
+class Solution {
+    public boolean[] canEat(int[] candiesCount, int[][] queries) {
+        int n = candiesCount.length, m = queries.length;
+        long[] pre = new long[n]; // 注意int溢出
+        pre[0] = candiesCount[0];
+        for (int i = 1; i < n; ++i) {
+            pre[i] = pre[i - 1] + candiesCount[i];
+        }
+        boolean[] res = new boolean[m];
+        for (int i = 0; i < m; ++i) {
+            // 以吃到第favoriteType为准的有效区间[minVal, maxVal]
+            int ft = queries[i][0];
+            long minVal = ft == 0 ? 1 : pre[ft - 1] + 1; // 从第0天开始
+            long maxVal = pre[ft];
+            // 以吃法计算上下界，最小一天一个，最多一天dailyCap个，区间[minCount, maxCount]
+            long minCount = queries[i][1] + 1; // 天数
+            long maxCount = (long)minCount * queries[i][2];
+            // 判断两个区间是否有交集
+            res[i] = !(maxCount < minVal || minCount > maxVal);
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
