@@ -14203,6 +14203,64 @@ class Solution {
 }
 ```
 
+## [523. 连续的子数组和](https://leetcode-cn.com/problems/continuous-subarray-sum/)
+
+> 数学，同余，前缀和，哈希表
+
+优化的暴力法（反而快）
+
+```java
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        for (int i = 0; i < nums.length - 1; i++) { // 提前结束
+            if (nums[i] == 0 && nums[i + 1] == 0) {
+                return true;
+            }
+        }
+        for (int i = 0; i < nums.length; i++) {
+            int sum = nums[i];
+            for (int j = i + 1; j < nums.length; j++) {
+                sum += nums[j];
+                if (sum % k == 0) {
+                    return true;
+                }
+            }
+            if (sum < k) { // 提前结束
+                break;
+            }
+        }
+        return false;
+    }
+}
+```
+
+前缀和+哈希表+同余，TODO 挺适合面试的，诸多技巧
+
+```java
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+        // a - b = c , 如果c % k = 0， 则 a % k = b % k
+        int n = nums.length;
+        if (n == 1)
+            return false;
+        int preReminder = 0;
+        Map<Integer, Integer> map = new HashMap<>(); // <余数，第一次出现的位置>
+        map.put(0, -1); // 精髓，使得可以取到0
+        for (int i = 0; i < n; ++i) {
+            preReminder = (preReminder + nums[i]) % k;
+            if (!map.containsKey(preReminder)) {
+                map.put(preReminder, i);
+            } else {
+                int preIndex = map.get(preReminder);
+                if (i - preIndex > 1)
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
