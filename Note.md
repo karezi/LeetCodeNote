@@ -14261,6 +14261,31 @@ class Solution {
 }
 ```
 
+## [525. 连续数组](https://leetcode-cn.com/problems/contiguous-array/)
+
+> 前缀和，哈希表
+
+```java
+class Solution {
+    public int findMaxLength(int[] nums) {
+        int n = nums.length;
+        int ans = 0;
+        int delta = 0; // count(0)-count(1)
+        Map<Integer, Integer> map = new HashMap<>(); // <delta, 最早出现的位置>
+        map.put(0, -1);
+        for (int i = 0; i < n; ++i) {
+            delta += nums[i] == 0 ? 1 : -1;
+            if (map.containsKey(delta)) { // 说明之间的delta=0即count(0)=count(1)
+                ans = Math.max(ans, i - map.get(delta));
+            } else {
+                map.put(delta, i);
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
