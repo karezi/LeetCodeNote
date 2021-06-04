@@ -14286,6 +14286,65 @@ class Solution {
 }
 ```
 
+## [1869. 哪种连续子字符串更长](https://leetcode-cn.com/problems/longer-contiguous-segments-of-ones-than-zeros/)
+
+> 数组，双指针
+
+```java
+class Solution {
+    public boolean checkZeroOnes(String s) {
+        int count0 = 0, count1 = 0, maxCount0 = 0, maxCount1 = 0;
+        char[] ca = s.toCharArray();
+        if (ca[0] == '0') {
+            count0 = 1;
+            maxCount0 = 1;
+        } else {
+            count1 = 1;
+            maxCount1 = 1;
+        }
+        for (int i = 1; i < ca.length; ++i) {
+            if (ca[i - 1] == '0' && ca[i] == '1') {
+                maxCount0 = Math.max(maxCount0, count0);
+                count0 = 0;
+                count1 = 1;
+            } else if (ca[i - 1] == '1' && ca[i] == '1') {
+                count1++;
+            } else if (ca[i - 1] == '1' && ca[i] == '0') {
+                maxCount1 = Math.max(maxCount1, count1);
+                count1 = 0;
+                count0 = 1;
+            } else if (ca[i - 1] == '0' && ca[i] == '0') {
+                count0++;
+            }
+        }
+        maxCount0 = Math.max(maxCount0, count0);
+        maxCount1 = Math.max(maxCount1, count1);
+        return maxCount1 > maxCount0;
+    }
+}
+```
+
+简化版
+
+```java
+public boolean checkZeroOnes(String s){
+    int len1 = 0, len0 = 0;
+    int max1 = 0, max0 = 0;
+    for (char c: s.toCharArray()) {
+        if (c == '0') {
+            len0++;
+            len1 = 0;
+        } else {
+            len1++;
+            len0 = 0;
+        }
+        max1 = Math.max(len1, max1);
+        max0 = Math.max(len0, max0);
+    }
+    return max1 > max0;
+}
+```
+
 # Java算法模板
 
 ## BFS
