@@ -14345,6 +14345,76 @@ public boolean checkZeroOnes(String s){
 }
 ```
 
+## [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/)
+
+> 链表，虚节点
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        ListNode slow = dummy;
+        ListNode fast = head;
+        while (fast != null) {
+            if (fast.val == val) {
+                slow.next = fast.next;
+                fast.next = null; // help GC
+                fast = slow.next;
+            } else {
+                fast = fast.next;
+                slow = slow.next;
+            }
+        }
+        return dummy.next;
+    }
+}
+```
+
+递归 TODO
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) {
+            return head;
+        }
+        head.next = removeElements(head.next, val);
+        return head.val == val ? head.next : head;
+    }
+}
+```
+
+优化后的迭代 TODO
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        ListNode temp = dummyHead;
+        while (temp.next != null) {
+            if (temp.next.val == val) {
+                temp.next = temp.next.next;
+            } else {
+                temp = temp.next;
+            }
+        }
+        return dummyHead.next;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
