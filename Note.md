@@ -14415,6 +14415,44 @@ class Solution {
 }
 ```
 
+## [474. 一和零](https://leetcode-cn.com/problems/ones-and-zeroes/)
+
+> 动态规划，滚动数组
+
+```java
+class Solution {
+    public int findMaxForm(String[] strs, int m, int n) {
+        // 01背包问题变种
+        // dp[s][i][j]表示在s个、0的容量i、1的容量j下的最大子集大小
+        // dp[s][i][j]=1、dp[s-1][i][j]（容量不够i<zero|j<one）,2、max(dp[s-1][i][j],dp[s-1][i-zero][j-one]+1)（容量够）
+        // dp[0][i][j]=0
+        // dp[len][m][n];
+        // len可以用滚动数组
+        int len = strs.length;
+        int[][] dp = new int[m + 1][n + 1];
+        for (int s = 0; s < len; ++s) {
+            int c0 = countZero(strs[s]);
+            int c1 = strs[s].length() - c0;
+            for (int i = m; i >= c0; --i) { // TODO 逆向循环，技巧，不影响下个更新
+                for (int j = n; j >= c1; --j) {
+                    dp[i][j] = Math.max(dp[i][j], dp[i - c0][j - c1] + 1);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+
+    private int countZero(String str) {
+        int cnt = 0;
+        for (char c: str.toCharArray()) {
+            if (c == '0')
+                cnt++;
+        }
+        return cnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
