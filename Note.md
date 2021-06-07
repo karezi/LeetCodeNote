@@ -14453,6 +14453,65 @@ class Solution {
 }
 ```
 
+## [494. 目标和](https://leetcode-cn.com/problems/target-sum/)
+
+> 动态规划，背包问题，回溯
+
+二维动态规划
+
+执行用时：28 ms, 在所有 Java 提交中击败了44.25%的用户
+
+内存消耗：37.9 MB, 在所有 Java 提交中击败了34.53%的用户
+
+```java
+class Solution {
+    public int findTargetSumWays(int[] nums, int target) {
+        // dp[i][j] 表示第i个target为(j-1000)的方法数 0<=i<=n,-1000<=target<=100
+        // dp[i][j]=dp[i-1][j-nums[i]] + dp[i-1][j+nums[i]]
+        // dp[0][1000]=1
+        // dp[n][target+1000]
+        int n = nums.length;
+        int[][] dp = new int[n + 1][2001]; // [0,2000]表示[-1000,1000]
+        dp[0][1000] = 1;
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 0; j <= 2000; ++j) {
+                int idx1 = j - nums[i - 1];
+                int idx2 = j + nums[i - 1];
+                if (idx1 >= 0 && idx1 <= 2000)
+                    dp[i][j] += dp[i - 1][idx1];
+                if (idx2 >= 0 && idx2 <= 2000)
+                    dp[i][j] += dp[i - 1][idx2];
+            }
+        }
+        return dp[n][target + 1000];
+    }
+}
+```
+
+TODO 官方方法是先转化在设计dp的，且可以优化
+
+回溯
+
+执行用时：691 ms, 在所有 Java 提交中击败了12.98%的用户
+
+内存消耗：35.7 MB, 在所有 Java 提交中击败了95.22%的用户
+
+```java
+class Solution {
+    public int findTargetSumWays(int[] nums, int t) {
+        return dfs(nums, t, 0, 0);
+    }
+    int dfs(int[] nums, int t, int u, int cur) {
+        if (u == nums.length) {
+            return cur == t ? 1 : 0;
+        }
+        int left = dfs(nums, t, u + 1, cur + nums[u]);
+        int right = dfs(nums, t, u + 1, cur - nums[u]);
+        return left + right;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
