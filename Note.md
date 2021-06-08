@@ -14512,6 +14512,70 @@ class Solution {
 }
 ```
 
+## [1049. 最后一块石头的重量 II](https://leetcode-cn.com/problems/last-stone-weight-ii/)
+
+> 动态规划，01背包
+
+```java
+class Solution {
+    public int lastStoneWeightII(int[] stones) {
+        // 01背包问题
+        // 容量：C<=[sum/2]
+        // 物品质量W=价值V=stones[i]
+        // dp[i + 1][j] 第i步还剩j能凑出来true，不能false
+        // i \in [0,n]; j \in [0,C]
+        // ①dp[i + 1][j] = dp[i][j]                       IF stones[i] > j【i个石头装不下=>不装i】
+        // ②dp[i + 1][j] = dp[i][j] V dp[i][j-stones[i])  IF stones[i] <= j【i个石头装得下=>不装i V 装i】
+        // dp[0][0]=true;dp[0][>0]=false
+        // dp[n][x]=true的最小x
+        int sum = 0;
+        for (int stone: stones) {
+            sum += stone;
+        }
+        int cap = sum / 2;
+        int n = stones.length;
+        boolean[][] dp = new boolean[n + 1][cap + 1];
+        dp[0][0] = true;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j <= cap; ++j) {
+                dp[i + 1][j] = stones[i] > j ? dp[i][j] : (dp[i][j] || dp[i][j - stones[i]]);
+            }
+        }
+        for (int i = cap; i >= 0; --i) {
+            if (dp[n][i])
+                return sum - 2 * i;
+        }
+        return 0;
+    }
+}
+```
+
+滚动数组
+
+```java
+class Solution {
+    public int lastStoneWeightII(int[] stones) {
+        int sum = 0;
+        for (int weight : stones) {
+            sum += weight;
+        }
+        int m = sum / 2;
+        boolean[] dp = new boolean[m + 1];
+        dp[0] = true;
+        for (int weight : stones) {
+            for (int j = m; j >= weight; --j) { // 注意是倒序
+                dp[j] = dp[j] || dp[j - weight];
+            }
+        }
+        for (int j = m;; --j) {
+            if (dp[j]) {
+                return sum - 2 * j;
+            }
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
