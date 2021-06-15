@@ -14576,6 +14576,256 @@ class Solution {
 }
 ```
 
+## [518. 零钱兑换 II](https://leetcode-cn.com/problems/coin-change-2/)
+
+> 动态规划，完全背包问题
+
+```java
+class Solution {
+    public int change(int amount, int[] coins) {
+        // 完全背包问题，套用公式：外item内cap{dp[i]+=dp[i-w]}
+        int n = coins.length;
+        int[] dp = new int[amount + 1];
+        dp[0] = 1;
+        for (int coin: coins) {
+            for (int i = coin; i <= amount; ++i)
+                dp[i] += dp[i - coin];
+        }
+        return dp[amount];
+    }
+}
+```
+
+## [279. 完全平方数](https://leetcode-cn.com/problems/perfect-squares/)
+
+> 动态规划，完全背包，数学
+
+完全背包
+
+```java
+class Solution {
+    public int numSquares(int n) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 1; ; ++i) {
+            int d = i * i;
+            if (d > n)
+                break;
+            list.add(d);
+        }
+        // 完全背包问题，套用 dp[i]=min(dp[i],dp[i-item]+1)
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+        for (Integer num: list) {
+            for (int i = num; i <= n; ++i) {
+                dp[i] = Math.min(dp[i], dp[i - num] + 1);
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+动态规划
+
+```java
+class Solution {
+    public int numSquares(int n) {
+        // dp[i]表示i的完全平方数最小数量
+        // dp[i] = min(dp[i-j*j])+1 (j \in [1,sqrt(i)])
+        // dp[0]=0
+        // dp[n]
+        int[] dp = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            int minn = Integer.MAX_VALUE;
+            for (int j = 1; j <= (int)Math.sqrt(i); ++j) {
+                minn = Math.min(minn, dp[i - j * j]);
+            }
+            dp[i] = minn + 1;
+        }
+        return dp[n];
+    }
+}
+```
+
+数学
+
+```java
+class Solution {
+    public int numSquares(int n) {
+        // 四平方法(分别判断1 4 2 3)
+        if (isSequare(n)) {
+            return 1;
+        } else if (isFour(n)) {
+            // 4^k*(8m+7)
+            return 4;
+        } else if (isTwo(n)){
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+
+    private boolean isSequare(int x) {
+        int tmp = (int)Math.sqrt(x);
+        return tmp * tmp == x;
+    }
+
+    private boolean isFour(int x) {
+        while (x % 4 == 0) {
+            x /= 4;
+        }
+        return x % 8 == 7;
+    }
+
+    private boolean isTwo(int x) {
+        for (int i = 1; i < Math.sqrt(x); ++i) {
+            if (isSequare(x - i * i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+```
+
+## [1449. 数位成本和为目标值的最大数字](https://leetcode-cn.com/problems/form-largest-integer-with-digits-that-add-up-to-target/)
+
+> 字符串，动态规划，完全背包
+
+```java
+class Solution {
+    public String largestNumber(int[] cost, int target) {
+        // 完全背包公式:dp[x]=Math.max(dp[x], dp[x-k]+1)
+        int[] dp = new int[target + 1];
+        Arrays.fill(dp, Integer.MIN_VALUE);
+        dp[0] = 1;
+        for (int c: cost) {
+            for (int i = c; i <= target; ++i) {
+                dp[i] = Math.max(dp[i], dp[i - c] + 1);
+            }
+        }
+        if (dp[target] < 0) {
+            return "0";
+        }
+        StringBuilder sb = new StringBuilder();
+        int i = 8, j = target;
+        while (i >= 0) {
+            int c = cost[i];
+            while (j >= c && dp[j] == dp[j - c] + 1) { // TODO
+                sb.append(i + 1);
+                j -= c;
+            }
+            --i;
+        }
+        return sb.toString();
+    }
+}
+```
+
+## [278. 第一个错误的版本](https://leetcode-cn.com/problems/first-bad-version/)
+
+> 二分查找
+
+```java
+/* The isBadVersion API is defined in the parent class VersionControl.
+      boolean isBadVersion(int version); */
+
+public class Solution extends VersionControl {
+    public int firstBadVersion(int n) {
+        int l = 1, r = n;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (isBadVersion(mid)) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+}
+```
+
+## [374. 猜数字大小](https://leetcode-cn.com/problems/guess-number-higher-or-lower/)
+
+> 二分查找
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.1 MB, 在所有 Java 提交中击败了73.70%的用户
+
+```java
+/** 
+ * Forward declaration of guess API.
+ * @param  num   your guess
+ * @return 	     -1 if num is lower than the guess number
+ *			      1 if num is higher than the guess number
+ *               otherwise return 0
+ * int guess(int num);
+ */
+
+public class Solution extends GuessGame {
+    private int l = 1, r = Integer.MAX_VALUE;
+
+    public int guessNumber(int n) {
+        int res = guess(n);
+        if (res == 0)
+            return n;
+        else if (res == -1) {
+            r = n;
+            return guessNumber(l + (r - l) / 2);
+        } else {
+            l = n;
+            return guessNumber(l + (r - l) / 2);
+        }
+    }
+}
+```
+
+更符合题意的解法
+
+```java
+public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+        int left = 1, right = n;
+        while (left < right) { // 循环直至区间左右端点相同
+            int mid = left + (right - left) / 2; // 防止计算时溢出
+            if (guess(mid) <= 0) {
+                right = mid; // 答案在区间 [left, mid] 中
+            } else {
+                left = mid + 1; // 答案在区间 [mid+1, right] 中
+            }
+        }
+        // 此时有 left == right，区间缩为一个点，即为答案
+        return left;
+    }
+}
+```
+
+## [852. 山脉数组的峰顶索引](https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/)
+
+> 二分查找
+
+```java
+class Solution {
+    public int peakIndexInMountainArray(int[] arr) {
+        int l = 0, r = arr.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (arr[mid - 1] < arr[mid] && arr[mid] > arr[mid + 1]) {
+                return mid;
+            } else if (arr[mid - 1] > arr[mid]) {
+                r = mid;
+            } else if (arr[mid] < arr[mid + 1]) {
+                l = mid;
+            }
+        }
+        return -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -15581,3 +15831,5 @@ String str = String.valueOf(i)
 ## [1473. 粉刷房子 III](https://leetcode-cn.com/problems/paint-house-iii/)
 
 ## [1707. 与数组中元素的最大异或值](https://leetcode-cn.com/problems/maximum-xor-with-an-element-from-array/)
+
+## [879. 盈利计划](https://leetcode-cn.com/problems/profitable-schemes/)
