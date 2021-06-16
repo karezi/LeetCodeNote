@@ -14826,6 +14826,65 @@ class Solution {
 }
 ```
 
+## [877. 石子游戏](https://leetcode-cn.com/problems/stone-game/)
+
+> 动态规划
+
+```java
+class Solution {
+    public boolean stoneGame(int[] piles) {
+        // dp[i][j]表示剩余从i到j时候两者石子之差最大值(i<=j)
+        // dp[i][j]=max(piles[i] - dp[i + 1][j], piles[j] - dp[i][j - 1]) // 我这一轮比你多的减去你之后比我多的
+        // dp[i][i]=piles[i] 只有一堆石子，必然差piles[i]
+        // dp[0][n-1]
+        int n = piles.length;
+        int[][] dp = new int[n][n];
+        for (int i = n - 1; i >= 0; --i) {
+            dp[i][i] = piles[i];
+            for (int j = i + 1; j < n; ++j) {
+                dp[i][j] = Math.max(piles[i] - dp[i + 1][j], piles[j] - dp[i][j - 1]);
+            }
+        }
+        return dp[0][n - 1] > 0;
+    }
+}
+```
+
+滚动数组优化
+
+```java
+class Solution {
+    public boolean stoneGame(int[] piles) {
+        // dp[i][j]表示剩余从i到j时候两者石子之差最大值(i<=j)
+        // dp[i][j]=max(piles[i] - dp[i + 1][j], piles[j] - dp[i][j - 1]) // 我这一轮比你多的减去你之后比我多的
+        // dp[i][i]=piles[i] 只有一堆石子，必然差piles[i]
+        // dp[0][n-1]
+        // 滚动数组优化
+        int n = piles.length;
+        int[] dp = new int[n];
+        for (int i = n - 1; i >= 0; --i) {
+            dp[i] = piles[i];
+            for (int j = i + 1; j < n; ++j) {
+                dp[j] = Math.max(piles[i] - dp[j], piles[j] - dp[j - 1]);
+            }
+        }
+        return dp[n - 1] > 0;
+    }
+}
+```
+
+数学分析
+
+先手必胜（奇偶位置分组，选择和大的一组一直取即可）
+
+```java
+class Solution {
+    public boolean stoneGame(int[] piles) {
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
