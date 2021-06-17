@@ -14885,6 +14885,120 @@ class Solution {
 }
 ```
 
+## [65. 有效数字](https://leetcode-cn.com/problems/valid-number/)
+
+> 数学，字符串，有限状态机
+
+注意split的转义和结尾是分隔符的情况，以及a==""陷阱
+
+```java
+class Solution {
+    public boolean isNumber(String s) {
+        String str = s.toLowerCase();
+        String[] strs = str.split("e");
+        if (strs.length == 2) {
+            if (str.endsWith("e"))
+                return false;
+            boolean isEndInteger = checkIntegerOrDecimal(strs[1], true);
+            if (!isEndInteger)
+                return false;
+            return checkIntegerOrDecimal(strs[0], false);
+        } else if (strs.length == 1) {
+            return checkIntegerOrDecimal(str, false);
+        }
+        return false;
+    }
+
+    private boolean checkIntegerOrDecimal(String s, boolean forceInteger) {
+        if (s.equals(""))
+            return false;
+        if (s.startsWith("+") || s.startsWith("-")) {
+            return forceInteger ? checkAllInteger(s.substring(1, s.length())) : checkIntegerOrDecimalPure(s.substring(1, s.length()));
+        } else {
+            return forceInteger ? checkAllInteger(s) : checkIntegerOrDecimalPure(s);
+        }
+    }
+
+    private boolean checkIntegerOrDecimalPure(String s) {
+        if (s.equals(""))
+            return false;
+        boolean isAllInteger = checkAllInteger(s);
+        if (!isAllInteger) {
+            return checkDecimal(s);
+        } else {
+            return true;
+        }
+    }
+
+    private boolean checkDecimal(String s) {
+        if (s.equals(""))
+            return false;
+        if (s.startsWith(".")) {
+            return checkAllInteger(s.substring(1, s.length()));
+        } else if (s.endsWith(".")) {
+            return checkAllInteger(s.substring(0, s.length() - 1));
+        } else {
+            String[] strs = s.split("\\.");
+            return strs.length == 2 && checkAllInteger(strs[0]) && checkAllInteger(strs[1]);
+        }
+    }
+
+    private boolean checkAllInteger(String s) {
+        if (s.equals(""))
+            return false;
+        for (char c: s.toCharArray()) {
+            if (c > '9' || c < '0')
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+有限状态机 TODO
+
+```java
+
+class Solution {
+    public int make(char c) {
+        switch(c) {
+            case ' ': return 0;
+            case '+':
+            case '-': return 1;
+            case '.': return 3;
+            case 'e': return 4;
+            default:
+                if(c >= 48 && c <= 57) return 2;
+        }
+        return -1;
+    }
+    
+    public boolean isNumber(String s) {
+        int state = 0;
+        int finals = 0b101101000;
+        int[][] transfer = new int[][]{{ 0, 1, 6, 2,-1},
+                                       {-1,-1, 6, 2,-1},
+                                       {-1,-1, 3,-1,-1},
+                                       { 8,-1, 3,-1, 4},
+                                       {-1, 7, 5,-1,-1},
+                                       { 8,-1, 5,-1,-1},
+                                       { 8,-1, 6, 3, 4},
+                                       {-1,-1, 5,-1,-1},
+                                       { 8,-1,-1,-1,-1}};
+        char[] ss = s.toCharArray();
+        for(int i = 0; i < ss.length; ++i) {
+            int id = make(ss[i]);
+            if (id < 0)
+                return false;
+            state = transfer[state][id];
+            if (state < 0)
+                return false;
+        }
+        return (finals & (1 << state)) > 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
