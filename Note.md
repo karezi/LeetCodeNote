@@ -14999,6 +14999,32 @@ class Solution {
 }
 ```
 
+## [483. 最小好进制](https://leetcode-cn.com/problems/smallest-good-base/)
+
+> 数学，二分查找
+
+TODO 数学推导，巧妙
+
+```java
+class Solution {
+    public String smallestGoodBase(String n) {
+        long num = Long.parseLong(n); // len下界=2，即11，此时：k=num-1【保底】
+        int max = (int)(Math.log(num + 1) / Math.log(2)); // len上界=log_2(n+1)=代入最大值约等于60，此时：k=2
+        for (int len = max; len >= 3; len--) {
+            long k = (long)Math.pow(num, 1.0 / (len - 1)); // k < s√n < k+1
+            long res = 0;
+            for (int i = 0; i < len; i++)
+                res = res * k + 1;
+            if (res == num) // 验证k是否为整数
+                return String.valueOf(k);
+        }
+        return String.valueOf(num - 1);
+    }
+}
+```
+
+TODO 可以用二分进行优化（实际不一定优化了，因为范围不大）
+
 # Java算法模板
 
 ## BFS
