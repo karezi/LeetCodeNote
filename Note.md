@@ -15025,6 +15025,156 @@ class Solution {
 
 TODO 可以用二分进行优化（实际不一定优化了，因为范围不大）
 
+## [1239. 串联字符串的最大长度](https://leetcode-cn.com/problems/maximum-length-of-a-concatenated-string-with-unique-characters/)
+
+> 位运算，回溯算法
+
+```java
+class Solution {
+    private int max = 0;
+    private List<Integer> bit;
+
+    public int maxLength(List<String> arr) {
+        bit = new ArrayList<>();
+        bit.add(0);
+        for (String str: arr) {
+            int ans = 0;
+            for (char c: str.toCharArray()) {
+                int mask = 1 << (c - 'a');
+                if ((mask & ans) > 0) {
+                    ans = 0;
+                    break;
+                } else {
+                    ans += mask;
+                }
+            }
+            bit.add(ans);
+        }
+        backtrack(0, 0);
+        return max;
+    }
+
+    private void backtrack(int cur, int pos) {
+        if (pos == bit.size()) {
+            max = Math.max(max, Integer.bitCount(cur));
+            return;
+        }
+        if ((cur & bit.get(pos)) == 0) { // 可以选择，选择pos
+            backtrack(cur | bit.get(pos), pos + 1);
+        }
+        // 不选pos
+        backtrack(cur, pos + 1);
+    }
+}
+```
+
+## [1600. 皇位继承顺序](https://leetcode-cn.com/problems/throne-inheritance/)
+
+> 多叉树，前序遍历，哈希表
+
+哈希表
+
+```java
+class ThroneInheritance {
+    private String kingName;
+    private Map<String, List<String>> map;
+    private Set<String> dead;
+
+    public ThroneInheritance(String kingName) {
+        this.kingName = kingName;
+        map = new HashMap<>();
+        dead = new HashSet<>();
+    }
+    
+    public void birth(String parentName, String childName) {
+        List<String> children = map.getOrDefault(parentName, new ArrayList<>());
+        children.add(childName);
+        map.put(parentName, children);
+    }
+    
+    public void death(String name) {
+        dead.add(name);
+    }
+    
+    public List<String> getInheritanceOrder() {
+        List<String> ans = new ArrayList<>();
+        preorder(ans, kingName);
+        return ans;
+    }
+
+    private void preorder(List<String> ans, String curName) {
+        if (!dead.contains(curName)) {
+            ans.add(curName);
+        }
+        List<String> children = map.getOrDefault(curName, new ArrayList<>());
+        for (String child: children) {
+            preorder(ans, child);
+        }
+    }
+}
+
+/**
+ * Your ThroneInheritance object will be instantiated and called as such:
+ * ThroneInheritance obj = new ThroneInheritance(kingName);
+ * obj.birth(parentName,childName);
+ * obj.death(name);
+ * List<String> param_3 = obj.getInheritanceOrder();
+ */
+```
+
+链表 TODO
+
+```java
+class ThroneInheritance {
+    class Node {
+        String name;
+        Node next;
+        Node last; // 记录最后一个儿子
+        boolean isDeleted = false;
+        Node (String _name) {
+            name = _name;
+        }
+    }
+    Map<String, Node> map = new HashMap<>();
+    Node head = new Node(""), tail = new Node("");
+    
+    public ThroneInheritance(String name) {
+        Node root = new Node(name);
+        root.next = tail;
+        head.next = root;
+        map.put(name, root);
+    }
+    
+    public void birth(String pname, String cname) {
+        Node node = new Node(cname);
+        map.put(cname, node);
+        Node p = map.get(pname);
+        Node tmp = p;
+        while (tmp.last != null)
+            tmp = tmp.last;
+        node.next = tmp.next;
+        tmp.next = node;
+        p.last = node;
+    }
+    
+    public void death(String name) {
+        Node node = map.get(name);
+        node.isDeleted = true;
+    }
+    
+    public List<String> getInheritanceOrder() {
+        List<String> ans = new ArrayList<>();
+        Node tmp = head.next;
+        while (tmp.next != null) {
+            if (!tmp.isDeleted)
+                ans.add(tmp.name);
+            tmp = tmp.next;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
