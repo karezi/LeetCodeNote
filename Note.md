@@ -15175,6 +15175,26 @@ class ThroneInheritance {
 }
 ```
 
+## [401. 二进制手表](https://leetcode-cn.com/problems/binary-watch/)
+
+> 位运算，回溯算法
+
+```java
+class Solution {
+    public List<String> readBinaryWatch(int turnedOn) {
+        List<String> res = new ArrayList<>();
+        for (int i = 0; i <= 11; ++i) {
+            for (int j = 0; j <= 59; ++j) {
+                if (Integer.bitCount(i) + Integer.bitCount(j) == turnedOn) {
+                    res.add(i + ":" + (j < 10 ? "0" : "") + j);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
