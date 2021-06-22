@@ -15195,6 +15195,108 @@ class Solution {
 }
 ```
 
+## [剑指 Offer 38. 字符串的排列](https://leetcode-cn.com/problems/zi-fu-chuan-de-pai-lie-lcof/)
+
+> 回溯算法
+
+暴力
+
+```java
+class Solution {
+    public String[] permutation(String s) {
+        Set<String> lastSet = new HashSet<>();
+        lastSet.add("");
+        for (int i = 0; i < s.length(); ++i) {
+            Set<String> curSet = new HashSet<>();
+            for (String str: lastSet) {
+                int n = str.length();
+                for (int j = 0; j <= n; ++j)
+                    curSet.add(str.substring(0, j) + s.charAt(i) + str.substring(j, n));
+            }
+            lastSet = curSet;
+        }
+        return lastSet.toArray(new String[0]);
+    }
+}
+```
+
+回溯（巧妙结合利用排序）
+
+```java
+class Solution {
+    List<String> rec = new ArrayList<String>();
+    boolean[] visit = new boolean[n];
+
+    public String[] permutation(String s) {
+        char[] arr = s.toCharArray();
+        Arrays.sort(arr);
+        StringBuffer perm = new StringBuffer();
+        backtrack(arr, 0, s.length(), perm);
+        return rec.toArray(new String[0]);
+    }
+
+    public void backtrack(char[] arr, int i, int n, StringBuffer perm) {
+        if (i == n) {
+            rec.add(perm.toString());
+            return;
+        }
+        for (int j = 0; j < n; j++) {
+            if (visit[j] || (j > 0 && !visit[j - 1] && arr[j - 1] == arr[j])) { // 排序后相邻值相同各取其一会有重复结果，所以不考虑直接跳过
+                continue;
+            }
+            visit[j] = true;
+            perm.append(arr[j]);
+            backtrack(arr, i + 1, n, perm);
+            perm.deleteCharAt(perm.length() - 1);
+            visit[j] = false;
+        }
+    }
+}
+```
+
+下一个全排列
+
+```java
+class Solution {
+    public String[] permutation(String s) {
+        List<String> rec = new ArrayList<>();
+        char[] arr = s.toCharArray();
+        Arrays.sort(arr);
+        do {
+            rec.add(new String(arr));
+        } while(nextPerm(arr));
+        return rec.toArray(new String[0]);
+    }
+
+    private boolean nextPerm(char[] arr) {
+        // 计算"全排列下一个"四部曲
+        // ① n-2从后往前找递减，记为i【左边的「较小数」】
+        // ② n-1从后往前找第一个比arr[i]大的，记为j【最右的「较大数」】
+        // ③ 交换i,j
+        // ④ i+1~n逆序
+        int n = arr.length, i = n - 2, j = n - 1;
+        while (i >= 0 && arr[i] >= arr[i + 1]) i--;
+        if (i < 0) return false; // 已经完全逆序
+        while (j >= 0 && arr[i] >= arr[j]) j--;
+        swap(arr, i, j);
+        reverse(arr, i + 1);
+        return true; // 未完全逆序
+    }
+
+    private void swap(char[] arr, int i, int j) {
+        arr[i] = (char)(arr[i] ^ arr[j]);
+        arr[j] = (char)(arr[i] ^ arr[j]);
+        arr[i] = (char)(arr[i] ^ arr[j]);
+    }
+
+    private void reverse(char[] arr, int start) {
+        for (int i = start, j = arr.length - 1; i < j; ++i, --j) {
+            swap(arr, i, j);
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
