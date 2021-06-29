@@ -15328,11 +15328,423 @@ public class Solution {
 }
 ```
 
+## [149. 直线上最多的点数](https://leetcode-cn.com/problems/max-points-on-a-line/)
+
+> 几何，哈希表，数学，GCD
+
+```java
+class Solution {
+    public int maxPoints(int[][] points) {
+        int n = points.length;
+        if (n <= 2) // 1个或者2个点直接返回结果
+            return n;
+        int max = 0;
+        // 斜率化简为最简分数a/b，a=ma/gcd(ma,mb)，b=mb/gcd(ma,mb)，记为key=a*20001+b
+        for (int i = 0; i < n; ++i) {
+            if (max >= n - i || max > n / 2) { // 前一个max已经超过了最多之后最多可能最大值了
+                return max;
+            }
+            Map<Integer, Integer> map = new HashMap<>();
+            int maxn = 0;
+            for (int j = i + 1; j < n; ++j) { // 针对每个点求最大值
+                int ma = points[j][1] - points[i][1];
+                int mb = points[j][0] - points[i][0];
+                int g = 1;
+                if (ma == 0) // 平行于x轴
+                    mb = 1;
+                else if (mb == 0) // 平行于y轴
+                    ma = 1;
+                else if (ma < 0) {
+                    ma = -ma;
+                    mb = -mb;
+                    g = gcd(Math.abs(ma), Math.abs(mb));
+                } else {
+                    g = gcd(Math.abs(ma), Math.abs(mb));
+                }
+                int key = ma / g * 20001 + mb / g; // 也可以用字符串记录
+                int val = map.getOrDefault(key, 0) + 1;
+                map.put(key, val);
+                maxn = Math.max(maxn, val + 1);
+            }
+            max = Math.max(max, maxn);
+        }
+        return max;
+    }
+
+    private int gcd(int a, int b) {
+        return b != 0 ? gcd(b, a % b) : a;
+    }
+}
+```
+
+## [752. 打开转盘锁](https://leetcode-cn.com/problems/open-the-lock/)
+
+> BFS，数组，哈希表，字符串，迷宫，双向BFS，搜索，A*
+
+单向BFS
+
+```java
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        // 迷宫题目：
+        // 1. 初始位置：'0000'
+        // 2. 行走方向：4个拨盘向上向下拨，共8个方向
+        // 3. 终止条件：搜索完成||遇到了target
+        // 4. 继续条件：遇到障碍（set记录障碍）||搜索过（Set记录）
+        if (target.equals("0000"))
+            return 0;
+        Set<String> deadendSet = new HashSet<>();
+        for (String str: deadends) {
+            if (str.equals("0000"))
+                return -1;
+            deadendSet.add(str);
+        }
+        Set<String> seen = new HashSet<>();
+        seen.add("0000");
+        Queue<String> q = new LinkedList<>();
+        q.offer("0000");
+        int level = 1;
+        while (!q.isEmpty()) { // BFS模板
+            int size = q.size();
+            while (size-- > 0) {
+                String str = q.poll();
+                for (String next: getNext(str)) {
+                    if (!deadendSet.contains(next) && !seen.contains(next)) {
+                        if (next.equals(target))
+                            return level;
+                        seen.add(next);
+                        q.offer(next);
+                    }
+                }
+            }
+            level++; // 每选择一次+1，第一次遇到即是最小
+        }
+        return -1;
+    }
+
+    private String[] getNext(String str) {
+        int n = str.length();
+        String[] ret = new String[8];
+        int index = 0;
+        for (int i = 0; i < 4; ++i) {
+            char c = str.charAt(i);
+            char[] arr0 = str.toCharArray();
+            arr0[i] = c == '9' ? '0' : (char)(c + 1);
+            ret[index++] = new String(arr0);
+            char[] arr1 = str.toCharArray();
+            arr1[i] = c == '0' ? '9' : (char)(c - 1);
+            ret[index++] = new String(arr1);
+        }
+        return ret;
+    }
+}
+```
+
+双向BFS
+
+```java
+class Solution {
+    int level = 1;
+    Map<String, Integer> m1 = new HashMap<>();
+    Map<String, Integer> m2 = new HashMap<>();
+    Queue<String> q1 = new LinkedList<>();
+    Queue<String> q2 = new LinkedList<>();
+    Set<String> deadendSet = new HashSet<>();
+
+    public int openLock(String[] deadends, String target) {
+        if (target.equals("0000"))
+            return 0;
+        for (String str: deadends) {
+            if (str.equals("0000"))
+                return -1;
+            deadendSet.add(str);
+        }
+        m1.put("0000", 0);
+        m2.put(target, 0);
+        q1.offer("0000");
+        q2.offer(target);
+        while (!q1.isEmpty() && !q2.isEmpty()) {
+            int t = -1;
+            if (q1.size() < q2.size()) {
+                t = update(q1, m1, m2);
+            } else {
+                t = update(q2, m2, m1);
+            }
+            if (t != -1)
+                return t;
+        }
+        return -1;
+    }
+
+    private int update(Queue<String> q, Map<String, Integer> cur, Map<String, Integer> other) {
+        String str = q.poll();
+        int step = cur.get(str);
+        for (String next: getNext(str)) {
+            if (!deadendSet.contains(next) && !cur.containsKey(next)) {
+                if (other.containsKey(next)) {
+                    return step + 1 + other.get(next);
+                }
+                cur.put(next, step + 1);
+                q.offer(next);
+            }
+        }
+        return -1;
+    }
+
+    private String[] getNext(String str) {
+        int n = str.length();
+        String[] ret = new String[8];
+        int index = 0;
+        for (int i = 0; i < 4; ++i) {
+            char c = str.charAt(i);
+            char[] arr0 = str.toCharArray();
+            arr0[i] = c == '9' ? '0' : (char)(c + 1);
+            ret[index++] = new String(arr0);
+            char[] arr1 = str.toCharArray();
+            arr1[i] = c == '0' ? '9' : (char)(c - 1);
+            ret[index++] = new String(arr1);
+        }
+        return ret;
+    }
+}
+```
+
+AStar TODO
+
+```java
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        if ("0000".equals(target))
+            return 0;
+        Set<String> dead = new HashSet<String>();
+        for (String deadend : deadends) {
+            dead.add(deadend);
+        }
+        if (dead.contains("0000")) {
+            return -1;
+        }
+        PriorityQueue<AStar> pq = new PriorityQueue<AStar>((a, b) -> a.f - b.f);
+        pq.offer(new AStar("0000", target, 0));
+        Set<String> seen = new HashSet<String>();
+        seen.add("0000");
+        while (!pq.isEmpty()) {
+            AStar node = pq.poll();
+            for (String nextStatus : get(node.status)) {
+                if (!seen.contains(nextStatus) && !dead.contains(nextStatus)) {
+                    if (nextStatus.equals(target))
+                        return node.g + 1;
+                    pq.offer(new AStar(nextStatus, target, node.g + 1));
+                    seen.add(nextStatus);
+                }
+            }
+        }
+        return -1;
+    }
+
+    // 枚举 status 通过一次旋转得到的数字
+    public List<String> get(String status) {
+        List<String> ret = new ArrayList<String>();
+        char[] array = status.toCharArray();
+        for (int i = 0; i < 4; ++i) {
+            char x = array[i];
+            array[i] = x == '0' ? '9' : (char) (x - 1);
+            ret.add(new String(array));
+            array[i] = x == '9' ? '0' : (char) (x + 1);
+            ret.add(new String(array));
+            array[i] = x;
+        }
+        return ret;
+    }
+}
+
+class AStar {
+    String status;
+    int f, g, h;
+
+    public AStar(String status, String target, int g) {
+        this.status = status;
+        this.g = g;
+        this.h = getH(status, target);
+        this.f = this.g + this.h;
+    }
+
+    // 计算启发函数
+    public static int getH(String status, String target) {
+        int ret = 0;
+        for (int i = 0; i < 4; ++i) {
+            int dist = Math.abs(status.charAt(i) - target.charAt(i));
+            ret += Math.min(dist, 10 - dist);
+        }
+        return ret;
+    }
+}
+```
+
+IDA* TODO
+
+## [773. 滑动谜题](https://leetcode-cn.com/problems/sliding-puzzle/)
+
+> DFS，数组，矩阵，迷宫
+
+```java
+class Solution {
+    private int[][] matrix = {{1, 3}, {0, 2, 4}, {1, 5}, {0, 4}, {1, 3, 5}, {2, 4}};
+
+    public int slidingPuzzle(int[][] board) {
+        // BFS:
+        // 中间编码："123450"
+        // 结束条件：q.isEmpty() || 找到谜底
+        Queue<String> q = new LinkedList<>();
+        Set<String> seen = new HashSet<>();
+        String e = encode(board);
+        if (e.equals("123450"))
+            return 0;
+        q.offer(e);
+        seen.add(e);
+        int level = 0;
+        while (!q.isEmpty()) {
+            ++level;
+            int size = q.size();
+            while (size-- > 0) {
+                String cur = q.poll();
+                for (String str: getNext(cur)) {
+                    if (!seen.contains(str)) {
+                        if (str.equals("123450")) {
+                            return level;
+                        }
+                        q.offer(str);
+                        seen.add(str);
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    private void swap(char[] cs, int i, int j) {
+        char temp = cs[i];
+        cs[i] = cs[j];
+        cs[j] = temp;
+    }
+
+    private List<String> getNext(String cur) {
+        char[] cs = cur.toCharArray();
+        int index = cur.indexOf("0");
+        int[] directions = matrix[index];
+        List<String> ret = new ArrayList<>();
+        for (int i: directions) {
+            swap(cs, index, i);
+            ret.add(new String(cs));
+            swap(cs, index, i);
+        }
+        return ret;
+    }
+
+    private String encode(int[][] board) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 2; ++i) {
+            for (int j = 0; j < 3; ++j) {
+                sb.append(board[i][j]);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+AStar/康托展开 TODO
+
+## [909. 蛇梯棋](https://leetcode-cn.com/problems/snakes-and-ladders/)
+
+> BFS，数组，矩阵，迷宫
+
+```java
+class Solution {
+    public int snakesAndLadders(int[][] board) {
+        int n = board.length;
+        int len = n * n + 1;
+        int[] flat = new int[len];
+        int cnt = 1;
+        boolean direction = true; // 向右
+        for (int i = n - 1; i >= 0; --i) { // 降维
+            if (direction) {
+                for (int j = 0; j < n; ++j)
+                    flat[cnt++] = board[i][j];
+            } else {
+                for (int j = n - 1; j >= 0; --j)
+                    flat[cnt++] = board[i][j];
+            }
+            direction = !direction;
+        }
+        int end = cnt - 1;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(1);
+        boolean[] vis = new boolean[len];
+        int level = 0;
+        while (!q.isEmpty()) {
+            ++level;
+            int size = q.size();
+            while (size-- > 0) {
+                Integer cur = q.poll();
+                for (Integer next: getNext(cur)) {
+                    if (next > end)
+                        break;
+                    if (next == end)
+                        return level;
+                    if (!vis[next]) {
+                        int b = flat[next];
+                        int tmp = next;
+                        if (b != -1) {
+                            if (b == end)
+                                return level;
+                            tmp = b;
+                        }
+                        q.offer(tmp);
+                        vis[next] = true; // 千万注意是next
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    private List<Integer> getNext(Integer cur) {
+        List<Integer> ret = new ArrayList<>();
+        for (int i = 1; i <= 6; ++i) {
+            ret.add(cur + i);
+        }
+        return ret;
+    }
+}
+```
+
+## [168. Excel表列名称](https://leetcode-cn.com/problems/excel-sheet-column-title/)
+
+> 数学，字符串
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35 MB, 在所有 Java 提交中击败了99.76%的用户
+
+```java
+class Solution {
+    public String convertToTitle(int columnNumber) {
+        StringBuilder ret = new StringBuilder();
+        while (columnNumber > 0) {
+            char c = (char)('A' + (columnNumber - 1) % 26);
+            ret.insert(0, c);
+            columnNumber = (columnNumber - 1) / 26;
+        }
+        return ret.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
 
-### 如果不需要确定当前遍历到了哪一层
+如果不需要确定当前遍历到了哪一层
 
 ```java
 queue.push(root)
@@ -15343,7 +15755,7 @@ while queue 不空：
             queue.push(该节点)
 ```
 
-### 如果要确定当前遍历到了哪一层
+如果要确定当前遍历到了哪一层
 
 > level表示二叉树遍历到哪一层或者图走了几步、size表示在当前层有多少个元素
 
@@ -15359,6 +15771,30 @@ while queue 不空：
                 queue.push(该节点)
     }
     level ++;
+```
+
+双向BFS
+
+```java
+// 创建「两个队列」分别用于两个方向的搜索；
+// 创建「两个哈希表」用于「解决相同节点重复搜索」和「记录转换次数」；
+// 为了尽可能让两个搜索方向“平均”，每次从队列中取值进行扩展时，先判断哪个队列容量较少；
+// 如果在搜索过程中「搜索到对方搜索过的节点」，说明找到了最短路径。
+
+// d1、d2 为两个方向的队列
+// m1、m2 为两个方向的哈希表，记录每个节点距离起点的 
+// 只有两个队列都不空，才有必要继续往下搜索
+// 如果其中一个队列空了，说明从某个方向搜到底都搜不到该方向的目标节点
+while(!d1.isEmpty() && !d2.isEmpty()) {
+    if (d1.size() < d2.size()) {
+        update(d1, m1, m2);
+    } else {
+        update(d2, m2, m1);
+    }
+}
+
+// update 为从队列 d 中取出一个元素进行「一次完整扩展」的逻辑
+void update(Deque d, Map cur, Map other) {}
 ```
 
 ## DFS
@@ -15950,8 +16386,8 @@ public String minWindow(String s, String t) {
 ## 最大公约数gcd
 
 ```java
-public int gcd(int x, int y) {
-    return y > 0 ? gcd(y, x % y) : x;
+public int gcd(int a, int b) { // 口诀bbaba
+    return b > 0 ? gcd(b, a % b) : a;
 }
 ```
 
@@ -16004,8 +16440,8 @@ public int gcd(int x, int y) {
 
 ## Queue 队列
 
-- offer/add 添加
-- poll/remove 删除
+- offer/add 添加尾部
+- poll/remove 删除头部
 - peek/element 查询头部
 - size/isEmpty 容量
 
@@ -16014,7 +16450,7 @@ public int gcd(int x, int y) {
 ![image-20210221013330334](https://i.loli.net/2021/02/21/kEis72yF9G3Q8HM.png)
 
 - add/addAll/addFirst/addLast/offer/offerFirst/offerLast/push 添加
-- poll/pollFirst/pollLast/pop/remove/removeFirst/removeLast 删除
+- remove/removeFirst/removeLast/poll/pollFirst/pollLast/pop 删除
 - element/getFirst/getLast/peek/peekFirst/peekLast 获取查询
 - contains 存在查询
 - iterator/descendingIterator 迭代查询
@@ -16306,6 +16742,17 @@ String str = String.valueOf(i)
   for (int x = mask; x != 0; x = (x - 1) & mask) {
       System.out.println(x);
   }
+  ```
+
+- 栈和队列
+
+  ```java
+  // 栈（DFS非递归常用）
+  Deque<T> stack = new LinkedList<>(); // push/pop/peek
+  // 队列（BFS常用）
+  Queue<T> q = new LinkedList<>(); // offer/poll
+  // 通用
+  LinkedList<T> l = new LinkedList<>(); // +first/+last
   ```
 
 # 未完成
