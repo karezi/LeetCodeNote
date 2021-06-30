@@ -15740,6 +15740,57 @@ class Solution {
 }
 ```
 
+## [剑指 Offer 37. 序列化二叉树](https://leetcode-cn.com/problems/xu-lie-hua-er-cha-shu-lcof/)
+
+> 树，DFS，BFS，设计，字符串，二叉树
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if (root != null) {
+            return root.val + "," + serialize(root.left) + "," + serialize(root.right);
+        } else {
+            return "#";
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        List<String> dataList = new LinkedList<>(Arrays.asList(data.split(",")));
+        return mDeserialize(dataList);
+    }
+
+    private TreeNode mDeserialize(List<String> dl) {
+        if (dl.get(0).equals("#")) {
+            dl.remove(0);
+            return null;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(dl.get(0)));
+        dl.remove(0);
+        root.left = mDeserialize(dl);
+        root.right = mDeserialize(dl);
+        return root;
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec codec = new Codec();
+// codec.deserialize(codec.serialize(root));
+```
+
+TODO LL(1)文法
+
 # Java算法模板
 
 ## BFS
