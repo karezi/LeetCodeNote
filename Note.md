@@ -15791,6 +15791,56 @@ public class Codec {
 
 TODO LL(1)文法
 
+## [LCP 07. 传递信息](https://leetcode-cn.com/problems/chuan-di-xin-xi/)
+
+> DFS，BFS，图，动态规划
+
+BFS
+
+```java
+class Solution {
+    public int numWays(int n, int[][] relation, int k) {
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        for (int[] rel: relation) {
+            Set<Integer> set;
+            if (map.containsKey(rel[0])) {
+                set = map.get(rel[0]);
+            } else {
+                set = new HashSet<>();
+            }
+            set.add(rel[1]);
+            map.put(rel[0], set);
+        }
+        int cnt = 0;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(0);
+        while (!q.isEmpty() && cnt < k) {
+            cnt++;
+            int size = q.size();
+            while (size-- > 0) {
+                Integer i = q.poll();
+                if (map.containsKey(i)) {
+                    for (Integer next: map.get(i)) {
+                        q.offer(next);
+                    }
+                }
+            }
+        }
+        int ret = 0;
+        if (cnt == k) {
+            while (!q.isEmpty()) {
+                if (q.poll() == n - 1) {
+                    ret++;
+                }
+            }
+        }
+        return ret;
+    }
+}
+```
+
+DFS，动态规划 TOOD
+
 # Java算法模板
 
 ## BFS
