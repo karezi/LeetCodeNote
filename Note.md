@@ -15841,6 +15841,57 @@ class Solution {
 
 DFS，动态规划 TOOD
 
+## [1833. 雪糕的最大数量](https://leetcode-cn.com/problems/maximum-ice-cream-bars/)
+
+> 排序，贪心，计数数组
+
+排序
+
+```java
+class Solution {
+    public int maxIceCream(int[] costs, int coins) {
+        int step = 0;
+        Arrays.sort(costs);
+        int tmp = 0;
+        for (int cost: costs) {
+            tmp += cost;
+            if (tmp <= coins) {
+                step++;
+            } else {
+                break;
+            }
+        }
+        return step;
+    }
+}
+```
+
+计数排序
+
+```java
+class Solution {
+    public int maxIceCream(int[] costs, int coins) {
+        int[] freq = new int[100001];
+        for (int coin: costs) {
+            freq[coin]++;
+        }
+        int step = 0;
+        for (int i = 0; i < 100001; ++i) {
+            while (freq[i] > 0) {
+                if (coins - i >= 0) {
+                    freq[i]--;
+                    coins -= i;
+                    step++;
+                } else {
+                    return step;
+                }
+            }
+        }
+        return step;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
