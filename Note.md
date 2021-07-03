@@ -15892,6 +15892,60 @@ class Solution {
 }
 ```
 
+## [451. 根据字符出现频率排序](https://leetcode-cn.com/problems/sort-characters-by-frequency/)
+
+> 哈希表，字符串，桶排序，计数，排序，堆，优先队列
+
+哈希表+集合排序
+
+```java
+class Solution {
+    public String frequencySort(String s) {
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char c: s.toCharArray()) {
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
+        }
+        List<Character> list = new ArrayList<>(freq.keySet());
+        Collections.sort(list, (x, y) -> freq.get(y) - freq.get(x));
+        StringBuilder sb = new StringBuilder();
+        for (Character c: list) {
+            int cnt = freq.get(c);
+            while (cnt-- > 0) {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+数组模拟
+
+```java
+class Solution {
+    public String frequencySort(String s) {
+        int[][] freq = new int[128][2];
+        for (int i = 0; i < 128; ++i)
+            freq[i][0] = i;
+        for (char c: s.toCharArray()) {
+            freq[c][1]++;
+        }
+        Arrays.sort(freq, (x, y) -> y[1] - x[1]);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 128; ++i) {
+            if (freq[i][1] == 0)
+                break;
+            while (freq[i][1]-- > 0) {
+                sb.append((char)freq[i][0]);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+桶排序 TODO
+
 # Java算法模板
 
 ## BFS
