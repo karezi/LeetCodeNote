@@ -15946,6 +15946,36 @@ class Solution {
 
 桶排序 TODO
 
+## [645. 错误的集合](https://leetcode-cn.com/problems/set-mismatch/)
+
+> 数组，哈希表，排序，位运算，频数数组
+
+频数数组
+
+```java
+class Solution {
+    public int[] findErrorNums(int[] nums) {
+        int n = nums.length;
+        int[] res = new int[2];
+        int[] freq = new int[n + 1];
+        for (int i: nums) {
+            freq[i]++;
+            if (freq[i] == 2)
+                res[0] = i;
+        }
+        for (int i = 1; i <= n; ++i) {
+            if (freq[i] == 0)
+                res[1] = i;
+        }
+        return res;
+    }
+}
+```
+
+排序、位运算 TODO
+
+
+
 # Java算法模板
 
 ## BFS
