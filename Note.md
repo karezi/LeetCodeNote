@@ -15974,7 +15974,74 @@ class Solution {
 
 排序、位运算 TODO
 
+## [726. 原子的数量](https://leetcode-cn.com/problems/number-of-atoms/)
 
+> 栈，哈希表，字符串
+
+```java
+class Solution {
+    public String countOfAtoms(String formula) {
+        Deque<Map<String, Integer>> stack = new LinkedList<>(); // 栈中哈希表
+        stack.push(new HashMap<>());
+        char[] cs = formula.toCharArray();
+        for (int i = 0; i < cs.length; ++i) {
+            if (cs[i] == '(') {
+                stack.push(new HashMap<>());
+            } else if (cs[i] == ')') {
+                int[] cnt = parseCnt(i + 1, cs);
+                Map<String, Integer> tmpMap = stack.pop();
+                Map<String, Integer> peekMap = stack.peek();
+                for (String str: tmpMap.keySet()) {
+                    peekMap.put(str, peekMap.getOrDefault(str, 0) + tmpMap.get(str) * cnt[0]);
+                }
+                i = cnt[1];
+            } else {
+                StringBuilder atomName = new StringBuilder();
+                atomName.append(cs[i++]);
+                int n = cs.length;
+                while (i < n && isLower(cs[i])) {
+                    atomName.append(cs[i++]);
+                }
+                String atom = atomName.toString();
+                int[] cnt = parseCnt(i, cs);
+                Map<String, Integer> peekMap = stack.peek();
+                peekMap.put(atom, peekMap.getOrDefault(atom, 0) + cnt[0]);
+                i = cnt[1];
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        TreeMap<String, Integer> finalMap = new TreeMap<>(stack.pop());
+        for (String str: finalMap.keySet()) {
+            int num = finalMap.get(str);
+            sb.append(str).append(num == 1 ? "" : num);
+        }
+        return sb.toString();
+    }
+
+    private boolean isLower(char c) {
+        return 'a' <= c && c <= 'z';
+    }
+
+    private int[] parseCnt(int i, char[] cs) {
+        int n = cs.length;
+        int[] res = {1, i};
+        if (i >= n)
+            return res;
+        int tmp = 0;
+        while (i < n && isNum(cs[i])) {
+            tmp = tmp * 10 + (cs[i] - '0');
+            i++;
+        }
+        res[0] = tmp == 0 ? 1 : tmp;
+        res[1] = i - 1;
+        return res;
+    }
+
+    private boolean isNum(char c) {
+        return '0' <= c && c <= '9';
+    }
+}
+```
 
 # Java算法模板
 
