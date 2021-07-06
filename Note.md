@@ -16043,6 +16043,48 @@ class Solution {
 }
 ```
 
+## [1418. 点菜展示表](https://leetcode-cn.com/problems/display-table-of-food-orders-in-a-restaurant/)
+
+> 数组，哈希表，字符串，有序集合，排序
+
+```java
+class Solution {
+    public List<List<String>> displayTable(List<List<String>> orders) {
+        Map<String, Integer> map = new HashMap<>();
+        for (List<String> item: orders) {
+            String key = item.get(1) + ";" + item.get(2);
+            map.put(key, map.getOrDefault(key, 0) + 1);
+        }
+        List<List<String>> ret = new ArrayList<>();
+        List<String> firstLine = new ArrayList<>();
+        firstLine.add("Table");
+        TreeSet<String> foods = new TreeSet<>();
+        TreeSet<Integer> tables = new TreeSet<>();
+        for (String key: map.keySet()) {
+            String[] tmp = key.split(";");
+            foods.add(tmp[1]);
+            tables.add(Integer.parseInt(tmp[0]));
+        }
+        int foodSize = foods.size();
+        firstLine.addAll(new ArrayList<>(foods));
+        ret.add(firstLine);
+        for (Integer i: tables) {
+            List<String> line = new ArrayList<>();
+            String tableNum = i + "";
+            line.add(tableNum);
+            for (int j = 0; j < foodSize; ++j) {
+                String key = tableNum + ";" + firstLine.get(j + 1);
+                line.add("" + map.getOrDefault(key, 0));
+            }
+            ret.add(line);
+        }
+        return ret;
+    }
+}
+```
+
+TODO 转化成Map<tableNumber,Map<菜名,数量>>
+
 # Java算法模板
 
 ## BFS
