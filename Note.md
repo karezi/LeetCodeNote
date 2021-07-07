@@ -16085,6 +16085,33 @@ class Solution {
 
 TODO 转化成Map<tableNumber,Map<菜名,数量>>
 
+## [1711. 大餐计数](https://leetcode-cn.com/problems/count-good-meals/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public int countPairs(int[] deliciousness) {
+        int cnt = 0;
+        Map<Integer, Integer> map = new HashMap<>(); // Key的出现次数
+        int n = deliciousness.length;
+        int maxVal = 0;
+        for (int i: deliciousness) {
+            maxVal = Math.max(maxVal, i);
+        }
+        int upper = maxVal * 2; // 和的上限
+        for (int i: deliciousness) {
+            for (int sum = 1; sum <= upper; sum <<= 1) { // 遍历可能的和
+                cnt += map.getOrDefault(sum - i, 0); // 是否有，有几个
+                cnt %= 1000000007; // 可以写成mod=(int)1e9+7;cnt>=mod则cnt-=mod
+            }
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        return cnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
