@@ -16112,6 +16112,73 @@ class Solution {
 }
 ```
 
+## [930. 和相同的二元子数组](https://leetcode-cn.com/problems/binary-subarrays-with-sum/)
+
+> 数组，哈希表，前缀和，滑动窗口
+
+```java
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int n = nums.length;
+        int preSum = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        for (int i = 0; i < n; ++i) {
+            preSum += nums[i];
+            map.put(preSum, map.getOrDefault(preSum, 0) + 1);
+        }
+        int cnt = 0;
+        for (int i = goal; i <= preSum; ++i) {
+            if (map.containsKey(i) && map.containsKey(i - goal)) {
+                int a = map.get(i), b = map.get(i - goal);
+                cnt += goal == 0 ? (a * (a - 1) / 2) : a * b;
+            }
+        }
+        return cnt;
+    }
+}
+```
+
+简化
+
+```java
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int cnt = 0, sum = 0;
+        for (int i: nums) {
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+            sum += i;
+            cnt += map.getOrDefault(sum - goal, 0);
+        }
+        return cnt;
+    }
+}
+```
+
+滑动窗口（前缀和是递增序列）
+
+```java
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        int cnt = 0, n = nums.length;
+        int l1 = 0, l2 = 0, r = 0;
+        int sum1 = 0, sum2 = 0;
+        while (r < n) {
+            sum1 += nums[r];
+            sum2 += nums[r];
+            while (l1 <= r && sum1 > goal)
+                sum1 -= nums[l1++];
+            while (l2 <= r && sum2 >= goal) // 注意等于
+                sum2 -= nums[l2++];
+            cnt += l2 - l1;
+            r++;
+        }
+        return cnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
