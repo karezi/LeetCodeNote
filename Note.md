@@ -16179,6 +16179,59 @@ class Solution {
 }
 ```
 
+## [面试题 17.10. 主要元素](https://leetcode-cn.com/problems/find-majority-element-lcci/)
+
+> 数组，计数，Boyer-Moore投票算法
+
+哈希表
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+        int n = nums.length;
+        int minNum = (n + 1 + (n & 1)) / 2;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i: nums) {
+            int tmp = map.getOrDefault(i, 0);
+            if (tmp + 1 == minNum)
+                return i;
+            map.put(i, tmp + 1);
+        }
+        return -1;
+    }
+}
+```
+
+Boyer-Moore 投票算法
+
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+        int n = nums.length;
+        int candidate = 0, cnt = 0;
+        for (int i: nums) {
+            if (i != candidate) {
+                if (cnt == 0)
+                    candidate = i;
+                else
+                    cnt--;
+            } else {
+                cnt++;
+            }
+        }
+        cnt = 0;
+        for (int i: nums) {
+            if (i == candidate) {
+                cnt++;
+                if (cnt * 2 > n)
+                    return candidate;
+            }
+        }
+        return -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
