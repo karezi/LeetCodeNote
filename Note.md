@@ -16232,6 +16232,107 @@ class Solution {
 }
 ```
 
+## [981. 基于时间的键值存储](https://leetcode-cn.com/problems/time-based-key-value-store/)
+
+> 设计，哈希表，字符串，二分查找
+
+```java
+class TimeMap {
+    class Val {
+        public String value;
+        public int timestamp;
+        Val(String value, int timestamp) {
+            this.value = value;
+            this.timestamp = timestamp;
+        }
+    }
+    Map<String, List<Val>> map;
+
+    /** Initialize your data structure here. */
+    public TimeMap() {
+        map = new HashMap<>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        List<Val> list = map.getOrDefault(key, new ArrayList<>());
+        list.add(new Val(value, timestamp));
+        map.put(key, list);
+    }
+    
+    public String get(String key, int timestamp) {
+        if (map.containsKey(key)) {
+            List<Val> list = map.get(key);
+            int idx = bs(list, timestamp);
+            return idx <= 0 ? "" : list.get(idx - 1).value;
+        } else {
+            return "";
+        }
+    }
+
+    private int bs(List<Val> list, int timestamp) {
+        int l = 0, r = list.size() - 1;
+        if (timestamp < list.get(l).timestamp)
+            return -1;
+        if (timestamp >= list.get(r).timestamp)
+            return r + 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            Val mv = list.get(mid);
+            if (mv.timestamp <= timestamp) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
+```
+
+floorEntry
+
+```java
+class TimeMap {
+
+    Map<String, TreeMap<Integer, String>> map;
+
+    /** Initialize your data structure here. */
+    public TimeMap() {
+        map = new HashMap<>();
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        TreeMap<Integer, String> tm = map.getOrDefault(key, new TreeMap<>());
+        tm.put(timestamp, value);
+        map.put(key, tm);
+    }
+    
+    public String get(String key, int timestamp) {
+        if (map.containsKey(key)) {
+            TreeMap<Integer, String> tm = map.get(key);
+            Map.Entry<Integer, String> me = tm.floorEntry(timestamp);
+            return me == null ? "" : me.getValue();
+        } else {
+            return "";
+        }
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */
+```
+
 # Java算法模板
 
 ## BFS
