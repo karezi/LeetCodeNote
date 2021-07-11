@@ -16333,6 +16333,72 @@ class TimeMap {
  */
 ```
 
+## [274. H 指数](https://leetcode-cn.com/problems/h-index/)
+
+> 数组，计数排序，排序
+
+逆序
+
+```java
+class Solution {
+    public int hIndex(int[] citations) {
+        int[] reverseArr = Arrays.stream(citations).boxed().sorted((x, y) -> y - x).mapToInt(a -> a).toArray();
+        int h = 0;
+        for (int i = 0; i < reverseArr.length; ++i) {
+            if (reverseArr[i] < i + 1)
+                break;
+            h++;
+        }
+        return h;
+    }
+}
+```
+
+正序
+
+```java
+class Solution {
+    public int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int n = citations.length;
+        int h = n;
+        for (int i = 0; i < citations.length; ++i) {
+            if (citations[i] < h)
+                h--;
+            else
+                break;
+        }
+        return h;
+    }
+}
+```
+
+计数排序
+
+```java
+// 设计数数组counter[n+1]，从后向前累加论文数，如果大于i则找到h
+class Solution {
+    public int hIndex(int[] citations) {
+        // 设计数数组counter[n+1]，从后向前累加论文数，如果大于i则找到h
+        int n = citations.length;
+        int[] counter = new int[n + 1];
+        for (int i: citations) {
+            if (i >= n)
+                counter[n]++;
+            else
+                counter[i]++;
+        }
+        int tot = 0;
+        for (int i = n; i >= 0; --i) {
+            tot += counter[i];
+            if (tot >= i)
+                return i;
+        }
+        return 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -17228,20 +17294,36 @@ String str = String.valueOf(i)
 	map.computeIfAbsent(key, key -> new PriorityQueue<>()).offer(ch);
 	```
 
-+ 数组倒序：必须是Integer[]，Arrays.sort(A, Collections.reverseOrder()); 或者从后往前处理
++ 数组排序Arrays
 
-+ 二维数组排序
-
-  ```
-  Arrays.sort(arr, new Comparator<?>() {
-  		@Override
-  		private int Compare(int[] a, int[] b) {
-  				return a[0] > b[0] ? -1: 1;
-  		}
+  ```java
+  Arrays.sort(A); // 如果是字符数组，则是先大写后小写，用的是双轴快排
+  Arrays.sort(A, Collections.reverseOrder()); // 逆序，必须是Integer[]，或者从后往前处理
+  Arrays.sort(A, String.CASE_INSENSITIVE_ORDER); // 字符串排序，忽略大小写
+  // 对于基本类型的数组如int[]/double[]/char[]，Arrays类只提供了默认的升序排列，没有降序
+  int[] newA = Arrays.stream(A).boxed().sorted((a, b) -> b - a).mapToInt(p -> p).toArray();
+  // Integer[]逆序
+  Arrays.sort(A, new Comparator<Integer>(){
+  	public int compare(Integer a, Integer b){
+  		return b - a;
+  	}
+  });
+  Arrays.sort(A, (a, b) -> b - a);
+  // 给某区间按c比较器（可选）排序
+  Arrays.sort(A, fromIndex, toIndex, c);
+  // 按字符串长度排序
+  Arrays.sort(A, (a, b) -> Integer.signum(a.length() - b.length()));
+  Arrays.sort(A, Comparator.comparingInt(String::length));
+  Arrays.sort(A, (a, b) -> a.length() - b.length());
+  Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length());
+  // 二维数组排序
+  Arrays.sort(AA, new Comparator<?>() {
+  	@Override
+  	private int Compare(int[] a, int[] b) {
+  		return a[0] > b[0] ? -1: 1;
+  	}
   })
   ```
-
-- 获取数组最大值：Arrays.stream(arr).max().getAsInt();
 
 - 数组复制
 
