@@ -16399,6 +16399,32 @@ class Solution {
 }
 ```
 
+## [275. H 指数 II](https://leetcode-cn.com/problems/h-index-ii/)
+
+> 数组，二分查找
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：45.4 MB, 在所有 Java 提交中击败了20.66%的用户
+
+```java
+class Solution {
+    public int hIndex(int[] citations) {
+        int n = citations.length;
+        int l = 0, r = n - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (citations[mid] >= n - mid) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return citations[r] >= n - r ? n - r : 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
