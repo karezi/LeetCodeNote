@@ -16425,6 +16425,78 @@ class Solution {
 }
 ```
 
+## [剑指 Offer 53 - I. 在排序数组中查找数字 I](https://leetcode-cn.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/)
+
+> 数组，二分查找
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = bs(nums, target);
+        if (left == -1)
+            return 0;
+        int cnt = 1;
+        while (left < nums.length - 1 && nums[++left] == target)
+            cnt++;
+        return cnt;
+    }
+
+    private int bs(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l < nums.length && nums[l] == target ? l : -1;
+    }
+}
+```
+
+找左右端点
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：40.7 MB, 在所有 Java 提交中击败了99.14%的用户
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int l = bs(nums, target, true);
+        if (l == -1)
+            return 0;
+        int r = bs(nums, target, false);
+        if (r == -1)
+            return 0;
+        return r - l + 1;
+    }
+
+    private int bs(int[] nums, int target, boolean direction) {
+        int l = 0, r = nums.length - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] < target) {
+                l = mid + 1;
+            } else if (nums[mid] > target){
+                r = mid - 1;
+            } else {
+                if (direction)
+                    r = mid - 1;
+                else
+                    l = mid + 1;
+            }
+        }
+        if (direction)
+            return l < nums.length && nums[l] == target ? l : -1;
+        else
+            return r >= 0 && nums[r] == target ? r : -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -17483,3 +17555,5 @@ String str = String.valueOf(i)
 ## [1707. 与数组中元素的最大异或值](https://leetcode-cn.com/problems/maximum-xor-with-an-element-from-array/)
 
 ## [879. 盈利计划](https://leetcode-cn.com/problems/profitable-schemes/)
+
+## [218. 天际线问题](https://leetcode-cn.com/problems/the-skyline-problem/)
