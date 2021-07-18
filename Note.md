@@ -16497,6 +16497,156 @@ class Solution {
 }
 ```
 
+## [剑指 Offer 42. 连续子数组的最大和](https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/)
+
+## [53. 最大子序和](https://leetcode-cn.com/problems/maximum-subarray/)
+
+> 数组，分治，动态规划
+
+动态规划
+
+```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+        // dp[i]表示第i个数结尾的连续子数组最大和
+        // dp[i]=max(nums[i],dp[i-1]+nums[i])
+        // dp[0]=0
+        // dp[n]
+        int n = nums.length;
+        int dp = 0, max = nums[0];
+        for (int i = 0; i < n; ++i) {
+            dp = Math.max(nums[i], dp + nums[i]);
+            max = Math.max(max, dp);
+        }
+        return max;
+    }
+}
+```
+
+分治
+
+```java
+class Solution {
+    public class Status {
+        public int ls, rs, is, ms;
+        public Status(int ls, int rs, int is, int ms) {
+            this.ls = ls;
+            this.rs = rs;
+            this.is = is;
+            this.ms = ms;
+        }
+    }
+
+    public int maxSubArray(int[] nums) {
+        // ls左端点构成的子数组和，rs右端点构成的子数组和，is区间总和，ms区间内最大子区间和
+        return getInfo(nums, 0, nums.length - 1).ms;
+    }
+
+    private Status getInfo(int[] nums, int l, int r) {
+        if (l == r) {
+            return new Status(nums[l], nums[l], nums[l], nums[l]);
+        }
+        int mid = l + (r - l) / 2;
+        Status lStatus = getInfo(nums, l, mid);
+        Status rStatus = getInfo(nums, mid + 1, r);
+        return pushUp(lStatus, rStatus);
+    }
+
+    private Status pushUp(Status lStatus, Status rStatus) {
+        int ls = Math.max(lStatus.ls, lStatus.is + rStatus.ls);
+        int rs = Math.max(rStatus.rs, lStatus.rs + rStatus.is);
+        int is = lStatus.is + rStatus.is;
+        int ms = Math.max(lStatus.rs + rStatus.ls, Math.max(lStatus.ms, rStatus.ms));
+        return new Status(ls, rs, is, ms);
+    }
+}
+```
+
+TODO 前缀和
+
+## [面试题 10.02. 变位词组](https://leetcode-cn.com/problems/group-anagrams-lcci/)
+
+> 哈希表，字符串，排序，数学
+
+计数作为key
+
+```java
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str: strs) {
+            int[] cnt = new int[26];
+            for (char c: str.toCharArray()) {
+                cnt[c - 'a']++;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 26; ++i) {
+                if (cnt[i] > 0)
+                    sb.append((char)'a' + i).append(cnt[i]);
+            }
+            String key = sb.toString();
+            List<String> l = map.getOrDefault(key, new ArrayList<String>());
+            l.add(str);
+            map.put(key, l);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+}
+```
+
+排序作为key
+
+```java
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        Map<String, List<String>> map = new HashMap<>();
+        for (String str: strs) {
+            char[] ca = str.toCharArray();
+            Arrays.sort(ca);
+            String key = new String(ca);
+            List<String> l = map.getOrDefault(key, new ArrayList<String>());
+            l.add(str);
+            map.put(key, l);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+}
+```
+
+质数分解唯一性（会溢出，慎用）
+
+```java
+class Solution {
+    static int[] nums = new int[26]; 
+    static {
+        for (int i = 2, idx = 0; idx != 26; i++) {
+            boolean ok = true;
+            for (int j = 2; j <= i / j; j++) {
+                if (i % j == 0) {
+                    ok = false;
+                    break;
+                } 
+            }
+            if (ok)
+                nums[idx++] = i;
+        }
+    }
+    public List<List<String>> groupAnagrams(String[] ss) {
+        Map<Long, List<String>> map = new HashMap<>();
+        for (String s : ss) {
+            long cur = 1;
+            for (char c : s.toCharArray()) {
+                cur *= nums[c - 'a'];
+            }
+            List<String> list = map.getOrDefault(cur, new ArrayList<>());
+            list.add(s);
+            map.put(cur, list);
+        }
+        return new ArrayList<List<String>>(map.values());
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -16968,6 +17118,21 @@ class TrieNode {
         frequency = 0;
         child = new TrieNode[26];
     }
+}
+```
+
+### 线段树（Segment Tree）
+
+简化版
+
+```java
+public Node build(int[] a, int l, int r) {
+    if (l == r)
+        return new Node(a[l]);
+    int mid = l + (r - l) / 2;
+    Node ln = build(a, l, mid);
+    Node rn = build(a, mid + 1, r);
+    return pushUp(ln, rn);
 }
 ```
 
@@ -17557,3 +17722,7 @@ String str = String.valueOf(i)
 ## [879. 盈利计划](https://leetcode-cn.com/problems/profitable-schemes/)
 
 ## [218. 天际线问题](https://leetcode-cn.com/problems/the-skyline-problem/)
+
+## [1818. 绝对差值和](https://leetcode-cn.com/problems/minimum-absolute-sum-difference/)
+
+## [1846. 减小和重新排列数组后的最大元素](https://leetcode-cn.com/problems/maximum-element-after-decreasing-and-rearranging/)
