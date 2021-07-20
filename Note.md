@@ -16647,6 +16647,49 @@ class Solution {
 }
 ```
 
+## [1838. 最高频元素的频数](https://leetcode-cn.com/problems/frequency-of-the-most-frequent-element/)
+
+> 数组，滑动窗口
+
+```java
+class Solution {
+    public int maxFrequency(int[] nums, int k) {
+        // 画柱状图理解，用滑动数组
+        Arrays.sort(nums);
+        int n = nums.length;
+        long total = 0;
+        int l = 0, res = 1;
+        for (int r = 1; r < n; ++r) {
+            total += (long) (nums[r] - nums[r - 1]) * (r - l); // 右移r，需要加的值相当于叠加一层（长是r-l，高是nums[r]-nums[r-1]）
+            while (total > k) { // 判断和是否超过限制
+                total -= nums[r] - nums[l]; // 没有超过收缩左指针，更新和，减去右指针的值和左指针的差 
+                ++l;
+            }
+            res = Math.max(res, r - l + 1);
+        }
+        return res;
+    }
+}
+```
+
+## [1877. 数组中最大数对和的最小值](https://leetcode-cn.com/problems/minimize-maximum-pair-sum-in-array/)
+
+> 贪心，数组，双指针，排序
+
+```java
+class Solution {
+    public int minPairSum(int[] nums) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        int ret = 0;
+        for (int i = 0; i < n / 2; ++i) {
+            ret = Math.max(ret, nums[i] + nums[n - i - 1]);
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
