@@ -16757,6 +16757,122 @@ public class Solution {
 }
 ```
 
+## [138. 复制带随机指针的链表](https://leetcode-cn.com/problems/copy-list-with-random-pointer/)
+
+> 哈希表，链表
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.6 MB, 在所有 Java 提交中击败了94.74%的用户
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+*/
+
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null)
+            return null;
+        Map<Node, Node> map = new HashMap<>();
+        Node po = head, pn = null;
+        Node newHead = null;
+        while (po != null) {
+            if (pn == null) {
+                pn = new Node(po.val);
+                newHead = pn;
+            } else {
+                pn.next = new Node(po.val);
+                pn = pn.next;
+            }
+            map.put(po, pn);
+            po = po.next;
+        }
+        po = head;
+        pn = newHead;
+        while (po != null) {
+            if (po.random != null)
+                pn.random = map.get(po.random);
+            po = po.next;
+            pn = pn.next;
+        }
+        return newHead;
+    }
+}
+```
+
+哈希+回溯
+
+利用递归可以只循环一次
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.2 MB, 在所有 Java 提交中击败了40.88%的用户
+
+```java
+class Solution {
+    Map<Node, Node> cache = new HashMap<>();
+
+    public Node copyRandomList(Node head) {
+        if (head == null)
+            return null;
+        if (!cache.containsKey(head)) {
+            Node nHead = new Node(head.val);
+            cache.put(head, nHead);
+            nHead.next = copyRandomList(head.next);
+            nHead.random = copyRandomList(head.random);
+        }
+        return cache.get(head);
+    }
+}
+```
+
+迭代 + 节点拆分：
+
+利用复制相同节点链到原始链表中可以不用哈希表
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.6 MB, 在所有 Java 提交中击败了95.13%的用户
+
+```java
+class Solution {
+    public Node copyRandomList(Node head) {
+        if (head == null)
+            return null;
+        for (Node p = head; p != null; p = p.next) {
+            Node tmp = p.next;
+            p.next = new Node(p.val);
+            p.next.next = tmp;
+            p = p.next;
+        }
+        for (Node p = head; p != null; p = p.next.next) {
+            p.next.random = p.random == null ? null : p.random.next;
+        }
+        Node newHead = head.next;
+        for (Node p = head; p != null; p = p.next) {
+            Node pn = p.next;
+            p.next = p.next.next;
+            pn.next = pn.next == null ? null : pn.next.next;
+        }
+        return newHead;
+    }
+}
+```
+
+
+
 # Java算法模板
 
 ## BFS
