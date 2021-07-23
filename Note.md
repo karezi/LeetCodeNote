@@ -16871,7 +16871,59 @@ class Solution {
 }
 ```
 
+## [1893. 检查是否区域内所有整数都被覆盖](https://leetcode-cn.com/problems/check-if-all-the-integers-in-a-range-are-covered/)
 
+> 数组，哈希表，差分数组，前缀和
+
+哈希表
+
+执行用时：3 ms, 在所有 Java 提交中击败了19.54%的用户
+
+内存消耗：37.6 MB, 在所有 Java 提交中击败了68.38%的用户
+
+```java
+class Solution {
+    public boolean isCovered(int[][] ranges, int left, int right) {
+        Set<Integer> set = new HashSet<>();
+        for (int[] range: ranges)
+            for (int i = range[0]; i <= range[1]; ++i)
+                set.add(i);
+        for (int i = left; i <= right; ++i) {
+            if (!set.contains(i))
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+差分数组
+
+```java
+class Solution {
+    public boolean isCovered(int[][] ranges, int left, int right) {
+        int[] diff = new int[52];
+        // 对差分数组进行处理
+        for(int i = 0; i < ranges.length; i++){
+            diff[ranges[i][0]]++;
+            diff[ranges[i][1] + 1]--;
+        }
+        // 根据差分数组处理前缀和，为理解方便单独定义sum，可以原地做
+        int[] sum = new int[52];
+        for(int i = 1; i <= 51; i++){
+            sum[i] = sum[i - 1] + diff[i];
+        }
+        // 从left到right判断是否满足sum > 0
+        for(int i = left; i <= right; i++){
+            if(sum[i] <= 0)
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+树状数组/线段树 TODO
 
 # Java算法模板
 
