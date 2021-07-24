@@ -16925,6 +16925,27 @@ class Solution {
 
 树状数组/线段树 TODO
 
+## [1736. 替换隐藏数字得到的最晚时间](https://leetcode-cn.com/problems/latest-time-by-replacing-hidden-digits/)
+
+> 字符串
+
+```java
+class Solution {
+    public String maximumTime(String time) {
+        char[] cs = time.toCharArray();
+        if (cs[0] == '?')
+            cs[0] = ('4' <= cs[1] && cs[1] <= '9') ? '1' : '2';
+        if (cs[1] == '?')
+            cs[1] = (cs[0] == '2') ? '3' : '9';
+        if (cs[3] == '?')
+            cs[3] = '5';
+        if (cs[4] == '?')
+            cs[4] = '9';
+        return new String(cs);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
