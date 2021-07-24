@@ -16946,6 +16946,64 @@ class Solution {
 }
 ```
 
+## [1743. 从相邻元素对还原数组](https://leetcode-cn.com/problems/restore-the-array-from-adjacent-pairs/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    private static int MAX = 100001;
+
+    public int[] restoreArray(int[][] adjacentPairs) {
+        Map<Integer, int[]> map = new HashMap<>();
+        for (int[] a: adjacentPairs) {
+            int[] pair;
+            if (map.containsKey(a[0])) {
+                pair = map.get(a[0]);
+                pair[1] = a[1];
+            } else {
+                pair = new int[2];
+                pair[0] = a[1];
+                pair[1] = MAX;
+            }
+            map.put(a[0], pair);
+            if (map.containsKey(a[1])) {
+                pair = map.get(a[1]);
+                pair[1] = a[0];
+            } else {
+                pair = new int[2];
+                pair[0] = a[0];
+                pair[1] = MAX;
+            }
+            map.put(a[1], pair);
+        }
+        int start = 0;
+        for (Map.Entry<Integer, int[]> entry: map.entrySet()) {
+            int[] pair = entry.getValue();
+            if (pair[1] == MAX)
+                start = entry.getKey();
+        }
+        int n = map.keySet().size();
+        int[] ret = new int[n];
+        if (n <= 1)
+            return ret;
+        ret[0] = start;
+        ret[1] = map.get(start)[0];
+        for (int i = 2, j = ret[1]; i < n; ++i) {
+            int[] tmp = map.get(j);
+            if (tmp[1] == MAX) {
+                ret[i] = tmp[0];
+                break;
+            }
+            int[] arr = map.get(j);
+            ret[i] = arr[0] == ret[i - 2] ? arr[1] : arr[0];
+            j = ret[i];
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
