@@ -17004,6 +17004,87 @@ class Solution {
 }
 ```
 
+## [671. 二叉树中第二小的节点](https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/)
+
+> 树，DFS，二叉树
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int findSecondMinimumValue(TreeNode root) {
+        return dfs(root, root.val);
+    }
+
+    private int dfs(TreeNode root, int min) {
+        if (root.left == null) {
+            return -1;
+        }
+        if (root.left.val == min && root.right.val == min) {
+            int d1 = dfs(root.left, min);
+            int d2 = dfs(root.right, min);
+            if (d1 == -1)
+                return d2;
+            if (d2 == -1)
+                return d1;
+            return Math.min(d1, d2);
+        }
+        if (root.left.val == min) {
+            int left = dfs(root.left, min);
+            if (left == -1)
+                return root.right.val;
+            else
+                return Math.min(left, root.right.val);
+        }
+        if (root.right.val == min) {
+            int right = dfs(root.right, min);
+            if (right == -1)
+                return root.left.val;
+            else
+                return Math.min(right, root.left.val);
+        }
+        return -1;
+    }
+}
+```
+
+无返回值简化版
+
+```java
+class Solution {
+    int ans = -1;
+    public int findSecondMinimumValue(TreeNode root) {
+        dfs(root, root.val);
+        return ans;
+    }
+    void dfs(TreeNode root, int cur) {
+        if (root == null) return ;
+        if (root.val != cur) {
+            if (ans == -1)
+                ans = root.val;
+            else
+                ans = Math.min(ans, root.val);
+            return;
+        }
+        dfs(root.left, cur);
+        dfs(root.right, cur);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18083,3 +18164,5 @@ String str = String.valueOf(i)
 ## [1818. 绝对差值和](https://leetcode-cn.com/problems/minimum-absolute-sum-difference/)
 
 ## [1846. 减小和重新排列数组后的最大元素](https://leetcode-cn.com/problems/maximum-element-after-decreasing-and-rearranging/)
+
+## [1713. 得到子序列的最少操作次数](https://leetcode-cn.com/problems/minimum-operations-to-make-a-subsequence/)
