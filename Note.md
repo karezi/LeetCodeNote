@@ -17085,6 +17085,61 @@ class Solution {
 }
 ```
 
+## [863. 二叉树中所有距离为 K 的结点](https://leetcode-cn.com/problems/all-nodes-distance-k-in-binary-tree/)
+
+> 树，二叉树，DFS
+
+两遍DFS
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    Map<Integer, TreeNode> parentMap = new HashMap<>(); // <node的值,node的父节点>
+    List<Integer> ret = new ArrayList<>();
+
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        dfsRoot(root); // 建前向索引
+        dfsTarget(target, null, 0, k);
+        return ret;
+    }
+
+    private void dfsRoot(TreeNode root) {
+        if (root.left != null) {
+            parentMap.put(root.left.val, root);
+            dfsRoot(root.left);
+        }
+        if (root.right != null) {
+            parentMap.put(root.right.val, root);
+            dfsRoot(root.right);
+        }
+    }
+
+    private void dfsTarget(TreeNode curNode, TreeNode fromNode, int cur, int k) {
+        if (curNode == fromNode) { // TODO fromNode是精髓
+            return;
+        }
+        if (cur == k) {
+            ret.add(curNode.val);
+        }
+        if (curNode.left != null) {
+            dfsTarget(curNode.left, curNode, cur + 1, k);
+        }
+        if (curNode.right != null) {
+            dfsTarget(curNode.right, curNode, cur + 1, k);
+        }
+        dfsTarget(parentMap.get(curNode.val), curNode, cur + 1, k);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
