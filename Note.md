@@ -17140,6 +17140,40 @@ class Solution {
 }
 ```
 
+## [1104. 二叉树寻路](https://leetcode-cn.com/problems/path-in-zigzag-labelled-binary-tree/)
+
+> 树，数学，二叉树
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.5 MB, 在所有 Java 提交中击败了99.12%的用户
+
+```java
+class Solution {
+    public List<Integer> pathInZigZagTree(int label) {
+        List<Integer> ret = new ArrayList<>();
+        ret.add(label);
+        int level = getLevel(label);
+        while (label > 1) {
+            label = (1 << level) + (1 << level - 1) - 1 - label / 2;
+            ret.add(label);
+            level--;
+        }
+        Collections.reverse(ret);
+        return ret;
+    }
+
+    private int getLevel(int label) {
+        int cnt = 0;
+        while (label > 0) {
+            label >>= 1;
+            cnt++;
+        }
+        return cnt - 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
