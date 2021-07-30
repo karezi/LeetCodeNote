@@ -17174,6 +17174,22 @@ class Solution {
 }
 ```
 
+## [171. Excel 表列序号](https://leetcode-cn.com/problems/excel-sheet-column-number/)
+
+> 数字，字符串
+
+```java
+class Solution {
+    public int titleToNumber(String columnTitle) {
+        int res = 0;
+        for (int i = 0; i < columnTitle.length(); ++i) {
+            res = (columnTitle.charAt(i) - 'A' + 1) + res * 26;
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
