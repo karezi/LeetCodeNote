@@ -17190,6 +17190,47 @@ class Solution {
 }
 ```
 
+## [1337. 矩阵中战斗力最弱的 K 行](https://leetcode-cn.com/problems/the-k-weakest-rows-in-a-matrix/)
+
+> 数组，二分查找，矩阵，排序，堆
+
+```java
+class Solution {
+    public int[] kWeakestRows(int[][] mat, int k) {
+        int m = mat.length, n = mat[0].length;
+        int[] ret = new int[k];
+        int cnt = 0;
+        boolean flag = false;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (mat[j][i] == 0 && (i == 0 || mat[j][0] != -1)) {
+                    mat[j][0] = -1;
+                    ret[cnt++] = j;
+                    if (cnt == k) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if (flag) {
+                break;
+            }
+        }
+        for (int i = 0; i < m; ++i) {
+            if (mat[i][0] != -1) {
+                if (cnt == k) {
+                    break;
+                }
+                ret[cnt++] = i;
+            }
+        }
+        return ret;
+    }
+}
+```
+
+TODO 二分，优先队列等
+
 # Java算法模板
 
 ## BFS
@@ -18271,3 +18312,5 @@ String str = String.valueOf(i)
 ## [1846. 减小和重新排列数组后的最大元素](https://leetcode-cn.com/problems/maximum-element-after-decreasing-and-rearranging/)
 
 ## [1713. 得到子序列的最少操作次数](https://leetcode-cn.com/problems/minimum-operations-to-make-a-subsequence/)
+
+## [987. 二叉树的垂序遍历](https://leetcode-cn.com/problems/vertical-order-traversal-of-a-binary-tree/)
