@@ -17231,6 +17231,27 @@ class Solution {
 
 TODO 二分，优先队列等
 
+## [581. 最短无序连续子数组](https://leetcode-cn.com/problems/shortest-unsorted-continuous-subarray/)
+
+> 排序，双指针，数组
+
+排序法
+
+```java
+class Solution {
+    public int findUnsortedSubarray(int[] nums) {
+        int[] arr = nums.clone(); // 拷贝数组的方法，另一种是System.arraycopy(A,0,B,0,n)
+        Arrays.sort(arr);
+        int n = nums.length, l = 0, r = n - 1;
+        while (l <= r && nums[l] == arr[l]) l++;
+        while (l <= r && nums[r] == arr[r]) r--;
+        return r - l + 1;
+    }
+}
+```
+
+TODO 双指针法
+
 # Java算法模板
 
 ## BFS
@@ -18314,3 +18335,7 @@ String str = String.valueOf(i)
 ## [1713. 得到子序列的最少操作次数](https://leetcode-cn.com/problems/minimum-operations-to-make-a-subsequence/)
 
 ## [987. 二叉树的垂序遍历](https://leetcode-cn.com/problems/vertical-order-traversal-of-a-binary-tree/)
+
+## [743. 网络延迟时间](https://leetcode-cn.com/problems/network-delay-time/)（重要）
+
+## [611. 有效三角形的个数](https://leetcode-cn.com/problems/valid-triangle-number/)
