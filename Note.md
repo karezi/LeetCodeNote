@@ -17252,6 +17252,82 @@ class Solution {
 
 TODO 双指针法
 
+## [1137. 第 N 个泰波那契数](https://leetcode-cn.com/problems/n-th-tribonacci-number/)
+
+> 记忆化搜索，数学，动态规划，滚动数组
+
+滚动数组
+
+```java
+class Solution {
+    public int tribonacci(int n) {
+        int[] ans = {0, 1, 1, 2};
+        if (n <= 3) {
+            return ans[n];
+        }
+        int ret = 0;
+        for (int i = 4; i <= n; ++i) {
+            int index = i % 4;
+            ans[index] = ans[(index + 1) % 4] + ans[(index + 2) % 4] + ans[(index + 3) % 4];
+            ret = ans[index];
+        }
+        return ret;
+    }
+}
+```
+
+矩阵快速幂 TODO
+
+## [413. 等差数列划分](https://leetcode-cn.com/problems/arithmetic-slices/)
+
+> 数组，动态规划
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.1 MB, 在所有 Java 提交中击败了74.44%的用户
+
+```java
+class Solution {
+    public int numberOfArithmeticSlices(int[] nums) {
+        int res = 0;
+        int n = nums.length;
+        if (n < 3)
+            return 0;
+        int tmp = 2;
+        for (int i = 2; i < n; ++i) {
+            if (nums[i] - nums[i - 1] == nums[i - 1] - nums[i - 2]) {
+                tmp++;
+            } else {
+                if (tmp != 2) {
+                    res += (tmp - 1) * (tmp - 2) / 2;
+                    tmp = 2;
+                }
+            }
+        }
+        if (tmp != 2)
+            res += (tmp - 1) * (tmp - 2) / 2;
+        return res;
+    }
+}
+```
+
+简短写法
+
+```java
+class Solution {
+    public int numberOfArithmeticSlices(int[] nums) {
+        int n = nums.length, l = 0, ans = 0;
+        for(int i = 2; i < n; i++) {
+            if (nums[i] - nums[i - 1] == nums[i - 1] - nums[i-2])
+                ans += ++l;
+            else
+                l = 0;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18339,3 +18415,11 @@ String str = String.valueOf(i)
 ## [743. 网络延迟时间](https://leetcode-cn.com/problems/network-delay-time/)（重要）
 
 ## [611. 有效三角形的个数](https://leetcode-cn.com/problems/valid-triangle-number/)
+
+## [802. 找到最终的安全状态](https://leetcode-cn.com/problems/find-eventual-safe-states/)
+
+## [847. 访问所有节点的最短路径](https://leetcode-cn.com/problems/shortest-path-visiting-all-nodes/)
+
+## [457. 环形数组是否存在循环](https://leetcode-cn.com/problems/circular-array-loop/)
+
+## [313. 超级丑数](https://leetcode-cn.com/problems/super-ugly-number/)
