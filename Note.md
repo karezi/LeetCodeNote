@@ -17328,6 +17328,81 @@ class Solution {
 }
 ```
 
+## [446. 等差数列划分 II - 子序列](https://leetcode-cn.com/problems/arithmetic-slices-ii-subsequence/)
+
+> 数组，动态规划，序列DP
+
+Map数组
+
+```java
+class Solution {
+    public int numberOfArithmeticSlices(int[] nums) {
+        // dp[i][d]表示以i为尾项，公差为d的序列的数目
+        // dp[i][d]=sum(dp[j][d]+1)，j<i&&dp[i]-dp[j]=d(即i可以直接接在j后面构成等差数列)
+        // dp[i][d]=0;
+        // res = 所有dp的和
+        // 优化：因为第二维范围太大稀疏，所以用map来代替
+        int n = nums.length;
+        int res = 0;
+        Map<Long, Integer>[] dp = new Map[n]; // 妙 <子序列差值，子序列数列>
+        for (int i = 0; i < n; ++i) {
+            dp[i] = new HashMap<>();
+        }
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) { // 遍历i之前的
+                long d = 1L * nums[i] - nums[j];
+                int dp_j_d = dp[j].getOrDefault(d, 0); // dp[j][d]
+                res += dp_j_d;
+                dp[i].put(d, dp[i].getOrDefault(d, 0) + dp_j_d + 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
+记录末两位数
+
+```java
+class Solution {
+    public int numberOfArithmeticSlices(int[] nums) {
+        // dp[i][j]表示nums[i],num[j]为末尾两个数组成的序列的个数
+        // dp[j][k]=sum(dp[i][j]+1)，i<j<k&&dp[j]-dp[i]=dp[k]-dp[j]，即nums[i]，nums[j]，num[k]组成连续等差数列
+        // dp[i][j]=0;
+        // res = 所有dp的和
+        int n = nums.length;
+        if (n < 3)
+            return 0;
+        int res = 0;
+        int[][] dp = new int[n][n];
+        // 可以缓存所有的相同值的位置，方便找k
+        Map<Integer, List<Integer>> map = new HashMap<>(); // <数的值，数的位置>
+        for (int i = 0; i < n; ++i) {
+            List<Integer> list = map.getOrDefault(nums[i], new ArrayList<>());
+            list.add(i);
+            map.put(nums[i], list);
+        }
+        for (int k = 1; k < n; ++k) {
+            for (int j = 0; j < k; ++j) {
+                long iVal = 2L * nums[j] - nums[k];
+                if (iVal > Integer.MAX_VALUE || iVal < Integer.MIN_VALUE) // 超出范围的不考虑
+                    continue;
+                if (map.containsKey((int)iVal)) { // 注意强转
+                    List<Integer> allI = map.get((int)iVal);
+                    for (int i: allI) {
+                        if (i < j) {
+                            dp[j][k] += dp[i][j] + 1;
+                        }
+                    }
+                }
+                res += dp[j][k];
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
