@@ -17403,6 +17403,38 @@ class Solution {
 }
 ```
 
+## [1929. 数组串联](https://leetcode-cn.com/problems/concatenation-of-array/)
+
+> 数组
+
+```java
+class Solution {
+    public int[] getConcatenation(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[2 * n];
+        for (int i = 0; i < n; ++i) {
+            ans[i] = nums[i];
+            ans[n + i] = nums[i];
+        }
+        return ans;
+    }
+}
+```
+
+arraycopy函数
+
+```java
+class Solution {
+    public int[] getConcatenation(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[2 * n];
+        System.arraycopy(nums, 0, ans, 0, n);
+        System.arraycopy(nums, 0, ans, n, n);
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
