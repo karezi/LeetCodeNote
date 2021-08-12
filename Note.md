@@ -8911,7 +8911,7 @@ class Solution {
 
 ## [516. 最长回文子序列](https://leetcode-cn.com/problems/longest-palindromic-subsequence/)
 
-> 动态规划，回文，最长子序列
+> 动态规划，回文，最长子序列，序列DP
 
 ```java
 class Solution {
