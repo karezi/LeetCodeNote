@@ -17435,6 +17435,49 @@ class Solution {
 }
 ```
 
+## [1583. 统计不开心的朋友](https://leetcode-cn.com/problems/count-unhappy-friends/)
+
+> 数组，模拟
+
+两个Map模拟一下
+
+```java
+class Solution {
+    public int unhappyFriends(int n, int[][] preferences, int[][] pairs) {
+        Map<String, Integer> prefCache = new HashMap<>();
+        Map<Integer, Integer> pairCache = new HashMap<>();
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n - 1; ++j) {
+                int friend = preferences[i][j];
+                prefCache.put(i + "," + friend, j);
+            }
+        }
+        for (int[] pair: pairs) {
+            pairCache.put(pair[0], pair[1]);
+            pairCache.put(pair[1], pair[0]);
+        }
+        int ans = 0;
+        for (int x = 0; x < n; ++x) {
+            int y = pairCache.get(x);
+            int yi = prefCache.get(x + "," + y);
+            for (int ui = 0; ui < yi; ++ui) { // 更亲密的朋友们
+                int u = preferences[x][ui];
+                int score = prefCache.get(u + "," + x);
+                int v = pairCache.get(u);
+                int score2 = prefCache.get(u + "," + v);
+                if (score < score2) {
+                    ans++;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+}
+```
+
+TODO 其实用数组就行
+
 # Java算法模板
 
 ## BFS
@@ -18530,3 +18573,5 @@ String str = String.valueOf(i)
 ## [457. 环形数组是否存在循环](https://leetcode-cn.com/problems/circular-array-loop/)
 
 ## [313. 超级丑数](https://leetcode-cn.com/problems/super-ugly-number/)
+
+## [233. 数字 1 的个数](https://leetcode-cn.com/problems/number-of-digit-one/)
