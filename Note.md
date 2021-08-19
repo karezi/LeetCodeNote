@@ -17478,6 +17478,67 @@ class Solution {
 
 TODO 其实用数组就行
 
+## [551. 学生出勤记录 I](https://leetcode-cn.com/problems/student-attendance-record-i/)
+
+> 字符串
+
+```java
+class Solution {
+    public boolean checkRecord(String s) {
+        int countA = 0, countL = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == 'A') {
+                countA++;
+                if (countA > 1) {
+                    return false;
+                }
+            }
+            if (s.charAt(i) == 'L') {
+                countL++;
+                if (countL >= 3)
+                    return false;
+            } else {
+                countL = 0;
+            }
+        }
+        return true;
+    }
+}
+```
+
+## [345. 反转字符串中的元音字母](https://leetcode-cn.com/problems/reverse-vowels-of-a-string/)
+
+> 双指针，字符串
+
+```java
+class Solution {
+    public String reverseVowels(String s) {
+        int l = 0, r = s.length() - 1;
+        char[] chars = s.toCharArray();
+        char[] allVowel = {'a', 'e', 'i', 'o', 'u'};
+        Set<Character> cs = new HashSet<>();
+        for (char c: allVowel) {
+            cs.add(c);
+            cs.add(Character.toUpperCase(c));
+        }
+        while (l < r) {
+            while (l < r && !cs.contains(s.charAt(l))) l++;
+            while (r > l && !cs.contains(s.charAt(r))) r--;
+            swap(chars, l, r);
+            l++;
+            r--;
+        }
+        return new String(chars);
+    }
+
+    private void swap(char[] chars, int l, int r) {
+        char tmp = chars[l];
+        chars[l] = chars[r];
+        chars[r] = tmp;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18575,3 +18636,5 @@ String str = String.valueOf(i)
 ## [313. 超级丑数](https://leetcode-cn.com/problems/super-ugly-number/)
 
 ## [233. 数字 1 的个数](https://leetcode-cn.com/problems/number-of-digit-one/)
+
+## [552. 学生出勤记录 II](https://leetcode-cn.com/problems/student-attendance-record-ii/)
