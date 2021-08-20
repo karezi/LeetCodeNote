@@ -17539,6 +17539,68 @@ class Solution {
 }
 ```
 
+## [541. 反转字符串 II](https://leetcode-cn.com/problems/reverse-string-ii/)
+
+> 双指针，字符串
+
+```java
+class Solution {
+    public String reverseStr(String s, int k) {
+        int kk = 2 * k;
+        int l = 0, r = kk - 1;
+        int n = s.length();
+        char[] cs = s.toCharArray();
+        while (r < n) {
+            reverse(cs, l, l + k - 1);
+            l += kk;
+            r = l + kk - 1;
+        }
+        if (l + k - 1 < n)
+            reverse(cs, l, l + k - 1);
+        else
+            reverse(cs, l, n - 1);
+        return new String(cs);
+    }
+
+    private void reverse(char[] cs, int l, int r) {
+        while (l < r) {
+            swap(cs, l++, r--);
+        }
+    }
+
+    private void swap(char[] cs, int a, int b) {
+        char tmp = cs[a];
+        cs[a] = cs[b];
+        cs[b] = tmp;
+    }
+}
+```
+
+简洁版
+
+```java
+class Solution {
+    public String reverseStr(String s, int k) {
+        int n = s.length();
+        char[] arr = s.toCharArray();
+        for (int i = 0; i < n; i += 2 * k) {
+            reverse(arr, i, Math.min(i + k, n) - 1);
+        }
+        return new String(arr);
+    }
+
+    public void reverse(char[] arr, int left, int right) {
+        while (left < right) {
+            char temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+            left++;
+            right--;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
