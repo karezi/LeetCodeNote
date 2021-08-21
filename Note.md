@@ -17601,6 +17601,53 @@ class Solution {
 }
 ```
 
+## [443. 压缩字符串](https://leetcode-cn.com/problems/string-compression/)
+
+> 双指针，字符串
+
+双指针原地算法 TODO可以优化
+
+```java
+class Solution {
+    public int compress(char[] chars) {
+        int l = 0, r = 1;
+        int cnt = 1;
+        int n = chars.length;
+        while (r < n) {
+            if (chars[r] == chars[r - 1]) { // 相等
+                cnt++;
+            } else if (cnt != 1) { // 不相等且之前好几个
+                l = moveChar(l, chars[r - 1], chars, cnt + "") + 1;
+                cnt = 1;
+            } else { // 不相等且前面有一个
+                chars[l] = chars[r - 1];
+                l++;
+            }
+            r++;
+        }
+        if (cnt != 1) {
+            l = moveChar(l, chars[r - 1], chars, cnt + "") + 1;
+        } else {
+            chars[l] = chars[r - 1];
+            l++;
+        }
+        return l;
+    }
+
+    private int moveChar(int l, char x, char[] chars, String count) {
+        char[] nChar = count.toCharArray();
+        int i = 0;
+        while (i < nChar.length) {
+            chars[l + i + 1] = nChar[i];
+            i++;
+        }
+        chars[l] = x;
+        l += nChar.length;
+        return l;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
