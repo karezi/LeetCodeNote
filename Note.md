@@ -17648,6 +17648,28 @@ class Solution {
 }
 ```
 
+## [789. 逃脱阻碍者](https://leetcode-cn.com/problems/escape-the-ghosts/)
+
+> 数组，数学，脑筋急转弯，曼哈顿距离
+
+```java
+class Solution {
+    public boolean escapeGhosts(int[][] ghosts, int[] target) {
+        int[] start = {0, 0};
+        int targetDistance = getManhattanDistance(start, target);
+        for (int i = 0; i < ghosts.length; ++i) {
+            if (getManhattanDistance(ghosts[i], target) <= targetDistance)
+                return false;
+        }
+        return true;
+    }
+
+    private int getManhattanDistance(int[] start, int[] pos) {
+        return Math.abs(pos[0] - start[0]) + Math.abs(pos[1] - start[1]);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
