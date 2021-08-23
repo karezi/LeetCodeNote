@@ -17670,6 +17670,54 @@ class Solution {
 }
 ```
 
+## [1646. 获取生成数组中的最大值](https://leetcode-cn.com/problems/get-maximum-in-generated-array/)
+
+> 数组，模拟
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.1 MB, 在所有 Java 提交中击败了82.52%的用户
+
+```java
+class Solution {
+    public int getMaximumGenerated(int n) {
+        if (n <= 1) {
+            return n;
+        }
+        int[] nums = new int[n + 1];
+        nums[1] = 1;
+        int max = 0;
+        for (int i = 2; i <= n; ++i) {
+            if ((i & 1) == 0) {
+                nums[i] = nums[i / 2];
+            } else {
+                nums[i] = nums[(i - 1) / 2] + nums[(i - 1) / 2 + 1];
+            }
+            max = Math.max(max, nums[i]);
+        }
+        return max;
+    }
+}
+```
+
+合并（性能不高）
+
+```java
+class Solution {
+    public int getMaximumGenerated(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        int[] nums = new int[n + 1];
+        nums[1] = 1;
+        for (int i = 2; i <= n; ++i) {
+            nums[i] = nums[i / 2] + i % 2 * nums[i / 2 + 1];
+        }
+        return Arrays.stream(nums).max().getAsInt();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
