@@ -17718,6 +17718,113 @@ class Solution {
 }
 ```
 
+## [787. K 站中转内最便宜的航班](https://leetcode-cn.com/problems/cheapest-flights-within-k-stops/)
+
+> 动态规划，有向图
+
+```java
+class Solution {
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        // dp[t][i]表示恰好t次到i最小花销
+        // dp[t][i]=min(dp[t-1][j]+cost[j][i]) j->i
+        // dp[0][i]=INF(dp[0][dst]=0)其他点直接到dst的距离为无穷大，dst上的点到dst距离为0
+        // 结果为min(dp[1][dst], dp[2][dst],...,dp[k][dst])
+        final int INF = 10000 * 101 + 1;
+        int min = Integer.MAX_VALUE;
+        int[][] dp = new int[k + 2][n]; // 注意k表示中转，k+1才表示步数
+        for (int t = 0; t < k + 2; ++t) {
+            Arrays.fill(dp[t], INF);
+        }
+        dp[0][src] = 0; // 0步，自己到自己是0
+        for (int t = 1; t < k + 2; ++t) {
+            for (int[] flight: flights) {
+                int i = flight[1], j = flight[0], cost = flight[2];
+                dp[t][i] = Math.min(dp[t][i], dp[t - 1][j] + cost);
+            }
+        }
+        int ans = INF;
+        for (int t = 1; t < k + 2; ++t) {
+            ans = Math.min(ans, dp[t][dst]);
+        }
+        return ans == INF ? -1 : ans;
+    }
+}
+```
+
+
+
+## [797. 所有可能的路径](https://leetcode-cn.com/problems/all-paths-from-source-to-target/)
+
+> 广度优先搜索，深度优先搜索，图，回溯
+
+BFS
+
+```java
+class Solution {
+    private List<List<Integer>> ret;
+    private int n;
+
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        n = graph.length;
+        ret = new ArrayList<>();
+        List<Integer> first = new ArrayList<>();
+        first.add(0);
+        bfs(graph, 0, first);
+        return ret;
+    }
+
+    private void bfs(int[][] graph, int cur, List<Integer> list) {
+        if (cur == n - 1) {
+            ret.add(list);
+            return;
+        }
+        if (graph[cur].length == 0) {
+            return;
+        }
+        for(int i: graph[cur]) {
+            List<Integer> newList = deepcopy(list);
+            newList.add(i);
+            bfs(graph, i, newList);
+        }
+    }
+
+    private List<Integer> deepcopy(List<Integer> sourceList) {
+        List<Integer> destList = new ArrayList<>();
+        for (Integer i: sourceList) {
+            destList.add(i);
+        }
+        return destList;
+    }
+}
+```
+
+DFS
+
+```java
+class Solution {
+    private List<List<Integer>> ret = new ArrayList<>();
+    private Deque<Integer> stack = new LinkedList<>();
+
+    public List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+        stack.offerLast(0);
+        dfs(graph, 0, graph.length - 1);
+        return ret;
+    }
+
+    private void dfs(int[][] graph, int cur, int target) {
+        if (cur == target) {
+            ret.add(new ArrayList<>(stack));
+            return;
+        }
+        for (int i: graph[cur]) {
+            stack.offerLast(i);
+            dfs(graph, i, target);
+            stack.pollLast();
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
