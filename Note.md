@@ -17825,6 +17825,49 @@ class Solution {
 }
 ```
 
+## [881. 救生艇](https://leetcode-cn.com/problems/boats-to-save-people/)
+
+> 贪心，数组，排序，双指针
+
+```java
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+        int n = people.length;
+        int ans = n;
+        Arrays.sort(people);
+        int l = 0;
+        for (int r = n - 1; r > l; --r) {
+            if (limit - people[l] >= people[r]) {
+                l++;
+                ans--;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+另一种写法
+
+```java
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+        int n = people.length;
+        int ans = n;
+        Arrays.sort(people);
+        int l = 0, r = n - 1;
+        while (l < r) {
+            if (limit - people[l] >= people[r]) {
+                l++;
+                ans--;
+            }
+            r--;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
