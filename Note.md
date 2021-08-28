@@ -17932,6 +17932,81 @@ class Solution {
 
 迭代Deque，Morris 中序遍历 TODO
 
+## [1920. 基于排列构建数组](https://leetcode-cn.com/problems/build-array-from-permutation/)
+
+> 数组，模拟
+
+```java
+class Solution {
+    public int[] buildArray(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; ++i) {
+            ans[i] = nums[nums[i]];
+        }
+        return ans;
+    }
+}
+```
+
+## [1863. 找出所有子集的异或总和再求和](https://leetcode-cn.com/problems/sum-of-all-subset-xor-totals/)
+
+> 位运算，数组，回溯
+
+list添加
+
+```java
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(0);
+        for (int i: nums) {
+            ArrayList<Integer> list2 = new ArrayList<>();
+            for (int j: list) {
+                list2.add(j ^ i);
+            }
+            list.addAll(list2);
+        }
+        return list.stream().reduce(Integer::sum).orElse(0);
+    }
+}
+```
+
+位运算
+
+```java
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        int n = nums.length;
+        int cur = (1 << n) - 1;
+        int ans = 0;
+        for (int i = cur; i > 0; --i) {
+            int tmp = 0;
+            for (int j = 0; j < n; ++j) {
+                if ((i & (1 << j)) > 0) {
+                    tmp ^= nums[j];
+                }
+            }
+            ans += tmp;
+        }
+        return ans;
+    }
+}
+```
+
+数学，按位考虑(O(n)) TODO
+
+```java
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        int tmp = 0;
+        for (int i: nums)
+            tmp |= i;
+		return tmp << (nums.length - 1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18942,6 +19017,13 @@ String str = String.valueOf(i)
   后缀0计数:Integer.numberOfTailingzeros（最后一个1的位置）
   ```
 
+- List求和(流)
+
+	```java
+	long sum = list.stream().mapToLong(User::getAge).sum(); // List<User>
+	long sum = list.stream().reduce(Integer::sum).orElse(0); // List<Integer>
+	```
+	
 - 检查回文串（经典DP子串遍历）
 
 	```java
