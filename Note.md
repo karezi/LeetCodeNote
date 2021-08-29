@@ -18007,6 +18007,69 @@ class Solution {
 }
 ```
 
+## [1913. 两个数对之间的最大乘积差](https://leetcode-cn.com/problems/maximum-product-difference-between-two-pairs/)
+
+> 数组，排序，贪心
+
+```java
+class Solution {
+    public int maxProductDifference(int[] nums) {
+        int tmp[] = new int[4];
+        System.arraycopy(nums, 0, tmp, 0, 4);
+        Arrays.sort(tmp);
+        int n = nums.length;
+        for (int i = 4; i < n; ++i) {
+            if (nums[i] > tmp[3]) {
+                tmp[2] = tmp[3];
+                tmp[3] = nums[i];
+            } else if (nums[i] < tmp[0]) {
+                tmp[1] = tmp[0];
+                tmp[0] = nums[i];
+            } else if (nums[i] > tmp[2]) {
+                tmp[2] = nums[i];
+            } else if (nums[i] < tmp[1]) {
+                tmp[1] = nums[i];
+            }
+        }
+        return tmp[2] * tmp[3] - tmp[0] * tmp[1];
+    }
+}
+```
+
+效率稍高
+
+```java
+class Solution {
+    public int maxProductDifference(int[] nums) {
+        int n = nums.length;
+        // 数组中最大的两个值
+        int mx1 = Math.max(nums[0], nums[1]);
+        int mx2 = Math.min(nums[0], nums[1]);
+        // 数组中最小的两个值
+        int mn1 = mx2;
+        int mn2 = mx1;
+        for (int i = 2; i < n; ++i){
+            int tmp = nums[i];
+            if (tmp > mx1){
+                mx2 = mx1;
+                mx1 = tmp;
+            }
+            else if (tmp > mx2){
+                mx2 = tmp;
+            }
+            if (tmp < mn1){
+                mn2 = mn1;
+                mn1 = tmp;
+            }
+            else if (tmp < mn2){
+                mn2 = tmp;
+            }
+        }
+        return (mx1 * mx2) - (mn1 * mn2);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
