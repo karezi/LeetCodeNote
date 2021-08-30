@@ -18070,6 +18070,52 @@ class Solution {
 }
 ```
 
+## [528. 按权重随机选择](https://leetcode-cn.com/problems/random-pick-with-weight/)
+
+> 数学，二分查找，随机化，前缀和
+
+```java
+class Solution {
+    private int[] pSum;
+    private int n;
+
+    public Solution(int[] w) {
+        n = w.length;
+        pSum = new int[n];
+        pSum[0] = w[0];
+        for (int i = 1; i < n; ++i) {
+            pSum[i] = pSum[i - 1] + w[i];
+        }
+    }
+    
+    public int pickIndex() {
+        int x = (int)(Math.random() * pSum[n - 1]) + 1;
+        return bs(x);
+    }
+
+    private int bs(int target) {
+        int l = 0, r = n - 1;
+        while (l < r) { // 注意边界
+            int mid = l + (r - l) / 2;
+            if (pSum[mid] > target) {
+                r = mid;
+            } else if (pSum[mid] < target) {
+                l = mid + 1;
+            } else {
+                return mid;
+            }
+        }
+        return l;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */
+```
+
 # Java算法模板
 
 ## BFS
@@ -19122,6 +19168,12 @@ String str = String.valueOf(i)
   // 通用
   LinkedList<T> l = new LinkedList<>(); // +first/+last
   ```
+
+- 获取随机数
+
+	```java
+	int x = (int)(Math.random() * total) + 1;
+	```
 
 # 未完成
 
