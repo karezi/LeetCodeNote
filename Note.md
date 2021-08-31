@@ -18116,6 +18116,47 @@ class Solution {
  */
 ```
 
+## [1109. 航班预订统计](https://leetcode-cn.com/problems/corporate-flight-bookings/)
+
+> 数组，差分数组
+
+暴力
+
+```java
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        int[] res = new int[n];
+        for (int[] booking: bookings) {
+            for (int i = booking[0]; i <= booking[1]; ++i) {
+                res[i - 1] += booking[2];
+            }
+        }
+        return res;
+    }
+}
+```
+
+差分数组
+
+```java
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        int[] arr = new int[n];
+        for (int[] booking: bookings) {
+            arr[booking[0] - 1] += booking[2];
+            if (booking[1] < n)
+                arr[booking[1]] += -booking[2];
+        }
+        int[] res = new int[n];
+        res[0] = arr[0];
+        for (int i = 1; i < n; ++i) {
+            res[i] = res[i - 1] + arr[i];
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
