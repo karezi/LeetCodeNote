@@ -18157,6 +18157,30 @@ class Solution {
 }
 ```
 
+## [165. 比较版本号](https://leetcode-cn.com/problems/compare-version-numbers/)
+
+> 双指针，字符串
+
+字符串分割
+
+```java
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        String[] vs1 = version1.split("\\.");
+        String[] vs2 = version2.split("\\.");
+        if (vs1.length < vs2.length) return -compareVersion(version2, version1);
+        for (int i = 0; i < vs1.length; ++i) {
+            int a = Integer.parseInt(vs1[i]);
+            int b = vs2.length <= i ? 0 : Integer.parseInt(vs2[i]);
+            if (a != b) return a > b ? 1 : -1;
+        }
+        return 0;
+    }
+}
+```
+
+TODO 双指针
+
 # Java算法模板
 
 ## BFS
