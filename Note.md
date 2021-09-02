@@ -18181,6 +18181,36 @@ class Solution {
 
 TODO 双指针
 
+## [剑指 Offer 22. 链表中倒数第k个节点](https://leetcode-cn.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/)
+
+> 链表，双指针
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode fast = head, slow = head;
+        while (k-- > 0) {
+            fast = fast.next;
+        }
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+```
+
+TODO 顺序查找
+
 # Java算法模板
 
 ## BFS
