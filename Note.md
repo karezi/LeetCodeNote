@@ -18211,6 +18211,70 @@ class Solution {
 
 TODO 顺序查找
 
+## [面试题 17.14. 最小K个数](https://leetcode-cn.com/problems/smallest-k-lcci/)
+
+> 堆，优先队列，数组，排序
+
+优先队列（小根堆）
+
+```java
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int currentMax = Integer.MIN_VALUE;
+        for (int i: arr) {
+            pq.offer(i);
+        }
+        int[] ret = new int[k];
+        for (int i = 0; i < k; ++i) {
+            ret[i] = pq.poll();
+        }
+        return ret;
+    }
+}
+```
+
+排序
+
+```java
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        Arrays.sort(arr);
+        int[] ret = new int[k];
+        System.arraycopy(arr, 0, ret, 0, k);
+        return ret;
+    }
+}
+```
+
+有限队列（大根堆）
+
+```java
+class Solution {
+    public int[] smallestK(int[] arr, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((x, y) -> y - x);
+        int[] ret = new int[k];
+        if (k == 0)
+            return ret;
+        for (int i: arr) {
+            if (pq.size() >= k) {
+                if (pq.peek() > i) {
+                    pq.poll();
+                    pq.offer(i);
+                }
+            } else {
+                pq.offer(i);
+            }
+        }
+        for (int i = 0; i < k; ++i)
+            ret[i] = pq.poll();
+        return ret;
+    }
+}
+```
+
+TODO 快速选择
+
 # Java算法模板
 
 ## BFS
