@@ -18275,6 +18275,88 @@ class Solution {
 
 TODO 快速选择
 
+## [剑指 Offer 10- I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
+
+> 动态规划，数学，矩阵快速幂，打表
+
+动态规划
+
+```java
+class Solution {
+    private static final int MOD = 1000000007;
+
+    public int fib(int n) {
+        if (n <= 1)
+            return n;
+        int ans = 1, fn1 = 1, fn2 = 0;
+        for (int i = 2; i <= n; ++i) {
+            ans = (fn1 + fn2) % MOD; // 提前求模
+            fn2 = fn1;
+            fn1 = ans;
+        }
+        return ans;
+    }
+}
+```
+
+打表
+
+```java
+class Solution {
+    static int mod = (int)1e9+7; // 注意这种写法
+    static int N = 110;
+    static int[] cache = new int[N];
+    static { // 静态块可以用来打表
+        cache[1] = 1;
+        for (int i = 2; i < N; i++) {
+            cache[i] = cache[i - 1] + cache[i - 2];
+            cache[i] %= mod;
+        }
+    }
+    public int fib(int n) {
+        return cache[n];
+    }
+}
+```
+
+矩阵快速幂 TODO
+
+```java
+class Solution {
+    static final int MOD = (int)1e9+7;
+
+    public int fib(int n) {
+        if (n < 2)
+            return n;
+        int[][] q = {{1, 1}, {1, 0}};
+        int[][] res = pow(q, n - 1);
+        return res[0][0];
+    }
+
+    public int[][] pow(int[][] a, int n) {
+        int[][] ret = {{1, 0}, {0, 1}};
+        while (n > 0) {
+            if ((n & 1) == 1) { // 幂二进制为1的时候才乘
+                ret = multiply(ret, a);
+            }
+            n >>= 1;
+            a = multiply(a, a);
+        }
+        return ret;
+    }
+
+    public int[][] multiply(int[][] a, int[][] b) {
+        int[][] c = new int[2][2];
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                c[i][j] = (int) (((long) a[i][0] * b[0][j] + (long) a[i][1] * b[1][j]) % MOD);
+            }
+        }
+        return c;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18965,6 +19047,35 @@ public int gcd(int a, int b) { // 口诀bbaba
                 * 设置节点m的parent为节点n
                 * 计算节点m的优先级
                 * 将节点m加入open_set中
+```
+
+矩阵快速幂
+
+![快速幂](https://i.loli.net/2021/09/04/XCav6lpUJgWyIe2.png)
+
+```java
+public int[][] pow(int[][] a, int n) {
+    int[][] ret = {{1, 0}, {0, 1}};
+    while (n > 0) {
+        if ((n & 1) == 1) { // 幂二进制为1的时候才乘
+            ret = multiply(ret, a);
+        }
+        n >>= 1;
+        a = multiply(a, a); // 下一个2^x是当前的2次方
+    }
+    return ret;
+}
+
+public int[][] multiply(int[][] a, int[][] b) {
+    int w = a.length;
+    int[][] c = new int[w][w];
+    for (int i = 0; i < w; i++) {
+        for (int j = 0; j < w; j++) {
+            c[i][j] = a[i][0] * b[0][j] + a[i][1] * b[1][j];
+        }
+    }
+    return c;
+}
 ```
 
 # Java常用数据结构
