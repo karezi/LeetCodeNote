@@ -18357,6 +18357,77 @@ class Solution {
 }
 ```
 
+## [470. 用 Rand7() 实现 Rand10()](https://leetcode-cn.com/problems/implement-rand10-using-rand7/)
+
+> 数学，拒绝采样，概率统计，随机化
+
+拒绝采样
+
+```java
+/**
+ * The rand7() API is already defined in the parent class SolBase.
+ * public int rand7();
+ * @return a random integer in the range 1 to 7
+ */
+ // 次数期望=每次的次数*(拒绝概率^0+拒绝概率^1+...+拒绝概率^∞)=每次的次数/(1-拒绝概率)
+ // 通过不同位构造独立两个分布扩大同概率的数区间，然后用拒绝采样筛选
+class Solution extends SolBase {
+    public int rand10() {
+        while (true) {
+            int tmp = (rand7() - 1) * 7 + (rand7() - 1); // 转化为2位7进制
+            if (tmp > 0 && tmp <= 10) // 拒绝
+                return tmp;
+        }
+    }
+}
+```
+
+减小while次数
+
+```java
+class Solution extends SolBase {
+    public int rand10() {
+        while (true) {
+            int tmp = (rand7() - 1) * 7 + (rand7() - 1); // 转化为2位7进制
+            if (tmp > 0 && tmp <= 40) // 拒绝
+                return tmp % 10 + 1;
+        }
+    }
+}
+```
+
+二进制映射+拒绝采样
+
+```java
+class Solution extends SolBase {
+    public int rand10() {
+        while (true) {
+            int x = rand7() * 10 + rand7(); // 转化为2位十进制一共49中组合，取40个四个一组映射到1-10
+            if (x == 11 || x == 12 || x == 13 || x == 14)
+                return 1;
+            else if (x == 15 || x == 16 || x == 17 || x == 21)
+                return 2;
+            else if (x == 22 || x == 23 || x == 24 || x == 25)
+                return 3;
+            else if (x == 26 || x == 27 || x == 31 || x == 32)
+                return 4;
+            else if (x == 33 || x == 34 || x == 35 || x == 36)
+                return 5;
+            else if (x == 37 || x == 41 || x == 42 || x == 43)
+                return 6;
+            else if (x == 44 || x == 45 || x == 46 || x == 47)
+                return 7;
+            else if (x == 51 || x == 52 || x == 53 || x == 54)
+                return 8;
+            else if (x == 55 || x == 56 || x == 57 || x == 61)
+                return 9;
+            else if (x == 62 || x == 63 || x == 64 || x == 65)
+                return 10;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
