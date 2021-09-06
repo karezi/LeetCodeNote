@@ -18428,6 +18428,31 @@ class Solution extends SolBase {
 }
 ```
 
+## [704. 二分查找](https://leetcode-cn.com/problems/binary-search/)
+
+> 数组，二分查找
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int n = nums.length;
+        int l = 0, r = n - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return -1;
+        // return l < n && nums[l] == target ? l : -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18576,15 +18601,15 @@ int bs(int[] arr, int l, int r, int target) { // 找到最靠近target且>=targe
 
 ```java
 int findBoundary(int[] nums, int target, int direction) {
-        int left = 0, right = nums.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
+        int left = 0, right = nums.length - 1; // 定义target在左闭右闭的区间里，[left, right]
+        while (left <= right) { // 当left==right，区间[left, right]依然有效，所以用 <=
+            int mid = left + (right - left) / 2; // 防止溢出 等同于(left + right)/2
             if (nums[mid] < target) {
                 // 更新left
-                left = mid + 1;
+                left = mid + 1; // target 在右区间，所以[mid + 1, right]
             } else if (nums[mid] > target) {
                 // 更新right
-                right = mid - 1;
+                right = mid - 1; // target 在左区间，所以[left, mid - 1]
             } else if (nums[mid] == target) {
                 if (direction == 0) {
                     // 找左边界，收缩右边界
