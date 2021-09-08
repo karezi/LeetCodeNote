@@ -18453,6 +18453,25 @@ class Solution {
 }
 ```
 
+## [1221. 分割平衡字符串](https://leetcode-cn.com/problems/split-a-string-in-balanced-strings/)
+
+> 贪心，字符串，计数
+
+```java
+class Solution {
+    public int balancedStringSplit(String s) {
+        int res = 0, tmp = 0;
+        for (char c: s.toCharArray()) {
+            tmp = c == 'R' ? tmp + 1 : tmp - 1;
+            if(tmp == 0) {
+                res++;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -19594,3 +19613,5 @@ String str = String.valueOf(i)
 ## [233. 数字 1 的个数](https://leetcode-cn.com/problems/number-of-digit-one/)
 
 ## [552. 学生出勤记录 II](https://leetcode-cn.com/problems/student-attendance-record-ii/)
+
+## [502. IPO](https://leetcode-cn.com/problems/ipo/)
