@@ -18472,6 +18472,79 @@ class Solution {
 }
 ```
 
+## [68. 文本左右对齐](https://leetcode-cn.com/problems/text-justification/)
+
+> 字符串，模拟
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.5 MB, 在所有 Java 提交中击败了93.17%的用户
+
+```java
+class Solution {
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        int rest = maxWidth; // 每一行带至少一个空格的剩余的长度
+        int blankNum = maxWidth; // 每一行空格的数量
+        List<String> strs = new ArrayList<>(); // 每一行的临时队列
+        int index = 0, n = words.length;
+        List<String> res = new ArrayList<>();
+        while (index < n) {
+            String curStr = words[index]; // 当前字符串
+            int curLen = curStr.length(); // 当前字符串长度
+            if (rest < curLen) { // 剩下的位置不够放
+                // 将之前的处理为字符串
+                res.add(convert(strs, blankNum, maxWidth, false));
+                // 预备下一行
+                strs.clear();
+                rest = maxWidth;
+                blankNum = maxWidth;
+            }
+            rest -= curLen + 1;
+            blankNum -= curLen;
+            strs.add(curStr);
+            index++;
+        }
+        if (strs.size() > 0)
+            res.add(convert(strs, blankNum, maxWidth, true));
+        return res;
+    }
+
+    private String convert(List<String> strs, int blankNum, int maxWidth, boolean isLast) {
+        StringBuilder sb = new StringBuilder();
+        int strNum = strs.size();
+        if (isLast || strNum == 1) { // 最后一行的处理或这一行只有一个单词
+            for (int i = 0; i < strNum; ++i) {
+                if (i == strNum - 1) {
+                    sb.append(strs.get(i));
+                } else {
+                    sb.append(strs.get(i)).append(' ');
+                }
+            }
+            int restLen = maxWidth - sb.length();
+            for (int i = 0; i < restLen; ++i) {
+                sb.append(' ');
+            }
+        } else { // 非最后一行处理
+            int blankAvg = blankNum / (strNum - 1); // 每个单词间最少隔几个
+            int restBlank = blankNum % (strNum - 1); // 有几个是要多加空格的
+            for (int i = 0; i < strNum; ++i) {
+                sb.append(strs.get(i));
+                if (i != strNum - 1) {
+                    for (int j = 0; j < blankAvg; ++j) {
+                        sb.append(' ');
+                    }
+                    if (restBlank > 0) {
+                        restBlank--;
+                        sb.append(' ');
+                    }
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
