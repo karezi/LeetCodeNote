@@ -18545,6 +18545,79 @@ class Solution {
 }
 ```
 
+## [1894. 找到需要补充粉笔的学生编号](https://leetcode-cn.com/problems/find-the-student-that-will-replace-the-chalk/)
+
+> 模拟
+
+模拟
+
+```java
+class Solution {
+    public int chalkReplacer(int[] chalk, int k) {
+        int i = 0, n = chalk.length;
+        while (true) {
+            if (k < chalk[i]) break;
+            k -= chalk[i];
+            i++;
+            if (i == n) i = 0;
+        }
+        return i;
+    }
+}
+```
+
+优化模拟
+
+```java
+class Solution {
+    public int chalkReplacer(int[] chalk, int k) {
+        int i = 0, n = chalk.length;
+        long sum = 0;
+        for (int j: chalk) {
+            sum += j;
+        }
+        k %= sum; // 取模
+        while (true) {
+            if (k < chalk[i]) break;
+            k -= chalk[i];
+            i++;
+        }
+        return i;
+    }
+}
+```
+
+前缀和+二分查找
+
+```java
+class Solution {
+    public int chalkReplacer(int[] chalk, int k) {
+        int n = chalk.length, sum = 0;
+        if (chalk[0] > k) return 0;
+        for (int i = 1; i < n; ++i) { // 求前缀和
+            chalk[i] += chalk[i - 1];
+            if (chalk[i] > k)
+                return i;
+        }
+        k %= chalk[n - 1];
+        return bs(chalk, k);
+    }
+
+    private int bs(int[] arr, int k) {
+        int l = 0, r = arr.length - 1; // [l,r]
+        while (l < r) { // [l,r],不平衡查找(mid,mid+1),l==r时无效,所以用<
+            int mid = l + (r - l) / 2;
+            if (arr[mid] > k) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -18694,7 +18767,7 @@ int bs(int[] arr, int l, int r, int target) { // 找到最靠近target且>=targe
 ```java
 int findBoundary(int[] nums, int target, int direction) {
         int left = 0, right = nums.length - 1; // 定义target在左闭右闭的区间里，[left, right]
-        while (left <= right) { // 当left==right，区间[left, right]依然有效，所以用 <=
+        while (left <= right) { // 当left==right，区间[left, right]依然有效，所以用 <=（平衡查找+1-1，不平衡用<）
             int mid = left + (right - left) / 2; // 防止溢出 等同于(left + right)/2
             if (nums[mid] < target) {
                 // 更新left
