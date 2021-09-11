@@ -18618,6 +18618,50 @@ class Solution {
 }
 ```
 
+## [600. 不含连续1的非负整数](https://leetcode-cn.com/problems/non-negative-integers-without-consecutive-ones/)
+
+> 动态规划，二进制，01字典树
+
+```java
+class Solution {
+    public int findIntegers(int n) {
+        // dp[i]表示二进制为100...0(i位)时包含的非连续1的个数
+        // dp[i]=dp[i-1]+dp[i-2]斐波那契数列
+        // dp[0]=1,dp[1]=2(0,1);dp[2]=3(0,1,10);dp[3]=5(0,1,10,100,101)
+        int[] dp = new int[32];
+        dp[0] = 1;
+        dp[1] = 2;
+        dp[2] = 3;
+        for (int i = 3; i < 32; ++i) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        int cnt = 0;
+        String str = convertStr(n);
+        int len = str.length();
+        // 1001100(1000000,1000,100(x))
+        for (int i = 0; i < len; ++i) {
+            if (str.charAt(i) == '0')
+                continue;
+            cnt += dp[len - i - 1];
+            if(i != 0 && str.charAt(i - 1) == '1') // 往后不满足
+                return cnt;
+        }
+        return cnt + 1;
+    }
+
+    private String convertStr(int x) {
+        StringBuilder sb = new StringBuilder();
+        while (x > 0) {
+            sb.insert(0, x & 1);
+            x >>= 1;
+        }
+        return sb.toString();
+    }
+}
+```
+
+字典树TODO
+
 # Java算法模板
 
 ## BFS
@@ -19654,7 +19698,7 @@ String str = String.valueOf(i)
 
   ```java
   前导0计数:Integer.numberOfLeadingZeros
-  后缀0计数:Integer.numberOfTailingzeros（最后一个1的位置）
+  后缀0计数:Integer.numberOfTailingZeros（最后一个1的位置）
   ```
 
 - List求和(流)
