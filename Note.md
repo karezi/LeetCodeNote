@@ -18777,6 +18777,38 @@ class Solution {
 }
 ```
 
+## [447. 回旋镖的数量](https://leetcode-cn.com/problems/number-of-boomerangs/)
+
+> 数组，哈希表，数学，排列组合
+
+```java
+class Solution {
+    public int numberOfBoomerangs(int[][] points) {
+        int n = points.length;
+        int res = 0;
+        for (int i = 0; i < n; ++i) { // 以每个点为中心
+            Map<Integer, Integer> cache = new HashMap<>();
+            int[] pointi = points[i];
+            for (int j = 0; j < n; ++j) {
+                if (i == j) continue;
+                int[] pointj = points[j];
+                int dis = getDis(pointi, pointj);
+                cache.put(dis, cache.getOrDefault(dis, 0) + 1); // 记录距离相等的数量
+            }
+            for (int value: cache.values()) {
+                if (value > 1)
+                    res += value * (value - 1); // A(m,2)=m*(m-1)
+            }
+        }
+        return res;
+    }
+
+    private int getDis(int[] a, int[] b) {
+        return (b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
