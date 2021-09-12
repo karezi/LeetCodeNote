@@ -18620,7 +18620,7 @@ class Solution {
 
 ## [600. 不含连续1的非负整数](https://leetcode-cn.com/problems/non-negative-integers-without-consecutive-ones/)
 
-> 动态规划，二进制，01字典树
+> 动态规划，二进制，01字典树，数位DP
 
 ```java
 class Solution {
@@ -18661,6 +18661,121 @@ class Solution {
 ```
 
 字典树TODO
+
+## [678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
+
+> 栈，贪心，字符串，动态规划
+
+动态规划（字符串常用dp_i_j）
+
+```java
+class Solution {
+    public boolean checkValidString(String s) {
+        // dp[i][j]表示i到j是否为有效字段
+        // dp[i][j]=true(i<j且满足要求)；true(j-i>=2=>dp[i+1][j-1]或存在dp[i][k]且dp[k+1][j]=true)
+        // dp[i][i]=true("*");dp[i-1][i]=true("()","*)","(*","**")
+        // dp[0][n-1]
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        // 初始化1个
+        for (int i = 0; i < n; ++i) {
+            if (s.charAt(i) == '*') {
+                dp[i][i] = true;
+            }
+        }
+        // 初始化2个
+        for (int i = 1; i < n; ++i) {
+            char lc = s.charAt(i - 1), rc = s.charAt(i);
+            dp[i - 1][i] = (lc == '(' || lc == '*') && (rc == ')' || rc == '*');
+        }
+        // 3个及以上
+        for (int i = n - 3; i >= 0; --i) {
+            char lc = s.charAt(i);
+            for (int j = i + 2; j < n; ++j) {
+                char rc = s.charAt(j);
+                if ((lc == '(' || lc == '*') && (rc == ')' || rc == '*')) // 两侧满足
+                    dp[i][j] = dp[i + 1][j - 1];
+                for (int k = i; k < j && !dp[i][j]; ++k) // 分成两段都满足
+                    dp[i][j] = dp[i][k] && dp[k + 1][j];
+            }
+        }
+        return dp[0][n - 1];
+    }
+}
+```
+
+栈
+
+```java
+class Solution {
+    public boolean checkValidString(String s) {
+        // 栈：左括号栈+星号栈
+        // c为(或者*则入栈下标，c为)则优先匹配(，没有则匹配*
+        // 结束后左括号栈和星号栈分别弹栈，左小标小于*则匹配成功，最后看左括号栈是否为空，为空则为true，反之false
+        Deque<Integer> leftStack = new LinkedList<>();
+        Deque<Integer> starStack = new LinkedList<>();
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
+            if (c == '(')
+                leftStack.push(i);
+            else if (c == '*')
+                starStack.push(i);
+            else {
+                if (!leftStack.isEmpty())
+                    leftStack.pop();
+                else if (!starStack.isEmpty())
+                    starStack.pop();
+                else
+                    return false;
+            }
+        }
+        while (!starStack.isEmpty()) {
+            if (leftStack.isEmpty())
+                return true;
+            else {
+                int li = leftStack.pop();
+                int si = starStack.pop();
+                if (li < si)
+                    continue;
+                else
+                    return false;
+            }
+        }
+        return leftStack.isEmpty();
+    }
+}
+```
+
+贪心
+
+```java
+class Solution {
+    public boolean checkValidString(String s) {
+        // 贪心：[l,r]表示未匹配的左括号的上下限
+        // 遇到(: l+1,r+1
+        // 遇到): l-1,r-1
+        // 遇到*: l-1,r+1
+        // 退出情况: r<0（右括号过多，无法拯救）返回false；l为非负
+        // 最后l必须为0则true
+        int l = 0, r = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '(') {
+                l++;
+                r++;
+            } else if (c == ')') {
+                l = l - 1 < 0 ? 0 : l - 1;
+                r--;
+                if (r < 0)
+                    return false;
+            } else {
+                l = l - 1 < 0 ? 0 : l - 1;
+                r++;
+            }
+        }
+        return l == 0;
+    }
+}
+```
 
 # Java算法模板
 
