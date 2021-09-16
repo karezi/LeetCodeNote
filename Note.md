@@ -1,5 +1,3 @@
-
-
 # 算法笔记
 
 > 来源：LeetCode&牛客网&剑指Offer
@@ -18805,6 +18803,183 @@ class Solution {
 
     private int getDis(int[] a, int[] b) {
         return (b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]);
+    }
+}
+```
+
+## [524. 通过删除字母匹配到字典里最长单词](https://leetcode-cn.com/problems/longest-word-in-dictionary-through-deleting/)
+
+> 数组，双指针，字符串，排序，动态规划
+
+双指针
+
+```java
+class Solution {
+    public String findLongestWord(String s, List<String> dictionary) {
+        String ret = "";
+        for (String str: dictionary) {
+            int n = str.length(), max = ret.length();
+            if (n < max)
+                continue;
+            int p1 = 0, p2 = 0;
+            while (p1 < s.length() && p2 < n) {
+                if (s.charAt(p1) == str.charAt(p2))
+                    p2++;
+                p1++;
+            }
+            if (p2 == n)
+                if (n > max || n == max && str.compareTo(ret) < 0)
+                    ret = str;
+        }
+        return ret;
+    }
+}
+```
+
+动态规划优化
+
+```java
+class Solution {
+    public String findLongestWord(String s, List<String> dictionary) {
+        // 非常巧的处理方法
+        // dp[i][j]表示s中从i位置从左到右找到j字符的最近位置
+        // dp[i][j]=i(s.charAt(i)==j);dp[i][j]=dp[i+1][j](s.charAt(i)<>j)
+        // dp[n][j]=n
+        int n = s.length();
+        int[][] dp = new int[n + 1][26];
+        Arrays.fill(dp[n], n);
+        for (int i = n - 1; i >= 0; --i) {
+            char c = s.charAt(i);
+            for (int j = 0; j < 26; ++j) {
+                if (c == (char)('a' + j)) {
+                    dp[i][j] = i;
+                } else {
+                    dp[i][j] = dp[i + 1][j];
+                }
+            }
+        }
+        String ret = "";
+        for (String str: dictionary) {
+            int j = 0;
+            int slen = str.length();
+            boolean flag = true;
+            for (int i = 0; i < slen; ++i) {
+                char c = str.charAt(i);
+                int find = dp[j][c - 'a'];
+                if (find == n) { // 找不到
+                    flag = false;
+                    break;
+                }
+                j = find + 1;
+            }
+            if (flag) {
+                if (slen > ret.length() || slen == ret.length() && str.compareTo(ret) < 0) {
+                    ret = str;
+                }
+            }
+        }
+        return ret;
+    }
+}
+```
+
+## [175. 组合两个表](https://leetcode-cn.com/problems/combine-two-tables/)
+
+> 数据库
+
+```sql
+select p.FirstName, p.LastName, a.City, a.State from Person as p left join Address as a on p.PersonId = a.PersonId
+```
+
+## [1979. 找出数组的最大公约数](https://leetcode-cn.com/problems/find-greatest-common-divisor-of-array/)
+
+> 数组，数学，最大公约数
+
+```java
+class Solution {
+    public int findGCD(int[] nums) {
+        int max = nums[0], min = nums[0];
+        for (int i: nums) {
+            max = Math.max(max, i);
+            min = Math.min(min, i);
+        }
+        return gcd(max, min);
+    }
+
+    private int gcd(int a, int b) {
+        return b != 0 ? gcd(b, a % b) : a;
+    }
+}
+```
+
+## [212. 单词搜索 II](https://leetcode-cn.com/problems/word-search-ii/)
+
+> 字典树，数组，字符串，回溯，矩阵
+
+TODO
+
+```java
+class Solution {
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public List<String> findWords(char[][] board, String[] words) {
+        // 插入字典树
+        Trie trie = new Trie();
+        for (String word : words) {
+            trie.insert(word);
+        }
+        // 结果集去重
+        Set<String> ans = new HashSet<String>();
+        // 以每个坐标作为起点进行DFS
+        for (int i = 0; i < board.length; ++i) {
+            for (int j = 0; j < board[0].length; ++j) {
+                dfs(board, trie, i, j, ans);
+            }
+        }
+        return new ArrayList<String>(ans);
+    }
+
+    public void dfs(char[][] board, Trie cur, int i, int j, Set<String> ans) {
+        if (!cur.children.containsKey(board[i][j])) {
+            return;
+        }
+        char c = board[i][j];
+        cur = cur.children.get(c);
+        if (cur.word != "") {
+            ans.add(cur.word);
+        }
+        board[i][j] = '#';
+        // 每个方向往下递归
+        for (int[] dir : dirs) {
+            int ni = i + dir[0], nj = j + dir[1];
+            if (ni >= 0 && ni < board.length && nj >= 0 && nj < board[0].length) { // 非边界
+                dfs(board, cur, ni, nj, ans);
+            }
+        }
+        // 回溯
+        board[i][j] = c;
+    }
+}
+
+class Trie {
+    String word; // 精髓，判断是否取到
+    Map<Character, Trie> children;
+
+    public Trie() {
+        this.word = "";
+        this.children = new HashMap<Character, Trie>();
+    }
+
+    public void insert(String word) {
+        Trie cur = this;
+        for (int i = 0; i < word.length(); ++i) {
+            char c = word.charAt(i);
+            if (!cur.children.containsKey(c)) {
+                cur.children.put(c, new Trie());
+            }
+            cur = cur.children.get(c);
+        }
+        cur.word = word;
     }
 }
 ```
