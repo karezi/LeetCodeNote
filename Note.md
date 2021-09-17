@@ -19110,6 +19110,20 @@ class Solution {
 }
 ```
 
+## [292. Nim 游戏](https://leetcode-cn.com/problems/nim-game/)
+
+> 脑筋急转弯，数学，博弈
+
+```java
+class Solution {
+    public boolean canWinNim(int n) {
+        // 1-3√，4个先手必输，5-7√，8×
+        // 博弈论题目要么是特定情况下先手必赢，要么是分先手,后手进行状态转移
+        return (n & 3) != 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
