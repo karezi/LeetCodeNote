@@ -18984,6 +18984,132 @@ class Trie {
 }
 ```
 
+## [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
+
+> 数组，哈希表，矩阵，位运算
+
+```java
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        // check line
+        for (int i = 0; i < 9; ++i) {
+            if (!check(board[i])) return false;
+        }
+        // check row
+        for (int j = 0; j < 9; ++j) {
+            char[] row = new char[9];
+            for (int i = 0; i < 9; ++i) {
+                row[i] = board[i][j];
+            }
+            if (!check(row)) return false;
+        }
+        // check box
+        int[][] dirs = {{-1, -1}, {-1, 0}, {-1, 1},
+                        {0, -1}, {0, 0}, {0, 1},
+                        {1, -1}, {1, 0}, {1, 1}};
+        for (int i = 1; i < 8; i += 3) {
+            for (int j = 1; j < 8; j += 3) {
+                char[] box = new char[9];
+                int index = 0;
+                for (int[] dir: dirs) {
+                    box[index++] = board[i + dir[0]][j + dir[1]];
+                }
+                if (!check(box)) return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean check(char[] chars) {
+        int[] cs = new int[9];
+        for (int j = 0; j < 9; ++j) {
+            char c = chars[j];
+            if (c == '.')
+                continue;
+            if (cs[c - '1'] == 0) {
+                cs[c - '1'] = 1;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+一次遍历 boolean
+
+```java
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        boolean[][] row = new boolean[10][10];
+        boolean[][] col = new boolean[10][10];
+        boolean[][] box = new boolean[10][10];        
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                int c = board[i][j];
+                if (c == '.') continue;
+                int u = c - '0';
+                int idx = i / 3 * 3 + j / 3; // [i,j]->boxId
+                if (row[i][u] || col[j][u] || box[idx][u]) return false;
+                row[i][u] = col[j][u] = box[idx][u] = true;
+            }
+        }
+        return true;
+    }
+}
+```
+
+一次遍历 int
+
+```java
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int[][] rows = new int[9][9];
+        int[][] columns = new int[9][9];
+        int[][][] boxs = new int[3][3][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c != '.') {
+                    int index = c - '0' - 1;
+                    rows[i][index]++;
+                    columns[j][index]++;
+                    boxs[i / 3][j / 3][index]++;
+                    if (rows[i][index] > 1 || columns[j][index] > 1 || boxs[i / 3][j / 3][index] > 1) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
+位运算
+
+```java
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int[] row = new int[10], col = new int[10], box = new int[10];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char c = board[i][j];
+                if (c == '.') continue;
+                int u = c - '0';
+                int idx = i / 3 * 3 + j / 3;
+                if ((((row[i] >> u) & 1) == 1) || (((col[j] >> u) & 1) == 1) || (((box[idx] >> u) & 1) == 1)) return false;
+                row[i] |= (1 << u);
+                col[j] |= (1 << u);
+                box[idx] |= (1 << u);
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -19429,31 +19555,57 @@ private class UnionFind {
 > 又称字典树、前缀树、单词查找树、键树，多叉哈希树
 >
 > Trie树典型应用是用于快速检索（最长前缀匹配），统计，排序和保存大量的字符串，所以经常被搜索引擎系统用于文本词频统计，搜索提示等场景。它的优点是最大限度地减少无谓的字符串比较，查询效率比较高。
+>
+> https://mp.weixin.qq.com/s?__biz=MzU4NDE3MTEyMA==&mid=2247488490&idx=1&sn=db2998cb0e5f08684ee1b6009b974089&chksm=fd9cb8f5caeb31e3f7f67dba981d8d01a24e26c93ead5491edb521c988adc0798d8acb6f9e9d&token=1232059512&lang=zh_CN#rd
 
 ```java
-public void add(TrieNode root, String word) {
-    TrieNode cur = root;
-    for (int i = 0; i < word.length(); ++i) {
-        char ch = word.charAt(i);
-        if (cur.child[ch - 'a'] == null) {
-            cur.child[ch - 'a'] = new TrieNode();
-        }
-        cur = cur.child[ch - 'a'];
+class Trie {
+    TrieNode root;
+    
+    class TrieNode {
+        String word = ""; // 在结尾处记录单词（可选）
+        boolean end = false; // 是否单词结尾（可选）
+        int frequency = 0; // 频数统计（可选）
+        TrieNode[] child = new TrieNode[26];
     }
-    ++cur.frequency;
-}
-
-public void find(TrieNode cur) {
-    // 常用树的回溯或者DFS进行搜索
-}
-
-class TrieNode {
-    int frequency; // 频数统计（可选）
-    TrieNode[] child;
 
     public TrieNode() {
-        frequency = 0;
-        child = new TrieNode[26];
+        root = new TrieNode();
+    }
+    
+    public void insert(String s) {
+        TrieNode p = root;
+        for(int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (p.child[u] == null)
+                p.child[u] = new TrieNode();
+            p = p.child[u]; 
+        }
+        p.word = s;
+        p.end = true;
+        ++p.frequency;
+    }
+
+    public boolean search(String s) {
+        TrieNode p = root;
+        for(int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (p.child[u] == null)
+                return false;
+            p = p.child[u]; 
+        }
+        return p.end;
+    }
+
+    public boolean startsWith(String s) {
+        TrieNode p = root;
+        for(int i = 0; i < s.length(); i++) {
+            int u = s.charAt(i) - 'a';
+            if (p.child[u] == null)
+                return false;
+            p = p.child[u]; 
+        }
+        return true;
     }
 }
 ```
