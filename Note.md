@@ -19124,6 +19124,90 @@ class Solution {
 }
 ```
 
+## [650. 只有两个键的键盘](https://leetcode-cn.com/problems/2-keys-keyboard/)
+
+> 数学，动态规划
+
+动态规划
+
+```java
+class Solution {
+    public int minSteps(int n) {
+        // dp[i]表示第i个数最少操作次数
+        // dp[i]=min(dp[j]+i/j)（i % j == 0)
+        // dp[1]=0
+        // dp[n]
+        if (n == 1) return 0;
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[1] = 0;
+        for (int i = 2; i <= n; ++i) {
+            List<Integer> apprs = getApprList(i);
+            for (int j: apprs) {
+                dp[i] = Math.min(dp[i], dp[j] + i / j);
+            }
+        }
+        return dp[n];
+    }
+
+    private List<Integer> getApprList(int x) {
+        List<Integer> ret = new ArrayList<>();
+        int a = x - 1;
+        while (a > 0) {
+            if (x % a == 0) {
+                ret.add(a);
+            }
+            a--;
+        }
+        return ret;
+    }
+}
+```
+
+动态规划（优化）
+
+```java
+lass Solution {
+    public int minSteps(int n) {
+        // dp[i]表示第i个数最少操作次数
+        // dp[i]=min(dp[j]+i/j)（i % j == 0)
+        // dp[1]=0
+        // dp[n]
+        int[] dp = new int[n + 1];
+        for (int i = 2; i <= n; ++i) {
+            dp[i] = Integer.MAX_VALUE;
+            for (int j = 1; j * j <= i; ++j) {
+                if (i % j == 0) {
+                    dp[i] = Math.min(dp[i], dp[j] + i / j);
+                    dp[i] = Math.min(dp[i], dp[i / j] + j);
+                }
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+质因数分解 TODO
+
+```java
+class Solution {
+    public int minSteps(int n) {
+        int ans = 0;
+        for (int i = 2; i * i <= n; ++i) {
+            while (n % i == 0) {
+                n /= i;
+                ans += i;
+            }
+        }
+        if (n > 1) {
+            ans += n;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
