@@ -19208,6 +19208,119 @@ class Solution {
 }
 ```
 
+## [673. 最长递增子序列的个数](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)
+
+> 树状数组，线段树，数组，动态规划，贪心，前缀和，二分查找，LIS，CDQ
+
+动态规划
+
+```java
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        // dp[i]表示以i结尾的最长序列长度
+        // dp[i]=max(dp[j]+1/0)(j<i)
+        // dp[i]=1
+        // count(max(dp[i]))
+        int n = nums.length;
+        int[] dp = new int[n];
+        int[] count = new int[n];
+        Arrays.fill(dp, 1);
+        count[0] = 1;
+        int max = 1;
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j] && dp[j] == dp[i] - 1) {
+                    count[i] += count[j];
+                }
+            }
+            if (count[i] == 0) { // 孤立的自己成一个
+                count[i] = 1;
+            }
+            max = Math.max(max, dp[i]);
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (dp[i] == max) {
+                ans += count[i];
+            }
+        }
+        return ans;
+    }
+}
+```
+
+动态规划（一次遍历）
+
+```java
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        // dp[i]表示以i结尾的最长序列长度
+        // dp[i]=max(dp[j]+1/0)(j<i)
+        // dp[i]=1
+        // count(max(dp[i]))
+        int n = nums.length, max = 0, ans = 0;
+        int[] dp = new int[n];
+        int[] cnt = new int[n];
+        for (int i = 0; i < n; ++i) {
+            dp[i] = 1;
+            cnt[i] = 1;
+            for (int j = 0; j < i; ++j) {
+                if (nums[i] > nums[j]) {
+                    if (dp[j] + 1 > dp[i]) {
+                        dp[i] = dp[j] + 1;
+                        cnt[i] = cnt[j]; // 找到更大的长度，重置计数
+                    } else if (dp[j] + 1 == dp[i]) {
+                        cnt[i] += cnt[j]; // 就是最大值，累加计数
+                    }
+                }
+            }
+            if (dp[i] > max) { // 找到全局更大的长度
+                max = dp[i]; // 更新全局值
+                ans = cnt[i]; // 重置计数
+            } else if (dp[i] == max) {
+                ans += cnt[i]; // 累加计数
+            }
+        }
+        return ans;
+    }
+}
+```
+
+树状数组 TODO
+
+贪心 + 前缀和 + 二分查找 TODO
+
+## [709. 转换成小写字母](https://leetcode-cn.com/problems/to-lower-case/)
+
+> 字符串
+
+```java
+class Solution {
+    public String toLowerCase(String s) {
+        return s.toLowerCase();
+    }
+}
+```
+
+位运算技巧
+
+```java
+class Solution {
+    public String toLowerCase(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (char c: s.toCharArray()) {
+            sb.append((char)(65 <= c && c <= 90 ? (c | 32) : c));
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -19723,6 +19836,8 @@ public Node build(int[] a, int l, int r) {
 }
 ```
 
+### 树状数组
+
 ## 图
 
 ### Dijkstra算法
@@ -19878,13 +19993,30 @@ public String minWindow(String s, String t) {
 
 ## 动态规划
 
-思考模板
+### 思考模板
 
 - 状态定义：一维还是二维？
 - 转移方程：有几种状态？状态之间依赖关系？
 - 初始条件
 - 结果表示
 - 是否可以采用优化：滚动数组/滚动变量
+
+### 子串遍历
+
+检查回文串
+
+```java
+// dp[i][j]表示[i,j]是否为回文串
+boolean[][] dp = new boolean[n][n];
+for (int i = 0; i < n; ++i) {
+    Arrays.fill(dp[i], true);
+}
+for (int i = n - 1; i >= 0; --i) { // 经典子串遍历
+    for (int j = i + 1; j < n; ++j) {
+        dp[i][j] = dp[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
+    }
+}
+```
 
 ### 状态搜索
 
@@ -20073,7 +20205,9 @@ for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
 - size/isEmpty 容量
 - clone 浅拷贝
 
-# Java数据转化
+# Java常见技巧
+
+## 数据转化类
 
 - `int[]` 转 `List<Integer>`
 
@@ -20154,11 +20288,70 @@ String str = new String(charArr)
 String str = String.valueOf(i)
 ```
 
-# Java常见技巧
+## 数组类
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
 
-+ 数组复制：Arrays.copyOfRange(nums, 0, k) 或者 System.arraycopy(srcArr, srcPos, destArr, destPos, length)
++ 数组排序
+
+	```java
+	Arrays.sort(A); // 如果是字符数组，则是先大写后小写，用的是双轴快排
+	Arrays.sort(A, Collections.reverseOrder()); // 逆序，必须是Integer[]，或者从后往前处理
+	Arrays.sort(A, String.CASE_INSENSITIVE_ORDER); // 字符串排序，忽略大小写
+	// 对于基本类型的数组如int[]/double[]/char[]，Arrays类只提供了默认的升序排列，没有降序
+	int[] newA = Arrays.stream(A).boxed().sorted((a, b) -> b - a).mapToInt(p -> p).toArray();
+	// Integer[]逆序
+	Arrays.sort(A, new Comparator<Integer>(){
+		public int compare(Integer a, Integer b){
+			return b - a;
+		}
+	});
+	Arrays.sort(A, (a, b) -> b - a);
+	// 给某区间按c比较器（可选）排序
+	Arrays.sort(A, fromIndex, toIndex, c);
+	// 按字符串长度排序
+	Arrays.sort(A, (a, b) -> Integer.signum(a.length() - b.length()));
+	Arrays.sort(A, Comparator.comparingInt(String::length));
+	Arrays.sort(A, (a, b) -> a.length() - b.length());
+	Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length());
+	// 二维数组排序
+	Arrays.sort(AA, new Comparator<?>() {
+		@Override
+		private int Compare(int[] a, int[] b) {
+			return a[0] > b[0] ? -1: 1;
+		}
+	})
+	```
+
+- 数组复制
+
+	```java
+	Arrays.copyOfRange(nums, 0, k)
+	System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
+	```
+
+- 数组求和、找最大、找最小（效率不高）
+
+	```java
+	int max = Arrays.stream(arr).max().getAsInt();
+	int min = Arrays.stream(arr).min().getAsInt();
+	int total = Arrays.stream(arr).sum()
+	```
+
+- 数组打印
+
+	```java
+	Object[] arr;
+	for (int i = 0; i < arr.length; i++)
+	    System.out.print(arr[i] + ", "); 
+	for(Object item: arr) 
+	    System.out.println(item + ", ");
+	System.out.println(Arrays.toString(arr));
+	System.out.println(Arrays.asList(arr));
+	Arrays.asList(arr).stream().forEach(item -> System.out.println(item));
+	```
+
+## 集合类
 
 + ArrayList简单构造：Arrays.asList(a,b)
 
@@ -20173,70 +20366,8 @@ String str = String.valueOf(i)
 	map.computeIfAbsent(key, key -> new PriorityQueue<>()).offer(ch);
 	```
 
-+ 数组排序Arrays
++ 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
 
-  ```java
-  Arrays.sort(A); // 如果是字符数组，则是先大写后小写，用的是双轴快排
-  Arrays.sort(A, Collections.reverseOrder()); // 逆序，必须是Integer[]，或者从后往前处理
-  Arrays.sort(A, String.CASE_INSENSITIVE_ORDER); // 字符串排序，忽略大小写
-  // 对于基本类型的数组如int[]/double[]/char[]，Arrays类只提供了默认的升序排列，没有降序
-  int[] newA = Arrays.stream(A).boxed().sorted((a, b) -> b - a).mapToInt(p -> p).toArray();
-  // Integer[]逆序
-  Arrays.sort(A, new Comparator<Integer>(){
-  	public int compare(Integer a, Integer b){
-  		return b - a;
-  	}
-  });
-  Arrays.sort(A, (a, b) -> b - a);
-  // 给某区间按c比较器（可选）排序
-  Arrays.sort(A, fromIndex, toIndex, c);
-  // 按字符串长度排序
-  Arrays.sort(A, (a, b) -> Integer.signum(a.length() - b.length()));
-  Arrays.sort(A, Comparator.comparingInt(String::length));
-  Arrays.sort(A, (a, b) -> a.length() - b.length());
-  Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length());
-  // 二维数组排序
-  Arrays.sort(AA, new Comparator<?>() {
-  	@Override
-  	private int Compare(int[] a, int[] b) {
-  		return a[0] > b[0] ? -1: 1;
-  	}
-  })
-  ```
-
-- 数组复制
-
-  ```java
-  System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
-  ```
-
-- 数组求和、找最大、找最小（效率不高）
-
-	```java
-	int max = Arrays.stream(arr).max().getAsInt();
-	int min = Arrays.stream(arr).min().getAsInt();
-	int total = Arrays.stream(arr).sum()
-	```
-
-- 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
-
-- 打印数组
-
-	```java
-	Object[] arr;
-	for (int i = 0; i < arr.length; i++) { 
-	    System.out.print(arr[i] + ", "); 
-	}
-	
-	for(Object item: arr) 
-	    System.out.println(item + ", ");
-	
-	System.out.println(Arrays.toString(arr));
-	
-	System.out.println(Arrays.asList(arr));
-	
-	Arrays.asList(arr).stream().forEach(item -> System.out.println(item));
-	```
 
 - 复杂Map遍历
 
@@ -20248,23 +20379,80 @@ String str = String.valueOf(i)
 	}
 	```
 
+- List求和（流）
+
+	```java
+	long sum = list.stream().mapToLong(User::getAge).sum(); // List<User>
+	long sum = list.stream().reduce(Integer::sum).orElse(0); // List<Integer>
+	```
+
+- 栈和队列
+
+	```java
+	// 栈（DFS非递归常用）
+	Deque<T> stack = new LinkedList<>(); // push/pop/peek
+	// 队列（BFS常用）
+	Queue<T> q = new LinkedList<>(); // offer/poll
+	// 通用
+	LinkedList<T> l = new LinkedList<>(); // +first/+last
+	```
+
+## 位运算类
+
+- 判断奇偶：(x & 1) == 1, (x & 1) == 0
+
+- 位移代替除法：x >> 1 <=> x / 2
+
+- 最低位的1变成0：x &= (x - 1)
+
+- 得到最低位的1的值(lowbit)，形如100...0：**x & -x**（常用）; x & (x ^ (x - 1))【常应用于树状数组，状压DP，二进制或位运算题中】
+
 - 0和1翻转：n ^= 1
+
+- x & ~x <=> 0
+
+- 指定位置的位运算
+	将X最右边的n位清零：x & (~0 << n)
+	获取x的第n位值：(x >> n) & 1
+	获取x的第n位的幂值：x & (1 << n)
+	仅将第n位置为1：x | (1 << n)
+	仅将第n位置为0：x & (~(1 << n))
+	将x最高位至第n位（含）清零：x & ((1 << n) - 1)
+	将第n位至第0位（含）清零：x & (~((1 << (n + 1)) - 1))
+
+- 异或结合律
+
+	(类似点乘法结合律)
+
+	x ^ 0 = x, x ^ x = 0
+	x ^ (~0) = ~x, x ^ (~x) = ~0
+	a ^ b = c, a ^ c = b, b ^ c = a
+
+	字母表示：(a ^ b) ^ c = a ^ (b ^ c)
+	图形表示：(☆ ^ ◇) ^ △ = ☆ ^ (◇ ^ △)
+
+- 大小字母位运算技巧
+
+	大写变小写、小写变大写：字符 ^= 32 （大写 ^= 32 相当于 +32，小写 ^= 32 相当于 -32）
+	大写变小写、小写变小写：字符 |= 32 （大写 |= 32 就相当于+32，小写 |= 32 不变）
+	大写变大写、小写变大写：字符 &= -33 （大写 ^= -33 不变，小写 ^= -33 相当于 -32）
 
 - int整数表示字符串字母集合（不考虑char出现的频数）：对每个ch计算mask |= (1 << (ch - 'a'))
 
 - int的bit数
 
-	```java
-	public int countOnes(int x) {
-	    // return Integer.bitCount(x);
-	    int ones = 0;
-	    while (x > 0) {
-	        x &= (x - 1); // 最低位的1变成0
-	        ones++;
-	    }
-	    return ones;
-	}
-	```
+  ```java
+  public int countOnes(int x) {
+      // return Integer.bitCount(x);
+      int ones = 0;
+      while (x > 0) {
+          x &= (x - 1); // 法1：最低位的1变成0
+          // x -= x & -x; // 法2：减去得到最低位的1的值
+          ones++;
+      }
+      return ones;
+  }
+  ```
 
 - [Integer常用函数和位运算技巧](https://blog.csdn.net/youyou1543724847/article/details/52385775)
 
@@ -20272,30 +20460,6 @@ String str = String.valueOf(i)
   前导0计数:Integer.numberOfLeadingZeros
   后缀0计数:Integer.numberOfTailingZeros（最后一个1的位置）
   ```
-
-- List求和(流)
-
-	```java
-	long sum = list.stream().mapToLong(User::getAge).sum(); // List<User>
-	long sum = list.stream().reduce(Integer::sum).orElse(0); // List<Integer>
-	```
-	
-- 检查回文串（经典DP子串遍历）
-
-	```java
-	// dp[i][j]表示[i,j]是否为回文串
-	boolean[][] dp = new boolean[n][n];
-	for (int i = 0; i < n; ++i) {
-	    Arrays.fill(dp[i], true);
-	}
-	for (int i = n - 1; i >= 0; --i) { // 经典子串遍历
-	    for (int j = i + 1; j < n; ++j) {
-	        dp[i][j] = dp[i + 1][j - 1] && (s.charAt(i) == s.charAt(j));
-	    }
-	}
-	```
-
-- 判断字符是否是数字：Character.isDigit(ch)
 
 - 二进制子集遍历
 
@@ -20305,16 +20469,9 @@ String str = String.valueOf(i)
   }
   ```
 
-- 栈和队列
+## 其他类
 
-  ```java
-  // 栈（DFS非递归常用）
-  Deque<T> stack = new LinkedList<>(); // push/pop/peek
-  // 队列（BFS常用）
-  Queue<T> q = new LinkedList<>(); // offer/poll
-  // 通用
-  LinkedList<T> l = new LinkedList<>(); // +first/+last
-  ```
+- 判断字符是否是数字：Character.isDigit(ch)
 
 - 获取随机数
 
