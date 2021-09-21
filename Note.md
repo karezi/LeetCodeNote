@@ -19321,6 +19321,25 @@ class Solution {
 }
 ```
 
+## [58. 最后一个单词的长度](https://leetcode-cn.com/problems/length-of-last-word/)
+
+> 字符串
+
+```java
+class Solution {
+    public int lengthOfLastWord(String s) {
+        int i = s.length() - 1;
+        while (s.charAt(i) == ' ') i--; // 去除空格
+        int ans = 0;
+        while (i >= 0 && s.charAt(i) != ' ') { // 计数
+            ans++;
+            i--;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
