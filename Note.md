@@ -19340,6 +19340,137 @@ class Solution {
 }
 ```
 
+## [725. 分隔链表](https://leetcode-cn.com/problems/split-linked-list-in-parts/)
+
+> 链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    private ListNode[] ret;
+    private int index = 0;
+
+    public ListNode[] splitListToParts(ListNode head, int k) {
+        int n = 0;
+        ListNode p = head;
+        while (p != null) {
+            n++;
+            p = p.next;
+        }
+        int s = n / k; // 较小长度
+        int r = n % k; // 较大长度(s+1)的个数
+        ret = new ListNode[k];
+        cut(k - r, s, cut(r, s + 1, head)); // 注意细节
+        return ret;
+    }
+
+    private ListNode cut(int cnt, int len, ListNode head) {
+        while (cnt > 0) {
+            ListNode start = head;
+            ListNode end = null;
+            if (start != null) {
+                int curLen = len; // 注意细节
+                while (curLen > 0) {
+                    if (curLen == 1) {
+                        end = head;
+                    }
+                    head = head.next;
+                    curLen--;
+                }
+                if (end != null)
+                    end.next = null;
+            }
+            ret[index++] = start;
+            cnt--;
+        }
+        return head;
+    }
+}
+```
+
+## [326. 3的幂](https://leetcode-cn.com/problems/power-of-three/)
+
+> 递归，数学，循环
+
+循环
+
+执行用时：15 ms, 在所有 Java 提交中击败了93.08%的用户
+
+内存消耗：38.1 MB, 在所有 Java 提交中击败了77.74%的用户
+
+```java
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        while (n > 0) {
+            if (n % 3 == 0) {
+                n /= 3;
+            } else {
+                return n == 1;
+            }
+        }
+        return false;
+    }
+}
+```
+
+递归
+
+执行用时：15 ms, 在所有 Java 提交中击败了93.08%的用户
+
+内存消耗：38.4 MB, 在所有 Java 提交中击败了5.35%的用户
+
+```java
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        if (n < 3)
+            return n == 1;
+        if (n % 3 == 0)
+            return isPowerOfThree(n / 3);
+        return false;
+    }
+}
+```
+
+取巧
+
+最大的 33 的幂为 3^{19} = 1162261467，判断n是否为其约数即可
+
+执行用时：15 ms, 在所有 Java 提交中击败了93.08%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了31.92%的用户
+
+```java
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        return n > 0 && 1162261467 % n == 0;
+    }
+}
+```
+
+对数运算
+
+执行用时：15 ms, 在所有 Java 提交中击败了93.08%的用户
+
+内存消耗：38.3 MB, 在所有 Java 提交中击败了25.24%的用户
+
+```java
+class Solution {
+    public boolean isPowerOfThree(int n) {
+        double x = Math.log(n) / Math.log(3);
+        return Math.abs(x - Math.round(x)) < Math.pow(10, -14);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -20496,6 +20627,12 @@ String str = String.valueOf(i)
 
 	```java
 	int x = (int)(Math.random() * total) + 1;
+	```
+
+- Math计算判断整数
+
+	```java
+	Math.abs(x - Math.round(x)) < Math.pow(10, -14);
 	```
 
 # 未完成
