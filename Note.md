@@ -19471,6 +19471,93 @@ class Solution {
 }
 ```
 
+## [430. 扁平化多级双向链表](https://leetcode-cn.com/problems/flatten-a-multilevel-doubly-linked-list/)
+
+> 深度优先搜索，链表，双向链表，栈，回溯
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.5 MB, 在所有 Java 提交中击败了44.48%的用户
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node prev;
+    public Node next;
+    public Node child;
+};
+*/
+
+class Solution {
+    public Node flatten(Node head) {
+        if (head == null)
+            return null;
+        Deque<Node> stack = new LinkedList<>();
+        Node cur = null;
+        stack.push(head);
+        while (!stack.isEmpty()) {
+            Node p = stack.pop();
+            if (cur == null) {
+                cur = p;
+            } else {
+                cur.next = p;
+                p.prev = cur;
+                cur = cur.next;
+            }
+            while (cur != null && cur.next != null && cur.child == null) { // 往右走
+                cur = cur.next;
+            }
+            if (cur != null && cur.child != null) {
+                if (cur.next != null) {
+                    stack.push(cur.next);
+                    cur.next.prev = null;
+                }
+                cur.next = cur.child;
+                cur.child.prev = cur;
+                stack.push(cur.child);
+                cur.child = null;
+            }
+        }
+        return head;
+    }
+}
+```
+
+## [583. 两个字符串的删除操作](https://leetcode-cn.com/problems/delete-operation-for-two-strings/)
+
+> 字符串，动态规划，最长公共子串
+
+执行用时：6 ms, 在所有 Java 提交中击败了94.95%的用户
+
+内存消耗：39.2 MB, 在所有 Java 提交中击败了16.28%的用户
+
+```java
+class Solution {
+    public int minDistance(String word1, String word2) {
+        // dp[i][j]表示1串i和2串j的最长公共子串的长度
+        // dp[i][j] = max(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]+1(相等))
+        // dp[i][j]=0
+        // dp[n][m]
+        int n = word1.length(), m = word2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for (int i = 1; i <= n; ++i) {
+            char c1 = word1.charAt(i - 1);
+            for (int j = 1; j <= m; ++j) {
+                char c2 = word2.charAt(j - 1);
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                if (c1 == c2) dp[i][j] = Math.max(dp[i][j], dp[i - 1][j - 1] + 1);
+            }
+        }
+        int maxLen = dp[n][m];
+        return n + m - 2 * maxLen;
+    }
+}
+```
+
+直接用动态规划TODO
+
 # Java算法模板
 
 ## BFS
