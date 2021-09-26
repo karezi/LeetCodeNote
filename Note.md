@@ -19558,6 +19558,33 @@ class Solution {
 
 直接用动态规划TODO
 
+## [371. 两整数之和](https://leetcode-cn.com/problems/sum-of-two-integers/)
+
+> 位运算，数学
+
+```java
+class Solution {
+    public int getSum(int a, int b) {
+        while (b != 0) {
+            int carry = (a & b) << 1; // 所有位计算进位
+            a ^= b; // 所有位计算当前位
+            b = carry; // 获取进位
+        }
+        return a;
+    }
+}
+```
+
+递归写法
+
+```java
+class Solution {
+    public int getSum(int a, int b) {
+        return b == 0 ? a : getSum(a ^ b, (a & b) << 1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
