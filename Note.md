@@ -19585,6 +19585,55 @@ class Solution {
 }
 ```
 
+## [639. 解码方法 II](https://leetcode-cn.com/problems/decode-ways-ii/)
+
+> 字符串，动态规划，分情况讨论DP，滚动数组
+
+```java
+class Solution {
+    private static final int MOD = 1000000007;
+
+    public int numDecodings(String s) {
+        // dp[i]表示前i个数目
+        // dp[i]=a*dp[i-1](自己单独编码)+b*dp[i-2](和前者一起编码)(依据s[i],s[i-1],s[i-2]的值来确定a,b)
+        // a = c == '0' ? 0 : (c == '*' ? 9 : 1)
+        // b = 根据c前一个和c来决定
+        // dp[0]=1(dp_i_1)空字符串假定为1(因为要乘)
+        // dp[n]
+        int n = s.length();
+        long dp_i = 0, dp_i_1 = 1, dp_i_2 = 0;
+        for (int i = 1; i <= n; ++i) {
+            char c1 = s.charAt(i - 1);
+            // 自己单独编码
+            dp_i = dp_i_1 * (c1 == '0' ? 0 : (c1 == '*' ? 9 : 1)) % MOD;
+            // 和前者一起编码
+            if (i > 1) {
+                dp_i = (dp_i + dp_i_2 * getCount(s.charAt(i - 2), c1)) % MOD; 
+            }
+            // 轮动
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
+        }
+        return (int)dp_i;
+    }
+    
+    private int getCount(char c2, char c1) {
+        // ** -> 15
+        // *[] -> *0~*6:2,*7~*9:1
+        // []* -> 1*:10,2*:7,其他*:0
+        // [][] -> 10~26:1
+        if (c2 == '*' && c1 == '*')
+            return 15;
+        else if (c2 == '*' && c1 != '*')
+            return c1 <= '6' ? 2 : 1;
+        else if (c2 != '*' && c1 == '*')
+            return c2 == '1' ? 9 : (c2 == '2' ? 6 : 0);
+        else
+            return c2 == '1' ? 1 : (c2 == '2' ? (c1 <= '6' ? 1 : 0) : 0);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
