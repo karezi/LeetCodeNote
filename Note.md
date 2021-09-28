@@ -19634,6 +19634,91 @@ class Solution {
 }
 ```
 
+## [437. 路径总和 III](https://leetcode-cn.com/problems/path-sum-iii/)
+
+> 树，深度优先搜索，递归，前缀和，回溯
+
+双重递归
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int cnt = 0;
+
+    public int pathSum(TreeNode root, int targetSum) {
+        if (root == null)
+            return 0;
+        helper(root, targetSum); // 第二层递归表示对每个节点搜索，满足条件+1
+        pathSum(root.left, targetSum); // 第一层递归表示遍历所有节点作为起点
+        pathSum(root.right, targetSum);
+        return cnt;
+    }
+
+    private void helper(TreeNode root, int targetSum) {
+        if (root == null)
+            return;
+        if (root.val == targetSum)
+            cnt++;
+        int delta = targetSum - root.val;
+        helper(root.left, delta);
+        helper(root.right, delta);
+    }
+}
+```
+
+前缀和
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int pathSum(TreeNode root, int targetSum) {
+        Map<Long, Integer> map = new HashMap<>(); // <前缀和,个数>
+        map.put(0L, 1); // TODO
+        return dfs(root, map, 0, targetSum);
+    }
+
+    private int dfs(TreeNode root, Map<Long, Integer> map, long curSum, int targetSum) {
+        if (root == null)
+            return 0;
+        curSum += root.val;
+        int ans = map.getOrDefault(curSum - targetSum, 0);
+        map.put(curSum, map.getOrDefault(curSum, 0) + 1);
+        ans += dfs(root.left, map, curSum, targetSum);
+        ans += dfs(root.right, map, curSum, targetSum);
+        map.put(curSum, map.getOrDefault(curSum, 0) - 1); // 回溯
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
