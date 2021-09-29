@@ -19719,6 +19719,37 @@ class Solution {
 }
 ```
 
+## [517. 超级洗衣机](https://leetcode-cn.com/problems/super-washing-machines/)
+
+> 数组，贪心，前缀和，脑筋急转弯
+
+考虑左右过路
+
+```java
+class Solution {
+    public int findMinMoves(int[] machines) {
+        // 分析每个位置，过路的最大值即为结果，结果=MAX(左边往右边搬运+右边往左边搬运)
+        // 或者思考为当前位置需要向左匀和向右匀（一样的求法）
+        // int sum = Arrays.stream(machines).sum();
+        int sum = 0, n = machines.length;
+        for (int machine: machines)
+            sum += machine;
+        if (sum % n != 0)
+            return -1;
+        int avg = sum / n, max = 0;
+        int l = 0, r = sum;
+        for (int i = 0; i < n; ++i) {
+            r -= machines[i];
+            max = Math.max(max, Math.max(0, i * avg - l) + Math.max(0, (n - i - 1) * avg - r));
+            l += machines[i];
+        }
+        return max;
+    }
+}
+```
+
+前缀和TODO
+
 # Java算法模板
 
 ## BFS
