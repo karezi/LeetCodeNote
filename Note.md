@@ -19750,6 +19750,47 @@ class Solution {
 
 前缀和TODO
 
+## [223. 矩形面积](https://leetcode-cn.com/problems/rectangle-area/)
+
+> 几何，数学
+
+执行用时：2 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：37.6 MB, 在所有 Java 提交中击败了82.14%的用户
+
+好理解
+
+```java
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        return (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1) - 
+        getCover(ax1, ax2, bx1, bx2) * getCover(ay1, ay2, by1, by2);
+    }
+
+    private int getCover(int a, int b, int c, int d) {
+        if (b <= c || d <= a)
+            return 0;
+        if (c <= a && b <= d)
+            return b - a;
+        if (a <= c && d <= b)
+            return d - c;
+        if (c < a)
+            return d - a;
+        return b - c;
+    }
+}
+```
+
+更简化
+
+```java
+class Solution {
+    public int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        return (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1) - (Math.max(Math.min(ax2, bx2) - Math.max(ax1, bx1), 0) * Math.max(Math.min(ay2, by2) - Math.max(ay1, by1), 0));
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
