@@ -19791,6 +19791,195 @@ class Solution {
 }
 ```
 
+## [1436. 旅行终点站](https://leetcode-cn.com/problems/destination-city/)
+
+> 哈希表，字符串
+
+入度出度
+
+```java
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        Map<String, Integer> map = new HashMap<>();
+        for (List<String> path: paths) {
+            map.put(path.get(0), map.getOrDefault(path.get(0), 0) + 1);
+            map.put(path.get(1), map.getOrDefault(path.get(1), 0) - 1);
+        }
+        for (String str: map.keySet()) {
+            if (map.get(str) == -1)
+                return str;
+        }
+        return "";
+    }
+}
+```
+
+路径压缩
+
+执行用时：2 ms, 在所有 Java 提交中击败了94.53%的用户
+
+内存消耗：38 MB, 在所有 Java 提交中击败了62.24%的用户
+
+```java
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        Map<String, String> map = new HashMap<>();
+        for (List<String> path: paths) {
+            map.put(path.get(0), path.get(1));
+        }
+        String cur = paths.get(0).get(0);
+        while (map.containsKey(cur)) {
+            cur = map.get(cur);
+        }
+        return cur;
+    }
+}
+```
+
+键不存在
+
+```java
+class Solution {
+    public String destCity(List<List<String>> paths) {
+        Set<String> citiesA = new HashSet<String>();
+        for (List<String> path : paths) {
+            citiesA.add(path.get(0));
+        }
+        for (List<String> path : paths) {
+            if (!citiesA.contains(path.get(1))) {
+                return path.get(1);
+            }
+        }
+        return "";
+    }
+}
+```
+
+## [405. 数字转换为十六进制数](https://leetcode-cn.com/problems/convert-a-number-to-hexadecimal/)
+
+> 位运算，数学
+
+```java
+class Solution {
+    public String toHex(int num) {
+        if (num == 0)
+            return "0";
+        char[] cs = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+        StringBuilder sb = new StringBuilder();
+        long myNum = num;
+        if (myNum < 0)
+            myNum += (long)1 << 32; // 补码进制求法！TODO
+        while (myNum > 0) {
+            sb.insert(0, cs[(int)(myNum % 16)]);
+            myNum /= 16;
+        }
+        return sb.toString();
+    }
+}
+```
+
+位运算+分组换算
+
+```java
+class Solution {
+    public String toHex(int num) {
+        if (num == 0)
+            return "0";
+        // 32位，4个1组，共8组
+        StringBuilder sb = new StringBuilder();
+        for (int i = 7; i >= 0; --i) {
+            int digit = (num >> (i * 4)) & 0xf; // 取最后四位
+            if (sb.length() > 0 || digit > 0) {
+                sb.append((char)(digit < 10 ? digit + '0' : digit - 10 + 'a'));
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
+
+
+## [284. 窥探迭代器](https://leetcode-cn.com/problems/peeking-iterator/)
+
+> 设计，数组，迭代器
+
+```java
+// Java Iterator interface reference:
+// https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
+
+class PeekingIterator implements Iterator<Integer> {
+    private List<Integer> nums;
+    private int ptr = 0;
+    private int size = 0;
+
+	public PeekingIterator(Iterator<Integer> iterator) {
+	    // initialize any member here.
+	    nums = new ArrayList<>();
+        while (iterator.hasNext()) {
+            nums.add(iterator.next());
+        }
+        size = nums.size();
+	}
+	
+    // Returns the next element in the iteration without advancing the iterator.
+	public Integer peek() {
+        return nums.get(ptr);
+	}
+	
+	// hasNext() and next() should behave the same as in the Iterator interface.
+	// Override them if needed.
+	@Override
+	public Integer next() {
+        Integer ret = null;
+        if (ptr < size) {
+            ret = nums.get(ptr);
+        }
+        ptr++;
+        return ret;
+	}
+	
+	@Override
+	public boolean hasNext() {
+	    if (ptr >= size) {
+            return false;
+        } else {
+            return true;
+        }
+	}
+}
+```
+
+不用数组
+
+```java
+class PeekingIterator implements Iterator<Integer> {
+    private Iterator<Integer> iterator;
+    private Integer cur;
+
+    public PeekingIterator(Iterator<Integer> iterator) {
+        this.iterator = iterator;
+        cur = iterator.next();
+    }
+    
+    public Integer peek() {
+        return cur;
+    }
+    
+    @Override
+    public Integer next() {
+        Integer ret = cur;
+        cur = iterator.hasNext() ? iterator.next() : null;
+        return ret;
+    }
+    
+    @Override
+    public boolean hasNext() {
+        return cur != null;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
