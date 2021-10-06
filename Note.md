@@ -19980,6 +19980,55 @@ class PeekingIterator implements Iterator<Integer> {
 }
 ```
 
+## [414. 第三大的数](https://leetcode-cn.com/problems/third-maximum-number/)
+
+> 数组，排序
+
+```java
+class Solution {
+    public int thirdMax(int[] nums) {
+        long[] max = new long[3]; // 注意溢出，也可以用a,b,c
+        Arrays.fill(max, Long.MIN_VALUE); // 也可以用null表示最小值
+        for (int num: nums) {
+            if (num == max[0] || num == max[1] || num == max[2])
+                continue;
+            if (num > max[0]) {
+                max[2] = max[1];
+                max[1] = max[0];
+                max[0] = num;
+            } else if (num > max[1]) {
+                max[2] = max[1];
+                max[1] = num;
+            } else if (num > max[2]) {
+                max[2] = num;
+            }
+        }
+        if (max[2] == Long.MIN_VALUE || max[1] == Long.MIN_VALUE)
+            return (int)max[0];
+        return (int)max[2];
+    }
+}
+```
+
+TreeSet TODO
+
+```java
+class Solution {
+    public int thirdMax(int[] nums) {
+        TreeSet<Integer> s = new TreeSet<Integer>();
+        for (int num : nums) {
+            s.add(num);
+            if (s.size() > 3) {
+                s.remove(s.first()); // 注意从小到大
+            }
+        }
+        return s.size() == 3 ? s.first() : s.last();
+    }
+}
+```
+
+排序 TODO
+
 # Java算法模板
 
 ## BFS
