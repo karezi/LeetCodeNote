@@ -19898,9 +19898,74 @@ class Solution {
 }
 ```
 
+## [166. 分数到小数](https://leetcode-cn.com/problems/fraction-to-recurring-decimal/)
 
+> 哈希表，数学，字符串
 
-## [284. 窥探迭代器](https://leetcode-cn.com/problems/peeking-iterator/)
+执行用时：1 ms, 在所有 Java 提交中击败了99.95%的用户
+
+内存消耗：35.7 MB, 在所有 Java 提交中击败了82.12%的用户
+
+```java
+class Solution {
+    public String fractionToDecimal(int numerator, int denominator) {
+        StringBuilder sb = new StringBuilder();
+        if (numerator < 0 && denominator > 0 || numerator > 0 && denominator < 0) // 也可以 if(num<0^den<0)
+            sb.append("-");
+        long nu = Math.abs((long)numerator); // 注意溢出和提前转为long
+        long de = Math.abs((long)denominator);
+        sb.append(nu / de);
+        long rest = nu % de;
+        if (rest == 0)
+            return sb.toString();
+        sb.append(".");
+        int curIndex = sb.length();
+        Map<Long, Integer> map = new HashMap<>(); // <余数，初始位置>
+        while (true) {
+            rest *= 10;
+            sb.append(rest / de);
+            rest %= de;
+            if (rest == 0)
+                return sb.toString();
+            if (map.containsKey(rest)) {
+                sb.insert(map.get(rest), "(");
+                sb.append(")");
+                return sb.toString();
+            }
+            map.put(rest, ++curIndex);
+        }
+    }
+}
+```
+
+## [482. 密钥格式化](https://leetcode-cn.com/problems/license-key-formatting/)
+
+> 字符串
+
+```java
+class Solution {
+    public String licenseKeyFormatting(String s, int k) {
+        int n = s.length();
+        StringBuilder sb = new StringBuilder();
+        int cnt = 0;
+        for (int i = n - 1; i >= 0; --i) {
+            if (s.charAt(i) != '-') {
+                sb.append(Character.toUpperCase(s.charAt(i)));
+                cnt++;
+            }
+            if (cnt == k) {
+                cnt = 0;
+                sb.append("-");
+            }
+        }
+        if (sb.length() > 0 && sb.charAt(sb.length() - 1) == '-')
+            sb.deleteCharAt(sb.length() - 1);
+        return sb.reverse().toString();
+    }
+}
+```
+
+## [284. 顶端迭代器](https://leetcode-cn.com/problems/peeking-iterator/)
 
 > 设计，数组，迭代器
 
@@ -20028,6 +20093,41 @@ class Solution {
 ```
 
 排序 TODO
+
+## [434. 字符串中的单词数](https://leetcode-cn.com/problems/number-of-segments-in-a-string/)
+
+> 字符串
+
+```java
+class Solution {
+    public int countSegments(String s) {
+        s = s.replaceAll("[ ]+", " ").trim();
+        if (s.length() == 0 || s.equals(" "))
+            return 0;
+        int ans = 0;
+        for (char c: s.toCharArray()) {
+            if (c == ' ')
+                ans++;
+        }
+        return ans + 1;
+    }
+}
+```
+
+简化
+
+```java
+class Solution {
+    public int countSegments(String s) {
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if ((i == 0 || s.charAt(i - 1) == ' ') && s.charAt(i) != ' ')
+                ans++;
+        }
+        return ans;
+    }
+}
+```
 
 # Java算法模板
 
