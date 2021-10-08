@@ -20129,6 +20129,92 @@ class Solution {
 }
 ```
 
+## [187. 重复的DNA序列](https://leetcode-cn.com/problems/repeated-dna-sequences/)
+
+> 位运算，哈希表，字符串，滑动窗口，哈希函数，滚动哈希
+
+stringbuilder
+
+```java
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        int n = s.length();
+        Set<String> ret = new HashSet<>();
+        if (n > 10) {
+            Set<String> tmpSet = new HashSet<>();
+            StringBuilder cur = new StringBuilder();
+            for (int i = 10; i < n; ++i) {
+                cur.deleteCharAt(i - 10);
+                cur.append(s.charAt(i));
+                if (tmpSet.contains(cur.toString())) {
+                    ret.add(cur.toString());
+                } else {
+                    tmpSet.add(cur.toString());
+                }
+            }
+        }
+        return new ArrayList<>(ret);
+    }
+}
+```
+
+substring
+
+```java
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        int n = s.length();
+        Set<String> ret = new HashSet<>();
+        if (n > 10) {
+            Set<String> tmpSet = new HashSet<>();
+            String cur = new String();
+            for (int i = 0; i <= n - 10; ++i) {
+                cur = s.substring(i, i + 10);
+                if (tmpSet.contains(cur)) {
+                    ret.add(cur);
+                } else {
+                    tmpSet.add(cur);
+                }
+            }
+        }
+        return new ArrayList<>(ret);
+    }
+}
+```
+
+位运算 TODO（哈希只有Integer作为key才能保证严格O(1)取到值）
+
+```java
+class Solution {
+    Map<Character, Integer> bin = new HashMap<Character, Integer>() {{
+        put('A', 0); // 00
+        put('C', 1); // 01
+        put('G', 2); // 10
+        put('T', 3); // 11
+    }};
+    public List<String> findRepeatedDnaSequences(String s) {
+        List<String> ans = new ArrayList<String>();
+        int n = s.length();
+        if (n <= 10) {
+            return ans;
+        }
+        int x = 0;
+        for (int i = 0; i < 9; ++i) {
+            x = (x << 2) | bin.get(s.charAt(i));
+        }
+        Map<Integer, Integer> cnt = new HashMap<Integer, Integer>();
+        for (int i = 0; i <= n - 10; ++i) {
+            x = ((x << 2) | bin.get(s.charAt(i + 9))) & ((1 << 20) - 1);
+            cnt.put(x, cnt.getOrDefault(x, 0) + 1);
+            if (cnt.get(x) == 2) {
+                ans.add(s.substring(i, i + 10));
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
