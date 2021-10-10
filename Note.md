@@ -20215,6 +20215,35 @@ class Solution {
 }
 ```
 
+## [441. 排列硬币](https://leetcode-cn.com/problems/arranging-coins/)
+
+> 数学，二分查找
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.5 MB, 在所有 Java 提交中击败了73%的用户
+
+```java
+class Solution {
+    public int arrangeCoins(int n) {
+        long candidate = (long)Math.sqrt(2 * (long)n);
+        return (int)(candidate * (candidate + 1) <= 2 * (long)n ? candidate : candidate - 1);
+    }
+}
+```
+
+用二元方程公式 TODO
+
+```java
+class Solution {
+    public int arrangeCoins(int n) {
+        return (int)((Math.sqrt(1 + 8.0 * n) - 1) / 2);
+    }
+}
+```
+
+二分 TODO
+
 # Java算法模板
 
 ## BFS
@@ -21434,3 +21463,5 @@ String str = String.valueOf(i)
 ## [552. 学生出勤记录 II](https://leetcode-cn.com/problems/student-attendance-record-ii/)
 
 ## [502. IPO](https://leetcode-cn.com/problems/ipo/)
+
+## [352. 将数据流变为多个不相交区间](https://leetcode-cn.com/problems/data-stream-as-disjoint-intervals/)
