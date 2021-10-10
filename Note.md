@@ -20244,6 +20244,71 @@ class Solution {
 
 二分 TODO
 
+## [273. 整数转换英文表示](https://leetcode-cn.com/problems/integer-to-english-words/)
+
+> 递归，数学，字符串
+
+```java
+class Solution {
+    private static final String[] en = {"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"};
+
+    private static final String[] en2 = {"Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+
+    public String numberToWords(int num) {
+        if (num == 0)
+            return "Zero";
+        int n = (num + "").length();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 12 - n; ++i)
+            sb.append("0");
+        sb.append(num);
+        StringBuilder ans = new StringBuilder();
+        for (int i = 0; i < 12; i += 3) {
+            if (sb.substring(i, i + 3).equals("000"))
+                continue;
+            StringBuilder threeSb = getThree(sb.charAt(i), sb.charAt(i + 1), sb.charAt(i + 2));
+            if (threeSb.length() > 0)
+                ans.append(" ").append(threeSb).append(" ").append(getBMT(i));
+        }
+        return ans.toString().trim();
+    }
+
+    private StringBuilder getThree(char c1, char c2, char c3) {
+        StringBuilder sb = new StringBuilder();
+        if (c1 != '0') {
+            sb.append(en[c1 - '0' - 1]).append(" ").append("Hundred");
+        }
+        if (c2 != '0' || c3 != '0') {
+            if (c1 != '0')
+                sb.append(" ");
+            int tmp = (c2 - '0') * 10 + (c3 - '0');
+            if (tmp <= 20) {
+                sb.append(en[tmp - 1]);
+            } else if (c3 == '0') {
+                sb.append(en2[c2 - '0' - 2]);
+            } else {
+                sb.append(en2[c2 - '0' - 2]).append(" ").append(en[c3 - '0' - 1]);
+            }
+        }
+        return sb;
+    }
+
+    private String getBMT(int idx) {
+        switch(idx) {
+            case 0:
+                return "Billion";
+            case 3:
+                return "Million";
+            case 6:
+                return "Thousand";
+        }
+        return "";
+    }
+}
+```
+
+递归TODO
+
 # Java算法模板
 
 ## BFS
