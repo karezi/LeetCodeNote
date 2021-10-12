@@ -20309,6 +20309,74 @@ class Solution {
 
 递归TODO
 
+## [29. 两数相除](https://leetcode-cn.com/problems/divide-two-integers/)
+
+> 倍增法，数学，二分查找
+
+```java
+class Solution {
+    public int divide(int dividend, int divisor) {
+        if (dividend == 0) return 0;
+        long d1, d2;
+        boolean flag = false;
+        if (dividend > 0 && divisor < 0) {
+            d1 = (long)dividend;
+            d2 = -(long)divisor;
+        } else if (dividend < 0 && divisor > 0) {
+            d1 = -(long)dividend;
+            d2 = (long)divisor;
+        } else {
+            d1 = Math.abs((long)dividend);
+            d2 = Math.abs((long)divisor);
+            flag = true;
+        }
+        long ans = 0;
+        while (d1 >= d2) {
+            if (d2 == 1) {
+                ans = d1;
+                break;
+            }
+            if (d2 == 2) {
+                ans = d1 >> 1;
+                break;
+            }
+            d1 -= d2;
+            ans++;
+        }
+        ans = flag ? ans : -ans;
+        return ans >= 2147483648L ? 2147483647 : (int)ans;
+    }
+}
+```
+
+倍增+无long TODO
+
+```java
+class Solution {
+    // 都映射到负数，因为负数表示范围大
+    int MIN = Integer.MIN_VALUE, MAX = Integer.MAX_VALUE;
+    int LIMIT = -1073741824; // MIN 的一半
+    public int divide(int a, int b) {
+        if (a == MIN && b == -1) return MAX;
+        boolean flag = false;
+        if ((a ^ b) < 0) flag = true;
+        if (a > 0) a = -a;
+        if (b > 0) b = -b;
+        int ans = 0;
+        while (a <= b) { // -a >= -b 倍增法，用b倍增来试探到a
+            int c = b, d = -1;
+            while (c >= LIMIT && d >= LIMIT && c >= a - c){
+                c += c;
+                d += d;
+            }
+            a -= c; // 更新a到a-nb继续试探
+            ans += d;
+        }
+        return flag ? ans : -ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
