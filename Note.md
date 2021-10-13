@@ -14803,6 +14803,8 @@ public class Solution extends GuessGame {
 
 ## [852. 山脉数组的峰顶索引](https://leetcode-cn.com/problems/peak-index-in-a-mountain-array/)
 
+## [剑指 Offer II 069. 山峰数组的顶部](https://leetcode-cn.com/problems/B1IidL/)
+
 > 二分查找
 
 ```java
@@ -20377,6 +20379,52 @@ class Solution {
 }
 ```
 
+## [412. Fizz Buzz](https://leetcode-cn.com/problems/fizz-buzz/)
+
+> 数学，字符串，模拟
+
+```java
+class Solution {
+    public List<String> fizzBuzz(int n) {
+        List<String> ans = new ArrayList<>();
+        for (int i = 1; i <= n; ++i) {
+            StringBuilder sb = new StringBuilder();
+            if (i % 3 == 0)
+                sb.append("Fizz");
+            if (i % 5 == 0)
+                sb.append("Buzz");
+            if (sb.length() == 0)
+                sb.append(i);
+            ans.add(sb.toString());
+        }
+        return ans;
+    }
+}
+```
+
+## [125. 验证回文串](https://leetcode-cn.com/problems/valid-palindrome/)
+
+> 双指针，字符串
+
+```java
+class Solution {
+    public boolean isPalindrome(String s) {
+        int n = s.length();
+        int l = 0, r = n - 1;
+        while (l < r) {
+            while (l < n && !Character.isLetterOrDigit(s.charAt(l))) l++;
+            while (r >= 0 && !Character.isLetterOrDigit(s.charAt(r))) r--;
+            if (l < r) {
+                if (Character.toLowerCase(s.charAt(l)) != Character.toLowerCase(s.charAt(r))) return false;
+                l++;
+                r--;
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -21342,6 +21390,20 @@ String str = new String(charArr)
 
 ```java
 String str = String.valueOf(i)
+```
+
+## 字符串类
+
+- 判断字符是否为字母或者数字
+
+```java
+Character.isLetterOrDigit(c)
+```
+
+- 字符转化为大小写
+
+```java
+Character.toLowerCase(c) / Character.toUpperCase(c)
 ```
 
 ## 数组类
