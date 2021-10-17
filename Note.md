@@ -20492,6 +20492,53 @@ class Solution {
 }
 ```
 
+## [230. 二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+
+> 树，深度优先搜索，二叉搜索树，二叉树，中序遍历
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int mk;
+    private List<Integer> list;
+
+    public int kthSmallest(TreeNode root, int k) {
+        mk = k;
+        list = new ArrayList<>();
+        dfs(root);
+        return list.get(k - 1);
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left);
+        list.add(root.val);
+        if (list.size() >= mk) {
+            return;
+        }
+        dfs(root.right);
+    }
+}
+```
+
+其他优化，AVL TODO
+
 # Java算法模板
 
 ## BFS
