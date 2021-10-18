@@ -20539,6 +20539,22 @@ class Solution {
 
 其他优化，AVL TODO
 
+## [476. 数字的补数](https://leetcode-cn.com/problems/number-complement/)
+
+> 位运算
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.2 MB, 在所有 Java 提交中击败了57.76%的用户
+
+```java
+class Solution {
+    public int findComplement(int num) {
+        return (1 << Integer.toBinaryString(num).length()) - 1 - num;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
