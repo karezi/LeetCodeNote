@@ -20555,6 +20555,84 @@ class Solution {
 }
 ```
 
+## [211. 添加与搜索单词 - 数据结构设计](https://leetcode-cn.com/problems/design-add-and-search-words-data-structure/)
+
+> 深度优先搜索，设计，字典树，字符串
+
+执行用时：39 ms, 在所有 Java 提交中击败了81.63%的用户
+
+内存消耗：49 MB, 在所有 Java 提交中击败了60.17%的用户
+
+```java
+class WordDictionary {
+    class Trie {
+        private boolean end;
+        private Trie[] children;
+        public Trie () {
+            children = new Trie[26];
+            end = false;
+        }
+        public boolean getEnd() {
+            return this.end;
+        }
+        public Trie[] getChildren() {
+            return this.children;
+        }
+    }
+
+    private Trie words;
+
+    public WordDictionary() {
+        words = new Trie();
+    }
+    
+    public void addWord(String word) {
+        Trie p = words;
+        for (char c: word.toCharArray()) {
+            if (p.children[c - 'a'] == null) {
+                p.children[c - 'a'] = new Trie();
+            }
+            p = p.children[c - 'a'];
+        }
+        p.end = true;
+    }
+    
+    public boolean search(String word) {
+        return dfs(word, 0, words);
+    }
+
+    private boolean dfs(String word, int index, Trie p) {
+        if (p == null) {
+            return false;
+        }
+        if (index == word.length()) {
+            return p.getEnd();
+        }
+        char c = word.charAt(index);
+        if (c != '.') {
+            Trie next = p.getChildren()[c - 'a'];
+            if (next == null)
+                return false;
+            return dfs(word, index + 1, next);
+        } else {
+            for (int i = 0; i < 26; ++i) {
+                if (p != null && dfs(word, index + 1, p.getChildren()[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
+```
+
 # Java算法模板
 
 ## BFS
