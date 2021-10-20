@@ -20633,6 +20633,23 @@ class WordDictionary {
  */
 ```
 
+## [453. 最小操作次数使数组元素相等](https://leetcode-cn.com/problems/minimum-moves-to-equal-array-elements/)
+
+> 数组，数学，脑筋急转弯
+
+```java
+class Solution {
+    public int minMoves(int[] nums) {
+        int min = Arrays.stream(nums).min().getAsInt();
+        int ans = 0;
+        for (int num: nums) {
+            ans += num - min;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
