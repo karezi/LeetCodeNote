@@ -20650,6 +20650,26 @@ class Solution {
 }
 ```
 
+## [2011. 执行操作后的变量值](https://leetcode-cn.com/problems/final-value-of-variable-after-performing-operations/)
+
+> 数组，字符串，模拟
+
+```java
+class Solution {
+    public int finalValueAfterOperations(String[] operations) {
+        int X = 0;
+        for (String op: operations) {
+            if (op.charAt(1) == '+') {
+                X++;
+            } else {
+                X--;
+            }
+        }
+        return X;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
