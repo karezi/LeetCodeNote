@@ -20670,6 +20670,72 @@ class Solution {
 }
 ```
 
+## [229. 求众数 II](https://leetcode-cn.com/problems/majority-element-ii/)
+
+> 数组，哈希表，计数，排序，摩尔投票
+
+哈希表
+
+```java
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        int n = nums.length;
+        Set<Integer> ret = new HashSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num: nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+            if (map.get(num) > n / 3) {
+                ret.add(num);
+                if (ret.size() >= 2)
+                    break;
+            }
+        }
+        return new ArrayList(ret);
+    }
+}
+```
+
+摩尔投票
+
+```java
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        // x是候选之一，该候选+1；x不是候选，都-1，如果存在候选是0的，则替代为(x,1)
+        int n = nums.length;
+        int a = 0, b = 0;
+        int ca = 0, cb = 0;
+        for (int i: nums) {
+            if (i == a || i == b) { // 有相等的，把相等的+1
+                if (i == a) ca++;
+                else if (i == b) cb++;
+            } else { // 三者不同
+                if (ca > 0 && cb > 0) { // 都大于0，则相互抵消
+                    ca--;
+                    cb--;
+                } else if (ca == 0) { // 替代a
+                    a = i;
+                    ca = 1;
+                } else if (cb == 0) { // 替代b
+                    b = i;
+                    cb = 1;
+                }
+            }
+        }
+        // 验证
+        ca = 0;
+        cb = 0;
+        for (int num: nums) {
+            if (a == num) ca++;
+            else if (b == num) cb++;
+        }
+        List<Integer> ret = new ArrayList<>();
+        if (ca > n / 3) ret.add(a);
+        if (cb > n / 3) ret.add(b);
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
