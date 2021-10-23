@@ -20736,6 +20736,22 @@ class Solution {
 }
 ```
 
+## [492. 构造矩形](https://leetcode-cn.com/problems/construct-the-rectangle/)
+
+> 数学
+
+```java
+class Solution {
+    public int[] constructRectangle(int area) {
+        int candidate = (int)Math.sqrt(area);
+        while (area % candidate != 0) {
+            candidate--;
+        }
+        return new int[]{area / candidate, candidate};
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
