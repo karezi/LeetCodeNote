@@ -20752,6 +20752,139 @@ class Solution {
 }
 ```
 
+## [496. 下一个更大元素 I](https://leetcode-cn.com/problems/next-greater-element-i/)
+
+> 栈，数组，哈希表，单调栈
+
+```java
+class Solution {
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        // 下一个更大=>单调栈 TODO 熟记
+        HashMap<Integer, Integer> map = new HashMap<>();
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = nums2.length - 1; i >= 0; --i) {
+            int num = nums2[i];
+            while (!stack.isEmpty() && stack.peek() <= num) {
+                stack.pop();
+            }
+            map.put(num, stack.isEmpty() ? -1 : stack.peek());
+            stack.push(num);
+        }
+        int n1 = nums1.length;
+        int[] ret = new int[n1];
+        for (int i = 0; i < n1; ++i) {
+            ret[i] = map.get(nums1[i]);
+        }
+        return ret;
+    }
+}
+```
+
+## [869. 重新排序得到 2 的幂](https://leetcode-cn.com/problems/reordered-power-of-2/)
+
+> 数学，计数，枚举，排序
+
+```java
+class Solution {
+    public boolean reorderedPowerOf2(int n) {
+        Set<String> set = new HashSet<>();
+        int i = 1;
+        while (i <= 1000000000) {
+            set.add(getFingerPrint(i));
+            i *= 2;
+        }
+        return set.contains(getFingerPrint(n));
+    }
+
+    private String getFingerPrint(int x) {
+        int[] number = new int[10];
+        String xStr = x + "";
+        for (char c: xStr.toCharArray()) {
+            number[c - '0']++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10; ++i) {
+            sb.append(number[i]);
+        }
+        return sb.toString();
+    }
+}
+```
+
+优化版 TODO
+
+```java
+class Solution {
+    Set<String> powerOf2Digits = new HashSet<String>();
+
+    public boolean reorderedPowerOf2(int n) {
+        init();
+        return powerOf2Digits.contains(countDigits(n));
+    }
+
+    public void init() {
+        for (int n = 1; n <= 1e9; n <<= 1) {
+            powerOf2Digits.add(countDigits(n));
+        }
+    }
+
+    public String countDigits(int n) {
+        char[] cnt = new char[10];
+        while (n > 0) {
+            ++cnt[n % 10];
+            n /= 10;
+        }
+        return new String(cnt);
+    }
+}
+```
+
+## [335. 路径交叉](https://leetcode-cn.com/problems/self-crossing/)
+
+> 几何，数组，数学
+
+```java
+class Solution {
+    public boolean isSelfCrossing(int[] distance) {
+        int n = distance.length;
+        if (n < 4) return false;
+        for (int i = 3; i < n; ++i) {
+            if (distance[i] >= distance[i - 2] && distance[i - 1] <= distance[i - 3]) return true;
+            if (i >= 4 && distance[i - 1] == distance[i - 3] && distance[i] + distance[i - 4] >= distance[i - 2]) return true;
+            if (i >= 5 && distance[i] + distance[i - 4] >= distance[i - 2] && distance[i - 1] + distance[i - 5] >= distance[i - 3] && distance[i - 1] <= distance[i - 3] && distance[i - 2] > distance[i - 4]) return true;
+        }
+        return false;
+    }
+}
+```
+
+## [260. 只出现一次的数字 III](https://leetcode-cn.com/problems/single-number-iii/)
+
+> 位运算，数组
+
+```java
+class Solution {
+    public int[] singleNumber(int[] nums) {
+        int sum = 0;
+        for (int num: nums) {
+            sum ^= num;
+        }
+        // 求最低位的1（哪个是1的位都行），防止溢出 -Integer.MIN_VALUE会溢出
+        int lowbit = sum == Integer.MIN_VALUE ? sum : sum & -sum;
+        int a = 0, b = 0;
+        for (int num: nums) {
+            // 分组
+            if ((num & lowbit) == 0) {
+                a ^= num;
+            } else {
+                b ^= num;
+            }
+        }
+        return new int[]{a, b};
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -21990,3 +22123,6 @@ Character.toLowerCase(c) / Character.toUpperCase(c)
 
 ## [282. 给表达式添加运算符](https://leetcode-cn.com/problems/expression-add-operators/)
 
+## [638. 大礼包](https://leetcode-cn.com/problems/shopping-offers/)
+
+## [240. 搜索二维矩阵 II](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)
