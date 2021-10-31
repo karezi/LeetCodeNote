@@ -20885,6 +20885,45 @@ class Solution {
 }
 ```
 
+## [500. 键盘行](https://leetcode-cn.com/problems/keyboard-row/)
+
+> 数组，哈希表，字符串
+
+```java
+class Solution {
+    private Map<Character, Integer> map = new HashMap<>();
+    private String[] lines = {"qwertyuiopQWERTYUIOP", "asdfghjklASDFGHJKL", "zxcvbnmZXCVBNM"};
+
+    public String[] findWords(String[] words) {
+        List<String> ret = new ArrayList<>();
+        for (int i = 0; i < 3; ++i) {
+            for (char c: lines[i].toCharArray()) {
+                map.put(c, i);
+            }
+        }
+        for (String word: words) {
+            if (check(word)) {
+                ret.add(word);
+            }
+        }
+        return ret.toArray(new String[ret.size()]);
+    }
+
+    private boolean check(String word) {
+        int tmp = -1;
+        for (char c: word.toCharArray()) {
+            if (tmp == -1)
+                tmp = map.get(c);
+            else if (tmp != map.get(c))
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+TODO 可以记录每个字符的位置"12210111011122000010020202"
+
 # Java算法模板
 
 ## BFS
