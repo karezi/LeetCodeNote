@@ -20924,6 +20924,22 @@ class Solution {
 
 TODO 可以记录每个字符的位置"12210111011122000010020202"
 
+## [575. 分糖果](https://leetcode-cn.com/problems/distribute-candies/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public int distributeCandies(int[] candyType) {
+        Set<Integer> set = new HashSet<>();
+        for (int type: candyType) {
+            set.add(type);
+        }
+        return Math.min(candyType.length / 2, set.size());
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
