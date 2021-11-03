@@ -20964,6 +20964,55 @@ class Solution {
 }
 ```
 
+## [407. 接雨水 II](https://leetcode-cn.com/problems/trapping-rain-water-ii/)
+
+> 广度优先搜索，最小堆，优先队列，数组，矩阵，Dijkstra
+
+```java
+class Solution {
+    public int trapRainWater(int[][] heightMap) {
+        int m = heightMap.length;
+        int n = heightMap[0].length;
+        boolean[][] vis = new boolean[m][n];
+        if (m <= 2 || n <= 2)
+            return 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]); // <当前坐标,接水后的高度值>
+        // 初始化，边缘接水后高度就是木块高度
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (i == 0 || j == 0 || i == m - 1 || j == n - 1) {
+                    pq.offer(new int[]{i * n + j, heightMap[i][j]});
+                    vis[i][j] = true;
+                }
+            }
+        }
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int res = 0;
+        // 从边缘向内
+        while (!pq.isEmpty()) {
+            // 取出最小值
+            int[] cur = pq.poll();
+            int curHeight = cur[1];
+            for (int[] direction: directions) {
+                int nx = cur[0] / n + direction[0];
+                int ny = cur[0] % n + direction[1];
+                if (nx >= 0 && nx < m && ny >= 0 && ny < n && !vis[nx][ny]) {
+                    if (curHeight > heightMap[nx][ny]) {
+                        // 可以接水
+                        res += curHeight - heightMap[nx][ny];
+                    }
+                    pq.offer(new int[]{nx * n + ny, Math.max(heightMap[nx][ny], curHeight)});
+                    vis[nx][ny] = true;
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+Dijkstra,BFS TODO
+
 # Java算法模板
 
 ## BFS
