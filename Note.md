@@ -21013,6 +21013,35 @@ class Solution {
 
 Dijkstra,BFS TODO
 
+## [367. 有效的完全平方数](https://leetcode-cn.com/problems/valid-perfect-square/)
+
+> 数学，二分查找，牛顿法
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35 MB, 在所有 Java 提交中击败了89.56%的用户
+
+```java
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        int r = 46340, l = 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (mid * mid == num) {
+                return true;
+            } else if (mid * mid < num) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l * l == num;
+    }
+}
+```
+
+牛顿法 TODO
+
 # Java算法模板
 
 ## BFS
