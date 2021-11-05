@@ -21042,6 +21042,28 @@ class Solution {
 
 牛顿法 TODO
 
+## [1218. 最长定差子序列](https://leetcode-cn.com/problems/longest-arithmetic-subsequence-of-given-difference/)
+
+> 数组，哈希表，动态规划
+
+```java
+class Solution {
+    public int longestSubsequence(int[] arr, int difference) {
+        // dp[i]表示以值i为结尾的最长结果
+        // dp[i]=dp[i-diff]+1
+        // dp[i]=0
+        // max(dp[k])
+        int max = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i: arr) {
+            map.put(i, map.getOrDefault(i - difference, 0) + 1);
+            max = Math.max(max, map.get(i));
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
