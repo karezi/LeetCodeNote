@@ -21064,6 +21064,51 @@ class Solution {
 }
 ```
 
+## [268. 丢失的数字](https://leetcode-cn.com/problems/missing-number/)
+
+> 位运算，数组，哈希表，数学，排序
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：38.8 MB, 在所有 Java 提交中击败了48.47%的用户
+
+```java
+class Solution {
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int sum = n * (n + 1) / 2;
+        int total = 0;
+        for (int num: nums) {
+            total += num;
+        }
+        return sum - total;
+    }
+}
+```
+
+异或位运算
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39 MB, 在所有 Java 提交中击败了12.06%的用户
+
+```java
+class Solution {
+    public int missingNumber(int[] nums) {
+        int xor = 0;
+        for (int num: nums) {
+            xor ^= num;
+        }
+        int n = nums.length;
+        // 后面添加0~n的每个数进行异或
+        for (int i = 0; i <= n; ++i) {
+            xor ^= i;
+        }
+        return xor;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
