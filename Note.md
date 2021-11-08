@@ -21126,6 +21126,39 @@ class Solution {
 }
 ```
 
+## [299. 猜数字游戏](https://leetcode-cn.com/problems/bulls-and-cows/)
+
+> 哈希表，字符串，计数
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.8 MB, 在所有 Java 提交中击败了99.11%的用户
+
+```java
+class Solution {
+    public String getHint(String secret, String guess) {
+        int a = 0, b = 0;
+        int[] counta = new int[10];
+        int[] countb = new int[10];
+        for (int i = 0; i < secret.length(); ++i) {
+            char secretChar = secret.charAt(i);
+            char guessChar = guess.charAt(i);
+            if (secretChar == guessChar) {
+                a++;
+            } else {
+                counta[secretChar - '0']++;
+                countb[guessChar - '0']++;
+            }
+        }
+        for (int i = 0; i <= 9; ++i) {
+            b += Math.min(counta[i], countb[i]);
+        }
+        StringBuilder sb = new StringBuilder();
+        return sb.append(a).append('A').append(b).append('B').toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
