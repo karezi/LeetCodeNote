@@ -21159,6 +21159,28 @@ class Solution {
 }
 ```
 
+## [495. 提莫攻击](https://leetcode-cn.com/problems/teemo-attacking/)
+
+> 数组，模拟
+
+```java
+class Solution {
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int res = 0;
+        for (int i = 1; i < timeSeries.length; ++i) {
+            int next = timeSeries[i - 1] + duration - 1;
+            if (next < timeSeries[i]) {
+                res += duration;
+            } else {
+                res += timeSeries[i] - timeSeries[i - 1];
+            }
+        }
+        res += duration;
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -22400,3 +22422,5 @@ Character.toLowerCase(c) / Character.toUpperCase(c)
 ## [638. 大礼包](https://leetcode-cn.com/problems/shopping-offers/)
 
 ## [240. 搜索二维矩阵 II](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)
+
+## [488. 祖玛游戏](https://leetcode-cn.com/problems/zuma-game/)
