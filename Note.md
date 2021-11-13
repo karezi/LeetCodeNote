@@ -21181,6 +21181,82 @@ class Solution {
 }
 ```
 
+## [375. 猜数字大小 II](https://leetcode-cn.com/problems/guess-number-higher-or-lower-ii/)
+
+> 数学，动态规划，博弈
+
+```java
+class Solution {
+    public int getMoneyAmount(int n) {
+        // dp[i][j]表示[i,j]的最小金额
+        // dp[i][j]=min(k+max(dp[i][k-1],dp[k+1][j]))
+        // dp[i][i]=0
+        // dp[1][n]
+        // TODO 注意边界情况
+        int[][] dp = new int[n + 1][n + 1];
+        for (int i = n - 1; i >= 1; --i) {
+            for (int j = i + 1; j <= n; ++j) {
+                int min = Integer.MAX_VALUE;
+                for (int k = i; k < j; ++k) {
+                    min = Math.min(min, k + Math.max(dp[i][k - 1], dp[k + 1][j]));
+                }
+                dp[i][j] = min;
+            }
+        }
+        return dp[1][n];
+    }
+}
+```
+
+## [520. 检测大写字母](https://leetcode-cn.com/problems/detect-capital/)
+
+> 字符串
+
+```java
+class Solution {
+    public boolean detectCapitalUse(String word) {
+        if (word.length() == 1)
+            return true;
+        int mode = 0; // 0 都小写 1 首字母大写 2 都大写
+        if (Character.isUpperCase(word.charAt(0))) {
+            if (Character.isUpperCase(word.charAt(1)))
+                mode = 2;
+            else
+                mode = 1;
+        } else {
+            if (Character.isUpperCase(word.charAt(1)))
+                return false;
+        }
+        for (int i = 2; i < word.length(); ++i) {
+            if (mode != 2 && Character.isUpperCase(word.charAt(i)) || mode == 2 && Character.isLowerCase(word.charAt(i)))
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+简化 TODO
+
+```java
+class Solution {
+    public boolean detectCapitalUse(String word) {
+        // 若第 1 个字母为小写，则需额外判断第 2 个字母是否为小写
+        if (word.length() >= 2 && Character.isLowerCase(word.charAt(0)) && Character.isUpperCase(word.charAt(1))) {
+            return false;
+        }
+        
+        // 无论第 1 个字母是否大写，其他字母必须与第 2 个字母的大小写相同
+        for (int i = 2; i < word.length(); ++i) {
+            if (Character.isLowerCase(word.charAt(i)) ^ Character.isLowerCase(word.charAt(1))) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -22162,6 +22238,12 @@ Character.isLetterOrDigit(c)
 Character.toLowerCase(c) / Character.toUpperCase(c)
 ```
 
+- 字符判断大小写
+
+```java
+Character.isLowerCase(c) / Character.isUpperCase(c)
+```
+
 ## 数组类
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
@@ -22424,3 +22506,5 @@ Character.toLowerCase(c) / Character.toUpperCase(c)
 ## [240. 搜索二维矩阵 II](https://leetcode-cn.com/problems/search-a-2d-matrix-ii/)
 
 ## [488. 祖玛游戏](https://leetcode-cn.com/problems/zuma-game/)
+
+## [629. K个逆序对数组](https://leetcode-cn.com/problems/k-inverse-pairs-array/)
