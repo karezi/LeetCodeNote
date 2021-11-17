@@ -21257,6 +21257,45 @@ class Solution {
 }
 ```
 
+## [319. 灯泡开关](https://leetcode-cn.com/problems/bulb-switcher/)
+
+> 脑筋急转弯，数学
+
+```java
+class Solution {
+    public int bulbSwitch(int n) {
+        return (int)Math.sqrt(n + 0.5);
+    }
+}
+```
+
+## [318. 最大单词长度乘积](https://leetcode-cn.com/problems/maximum-product-of-word-lengths/)
+
+> 位运算，数组，字符串
+
+```java
+class Solution {
+    public int maxProduct(String[] words) {
+        int n = words.length;
+        int[] masks = new int[n];
+        for (int i = 0; i < n; ++i) {
+            String word = words[i];
+            for (char c: word.toCharArray()) {
+                masks[i] |= (1 << (c - 'a'));
+            }
+        }
+        int max = 0;
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if ((masks[i] & masks[j]) == 0)
+                    max = Math.max(max, words[i].length() * words[j].length());
+            }
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -22508,3 +22547,7 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [488. 祖玛游戏](https://leetcode-cn.com/problems/zuma-game/)
 
 ## [629. K个逆序对数组](https://leetcode-cn.com/problems/k-inverse-pairs-array/)
+
+## [677. 键值映射](https://leetcode-cn.com/problems/map-sum-pairs/)
+
+## [391. 完美矩形](https://leetcode-cn.com/problems/perfect-rectangle/)
