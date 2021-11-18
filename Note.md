@@ -21296,6 +21296,47 @@ class Solution {
 }
 ```
 
+## [563. 二叉树的坡度](https://leetcode-cn.com/problems/binary-tree-tilt/)
+
+> 树，深度优先搜索，二叉树
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    private int res = 0;
+
+    public int findTilt(TreeNode root) {
+        dfs(root);
+        return res;
+    }
+
+    private int dfs(TreeNode root) {
+        if (root != null) {
+            int ls = dfs(root.left);
+            int rs = dfs(root.right);
+            res += Math.abs(ls - rs);
+            return ls + rs + root.val;
+        } else {
+            return 0;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
