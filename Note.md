@@ -21337,6 +21337,71 @@ class Solution {
 }
 ```
 
+## [397. 整数替换](https://leetcode-cn.com/problems/integer-replacement/)
+
+> 贪心，位运算，记忆化搜索，动态规划
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.2 MB, 在所有 Java 提交中击败了56.80%的用户
+
+```java
+class Solution {
+    public int integerReplacement(int n) {
+        // 贪心，让末尾的0尽可能多（x01->x0，x11->x00），这样能够尽快右移（n/=2）
+        int res = 0;
+        while (n > 1) {
+            if (n == 3) { // 特殊情况
+                res += 2;
+                return res;
+            }
+            if ((n & 1) == 1) { // XXXXX1
+                if ((n & 2) == 0) { // XXXX01
+                    n >>= 1;
+                } else { // XXXX11
+                    n = (n >> 1) + 1;
+                }
+                res += 2;
+            } else { // XXXXX0
+                n >>= 1;
+                res++;
+            }
+        }
+        return res;
+    }
+}
+```
+
+动态规划（递归），记忆化搜索，DFS，BFS TODO
+
+## [594. 最长和谐子序列](https://leetcode-cn.com/problems/longest-harmonious-subsequence/)
+
+> 数组，哈希表，快排
+
+哈希表
+
+```java
+class Solution {
+    public int findLHS(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 0;
+        for (int num: nums) {
+            int cnum = map.getOrDefault(num, 0) + 1;
+            map.put(num, cnum);
+            if (map.containsKey(num - 1)) {
+                max = Math.max(max, cnum + map.get(num - 1));
+            }
+            if (map.containsKey(num + 1)) {
+                max = Math.max(max, cnum + map.get(num + 1));
+            }
+        }
+        return max;
+    }
+}
+```
+
+排序+滑动窗口 TODO
+
 # Java算法模板
 
 ## BFS
