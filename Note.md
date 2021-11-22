@@ -21402,6 +21402,52 @@ class Solution {
 
 排序+滑动窗口 TODO
 
+## [384. 打乱数组](https://leetcode-cn.com/problems/shuffle-an-array/)
+
+> 数组，数学，随机化
+
+Fisher-Yates 洗牌算法
+
+```java
+class Solution {
+    private int[] origin;
+    private int[] nums;
+    private static Random rand = new Random();
+
+    public Solution(int[] nums) {
+        int n = nums.length;
+        origin = new int[n];
+        System.arraycopy(nums, 0, origin, 0, n);
+        this.nums = nums;
+    }
+    
+    public int[] reset() {
+        return origin;
+    }
+    
+    public int[] shuffle() {
+        int length = this.nums.length;
+        for (int i = length; i > 0; i--) {
+            swap(this.nums, rand.nextInt(i), i - 1);
+        }
+        return this.nums;
+    }
+
+    private void swap(int[] a, int i, int j) {
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(nums);
+ * int[] param_1 = obj.reset();
+ * int[] param_2 = obj.shuffle();
+ */
+```
+
 # Java算法模板
 
 ## BFS
