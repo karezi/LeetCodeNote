@@ -21402,6 +21402,54 @@ class Solution {
 
 排序+滑动窗口 TODO
 
+## [559. N 叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree/)
+
+> 树，深度优先搜索，广度优先搜索
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    private int max = 0;
+
+    public int maxDepth(Node root) {
+        dfs(root, 0);
+        return max;
+    }
+
+    private void dfs(Node root, int curDepth) {
+        if (root == null) {
+            max = Math.max(max, curDepth);
+            return;
+        }
+        if (root.children == null || root.children.size() == 0) {
+            max = Math.max(max, curDepth + 1);
+            return;
+        }
+        for (Node node: root.children) {
+            dfs(node, curDepth + 1);
+        }
+    }
+}
+```
+
 ## [384. 打乱数组](https://leetcode-cn.com/problems/shuffle-an-array/)
 
 > 数组，数学，随机化
@@ -21446,6 +21494,99 @@ class Solution {
  * int[] param_1 = obj.reset();
  * int[] param_2 = obj.shuffle();
  */
+```
+
+## [859. 亲密字符串](https://leetcode-cn.com/problems/buddy-strings/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public boolean buddyStrings(String s, String goal) {
+        if (s.length() != goal.length()) return false;
+        if (s.equals(goal)) {
+            char[] cs = new char[26];
+            for (char c: s.toCharArray()) {
+                if (cs[c - 'a'] > 0) {
+                    return true;
+                } else {
+                    cs[c - 'a']++;
+                }
+            }
+            return false;
+        }
+        int n = s.length();
+        int state = 0;
+        char a = '1', b = '1';
+        for (int i = 0; i < n; ++i) {
+            if (s.charAt(i) != goal.charAt(i)) {
+                if (state == 0) {
+                    a = s.charAt(i);
+                    b = goal.charAt(i);
+                    state = 1;
+                } else if (state == 1) {
+                    if (a == goal.charAt(i) && b == s.charAt(i)) {
+                        state = 2;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        }
+        return state == 2;
+    }
+}
+```
+
+## [423. 从英文中重建数字](https://leetcode-cn.com/problems/reconstruct-original-digits-from-english/)
+
+> 哈希表，数学，字符串
+
+执行用时：3 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：39 MB, 在所有 Java 提交中击败了47.17%的用户
+
+```java
+class Solution {
+    public String originalDigits(String s) {
+        // "zero"z, "one"o, "two"w, "three"h, "four"u, 
+        // "five"v, "six"x, "seven"s, "eight"g, "nine"
+        // x排除six6 -> s排除seven7 -> v排除five5
+        // z排除zero0 ->> o排除one1
+        // w排除two2 ->> o排除one1
+        // u排除four4 ->> o排除one1
+        // g排除eight8 -> h排除three3
+        // 最后还有i就是9
+        int[] cc = new int[26];
+        for (char c: s.toCharArray()) {
+            cc[c - 'a']++;
+        }
+        int[] nc = new int[10];
+        char[] chars = {'z', 'w', 'u', 'g', 'x', 's', 'v', 'h', 'o', 'i'};
+        int[] nums = {0, 2, 4, 8, 6, 7, 5, 3, 1, 9};
+        char[][] rests = {{'e', 'r', 'o'}, {'t', 'o'}, {'f', 'o', 'r'}, {'e', 'i', 'h', 't'}, 
+        {'s', 'i'}, {'e', 'v', 'n'}, {'f', 'i', 'e'}, {'t', 'r', 'e'}, {'n', 'e'}, {}};
+        for (int i = 0; i < 10; ++i) {
+            int cnt = cc[chars[i] - 'a'];
+            if (cnt > 0) {
+                nc[nums[i]] = cnt;
+                for (char c: rests[i]) {
+                    cc[c - 'a'] -= cnt;
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10; ++i) {
+            while (nc[i] > 0) {
+                sb.append(i);
+                nc[i]--;
+            }
+        }
+        return sb.toString();
+    }
+}
 ```
 
 # Java算法模板
