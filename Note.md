@@ -21589,6 +21589,23 @@ class Solution {
 }
 ```
 
+## [458. 可怜的小猪](https://leetcode-cn.com/problems/poor-pigs/)
+
+> 数学，动态规划，组合数学，香农极限，信息熵
+
+```java
+class Solution {
+    public int poorPigs(int buckets, int minutesToDie, int minutesToTest) {
+        // k*log(n+1)>=log(buckets) 猪数量*每头猪携带的信息量【极限码率】>=桶含有1瓶毒药的信息量
+        // 轮数^实验体数 >= 桶数
+        int num = minutesToTest / minutesToDie + 1;
+        return (int)Math.ceil(Math.log(buckets) / Math.log(num));
+    }
+}
+```
+
+进制推导、动态规划 TODO 
+
 # Java算法模板
 
 ## BFS
