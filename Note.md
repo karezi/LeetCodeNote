@@ -21644,6 +21644,72 @@ class Solution {
 
 迭代 TODO
 
+## [438. 找到字符串中所有字母异位词](https://leetcode-cn.com/problems/find-all-anagrams-in-a-string/)
+
+> 哈希表，字符串，滑动窗口
+
+```java
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ret = new ArrayList<>();
+        if (s.length() < p.length()) return ret;
+        int[] cnum = new int[26], tmp = new int[26];
+        int n = p.length(), m = s.length();
+        for (int i = 0; i < n; ++i) {
+            cnum[p.charAt(i) - 'a']++;
+            tmp[s.charAt(i) - 'a']++;
+        }
+        for (int i = 0; i <= m - n; ++i) {
+            if (Arrays.equals(tmp, cnum))
+                ret.add(i);
+            if (i == m - n)
+                break;
+            tmp[s.charAt(i) - 'a']--;
+            tmp[s.charAt(i + n) - 'a']++;
+        }
+        return ret;
+    }
+}
+```
+
+## [519. 随机翻转矩阵](https://leetcode-cn.com/problems/random-flip-matrix/)
+
+> 哈希表，数学，随机化，水塘抽样
+
+```java
+class Solution {
+    private int m, n, total;
+    private Random random = new Random();
+    private Map<Integer, Integer> map = new HashMap<>();
+
+    public Solution(int m, int n) {
+        this.m = m;
+        this.n = n;
+        total = m * n;
+    }
+    
+    public int[] flip() {
+        int ri = random.nextInt(total); // [0,total)随机位置
+        total--;
+        int idx = map.getOrDefault(ri, ri); // 该位置上的数字，初始为值为位置
+        map.put(ri, map.getOrDefault(total, total)); // TODO 精髓，该位置为当前total位置的值（把后面置换到前面）
+        return new int[]{idx / n, idx % n};
+    }
+    
+    public void reset() {
+        total = this.m * this.n;
+        map.clear();
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(m, n);
+ * int[] param_1 = obj.flip();
+ * obj.reset();
+ */
+```
+
 # Java算法模板
 
 ## BFS
@@ -22410,6 +22476,12 @@ public int[][] multiply(int[][] a, int[][] b) {
 }
 ```
 
+## 随机化
+
+### 水塘抽样
+
+https://zhuanlan.zhihu.com/p/107793995
+
 # Java常用数据结构
 
 **Queue VS Deque**
@@ -22665,6 +22737,12 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 		}
 	})
 	```
+
+- 数组相等
+
+  ```java
+  Arrays.equals(arr1, arr2)
+  ```
 
 - 数组复制
 
