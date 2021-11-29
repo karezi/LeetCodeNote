@@ -21710,6 +21710,28 @@ class Solution {
  */
 ```
 
+## [786. 第 K 个最小的素数分数](https://leetcode-cn.com/problems/k-th-smallest-prime-fraction/)
+
+> 数组，二分查找，堆，优先队列，排序
+
+```java
+class Solution {
+    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+        List<int[]> list = new ArrayList<>();
+        int n = arr.length;
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                list.add(new int[]{arr[i], arr[j]});
+            }
+        }
+        Collections.sort(list, (x, y) -> (x[0] * y[1] - x[1] * y[0]));
+        return list.get(k - 1);
+    }
+}
+```
+
+TODO 优先队列/二分查找+双指针
+
 # Java算法模板
 
 ## BFS
