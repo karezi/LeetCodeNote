@@ -21732,6 +21732,33 @@ class Solution {
 
 TODO 优先队列/二分查找+双指针
 
+## [400. 第 N 位数字](https://leetcode-cn.com/problems/nth-digit/)
+
+> 数学，二分查找
+
+```java
+class Solution {
+    public int findNthDigit(int n) {
+        // 求d位和d位有几个
+        int d = 1, count = 9;
+        while (n > (long)d * count) {
+            n -= d * count;
+            d++;
+            count *= 10;
+        }
+        int index = n - 1;
+        // d:2 count:90 rest:n
+        int start = (int)Math.pow(10, d - 1); // start~end
+        int end = start + index / d; // 从start数n%d个数即是end
+        int digit = index % d; // end的第几位
+        String str = end + "";
+        return str.charAt(digit) - '0';
+    }
+}
+```
+
+二分查找TODO
+
 # Java算法模板
 
 ## BFS
