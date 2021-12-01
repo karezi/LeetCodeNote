@@ -21759,6 +21759,27 @@ class Solution {
 
 二分查找TODO
 
+## [1446. 连续字符](https://leetcode-cn.com/problems/consecutive-characters/)
+
+> 字符串
+
+```java
+class Solution {
+    public int maxPower(String s) {
+        int max = 1, tmp = 1;
+        for (int i = 1; i < s.length(); ++i) {
+            if (s.charAt(i) == s.charAt(i - 1)) {
+                tmp++;
+            } else {
+                max = Math.max(max, tmp);
+                tmp = 1;
+            }
+        }
+        return Math.max(max, tmp);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
