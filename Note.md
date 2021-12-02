@@ -21780,6 +21780,76 @@ class Solution {
 }
 ```
 
+## [506. 相对名次](https://leetcode-cn.com/problems/relative-ranks/)
+
+> 数组，排序，堆，优先队列
+
+```java
+class Solution {
+    public String[] findRelativeRanks(int[] score) {
+        int n = score.length;
+        int[][] scoreMap = new int[n][2];
+        for (int i = 0; i < n; ++i) {
+            scoreMap[i][0] = score[i];
+            scoreMap[i][1] = i;
+        }
+        Arrays.sort(scoreMap, (x, y) -> {
+            return y[0] - x[0];
+        });
+        String[] res = new String[n];
+        for (int i = 0; i < n; ++i) {
+            String str = "";
+            if (i == 0) str = "Gold Medal";
+            else if (i == 1) str = "Silver Medal";
+            else if (i == 2) str = "Bronze Medal";
+            else str = Integer.toString(i + 1);
+            res[scoreMap[i][1]] = str;
+        }
+        return res;
+    }
+}
+```
+
+flat
+
+```java
+class Solution {
+    public String[] findRelativeRanks(int[] score) {
+        int n = score.length;
+        int max = 0;
+        for (int i = 0; i < n; ++i) {
+            max = Math.max(max, score[i]);
+        }
+        int[] map = new int[max + 1];
+        for (int i = 0; i < n; ++i) {
+            map[score[i]] = i + 1;
+        }
+        int cnt = 1;
+        String[] res = new String[n];
+        for (int i = max; i >= 0; --i) {
+            if (map[i] != 0) {
+                switch(cnt) {
+                    case 1:
+                        res[map[i] - 1] = "Gold Medal";
+                        break;
+                    case 2:
+                        res[map[i] - 1] = "Silver Medal";
+                        break;
+                    case 3:
+                        res[map[i] - 1] = "Bronze Medal";
+                        break;
+                    default:
+                        res[map[i] - 1] = Integer.toString(cnt);
+                        break;
+                }
+                cnt++;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
