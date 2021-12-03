@@ -21850,6 +21850,50 @@ class Solution {
 }
 ```
 
+## [1005. K 次取反后最大化的数组和](https://leetcode-cn.com/problems/maximize-sum-of-array-after-k-negations/)
+
+> 贪心，数组，排序
+
+```java
+class Solution {
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        Arrays.sort(nums);
+        int res = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] < 0 && k > 0) {
+                k--;
+                res += -nums[i];
+            } else if (nums[i] < 0 && k >= 0) {
+                res += nums[i];
+            } else {
+                if (k > 0) {
+                    if ((k & 1) == 1) {
+                        if (i > 0) {
+                            if (-nums[i] > nums[i - 1]) {
+                                res += -nums[i];
+                            } else {
+                                res += nums[i] + 2 * nums[i - 1] ;
+                            }
+                        } else {
+                            res += -nums[i];
+                        }
+                    } else {
+                        res += nums[i];
+                    }
+                    k = 0;
+                } else {
+                    res += nums[i];
+                }
+            }
+        }
+        if (k > 0 && (k & 1) == 1) {
+            res += 2 * nums[nums.length - 1];
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
