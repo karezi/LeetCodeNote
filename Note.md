@@ -21894,6 +21894,26 @@ class Solution {
 }
 ```
 
+## [383. 赎金信](https://leetcode-cn.com/problems/ransom-note/)
+
+> 哈希表，字符串，计数
+
+```java
+class Solution {
+    public boolean canConstruct(String ransomNote, String magazine) {
+        int[] charNum = new int[26];
+        for (char c: magazine.toCharArray()) {
+            charNum[c - 'a']++;
+        }
+        for (char c: ransomNote.toCharArray()) {
+            if (charNum[c - 'a'] <= 0) return false;
+            charNum[c - 'a']--;
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
