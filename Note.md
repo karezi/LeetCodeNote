@@ -21914,6 +21914,65 @@ class Solution {
 }
 ```
 
+## [372. 超级次方](https://leetcode-cn.com/problems/super-pow/)
+
+> 快速幂，秦九昭算法，数学
+
+```java
+class Solution {
+    private int MOD = 1337;
+
+    public int superPow(int a, int[] b) {
+        int ans = 1;
+        for (int x: b) {
+            ans = (int)((long)pow(ans, 10) * pow(a, x) % MOD);
+        }
+        return ans;
+    }
+
+    // 快速幂 x^y
+    private int pow(int x, int y) {
+        int res = 1;
+        while (y > 0) {
+            if ((y & 1) == 1) {
+                res = (int)((long)res * x % MOD);
+            }
+            x = (int)((long)x * x % MOD);
+            y >>= 1;
+        }
+        return res;
+    }
+}
+```
+
+## [50. Pow(x, n)](https://leetcode-cn.com/problems/powx-n/)
+
+> 快速幂，数学，递归
+
+```java
+class Solution {
+    public double myPow(double x, int n) {
+        if (x == 0) return 0;
+        if (x == 1d) return 1;
+        if (x == -1d) return (n & 1) == 1 ? -1 : 1;
+        if (n == 0 || x == 1d) return 1;
+        if (n == 1) return x;
+        if (n < 0)
+            if (n == -2147483648) return 0;
+            else return 1d / myPow(x, -n);
+        double ans = 1d;
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                ans *= x;
+            }
+            x *= x;
+            n >>= 1;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -22617,7 +22676,9 @@ for (int i = n - 1; i >= 0; --i) { // 经典子串遍历
 
 ## 单调栈
 
-## 最大公约数gcd
+## 数学
+
+### 最大公约数gcd
 
 ```java
 public int gcd(int a, int b) { // 口诀bbaba
@@ -22625,7 +22686,23 @@ public int gcd(int a, int b) { // 口诀bbaba
 }
 ```
 
-## 最小公倍数lcm
+### 最小公倍数lcm
+
+### 快速幂
+
+```java
+public int pow(int x, int n) {
+    int ans = 1;
+    while (n > 0) {
+        if ((n & 1) == 1) {
+            ans *= x;
+        }
+        x *= x;
+        n >>= 1;
+    }
+    return ans;
+}
+```
 
 ## A*算法
 
@@ -23108,6 +23185,12 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 
 	```java
 	Math.abs(x - Math.round(x)) < Math.pow(10, -14);
+	```
+
+- 求模防止溢出（X是一个可能溢出的计算式）
+
+	```java
+	(int)((long)X % MOD)
 	```
 
 # 未完成
