@@ -21973,6 +21973,73 @@ class Solution {
 }
 ```
 
+## [1816. 截断句子](https://leetcode-cn.com/problems/truncate-sentence/)
+
+> 数组，字符串
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：36.3 MB, 在所有 Java 提交中击败了90.95%的用户
+
+```java
+class Solution {
+    public String truncateSentence(String s, int k) {
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == ' ') {
+                k--;
+                if (k == 0) {
+                    return s.substring(0, i);
+                }
+            }
+        }
+        return s;
+    }
+}
+```
+
+## [1034. 边界着色](https://leetcode-cn.com/problems/coloring-a-border/)
+
+> 深度优先搜索，广度优先搜索，数组，矩阵
+
+```java
+class Solution {
+    private int[][] directions = new int[][]{{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    private boolean[][] visited;
+    private int m, n;
+    private List<int[]> borders = new ArrayList<>();
+
+    public int[][] colorBorder(int[][] grid, int row, int col, int color) {
+        int pointColor = grid[row][col];
+        m = grid.length;
+        n = grid[0].length;
+        visited = new boolean[m][n];
+        dfs(grid, row, col, pointColor);
+        for (int[] border: borders) {
+            grid[border[0]][border[1]] = color;
+        }
+        return grid;
+    }
+
+    private void dfs(int[][] grid, int x, int y, int color) {
+        boolean isBorder = false;
+        for (int[] direction: directions) {
+            int xx = x + direction[0], yy = y + direction[1];
+            if (xx >= m || yy >= n || xx < 0 || yy < 0 || grid[xx][yy] != color) { // 四周有出界的
+                isBorder = true;
+            } else if (!visited[xx][yy]) { // 没出界且未访问
+                visited[xx][yy] = true;
+                dfs(grid, xx, yy, color);
+            }
+        }
+        if (isBorder) {
+            borders.add(new int[]{x, y});
+        }
+    }
+}
+```
+
+BFS TODO
+
 # Java算法模板
 
 ## BFS
