@@ -22040,6 +22040,49 @@ class Solution {
 
 BFS TODO
 
+## [689. 三个无重叠子数组的最大和](https://leetcode-cn.com/problems/maximum-sum-of-3-non-overlapping-subarrays/)
+
+> 滑动数组，动态规划
+
+```java
+class Solution {
+    public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+        // 三个片段同时滑动
+        int[] res = new int[3];
+        int sum1 = 0, sum2 = 0, sum3 = 0;
+        int max1 = 0, max12 = 0, max123 = 0;
+        int max1Idx = 0, max12Idx1 = 0, max12Idx2 = 0;
+        int n = nums.length;
+        for (int i = k * 2; i < n; ++i) { // i表示第三个片段的右端点
+            sum1 += nums[i - 2 * k];
+            sum2 += nums[i - k];
+            sum3 += nums[i];
+            if (i >= k * 3 - 1) {
+                if (sum1 > max1) {
+                    max1 = sum1;
+                    max1Idx = i - k * 3 + 1;
+                }
+                if (max1 + sum2 > max12) {
+                    max12 = max1 + sum2;
+                    max12Idx1 = max1Idx;
+                    max12Idx2 = i - k * 2 + 1;
+                }
+                if (max12 + sum3 > max123) {
+                    max123 = max12 + sum3;
+                    res[0] = max12Idx1;
+                    res[1] = max12Idx2;
+                    res[2] = i - k + 1;
+                }
+                sum1 -= nums[i - k * 3 + 1];
+                sum2 -= nums[i - k * 2 + 1];
+                sum3 -= nums[i - k + 1];
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
