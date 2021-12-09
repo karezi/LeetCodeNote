@@ -22083,6 +22083,56 @@ class Solution {
 }
 ```
 
+## [794. 有效的井字游戏](https://leetcode-cn.com/problems/valid-tic-tac-toe-state/)
+
+> 数组，字符串
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.8 MB, 在所有 Java 提交中击败了33.14%的用户
+
+```java
+class Solution {
+    public boolean validTicTacToe(String[] board) {
+        int cx = 0, co = 0, xline = 0, oline = 0;
+        for (String b: board) {
+            if (b.equals("XXX")) {
+                xline++;
+                if (xline + oline > 1) return false;
+            }
+            if (b.equals("OOO")) {
+                oline++;
+                if (xline + oline > 1) return false;
+            }
+            for (char c: b.toCharArray()) {
+                if (c == 'O') co++;
+                else if (c == 'X') cx++;
+            }
+        }
+        for (int i = 0; i < 3; ++i) {
+            char c = board[0].charAt(i);
+            if (c == 'X' && board[1].charAt(i) == 'X' && board[2].charAt(i) == 'X')
+                xline++;
+            if (c == 'O' && board[1].charAt(i) == 'O' && board[2].charAt(i) == 'O')
+                oline++;
+        }
+        if (board[0].charAt(0) == 'X' && board[1].charAt(1) == 'X' && board[2].charAt(2) == 'X')
+            xline++;
+        if (board[2].charAt(0) == 'X' && board[1].charAt(1) == 'X' && board[0].charAt(2) == 'X')
+            xline++;
+        if (board[0].charAt(0) == 'O' && board[1].charAt(1) == 'O' && board[2].charAt(2) == 'O')
+            oline++;
+        if (board[2].charAt(0) == 'O' && board[1].charAt(1) == 'O' && board[0].charAt(2) == 'O')
+            oline++;
+        return 
+            (cx == 5 && co == 4 && oline == 0) ||  // 数量超过1的必然是5个X和4个O且O不能连线
+            (oline + xline == 0 && (cx == co || cx == co + 1)) || // 数量为0，则X和O相等或者X比O多一个都满足要求
+            (oline == 1 && xline == 0 && cx == co) || // 数量为1（O为1，X为0），则X和O必须相等 
+            (xline == 1 && oline == 0 && cx == co + 1); // 数量为1（O为0，X为1），则X必须比O多1
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
