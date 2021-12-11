@@ -22133,6 +22133,104 @@ class Solution {
 }
 ```
 
+## [748. 最短补全词](https://leetcode-cn.com/problems/shortest-completing-word/)
+
+> 数组，哈希表，字符串
+
+执行用时：2 ms, 在所有 Java 提交中击败了99.84%的用户
+
+内存消耗：38.6 MB, 在所有 Java 提交中击败了78.42%的用户
+
+```java
+class Solution {
+    public String shortestCompletingWord(String licensePlate, String[] words) {
+        int[] cc = covert(licensePlate, false);
+        int minLen = Integer.MAX_VALUE;
+        String res = "";
+        for (String word: words) {
+            if (word.length() < minLen && isContains(covert(word, true), cc)) {
+                minLen = word.length();
+                res = word;
+            }
+        }
+        return res;
+    }
+
+    private boolean isContains(int[] a, int[] b) {
+        for (int i = 0; i < 26; ++i) {
+            if (a[i] - b[i] < 0)
+                return false;
+        }
+        return true;
+    }
+
+    private int[] covert(String str, boolean isWord) {
+        int[] cc = new int[26];
+        for (char c: str.toCharArray()) {
+            if (!isWord) {
+                if (Character.isLetter(c)) {
+                    char lc = Character.toLowerCase(c);
+                    cc[lc - 'a']++;
+                }
+            } else {
+                cc[c - 'a']++;
+            }
+        }
+        return cc;
+    }
+}
+```
+
+## [911. 在线选举](https://leetcode-cn.com/problems/online-election/)
+
+> 设计，数组，哈希表，二分查找
+
+```java
+class TopVotedCandidate {
+    private Map<Integer, Integer> votes = new HashMap<>();
+    private List<Integer> tops = new ArrayList<>();
+    private int maxVotePerson = -1; // 当前最高票的位置
+    private int[] times;
+
+    public TopVotedCandidate(int[] persons, int[] times) {
+        this.times = times;
+        votes.put(-1, -1); // 记录-1位置票数为-1
+        for (int i = 0; i < persons.length; ++i) {
+            int p = persons[i];
+            int curVotes = votes.getOrDefault(p, 0) + 1; // person当前票数
+            votes.put(p, curVotes); // 记录当前时刻person的票数
+            if (curVotes >= votes.get(maxVotePerson)) { // 超过了当前最高票
+                maxVotePerson = p; // 记录当前时刻最高票人选
+            }
+            tops.add(maxVotePerson); // 记录当前时刻最高票人选
+        }
+    }
+    
+    public int q(int t) {
+        // 二分查找t的位置 TODO 比较特殊的二分查找，需要注意
+        int l = 0, r = times.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (times[mid] == t) {
+                return tops.get(mid);
+            } else if (times[mid] > t) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        if (times[l] > t) return tops.get(l - 1);
+        return tops.get(l);
+    }
+}
+
+/**
+ * Your TopVotedCandidate object will be instantiated and called as such:
+ * TopVotedCandidate obj = new TopVotedCandidate(persons, times);
+ * int param_1 = obj.q(t);
+ */
+```
+
 # Java算法模板
 
 ## BFS
