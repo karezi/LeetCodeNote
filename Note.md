@@ -22231,6 +22231,41 @@ class TopVotedCandidate {
  */
 ```
 
+## [100. 相同的树](https://leetcode-cn.com/problems/same-tree/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树，递归
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+
+内存消耗：35.6 MB, 在所有 Java 提交中击败了82.15%的用户
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null)
+            return true;
+        if (p == null && q != null || p != null && q == null)
+            return false;
+        return p.val == q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
