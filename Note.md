@@ -22266,6 +22266,37 @@ class Solution {
 }
 ```
 
+## [807. 保持城市天际线](https://leetcode-cn.com/problems/max-increase-to-keep-city-skyline/)
+
+> 贪心，数组，矩阵
+
+执行用时：1 ms, 在所有 Java 提交中击败了83.37%的用户
+
+内存消耗：37.9 MB, 在所有 Java 提交中击败了94.69%的用户
+
+```java
+class Solution {
+    public int maxIncreaseKeepingSkyline(int[][] grid) {
+        int n = grid.length;
+        int[] maxLine = new int[n]; // 每一行的最大值
+        int[] maxRow = new int[n]; // 每一列的最大值
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                maxLine[i] = Math.max(maxLine[i], grid[i][j]);
+                maxRow[i] = Math.max(maxRow[i], grid[j][i]);
+            }
+        }
+        int ans = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                ans += Math.min(maxLine[i], maxRow[j]) - grid[i][j];
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
