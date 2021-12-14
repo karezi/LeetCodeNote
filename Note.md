@@ -23588,3 +23588,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [677. 键值映射](https://leetcode-cn.com/problems/map-sum-pairs/)
 
 ## [391. 完美矩形](https://leetcode-cn.com/problems/perfect-rectangle/)
+
+## [630. 课程表 III](https://leetcode-cn.com/problems/course-schedule-iii/)
