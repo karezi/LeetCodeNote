@@ -22297,6 +22297,48 @@ class Solution {
 }
 ```
 
+## [1610. 可见点的最大数目](https://leetcode-cn.com/problems/maximum-number-of-visible-points/)
+
+> 几何，数组，数学，排序，滑动窗口
+
+TODO eps
+
+```java
+class Solution {
+    public int visiblePoints(List<List<Integer>> points, int angle, List<Integer> location) {
+        double eps = 1e-9; // double求相等的误差允许范围
+        int posx = location.get(0), posy = location.get(1);
+        int sameCnt = 0;
+        List<Double> angles = new ArrayList<>();
+        for (List<Integer> point: points) {
+            int x = point.get(0);
+            int y = point.get(1);
+            if (x == posx && y == posy) {
+                sameCnt++;
+                continue;
+            }
+            angles.add(Math.atan2(posx - x, posy - y));
+        }
+        Collections.sort(angles);
+        // 滑动区间（循环数组查找最长连续段，扩展数组为2倍）[i,j],i从0到n，j从0到2n
+        int max = 0;
+        double rangeAngle = angle * Math.PI / 180;
+        int n = angles.size(), doublen = 2 * n;
+        for (int i = 0; i < n; ++i) {
+            angles.add(angles.get(i) + 2 * Math.PI);
+        }
+        int i = 0, j = 0;
+        while (j < doublen) {
+            while (i < j && angles.get(j) - angles.get(i) > rangeAngle + eps)
+                i++; // 收缩
+            max = Math.max(max, j - i + 1);
+            j++;
+        }
+        return max + sameCnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
