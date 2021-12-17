@@ -22339,6 +22339,24 @@ class Solution {
 }
 ```
 
+## [1518. 换酒问题](https://leetcode-cn.com/problems/water-bottles/)
+
+> 数学，模拟
+
+```java
+class Solution {
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int ret = numBottles;
+        while (numBottles >= numExchange) {
+            int full = numBottles / numExchange; // 新的酒数量
+            ret += full; // 喝掉
+            numBottles = full + numBottles % numExchange; // 更新空酒瓶（喝掉后的瓶和本来就空的瓶）
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
