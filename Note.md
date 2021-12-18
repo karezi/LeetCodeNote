@@ -22357,6 +22357,28 @@ class Solution {
 }
 ```
 
+## [419. 甲板上的战舰](https://leetcode-cn.com/problems/battleships-in-a-board/)
+
+> 深度优先搜索，数组，矩阵
+
+```java
+class Solution {
+    public int countBattleships(char[][] board) {
+        int res = 0, m = board.length, n = board[0].length;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (board[i][j] == 'X' && 
+                (i == 0 || i > 0 && board[i - 1][j] != 'X') &&
+                (j == 0 || j > 0 && board[i][j - 1] != 'X')) {
+                    res++;
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
