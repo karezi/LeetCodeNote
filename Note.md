@@ -22379,6 +22379,56 @@ class Solution {
 }
 ```
 
+## [997. 找到小镇的法官](https://leetcode-cn.com/problems/find-the-town-judge/)
+
+> 图，数组，哈希表
+
+```java
+class Solution {
+    public int findJudge(int n, int[][] trust) {
+        if (n == 1 && trust.length == 0)
+            return 1;
+        Map<Integer, Integer> trustMap = new HashMap<>();
+        Map<Integer, Integer> cntMap = new HashMap<>();
+        for (int[] t: trust) {
+            trustMap.put(t[0], t[1]);
+            cntMap.put(t[1], cntMap.getOrDefault(t[1], 0) + 1);
+        }
+        for (int x: cntMap.keySet()) {
+            if (cntMap.get(x) == n - 1 && trustMap.get(x) == null) {
+                return x;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+入度和出度
+
+执行用时：2 ms, 在所有 Java 提交中击败了99.21%的用户
+
+内存消耗：45.8 MB, 在所有 Java 提交中击败了83.14%的用户
+
+```java
+class Solution {
+    public int findJudge(int n, int[][] trust) {
+        int[] inDegrees = new int[n + 1];
+        int[] outDegrees = new int[n + 1];
+        for (int[] t: trust) {
+            inDegrees[t[1]]++;
+            outDegrees[t[0]]++;
+        }
+        for (int i = 1; i <= n; ++i) {
+            if (inDegrees[i] == n - 1 && outDegrees[i] == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
