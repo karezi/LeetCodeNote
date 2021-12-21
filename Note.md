@@ -22429,6 +22429,27 @@ class Solution {
 }
 ```
 
+## [1154. 一年中的第几天](https://leetcode-cn.com/problems/day-of-the-year/)
+
+> 数学，字符串
+
+```java
+class Solution {
+    public int dayOfYear(String date) {
+        int[] days = new int[]{0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335};
+        String[] strs = date.split("-");
+        int year = Integer.parseInt(strs[0]);
+        int mouth = Integer.parseInt(strs[1]);
+        int day = Integer.parseInt(strs[2]);
+        if (mouth <= 2 || year % 400 == 0 || (year % 4 == 0 && year % 100 != 0)) { // TODO 闰年判断
+            return days[mouth - 1] + day;
+        } else {
+            return days[mouth - 1] + day - 1;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -23724,3 +23745,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [630. 课程表 III](https://leetcode-cn.com/problems/course-schedule-iii/)
 
 ## [851. 喧闹和富有](https://leetcode-cn.com/problems/loud-and-rich/)
+
+## [475. 供暖器](https://leetcode-cn.com/problems/heaters/)
