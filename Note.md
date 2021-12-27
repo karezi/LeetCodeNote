@@ -22450,6 +22450,179 @@ class Solution {
 }
 ```
 
+## [686. 重复叠加字符串匹配](https://leetcode-cn.com/problems/repeated-string-match/)
+
+> 字符串，字符串匹配
+
+找上下界
+
+```java
+class Solution {
+    public int repeatedStringMatch(String a, String b) {
+        // len(a) * n（下界） >= 匹配 len(b)
+        // len(a) * (n+1) (上界) 匹配 len(b)
+        int lena = a.length(), lenb = b.length(), cnt = 0;
+        StringBuilder sb = new StringBuilder();
+        while (lena * ++cnt < lenb) {
+            sb.append(a);
+        }
+        sb.append(a);
+        if (sb.toString().indexOf(b) != -1) {
+            return cnt;
+        }
+        sb.append(a);
+        return sb.toString().indexOf(b) != -1 ? cnt + 1 : -1;
+    }
+}
+```
+
+KMP TODO
+
+## [1705. 吃苹果的最大数目](https://leetcode-cn.com/problems/maximum-number-of-eaten-apples/)
+
+> 贪心，数组，优先队列
+
+```java
+class Solution {
+    public int eatenApples(int[] apples, int[] days) {
+        // PriorityQueue<[过期日,数量]> 优先取过期日小的（最快过期的一个）[小顶堆]
+        int n = apples.length;
+        PriorityQueue<int[]> q = new PriorityQueue<>((x, y) -> x[0] - y[0]);
+        int i = 0, ans = 0;
+        while (i < n || !q.isEmpty()) {
+            while (!q.isEmpty() && q.peek()[0] < i) { // 排除已经腐烂的
+                q.poll();
+            }
+            if (i < n && apples[i] > 0) { // 当天有苹果，将苹果加入
+                q.offer(new int[]{i + days[i] - 1, apples[i]});
+            }
+            if (!q.isEmpty()) { // 有没过期的
+                int[] top = q.poll();
+                if (--top[1] > 0 && top[0] > i) { // 之后仍然足够
+                    q.offer(top);
+                }
+                ans++;
+            }
+            i++;
+        }
+        return ans;
+    }
+}
+```
+
+## [1609. 奇偶树](https://leetcode-cn.com/problems/even-odd-tree/)
+
+> 树，广度优先搜索，二叉树，层序遍历
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isEvenOddTree(TreeNode root) {
+        Deque<TreeNode> q = new LinkedList<>();
+        q.push(root);
+        boolean isOddLevel = false; // 是否奇数层
+        while (!q.isEmpty()) {
+            int size = q.size(); // 这一层有几个
+            int last = isOddLevel ? 1000001 : 0;
+            while (--size >= 0) {
+                TreeNode cur = q.pollFirst();
+                if (
+                    isOddLevel && ((cur.val & 1) == 1 || cur.val >= last) ||
+                    !isOddLevel && ((cur.val & 1) == 0 || cur.val <= last)
+                )
+                    return false;
+                last = cur.val;
+                if (cur.left != null) q.offerLast(cur.left);
+                if (cur.right != null) q.offerLast(cur.right);
+            }
+            isOddLevel = !isOddLevel;
+        }
+        return true;
+    }
+}
+```
+
+## [1078. Bigram 分词](https://leetcode-cn.com/problems/occurrences-after-bigram/)
+
+> 字符串
+
+```java
+class Solution {
+    public String[] findOcurrences(String text, String first, String second) {
+        List<String> ws = new ArrayList<>();
+        String[] words = text.split(" ");
+        for (int i = 0; i < words.length - 2; ++i) {
+            if (first.equals(words[i]) && second.equals(words[i + 1])) {
+                ws.add(words[i + 2]);
+            }
+        }
+        return ws.toArray(new String[0]);
+    }
+}
+```
+
+## [825. 适龄的朋友](https://leetcode-cn.com/problems/friends-of-appropriate-ages/)
+
+> 数组，双指针，前缀和，双轴排序，桶排序
+
+排序+双指针
+
+```java
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        int ans = 0, n = ages.length;
+        Arrays.sort(ages);
+        int l = 0, r = 0;
+        for (int age: ages) {
+            if (age < 15) continue;
+            while (ages[l] <= 0.5 * age + 7) l++;
+            while (r < n && ages[r] <= age) r++;
+            ans += r - l - 1; // 去掉自己
+        }
+        return ans;
+    }
+}
+```
+
+桶排序+前缀和
+
+```java
+class Solution {
+    public int numFriendRequests(int[] ages) {
+        int[] cnt = new int[121]; // 桶数组
+        for (int age: ages) {
+            cnt[age]++;
+        }
+        int[] pre = new int[121]; // 前缀和
+        for (int i = 1; i < 121; ++i) {
+            pre[i] = pre[i - 1] + cnt[i];
+        }
+        int ans = 0;
+        for (int i = 15; i < 121; ++i) { // i表示年龄
+            if (cnt[i] > 0) {
+                int l = (int)(0.5 * i + 8) - 1;
+                ans += (pre[i] - pre[l] - 1) * cnt[i];
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -23747,3 +23920,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [851. 喧闹和富有](https://leetcode-cn.com/problems/loud-and-rich/)
 
 ## [475. 供暖器](https://leetcode-cn.com/problems/heaters/)
+
+## [1044. 最长重复子串](https://leetcode-cn.com/problems/longest-duplicate-substring/)
