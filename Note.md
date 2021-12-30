@@ -22623,6 +22623,185 @@ class Solution {
 }
 ```
 
+## [472. 连接词](https://leetcode-cn.com/problems/concatenated-words/)
+
+> 深度优先搜索，字典树，数组，字符串，记忆化
+
+```java
+class Solution {
+    class Trie {
+        TrieNode root;
+
+        class TrieNode {
+            TrieNode[] child = new TrieNode[26];
+            boolean isEnd = false;
+            String word = "";
+        }
+
+        public Trie() {
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            TrieNode p = root;
+            for (int i = 0; i < word.length(); ++i) {
+                int u = word.charAt(i) - 'a';
+                if (p.child[u] == null) {
+                    p.child[u] = new TrieNode();
+                }
+                p = p.child[u];
+            }
+            p.isEnd = true;
+            p.word = word;
+        }
+
+        public boolean dfs(String word, int start) {
+            if (word.length() == start) {
+                return true;
+            }
+            TrieNode p = root;
+            for (int i = start; i < word.length(); i++) {
+                int u = word.charAt(i) - 'a';
+                if (p.child[u] == null) {
+                    return false;
+                }
+                p = p.child[u];
+                if (p.isEnd && dfs(word, i + 1)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        Trie t = new Trie();
+        Arrays.sort(words, (x, y) -> x.length() - y.length());
+        t.insert(words[0]);
+        List<String> ret = new ArrayList<>();
+        for (int i = 1; i < words.length; ++i) {
+            if (words[i].length() == 0) continue;
+            if (t.dfs(words[i], 0)) {
+                ret.add(words[i]);
+            } else {
+                t.insert(words[i]);
+            }
+        }
+        return ret;
+    }
+}
+```
+
+TODO 记忆化
+
+## [1995. 统计特殊四元组](https://leetcode-cn.com/problems/count-special-quadruplets/)
+
+> 数组，枚举，哈希
+
+```java
+class Solution {
+    public int countQuadruplets(int[] nums) {
+        int ans = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = nums.length;
+        // nums[a] + nums[b] = nums[d] - nums[c];
+        for (int b = n - 3; b >= 1; --b) {
+            for (int d = b + 2; d < n; ++d) {
+                map.put(nums[d] - nums[b + 1], map.getOrDefault(nums[d] - nums[b + 1], 0) + 1);
+            }
+            for (int a = 0; a < b; ++a) {
+                ans += map.getOrDefault(nums[a] + nums[b], 0);
+            }
+        }
+        return ans;
+    }
+}
+```
+
+TODO 组合优化，维度背包
+
+## [846. 一手顺子](https://leetcode-cn.com/problems/hand-of-straights/)
+
+> 贪心，数组，哈希表，排序
+
+执行用时：13 ms, 在所有 Java 提交中击败了95.15%的用户
+
+内存消耗：39.7 MB, 在所有 Java 提交中击败了40.30%的用户
+
+```java
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        int n = hand.length;
+        if (n % groupSize != 0)
+            return false;
+        Arrays.sort(hand);
+        ArrayList<int[]> cnts = new ArrayList<>();
+        int x = hand[0];
+        int cnt = 1;
+        for (int i = 1; i < n; ++i) {
+            if (hand[i] != x) {
+                cnts.add(new int[]{x, cnt});
+                x = hand[i];
+                cnt = 1;
+            } else {
+                cnt++;
+            }
+        }
+        cnts.add(new int[]{x, cnt});
+        int l = 0, r = 0;
+        while (r < cnts.size()) {
+            int counter = groupSize;
+            boolean isStart = true;
+            while (counter > 0) {
+                if (r >= cnts.size() || cnts.get(r)[1] == 0 || !isStart && r > 0 && cnts.get(r)[0] != cnts.get(r - 1)[0] + 1)
+                    return false;
+                isStart = false;
+                cnts.get(r)[1]--;
+                r++;
+                counter--;
+            }
+            while (l < cnts.size() && cnts.get(l)[1] == 0) l++;
+            r = l;
+        }
+        return true;
+    }
+}
+```
+
+本题以下：1296，1296用了更简单的方法
+
+## [1296. 划分数组为连续数字的集合](https://leetcode-cn.com/problems/divide-array-in-sets-of-k-consecutive-numbers/)
+
+> 贪心，数组，哈希表，排序
+
+```java
+class Solution {
+    public boolean isPossibleDivide(int[] nums, int k) {
+        if (nums.length % k != 0) return false;
+        Arrays.sort(nums);
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i: nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        for (int i: nums) {
+            if (!map.containsKey(i)) continue;
+            for (int j = 0; j < k; ++j) {
+                int cur = i + j;
+                if (!map.containsKey(cur))
+                    return false;
+                int newCur = map.get(cur) - 1;
+                if (newCur == 0) {
+                    map.remove(cur);
+                } else {
+                    map.put(cur, newCur);
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -23082,7 +23261,7 @@ class Trie {
         TrieNode[] child = new TrieNode[26];
     }
 
-    public TrieNode() {
+    public Trie() {
         root = new TrieNode();
     }
     
