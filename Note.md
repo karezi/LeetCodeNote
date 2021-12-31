@@ -22802,6 +22802,31 @@ class Solution {
 }
 ```
 
+## [507. 完美数](https://leetcode-cn.com/problems/perfect-number/)
+
+> 数学，枚举
+
+用i<=num/i代替sqrt
+
+执行用时：1 ms, 在所有 Java 提交中击败了92.45%的用户
+
+内存消耗：35.4 MB, 在所有 Java 提交中击败了10.46%的用户
+
+```java
+class Solution {
+    public boolean checkPerfectNumber(int num) {
+        if (num == 1) return false;
+        int sum = 1;
+        for (int i = 2; i <= num / i; ++i) {
+            sum += (num % i == 0) ? ((i * i == num) ? i : (i + num / i)) : 0;
+        }
+        return sum == num;
+    }
+}
+```
+
+TODO 欧几里得-欧拉定理
+
 # Java算法模板
 
 ## BFS
