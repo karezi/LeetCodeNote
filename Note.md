@@ -22827,6 +22827,24 @@ class Solution {
 
 TODO 欧几里得-欧拉定理
 
+## [2022. 将一维数组转变成二维数组](https://leetcode-cn.com/problems/convert-1d-array-into-2d-array/)
+
+> 数组，矩阵，模拟
+
+```java
+class Solution {
+    public int[][] construct2DArray(int[] original, int m, int n) {
+        int len = original.length;
+        if (len != m * n) return new int[0][0]; // int[0][]也可
+        int[][] ans = new int[m][n];
+        for (int i = 0; i < len; ++i) {
+            ans[i / n][i % n] = original[i]; // TODO System.arraycopy
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
