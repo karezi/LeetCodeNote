@@ -22845,6 +22845,33 @@ class Solution {
 }
 ```
 
+## [390. 消除游戏](https://leetcode-cn.com/problems/elimination-game/)
+
+> 数学，等差数列，类约瑟夫环
+
+等差数列
+
+```java
+class Solution {
+    public int lastRemaining(int n) {
+        int start = 1, step = 1, cnt = n, k = 0;
+        while (cnt > 1) {
+            if ((k & 1) == 0) { // 偶数轮次向右，start是前一轮start的step后
+                start += step;
+            } else { // 奇数轮次向左，剩余个数为偶数则start不变，奇数则start是前一轮start的step后
+                start = (cnt & 1) == 0 ? start : start + step;
+            }
+            cnt >>= 1; // 个数减半
+            step <<= 1; // 步长增大1倍
+            k++; // 轮次加1
+        }
+        return start;
+    }
+}
+```
+
+约瑟夫环递推法 TODO
+
 # Java算法模板
 
 ## BFS
