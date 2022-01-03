@@ -22872,6 +22872,34 @@ class Solution {
 
 约瑟夫环递推法 TODO
 
+## [1185. 一周中的第几天](https://leetcode-cn.com/problems/day-of-the-week/)
+
+> 数学，日期
+
+```java
+class Solution {
+    private int[] md = new int[]{31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private String[] week = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    public String dayOfTheWeek(int day, int month, int year) {
+        int d = 4;
+        for (int i = 1971; i < year; ++i) {
+            if (i % 400 == 0 || i % 100 != 0 && i % 4 == 0) {
+                d += 366;
+            } else {
+                d += 365;
+            }
+        }
+        for (int i = 0; i < month - 1; ++i) {
+            d += md[i];
+            if (i == 2 && (year % 400 == 0 || year % 100 != 0 && year % 4 == 0))
+                d += 1;
+        }
+        d += day;
+        return week[d % 7];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
