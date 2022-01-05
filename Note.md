@@ -22900,6 +22900,39 @@ class Solution {
 }
 ```
 
+## [1576. 替换所有的问号](https://leetcode-cn.com/problems/replace-all-s-to-avoid-consecutive-repeating-characters/)
+
+> 字符串
+
+```java
+class Solution {
+    public String modifyString(String s) {
+        char[] cs = s.toCharArray();
+        int n = cs.length;
+        for (int i = 0; i < n; ++i) {
+            if (cs[i] == '?') {
+                char left = 'd', right = 'd';
+                if (i >= 1) {
+                    left = cs[i - 1];
+                }
+                if (i < n - 1) {
+                    right = cs[i + 1];
+                }
+                char x = 'a';
+                if (x == left || x == right) {
+                    x = 'b';
+                    if (x == left || x == right) {
+                        x = 'c';
+                    }
+                }
+                cs[i] = x;
+            }
+        }
+        return new String(cs);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
