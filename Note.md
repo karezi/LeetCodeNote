@@ -22933,6 +22933,42 @@ class Solution {
 }
 ```
 
+## [71. 简化路径](https://leetcode-cn.com/problems/simplify-path/)
+
+> 栈，字符串
+
+执行用时：3 ms, 在所有 Java 提交中击败了92.76%的用户
+
+内存消耗：38.5 MB, 在所有 Java 提交中击败了63.73%的用户
+
+```java
+class Solution {
+    public String simplifyPath(String path) {
+        Deque<String> stack = new LinkedList<>();
+        StringBuilder sb = new StringBuilder();
+        path = path + "/";
+        for (char c: path.toCharArray()) {
+            if(c == '/') {
+                if (sb.length() != 0 && !sb.toString().equals("..") && !sb.toString().equals(".")) {
+                    stack.push(sb.toString());
+                } else if (sb.length() != 0 && sb.toString().equals("..")) {
+                    if (!stack.isEmpty())
+                        stack.pop();
+                }
+                sb.setLength(0);
+            } else {
+                sb.append(c);
+            }
+        }
+        StringBuilder res = new StringBuilder();
+        while (!stack.isEmpty()) {
+            res.insert(0, stack.pop()).insert(0, '/');
+        }
+        return res.length() == 0 ? "/" : res.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
