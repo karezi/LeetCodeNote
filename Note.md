@@ -23003,6 +23003,69 @@ class Solution {
 }
 ```
 
+## [89. 格雷编码](https://leetcode-cn.com/problems/gray-code/)
+
+> 位运算，数学，回溯
+
+对称生成 0->1->1(1)->1(0)->1(10)->1(11)->1(01)->1(00)->...
+
+执行用时：7 ms, 在所有 Java 提交中击败了66.30%的用户
+
+内存消耗：45.6 MB, 在所有 Java 提交中击败了51.02%的用户
+
+```java
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<>();
+        res.add(0);
+        res.add(1);
+        int width = 1;
+        while (width < n) {
+            for (int i = res.size() - 1; i >= 0; --i) {
+                res.add(res.get(i) | (1 << width));
+            }
+            width++;
+        }
+        return res;
+    }
+}
+```
+
+也可以反过来
+
+```java
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<>();
+        res.add(0);
+        while (n-- > 0) {
+            for (int i = res.size() - 1; i >= 0; --i) {
+                res.add(res.get(i) | (1 << n));
+            }
+        }
+        return res;
+    }
+}
+```
+
+TODO 二进制数转格雷码
+
+执行用时：4 ms, 在所有 Java 提交中击败了96.71%的用户
+
+内存消耗：45.4 MB, 在所有 Java 提交中击败了68.50%的用户
+
+```java
+class Solution {
+    public List<Integer> grayCode(int n) {
+        List<Integer> ret = new ArrayList<Integer>();
+        for (int i = 0; i < 1 << n; i++) {
+            ret.add((i >> 1) ^ i);
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
