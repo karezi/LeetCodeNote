@@ -64,8 +64,6 @@ public class Solution {
 }
 ```
 
-
-
 ## [机器人的运动范围](https://www.nowcoder.com/practice/6e5207314b5241fb83f2329e89fdecc8)
 
 > 回溯法
@@ -76,15 +74,15 @@ public class Solution {
         boolean[][] visited = new boolean[rows][cols];
         return judge(threshold, rows, cols, 0, 0, visited);
     }
-   	
+
     private int judge(int threshold, int rows, int cols, int i, int j, boolean[][] visited) {
-      	// 超出限制
+          // 超出限制
         if (i < 0 || j < 0 || i >= rows || j >= cols || visited[i][j] || bitSum(i) + bitSum(j) > threshold) {
             return 0;
         }
-      	// 标记访问
+          // 标记访问
         visited[i][j] = true;
-      	// 上下左右试探
+          // 上下左右试探
         return 1 + judge(threshold, rows, cols, i - 1, j, visited)
                  + judge(threshold, rows, cols, i, j - 1, visited)
                  + judge(threshold, rows, cols, i + 1, j, visited)
@@ -200,17 +198,17 @@ public class ListNode {
     ListNode(int x) { val = x };
 }
 class Solution {
-		public ListNode reverseList(ListNode head) {
-				ListNode curr = head;
-				ListNode pre = null;
-				while(curr != null) {
-						ListNode temp = curr.next;
-						curr.next = pre;
-						pre = curr;
-						curr = temp;
-				}
-				return pre;
-		}
+        public ListNode reverseList(ListNode head) {
+                ListNode curr = head;
+                ListNode pre = null;
+                while(curr != null) {
+                        ListNode temp = curr.next;
+                        curr.next = pre;
+                        pre = curr;
+                        curr = temp;
+                }
+                return pre;
+        }
 }
 ```
 
@@ -225,14 +223,14 @@ public class ListNode {
     ListNode(int x) { val = x };
 }
 class Solution {
-		public ListNode reverseList(ListNode head) {
-				while(head == null || head.next == null)
-          	return head;
-      	ListNode p = reverseList(head.next);
-      	head.next.next = head;
-      	head.next = null;
-      	return p;
-		}
+        public ListNode reverseList(ListNode head) {
+                while(head == null || head.next == null)
+              return head;
+          ListNode p = reverseList(head.next);
+          head.next.next = head;
+          head.next = null;
+          return p;
+        }
 }
 ```
 
@@ -360,11 +358,11 @@ class CQueue {
         stackPop = new Stack<>();
         stackPush = new Stack<>();
     }
-    
+
     public void appendTail(int value) {
         stackPush.push(value);
     }
-    
+
     public int deleteHead() {
         if (stackPop.isEmpty()) {
             while(!stackPush.isEmpty()) {
@@ -448,8 +446,6 @@ class Solution {
     }
 }
 ```
-
-
 
 ## [42. 接雨水](https://leetcode-cn.com/problems/trapping-rain-water/)
 
@@ -582,21 +578,21 @@ class MinStack {
         minStack = new Stack<>();
         minStack.push(Integer.MAX_VALUE);
     }
-    
+
     public void push(int x) {
         stack.push(x);
         minStack.push(Math.min(x, minStack.peek()));
     }
-    
+
     public void pop() {
         stack.pop();
         minStack.pop();
     }
-    
+
     public int top() {
         return stack.peek();
     }
-    
+
     public int getMin() {
         return minStack.peek();
     }
@@ -779,7 +775,7 @@ class Solution {
         ListNode cur = head;
         while(cur != null && cur.next != null) {
             if (cur.next.val == cur.val) {
-        	      cur.next = cur.next.next; // 跳过一个
+                  cur.next = cur.next.next; // 跳过一个
             } else {
                 cur = cur.next; // 直到不相等才下一个
             }
@@ -1263,26 +1259,26 @@ class Solution {
 
 > 哈希（可优化）
 
- ```java
+```java
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        int[] res = new int[2];
-        res[0] = -1;
-        res[1] = -1;
-        Map<Integer, Integer> hmap = new HashMap<>();
-        for (int i = 0; i < nums.length; ++i) {
-            if (hmap.containsKey(target - nums[i])) {
-                res[0] = hmap.get(target - nums[i]);
-                res[1] = i;
-                return res;
-            } else {
-                hmap.put(nums[i], i);
-            }
-        }
-        return res;
-    }
+   public int[] twoSum(int[] nums, int target) {
+       int[] res = new int[2];
+       res[0] = -1;
+       res[1] = -1;
+       Map<Integer, Integer> hmap = new HashMap<>();
+       for (int i = 0; i < nums.length; ++i) {
+           if (hmap.containsKey(target - nums[i])) {
+               res[0] = hmap.get(target - nums[i]);
+               res[1] = i;
+               return res;
+           } else {
+               hmap.put(nums[i], i);
+           }
+       }
+       return res;
+   }
 }
- ```
+```
 
 ## [3. 无重复字符的最长子串](https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/)
 
@@ -1514,9 +1510,9 @@ class Solution {
 ```java
 class Solution {
     public List<String> generateParenthesis(int n) {
-      	// s = (a)b, N(a) + N(b) + 1 = N(s)
-      	// Set i = N(s), j = N(a) => N(a) = i - j - 1
-      	// Set dp[i]为n = i所求
+          // s = (a)b, N(a) + N(b) + 1 = N(s)
+          // Set i = N(s), j = N(a) => N(a) = i - j - 1
+          // Set dp[i]为n = i所求
         // dp[i] = "(" + dp[j] + ")" + dp[i - j - 1]; j∈[0, i-1]
         // dp[0] = [[""]], dp[1] = [[""], ["()"]]
         List<List<String>> dp = new ArrayList<>(n + 1);
@@ -1732,7 +1728,7 @@ class Solution {
 ## [14. 最长公共前缀](https://leetcode-cn.com/problems/longest-common-prefix/)
 
 > LCP
->
+> 
 > TODO：二分方法可以进一步优化
 
 ```java
@@ -1847,7 +1843,7 @@ class SubrectangleQueries {
     public SubrectangleQueries(int[][] rectangle) {
         mRectangle = rectangle;
     }
-    
+
     public void updateSubrectangle(int row1, int col1, int row2, int col2, int newValue) {
         for (int i = row1; i <= row2; ++i) {
             for (int j = col1; j <= col2; ++j) {
@@ -1855,7 +1851,7 @@ class SubrectangleQueries {
             }
         }
     }
-    
+
     public int getValue(int row, int col) {
         return mRectangle[row][col];
     }
@@ -1872,7 +1868,7 @@ class SubrectangleQueries {
 ## [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)
 
 > 链表
->
+> 
 > TODO：用递归方法会简单很多，迭代法有个哑结点的技巧可以参考
 
 ```java
@@ -1999,7 +1995,7 @@ class Foo {
     private int cur = 1;
 
     public Foo() {
-        
+
     }
 
     public synchronized void first(Runnable printFirst) throws InterruptedException {
@@ -2037,7 +2033,7 @@ class Foo {
 ## [1115. 交替打印FooBar](https://leetcode-cn.com/problems/print-foobar-alternately/)
 
 > 多线程
->
+> 
 > TODO：可以用信号量简单实现
 
 ```java
@@ -2086,7 +2082,7 @@ class ZeroEvenOdd {
     private int n;
 
     private int flag = 0;
-    
+
     public ZeroEvenOdd(int n) {
         this.n = n;
     }
@@ -2168,7 +2164,7 @@ class Solution {
 ## [977. 有序数组的平方](https://leetcode-cn.com/problems/squares-of-a-sorted-array/)
 
 > 归并排序，双指针
->
+> 
 > 执行：100%
 
 ```java
@@ -2246,7 +2242,7 @@ class Solution {
         // return ans;
 
         int ans = 0;
-        
+
         for (int num : nums) {
             int size = sizeOf(num);
             if ((size & 1) == 0) {
@@ -2314,8 +2310,6 @@ class Solution {
     }
 }
 ```
-
-
 
 ## [19. 删除链表的倒数第N个节点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
 
@@ -2475,7 +2469,7 @@ class Solution {
 ## [234. 回文链表](https://leetcode-cn.com/problems/palindrome-linked-list/)
 
 > 链表，双指针
->
+> 
 > O(n)，O(1)
 
 ```java
@@ -2531,7 +2525,7 @@ class Solution {
 ## [1024. 视频拼接](https://leetcode-cn.com/problems/video-stitching/)
 
 > 最小覆盖，动态规划，贪心
->
+> 
 > TODO：贪心
 
 ```java
@@ -2561,7 +2555,7 @@ class Solution {
 ## [845. 数组中的最长山脉](https://leetcode-cn.com/problems/longest-mountain-in-array/)
 
 > 模拟法
->
+> 
 > TODO：双指针，动态规划
 
 笨办法：
@@ -2682,7 +2676,7 @@ class Solution {
 计数排序
 
 > 执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
->
+> 
 > 内存消耗：38.3 MB, 在所有 Java 提交中击败了97.67%的用户
 
 ```java
@@ -2760,7 +2754,7 @@ class Solution {
         yc = y_center;
         r = radius;
     }
-    
+
     public double[] randPoint() {
         Random ran = new Random();
         double xl = xc - r;
@@ -2798,7 +2792,7 @@ class Solution {
         yc = y_center;
         r = radius;
     }
-    
+
     public double[] randPoint() {
         double d = Math.sqrt(Math.random()) * r;
         double theta = Math.random() * 2 * Math.PI;
@@ -2884,9 +2878,9 @@ class Solution {
 ## [LCP 02. 分式化简](https://leetcode-cn.com/problems/deep-dark-fraction/)
 
 > 数学
->
+> 
 > 执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
->
+> 
 > 内存消耗：36 MB, 在所有 Java 提交中击败了99.14%的用户
 
 ```java
@@ -2910,11 +2904,11 @@ class Solution {
 ## [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
 > 二叉树，栈
->
+> 
 > 执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
->
+> 
 > 内存消耗：36.6 MB, 在所有 Java 提交中击败了95.01%的用户
->
+> 
 > TODO：Morris 遍历
 
 ```java
@@ -2958,9 +2952,9 @@ class Solution {
 ## [1207. 独一无二的出现次数](https://leetcode-cn.com/problems/unique-number-of-occurrences/)
 
 > 哈希表
->
+> 
 > 执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
->
+> 
 > 内存消耗：37.6 MB, 在所有 Java 提交中击败了13.80%的用户
 
 ```java
@@ -3036,9 +3030,9 @@ class Solution {
 ## [129. 求根到叶子节点数字之和](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
 
 > 树，DFS
->
+> 
 > 执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
->
+> 
 > 内存消耗：36.2 MB, 在所有 Java 提交中击败了89.82%的用户
 
 ```java
@@ -3137,7 +3131,7 @@ class Solution {
 ## [381. O(1) 时间插入、删除和获取随机元素 - 允许重复](https://leetcode-cn.com/problems/insert-delete-getrandom-o1-duplicates-allowed/)
 
 > 设计，数组，哈希表
->
+> 
 > ArrayList(值)+Map<值,Set(索引)>
 
 ```java
@@ -3160,7 +3154,7 @@ class RandomizedCollection {
         map = new HashMap<Integer, Set<Integer>>();
         table = new ArrayList<Integer>(n);
     }
-    
+
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
         boolean ret = false;
@@ -3177,7 +3171,7 @@ class RandomizedCollection {
         n++;
         return ret;
     }
-    
+
     /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
         if (!map.containsKey(val)) {
@@ -3201,7 +3195,7 @@ class RandomizedCollection {
         n--;
         return true;
     }
-    
+
     /** Get a random element from the collection. */
     public int getRandom() {
         Random r = new Random();
@@ -3420,9 +3414,9 @@ class Solution {
 ## [57. 插入区间](https://leetcode-cn.com/problems/insert-interval/)
 
 > 排序，数组
->
+> 
 > 执行用时：1 ms, 在所有 Java 提交中击败了99.65%的用户
->
+> 
 > 内存消耗：40.9 MB, 在所有 Java 提交中击败了71.74%的用户
 
 ```java
@@ -3586,7 +3580,7 @@ class Solution {
 ## [327. 区间和的个数](https://leetcode-cn.com/problems/count-of-range-sum/)
 
 > 排序，树状数组，线段树，二分查找，分治算法，前缀和
->
+> 
 > TODO：高级数据结构
 
 暴力法
@@ -3667,7 +3661,7 @@ class Solution {
 ## [258. 各位相加](https://leetcode-cn.com/problems/add-digits/)
 
 > 数学
->
+> 
 > 12,345 = 1 × (9,999 + 1) + 2 × (999 + 1) + 3 × (99 + 1) + 4 × (9 + 1) + 5.
 > 12,345 = (1 × 9,999 + 2 × 999 + 3 × 99 + 4 × 9) + (1 + 2 + 3 + 4 + 5).
 
@@ -3978,7 +3972,7 @@ class Solution {
 ## [406. 根据身高重建队列](https://leetcode-cn.com/problems/queue-reconstruction-by-height/)
 
 > 排序
->
+> 
 > TODO值得再做一遍
 
 ```java
@@ -4575,7 +4569,7 @@ class Solution {
 ```java
 class Solution {
     public int leastInterval(char[] tasks, int n) {
-      	// 情况一：n > 所有任务数 
+          // 情况一：n > 所有任务数 
         // [AB ][AB ][AB]，一共最多的数组，n+1列，最后一列只有最多计数的字母个数。
         // 情况二：n <= 所有任务数 tasks.length
         int[] count = new int[26];
@@ -4826,7 +4820,7 @@ class Solution {
 ## [376. 摆动序列](https://leetcode-cn.com/problems/wiggle-subsequence/)
 
 > dp，贪心
->
+> 
 > TODO：还可以用DP或者贪心来做
 
 ```java
@@ -5530,8 +5524,6 @@ class Solution {
 }
 ```
 
-
-
 ## [239. 滑动窗口最大值](https://leetcode-cn.com/problems/sliding-window-maximum/)
 
 > 滑动窗口，单调栈
@@ -5711,7 +5703,7 @@ class Solution {
     private class UnionFind { // 并查集内部类
         int[] parent; // 每个元素的直接父类集合
         double[] weight; // 每个元素到直接父类的权重
-        
+
         // 构造方法：根据容量构造出均指向自己的并查集
         UnionFind(int n) {
             parent = new int[n];
@@ -5721,7 +5713,7 @@ class Solution {
                 weight[i] = 1.0d;
             }
         }
-        
+
         // 合并方法
         public void union(int x, int y, double val) {
             int px = find(x); // 找到x的直接父类
@@ -5939,7 +5931,7 @@ class Solution {
         // 一次买卖状态:dp[i][2] = max(dp[i-1][2],dp[i-1][1]+prices[i]) 昨日一次买卖未操作/之前没卖，今天卖出
         // 一次买卖后再买状态:dp[i][3] = max(dp[i-1][3],dp[i-1][2]-prices[i])
         // 二次买卖状态:dp[i][4] = max(dp[i-1][4],dp[i-1][3]+prices[i])
-        
+
         // 初始化dp[0][1]=-prices[0],dp[0][2]=-无穷,dp[0][3]=-无穷,dp[0][4]=-无穷
         // 求max(0, dp[n-1][2], dp[n-1][4])
         int n = prices.length;
@@ -6295,7 +6287,7 @@ class Solution {
         public int getCount() {
             return this.count;
         }
-        
+
         public void union(int a, int b) {
             int pa = find(a);
             int pb = find(b);
@@ -6348,7 +6340,6 @@ class Solution {
 坐标方程法
 
 ```java
-
 class Solution {
     public boolean checkStraightLine(int[][] coordinates) {
         int deltaX = coordinates[0][0], deltaY = coordinates[0][1];
@@ -6429,7 +6420,7 @@ class Solution {
                 parents[i] = i;
             }
         }
-        
+
         public int find(int x) {
             if (parents[x] != x) {
                 parents[x] = find(parents[x]);
@@ -6633,7 +6624,7 @@ class Solution {
 ```java
 class Solution {
     public int makeConnected(int n, int[][] connections) {
-      	if (connections.length < n - 1)
+          if (connections.length < n - 1)
             return -1;
         UnionFind uf = new UnionFind(n);
         int res = 0;
@@ -7461,7 +7452,7 @@ class MedianFinder {
         small = new PriorityQueue<>(Collections.reverseOrder()); // 大顶堆
         big = new PriorityQueue<>(); // 小顶堆
     }
-    
+
     public void addNum(int num) {
         // 左右相等 >2，移左填右；其他情况，填左
         // 左大右小 <1，移右填左；其他情况，填右
@@ -7485,7 +7476,7 @@ class MedianFinder {
             }
         }
     }
-    
+
     public double findMedian() {
         if (small.size() == big.size())
             return (small.peek() + big.peek()) / 2.0;
@@ -7516,7 +7507,7 @@ class MedianFinder {
         big = new PriorityQueue<>(); // 小顶堆
         count = 0;
     }
-    
+
     public void addNum(int num) {
         count++;
         small.offer(num);
@@ -7525,7 +7516,7 @@ class MedianFinder {
             small.offer(big.poll());
         }
     }
-    
+
     public double findMedian() {
         if ((count & 1) == 0)
             return (small.peek() + big.peek()) / 2.0;
@@ -7766,7 +7757,7 @@ class ParkingSystem {
     public ParkingSystem(int big, int medium, int small) {
         capacity = new int[]{big, medium, small};
     }
-    
+
     public boolean addCar(int carType) {
         if (capacity[carType - 1] == 0)
             return false;
@@ -7798,7 +7789,7 @@ class Solution {
         node.val = node.next.val;
         node.next = node.next.next;
     }
-}	
+}    
 ```
 
 ## [1313. 解压缩编码列表](https://leetcode-cn.com/problems/decompress-run-length-encoded-list/)
@@ -7891,7 +7882,6 @@ UPDATE salary SET sex = CHAR(11 ^ ASCII(sex));
 UPDATE salary SET sex = REPLACE("fm", sex, "");
 ```
 
-
 巧用REPLACE()【优化版】
 
 执行用时：175 ms, 在所有 MySQL 提交中击败了81.98%的用户
@@ -7902,7 +7892,6 @@ UPDATE salary SET sex = REPLACE("fm", sex, "");
 UPDATE salary SET sex = REPLACE("fm", sex, "") WHERE sex != "";
 ```
 
-
 使用IF()
 
 执行用时：156 ms, 在所有 MySQL 提交中击败了99.84%的用户
@@ -7912,7 +7901,6 @@ UPDATE salary SET sex = REPLACE("fm", sex, "") WHERE sex != "";
 ```sql
 UPDATE salary SET sex = IF(sex = 'm', 'f', 'm');
 ```
-
 
 使用CASE...WHEN
 
@@ -8184,7 +8172,7 @@ class KthLargest {
             this.add(num);
         }
     }
-    
+
     public int add(int val) {
         pq.offer(val);
         if (pq.size() > this.k)
@@ -9242,7 +9230,7 @@ class Solution {
             //     }
             //     subset = (subset - 1) & mask;
             // } while (subset != mask);
-            
+
             res.add(count);
         }
         return res;
@@ -9378,7 +9366,7 @@ class NumArray {
             this.prefix[i] = tmp;
         }
     }
-    
+
     public int sumRange(int i, int j) {
         return this.prefix[j + 1] - this.prefix[i];
     }
@@ -9412,7 +9400,7 @@ class NumMatrix {
             }
         }
     }
-    
+
     public int sumRegion(int row1, int col1, int row2, int col2) {
         return preSum[row2 + 1][col2 + 1] - preSum[row2 + 1][col1] - preSum[row1][col2 + 1] + preSum[row1][col1];
     }
@@ -9435,12 +9423,12 @@ class NumMatrix {
 class Solution {
     public int[] countBits(int num) {
         // 0(0)
-        // 1	1(1)
-        // 2	1(2) 2(3)
-        // 4	1(4) 2(5) 2(6) 3(7)
-        // 8	1(8) 2(9) 2(10) 3(11) 2(12) 3(13) 3(14) 4(15)
-        // 16	1 2 2 3 2 3 3 4
-        // 32	1 2 2 3 2 3 3 4 2 3 3 4 3 4 4 5
+        // 1    1(1)
+        // 2    1(2) 2(3)
+        // 4    1(4) 2(5) 2(6) 3(7)
+        // 8    1(8) 2(9) 2(10) 3(11) 2(12) 3(13) 3(14) 4(15)
+        // 16    1 2 2 3 2 3 3 4
+        // 32    1 2 2 3 2 3 3 4 2 3 3 4 3 4 4 5
         int[] ans = new int[num + 1];
         if (num == 0)
             return ans;
@@ -9547,7 +9535,7 @@ class MyQueue {
         this.dqHelper = new LinkedList<>();
         this.dqMain = new LinkedList<>();
     }
-    
+
     /** Push element x to the back of queue. */
     public void push(int x) {
         while (!this.dqMain.isEmpty()) {
@@ -9558,17 +9546,17 @@ class MyQueue {
             this.dqMain.offer(this.dqHelper.pollLast());
         }
     }
-    
+
     /** Removes the element from in front of queue and returns that element. */
     public int pop() {
         return this.dqMain.pollLast();
     }
-    
+
     /** Get the front element. */
     public int peek() {
         return this.dqMain.peekLast();
     }
-    
+
     /** Returns whether the queue is empty. */
     public boolean empty() {
         return this.dqMain.isEmpty();
@@ -9596,25 +9584,25 @@ class MyQueue {
         inStack = new LinkedList<Integer>();
         outStack = new LinkedList<Integer>();
     }
-    
+
     public void push(int x) {
         inStack.push(x);
     }
-    
+
     public int pop() {
         if (outStack.isEmpty()) {
             in2out();
         }
         return outStack.pop();
     }
-    
+
     public int peek() {
         if (outStack.isEmpty()) {
             in2out();
         }
         return outStack.peek();
     }
-    
+
     public boolean empty() {
         return inStack.isEmpty() && outStack.isEmpty();
     }
@@ -10206,7 +10194,7 @@ class MyHashSet {
             data[i] = new LinkedList<Integer>();           
         }
     }
-    
+
     public void add(int key) {
         LinkedList<Integer> node = data[hash(key)];
         if (node.size() != 0) {
@@ -10215,7 +10203,7 @@ class MyHashSet {
         }
         node.push(key);
     }
-    
+
     public void remove(int key) {
         LinkedList<Integer> node = data[hash(key)];
         if (node.size() != 0) {
@@ -10224,7 +10212,7 @@ class MyHashSet {
                 node.remove(index);
         }
     }
-    
+
     /** Returns true if this set contains the specified element */
     public boolean contains(int key) {
         LinkedList<Integer> node = data[hash(key)];
@@ -10265,7 +10253,7 @@ class MyHashMap {
             data[i] = new LinkedList<Node>();
         }
     }
-    
+
     /** value will always be non-negative. */
     public void put(int key, int value) {
         LinkedList<Node> nodes = data[hash(key)];
@@ -10277,7 +10265,7 @@ class MyHashMap {
         }
         nodes.push(new Node(key, value));
     }
-    
+
     /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
     public int get(int key) {
         LinkedList<Node> nodes = data[hash(key)];
@@ -10288,7 +10276,7 @@ class MyHashMap {
         }
         return -1;
     }
-    
+
     /** Removes the mapping of the specified value key if this map contains a mapping for the key */
     public void remove(int key) {
         LinkedList<Node> nodes = data[hash(key)];
@@ -10744,7 +10732,6 @@ public class Solution {
 位运算求1个数的技巧
 
 ```java
-
 public class Solution {
     public int hammingWeight(int n) {
         int count = 0;
@@ -11124,11 +11111,11 @@ class BSTIterator {
             return tmp;
         }
     }
-    
+
     public int next() {
         return it.next();
     }
-    
+
     public boolean hasNext() {
         return it.hasNext();
     }
@@ -11185,7 +11172,7 @@ class BSTIterator {
         cur = root;
         stack = new LinkedList<>();
     }
-    
+
     public int next() {
         while (cur != null) { // 找到最左
             stack.push(cur);
@@ -11196,7 +11183,7 @@ class BSTIterator {
         cur = cur.right; // 更新到最左的右节点作为下一个
         return ret;
     }
-    
+
     public boolean hasNext() {
         return !stack.isEmpty() || cur != null;
     }
@@ -12120,7 +12107,7 @@ class Trie {
     public Trie() {
         head = new TrieNode();
     }
-    
+
     /** Inserts a word into the trie. */
     public void insert(String word) {
         TrieNode p = head;
@@ -12133,7 +12120,7 @@ class Trie {
         }
         p.isTail = true;
     }
-    
+
     /** Returns if the word is in the trie. */
     public boolean search(String word) {
         TrieNode p = head;
@@ -12146,7 +12133,7 @@ class Trie {
         }
         return p.isTail;
     }
-    
+
     /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
         TrieNode p = head;
@@ -12190,7 +12177,7 @@ class Trie {
         children = new Trie[26];
         isEnd = false;
     }
-    
+
     public void insert(String word) {
         Trie node = this;
         for (int i = 0; i < word.length(); i++) {
@@ -12203,12 +12190,12 @@ class Trie {
         }
         node.isEnd = true;
     }
-    
+
     public boolean search(String word) {
         Trie node = searchPrefix(word);
         return node != null && node.isEnd;
     }
-    
+
     public boolean startsWith(String prefix) {
         return searchPrefix(prefix) != null;
     }
@@ -12702,11 +12689,12 @@ class Solution {
             }
         }
         return curSum == 0 ? count : (count + 1);
-	}
+    }
 }
 ```
 
 官方简单写法
+
 ```java
 class Solution {
     public int shipWithinDays(int[] weights, int D) {
@@ -12820,7 +12808,7 @@ class Solution {
             }
         }
         return false;
-	}
+    }
 }
 ```
 
@@ -14142,7 +14130,7 @@ class Solution {
 
 ## [231. 2的幂](https://leetcode-cn.com/problems/power-of-two/)
 
->位运算，数学
+> 位运算，数学
 
 ```java
 class Solution {
@@ -14757,8 +14745,8 @@ public class Solution extends VersionControl {
 /** 
  * Forward declaration of guess API.
  * @param  num   your guess
- * @return 	     -1 if num is lower than the guess number
- *			      1 if num is higher than the guess number
+ * @return          -1 if num is lower than the guess number
+ *                  1 if num is higher than the guess number
  *               otherwise return 0
  * int guess(int num);
  */
@@ -14958,7 +14946,6 @@ class Solution {
 有限状态机 TODO
 
 ```java
-
 class Solution {
     public int make(char c) {
         switch(c) {
@@ -14972,7 +14959,7 @@ class Solution {
         }
         return -1;
     }
-    
+
     public boolean isNumber(String s) {
         int state = 0;
         int finals = 0b101101000;
@@ -15085,17 +15072,17 @@ class ThroneInheritance {
         map = new HashMap<>();
         dead = new HashSet<>();
     }
-    
+
     public void birth(String parentName, String childName) {
         List<String> children = map.getOrDefault(parentName, new ArrayList<>());
         children.add(childName);
         map.put(parentName, children);
     }
-    
+
     public void death(String name) {
         dead.add(name);
     }
-    
+
     public List<String> getInheritanceOrder() {
         List<String> ans = new ArrayList<>();
         preorder(ans, kingName);
@@ -15137,14 +15124,14 @@ class ThroneInheritance {
     }
     Map<String, Node> map = new HashMap<>();
     Node head = new Node(""), tail = new Node("");
-    
+
     public ThroneInheritance(String name) {
         Node root = new Node(name);
         root.next = tail;
         head.next = root;
         map.put(name, root);
     }
-    
+
     public void birth(String pname, String cname) {
         Node node = new Node(cname);
         map.put(cname, node);
@@ -15156,12 +15143,12 @@ class ThroneInheritance {
         tmp.next = node;
         p.last = node;
     }
-    
+
     public void death(String name) {
         Node node = map.get(name);
         node.isDeleted = true;
     }
-    
+
     public List<String> getInheritanceOrder() {
         List<String> ans = new ArrayList<>();
         Node tmp = head.next;
@@ -16252,13 +16239,13 @@ class TimeMap {
     public TimeMap() {
         map = new HashMap<>();
     }
-    
+
     public void set(String key, String value, int timestamp) {
         List<Val> list = map.getOrDefault(key, new ArrayList<>());
         list.add(new Val(value, timestamp));
         map.put(key, list);
     }
-    
+
     public String get(String key, int timestamp) {
         if (map.containsKey(key)) {
             List<Val> list = map.get(key);
@@ -16307,13 +16294,13 @@ class TimeMap {
     public TimeMap() {
         map = new HashMap<>();
     }
-    
+
     public void set(String key, String value, int timestamp) {
         TreeMap<Integer, String> tm = map.getOrDefault(key, new TreeMap<>());
         tm.put(timestamp, value);
         map.put(key, tm);
     }
-    
+
     public String get(String key, int timestamp) {
         if (map.containsKey(key)) {
             TreeMap<Integer, String> tm = map.get(key);
@@ -17751,8 +17738,6 @@ class Solution {
 }
 ```
 
-
-
 ## [797. 所有可能的路径](https://leetcode-cn.com/problems/all-paths-from-source-to-target/)
 
 > 广度优先搜索，深度优先搜索，图，回溯
@@ -18002,7 +17987,7 @@ class Solution {
         int tmp = 0;
         for (int i: nums)
             tmp |= i;
-		return tmp << (nums.length - 1);
+        return tmp << (nums.length - 1);
     }
 }
 ```
@@ -18087,7 +18072,7 @@ class Solution {
             pSum[i] = pSum[i - 1] + w[i];
         }
     }
-    
+
     public int pickIndex() {
         int x = (int)(Math.random() * pSum[n - 1]) + 1;
         return bs(x);
@@ -19618,7 +19603,7 @@ class Solution {
         }
         return (int)dp_i;
     }
-    
+
     private int getCount(char c2, char c1) {
         // ** -> 15
         // *[] -> *0~*6:2,*7~*9:1
@@ -19980,40 +19965,40 @@ class PeekingIterator implements Iterator<Integer> {
     private int ptr = 0;
     private int size = 0;
 
-	public PeekingIterator(Iterator<Integer> iterator) {
-	    // initialize any member here.
-	    nums = new ArrayList<>();
+    public PeekingIterator(Iterator<Integer> iterator) {
+        // initialize any member here.
+        nums = new ArrayList<>();
         while (iterator.hasNext()) {
             nums.add(iterator.next());
         }
         size = nums.size();
-	}
-	
+    }
+
     // Returns the next element in the iteration without advancing the iterator.
-	public Integer peek() {
+    public Integer peek() {
         return nums.get(ptr);
-	}
-	
-	// hasNext() and next() should behave the same as in the Iterator interface.
-	// Override them if needed.
-	@Override
-	public Integer next() {
+    }
+
+    // hasNext() and next() should behave the same as in the Iterator interface.
+    // Override them if needed.
+    @Override
+    public Integer next() {
         Integer ret = null;
         if (ptr < size) {
             ret = nums.get(ptr);
         }
         ptr++;
         return ret;
-	}
-	
-	@Override
-	public boolean hasNext() {
-	    if (ptr >= size) {
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (ptr >= size) {
             return false;
         } else {
             return true;
         }
-	}
+    }
 }
 ```
 
@@ -20028,18 +20013,18 @@ class PeekingIterator implements Iterator<Integer> {
         this.iterator = iterator;
         cur = iterator.next();
     }
-    
+
     public Integer peek() {
         return cur;
     }
-    
+
     @Override
     public Integer next() {
         Integer ret = cur;
         cur = iterator.hasNext() ? iterator.next() : null;
         return ret;
     }
-    
+
     @Override
     public boolean hasNext() {
         return cur != null;
@@ -20585,7 +20570,7 @@ class WordDictionary {
     public WordDictionary() {
         words = new Trie();
     }
-    
+
     public void addWord(String word) {
         Trie p = words;
         for (char c: word.toCharArray()) {
@@ -20596,7 +20581,7 @@ class WordDictionary {
         }
         p.end = true;
     }
-    
+
     public boolean search(String word) {
         return dfs(word, 0, words);
     }
@@ -21245,7 +21230,7 @@ class Solution {
         if (word.length() >= 2 && Character.isLowerCase(word.charAt(0)) && Character.isUpperCase(word.charAt(1))) {
             return false;
         }
-        
+
         // 无论第 1 个字母是否大写，其他字母必须与第 2 个字母的大小写相同
         for (int i = 2; i < word.length(); ++i) {
             if (Character.isLowerCase(word.charAt(i)) ^ Character.isLowerCase(word.charAt(1))) {
@@ -21468,11 +21453,11 @@ class Solution {
         System.arraycopy(nums, 0, origin, 0, n);
         this.nums = nums;
     }
-    
+
     public int[] reset() {
         return origin;
     }
-    
+
     public int[] shuffle() {
         int length = this.nums.length;
         for (int i = length; i > 0; i--) {
@@ -21687,7 +21672,7 @@ class Solution {
         this.n = n;
         total = m * n;
     }
-    
+
     public int[] flip() {
         int ri = random.nextInt(total); // [0,total)随机位置
         total--;
@@ -21695,7 +21680,7 @@ class Solution {
         map.put(ri, map.getOrDefault(total, total)); // TODO 精髓，该位置为当前total位置的值（把后面置换到前面）
         return new int[]{idx / n, idx % n};
     }
-    
+
     public void reset() {
         total = this.m * this.n;
         map.clear();
@@ -22205,7 +22190,7 @@ class TopVotedCandidate {
             tops.add(maxVotePerson); // 记录当前时刻最高票人选
         }
     }
-    
+
     public int q(int t) {
         // 二分查找t的位置 TODO 比较特殊的二分查找，需要注意
         int l = 0, r = times.length - 1;
@@ -23066,6 +23051,16 @@ class Solution {
 }
 ```
 
+## [1629. 按键持续时间最长的键](https://leetcode-cn.com/problems/slowest-key/)
+
+> 数组，字符串
+
+```java
+
+```
+
+
+
 # Java算法模板
 
 ## BFS
@@ -23148,17 +23143,17 @@ boolean DFS(Node cur, Node target, Set<Node> visited) {
 ```java
 private static List<Integer> result = new ArrayList<>();
 public static List<Integer> DFS(TreeNode root) {
-		if (root == null) {
-				return null;
-		}
-		result.add(root.val);
-		if (root.left != null) {
-				DFS(root.left);
-		}
-		if (root.right != null) {
- 				DFS(root.right);
-		}
-		return result;
+        if (root == null) {
+                return null;
+        }
+        result.add(root.val);
+        if (root.left != null) {
+                DFS(root.left);
+        }
+        if (root.right != null) {
+                 DFS(root.right);
+        }
+        return result;
 }
 ```
 
@@ -23166,22 +23161,22 @@ public static List<Integer> DFS(TreeNode root) {
 
 ```java
 public static List<Integer> DFS(TreeNode root) {
-		if (root == null) {
-				return null;
-		}
-		Stack<TreeNode> stack = new Stack<>();
-		stack.push(root);
-		List<Integer> result = new ArrayList<>();
-		while (!stack.isEmpty()) {
-				TreeNode treeNode = stack.pop();
-				result.add(treeNode.val);
-				if (treeNode.right != null) {
-						stack.push(treeNode.right);
-				}
-				if (treeNode.left != null) {
-						stack.push(treeNode.left);
-				}
-		}
+        if (root == null) {
+                return null;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        List<Integer> result = new ArrayList<>();
+        while (!stack.isEmpty()) {
+                TreeNode treeNode = stack.pop();
+                result.add(treeNode.val);
+                if (treeNode.right != null) {
+                        stack.push(treeNode.right);
+                }
+                if (treeNode.left != null) {
+                        stack.push(treeNode.left);
+                }
+        }
     return result;
 }
 ```
@@ -23257,11 +23252,11 @@ void QuickSort(int arr, int left, int right) {
         return;
     int i = left, j = right, pivot = arr[left];
     while(i < j) {
-				while(i<j && arr[j] >= pivot) j--;
+                while(i<j && arr[j] >= pivot) j--;
             arr[i] = arr[j];
         while(i<j && arr[i] <= pivot) i++;
             arr[j] = arr[i];
-		}
+        }
     arr[i] = pivot;
     QuickSort(arr, left, i - 1);
     QuickSort(arr, i + 1, right);
@@ -23301,19 +23296,17 @@ public void swap(List<Integer> results, int index1, int index2) {
 }
 ```
 
-
-
 ## 回溯法
 
 ```java
 List<List<Integer>> result = new ArrayList<>();
 private void backtrack(路径, 选择列表) {
     if(满足结束条件) {
-    		result.add(路径)
+            result.add(路径)
         return
     }
     for (选择: 选择列表) {
-    		做选择
+            做选择
         backtrack(路径, 选择列表)
         撤销选择
     }
@@ -23324,132 +23317,130 @@ private void backtrack(路径, 选择列表) {
 
 ### 递归
 
-
-
 ### 迭代
 
 ### 前序遍历
 
 ```java
-	public static void preOrder(TreeNode root){
-		if(root != null){
-			System.out.print(root.val + " ");
-			preOrder(root.left);
-			preOrder(root.right);
-		}
-	}
+    public static void preOrder(TreeNode root){
+        if(root != null){
+            System.out.print(root.val + " ");
+            preOrder(root.left);
+            preOrder(root.right);
+        }
+    }
 ```
 
 ```java
 public static ArrayList preOrder1(TreeNode root){
-	Stack<TreeNode> stack = new Stack<TreeNode>();
-	ArrayList alist = new ArrayList();
-	TreeNode p = root;
-	while(p != null || !stack.empty()){
-		while(p != null){
-			alist.add(p.val);
-			stack.push(p);
-			p = p.left;
-		}
-		if(!stack.empty()){
-			TreeNode temp = stack.pop();
-			p = temp.right;
-		}
-	}
-	return alist;
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    ArrayList alist = new ArrayList();
+    TreeNode p = root;
+    while(p != null || !stack.empty()){
+        while(p != null){
+            alist.add(p.val);
+            stack.push(p);
+            p = p.left;
+        }
+        if(!stack.empty()){
+            TreeNode temp = stack.pop();
+            p = temp.right;
+        }
+    }
+    return alist;
 }
 ```
+
 ### 中序遍历
 
 ```java
-	public static void inOrder(TreeNode root){
-		if(root != null){
-			inOrder(root.left);
-			System.out.print(root.val + " ");
-			inOrder(root.right);
-		}
-	}
+    public static void inOrder(TreeNode root){
+        if(root != null){
+            inOrder(root.left);
+            System.out.print(root.val + " ");
+            inOrder(root.right);
+        }
+    }
 ```
 
 ```java
 public static ArrayList inOrder1(TreeNode root){
-	ArrayList alist = new ArrayList();
-	Stack<TreeNode> stack = new Stack<TreeNode>();
-	TreeNode p = root;
-	while(p != null || !stack.empty()){
-		while(p != null){
-			stack.push(p);
-			p = p.left;
-		}
-		if(!stack.empty()){
-			TreeNode temp = stack.pop();
-			alist.add(temp.val);
-			p = temp.right;
-		}
-	}
-	return alist;
+    ArrayList alist = new ArrayList();
+    Stack<TreeNode> stack = new Stack<TreeNode>();
+    TreeNode p = root;
+    while(p != null || !stack.empty()){
+        while(p != null){
+            stack.push(p);
+            p = p.left;
+        }
+        if(!stack.empty()){
+            TreeNode temp = stack.pop();
+            alist.add(temp.val);
+            p = temp.right;
+        }
+    }
+    return alist;
 }
 ```
+
 ### 后序遍历
 
 ```java
-	public static void postOrder(TreeNode root){
-		if(root != null){
-			postOrder(root.left);
-			postOrder(root.right);
-			System.out.print(root.val + " ");
-		}
-	}
+    public static void postOrder(TreeNode root){
+        if(root != null){
+            postOrder(root.left);
+            postOrder(root.right);
+            System.out.print(root.val + " ");
+        }
+    }
 ```
 
 ```java
-	public static ArrayList postOrder1(TreeNode root){
-		ArrayList alist = new ArrayList();
-		Stack<TreeNode> stack = new Stack<TreeNode>();
-		if(root == null)
-			return alist;
-		TreeNode cur,pre = null;
-		stack.push(root);
-		while(!stack.empty()){
-			cur = stack.peek();
-			if((cur.left == null && cur.right == null) || (pre != null && (cur.left == pre || cur.right == pre))){
-				TreeNode temp = stack.pop();
-				alist.add(temp.val);
-				pre = temp;
-			}
-			else{
-				if(cur.right != null)
-					stack.push(cur.right);
-				if(cur.left != null)
-					stack.push(cur.left);
-			}
-		}
-		return alist;
-	}
+    public static ArrayList postOrder1(TreeNode root){
+        ArrayList alist = new ArrayList();
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        if(root == null)
+            return alist;
+        TreeNode cur,pre = null;
+        stack.push(root);
+        while(!stack.empty()){
+            cur = stack.peek();
+            if((cur.left == null && cur.right == null) || (pre != null && (cur.left == pre || cur.right == pre))){
+                TreeNode temp = stack.pop();
+                alist.add(temp.val);
+                pre = temp;
+            }
+            else{
+                if(cur.right != null)
+                    stack.push(cur.right);
+                if(cur.left != null)
+                    stack.push(cur.left);
+            }
+        }
+        return alist;
+    }
 ```
 
 ### 层序遍历
 
 ```java
-	private static void levelOrder(TreeNode root) {
-		Queue<TreeNode> queue = new LinkedList<TreeNode>();
-		if(root == null)
-			return;
-		queue.offer(root);
-		while(!queue.isEmpty()){
-			TreeNode temp  = queue.poll();
-			System.out.print(temp.val + " ");
-			if(temp.left != null)
-				queue.offer(temp.left);
-			if(temp.right != null)
-				queue.offer(temp.right);
-		}
-	}
+    private static void levelOrder(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        if(root == null)
+            return;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            TreeNode temp  = queue.poll();
+            System.out.print(temp.val + " ");
+            if(temp.left != null)
+                queue.offer(temp.left);
+            if(temp.right != null)
+                queue.offer(temp.right);
+        }
+    }
 ```
 
 ### 构造完全二叉树
-
-
 
 ### 并查集
 
@@ -23509,15 +23500,15 @@ private class UnionFind {
 ### Trie树
 
 > 又称字典树、前缀树、单词查找树、键树，多叉哈希树
->
+> 
 > Trie树典型应用是用于快速检索（最长前缀匹配），统计，排序和保存大量的字符串，所以经常被搜索引擎系统用于文本词频统计，搜索提示等场景。它的优点是最大限度地减少无谓的字符串比较，查询效率比较高。
->
+> 
 > https://mp.weixin.qq.com/s?__biz=MzU4NDE3MTEyMA==&mid=2247488490&idx=1&sn=db2998cb0e5f08684ee1b6009b974089&chksm=fd9cb8f5caeb31e3f7f67dba981d8d01a24e26c93ead5491edb521c988adc0798d8acb6f9e9d&token=1232059512&lang=zh_CN#rd
 
 ```java
 class Trie {
     TrieNode root;
-    
+
     class TrieNode {
         String word = ""; // 在结尾处记录单词（可选）
         boolean end = false; // 是否单词结尾（可选）
@@ -23528,7 +23519,7 @@ class Trie {
     public Trie() {
         root = new TrieNode();
     }
-    
+
     public void insert(String s) {
         TrieNode p = root;
         for(int i = 0; i < s.length(); i++) {
@@ -23860,22 +23851,22 @@ https://zhuanlan.zhihu.com/p/107793995
 
 **Queue VS Deque**
 
-| `Queue` Method                                               | Equivalent `Deque` Method                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [`add(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#add(E)) | [`addLast(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#addLast(E)) |
-| [`offer(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#offer(E)) | [`offerLast(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#offerLast(E)) |
-| [`remove()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#remove()) | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
-| [`poll()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#poll()) | [`pollFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pollFirst()) |
-| [`element()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#element()) | [`getFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#getFirst()) |
-| [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek()) | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst()) |
+| `Queue` Method                                                                           | Equivalent `Deque` Method                                                                        |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [`add(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#add(E))       | [`addLast(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#addLast(E))       |
+| [`offer(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#offer(E))   | [`offerLast(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#offerLast(E))   |
+| [`remove()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#remove())   | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
+| [`poll()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#poll())       | [`pollFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pollFirst())     |
+| [`element()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#element()) | [`getFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#getFirst())       |
+| [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek())       | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst())     |
 
 **Stack VS Deque**
 
-| Stack Method                                                 | Equivalent `Deque` Method                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| [`push(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#push(E)) | [`addFirst(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#addFirst(E)) |
-| [`pop()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pop()) | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
-| [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek()) | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst()) |
+| Stack Method                                                                         | Equivalent `Deque` Method                                                                        |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [`push(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#push(E)) | [`addFirst(e)`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#addFirst(E))     |
+| [`pop()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#pop())     | [`removeFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#removeFirst()) |
+| [`peek()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peek())   | [`peekFirst()`](https://docs.oracle.com/javase/10/docs/api/java/util/Deque.html#peekFirst())     |
 
 ## Queue 队列
 
@@ -24082,69 +24073,68 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
 
 + 数组排序
-
-	```java
-	Arrays.sort(A); // 如果是字符数组，则是先大写后小写，用的是双轴快排
-	Arrays.sort(A, Collections.reverseOrder()); // 逆序，必须是Integer[]，或者从后往前处理
-	Arrays.sort(A, String.CASE_INSENSITIVE_ORDER); // 字符串排序，忽略大小写
-	// 对于基本类型的数组如int[]/double[]/char[]，Arrays类只提供了默认的升序排列，没有降序
-	int[] newA = Arrays.stream(A).boxed().sorted((a, b) -> b - a).mapToInt(p -> p).toArray();
-	// Integer[]逆序
-	Arrays.sort(A, new Comparator<Integer>(){
-		public int compare(Integer a, Integer b){
-			return b - a;
-		}
-	});
-	Arrays.sort(A, (a, b) -> b - a);
-	// 给某区间按c比较器（可选）排序
-	Arrays.sort(A, fromIndex, toIndex, c);
-	// 按字符串长度排序
-	Arrays.sort(A, (a, b) -> Integer.signum(a.length() - b.length()));
-	Arrays.sort(A, Comparator.comparingInt(String::length));
-	Arrays.sort(A, (a, b) -> a.length() - b.length());
-	Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length());
-	// 二维数组排序
-	Arrays.sort(AA, new Comparator<?>() {
-		@Override
-		private int Compare(int[] a, int[] b) {
-			return a[0] > b[0] ? -1: 1;
-		}
-	})
-	```
-
+  
+  ```java
+  Arrays.sort(A); // 如果是字符数组，则是先大写后小写，用的是双轴快排
+  Arrays.sort(A, Collections.reverseOrder()); // 逆序，必须是Integer[]，或者从后往前处理
+  Arrays.sort(A, String.CASE_INSENSITIVE_ORDER); // 字符串排序，忽略大小写
+  // 对于基本类型的数组如int[]/double[]/char[]，Arrays类只提供了默认的升序排列，没有降序
+  int[] newA = Arrays.stream(A).boxed().sorted((a, b) -> b - a).mapToInt(p -> p).toArray();
+  // Integer[]逆序
+  Arrays.sort(A, new Comparator<Integer>(){
+      public int compare(Integer a, Integer b){
+          return b - a;
+      }
+  });
+  Arrays.sort(A, (a, b) -> b - a);
+  // 给某区间按c比较器（可选）排序
+  Arrays.sort(A, fromIndex, toIndex, c);
+  // 按字符串长度排序
+  Arrays.sort(A, (a, b) -> Integer.signum(a.length() - b.length()));
+  Arrays.sort(A, Comparator.comparingInt(String::length));
+  Arrays.sort(A, (a, b) -> a.length() - b.length());
+  Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length());
+  // 二维数组排序
+  Arrays.sort(AA, new Comparator<?>() {
+      @Override
+      private int Compare(int[] a, int[] b) {
+          return a[0] > b[0] ? -1: 1;
+      }
+  })
+  ```
 - 数组相等
-
+  
   ```java
   Arrays.equals(arr1, arr2)
   ```
 
 - 数组复制
-
-	```java
-	Arrays.copyOfRange(nums, 0, k)
-	System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
-	```
+  
+  ```java
+  Arrays.copyOfRange(nums, 0, k)
+  System.arraycopy(Object src【原数组】, int srcPos【原数组开始位置】, Object dest【目标数组】, int destPos【目标数组开始位置】, int length【拷贝长度】);
+  ```
 
 - 数组求和、找最大、找最小（效率不高）
-
-	```java
-	int max = Arrays.stream(arr).max().getAsInt();
-	int min = Arrays.stream(arr).min().getAsInt();
-	int total = Arrays.stream(arr).sum()
-	```
+  
+  ```java
+  int max = Arrays.stream(arr).max().getAsInt();
+  int min = Arrays.stream(arr).min().getAsInt();
+  int total = Arrays.stream(arr).sum()
+  ```
 
 - 数组打印
-
-	```java
-	Object[] arr;
-	for (int i = 0; i < arr.length; i++)
-	    System.out.print(arr[i] + ", "); 
-	for(Object item: arr) 
-	    System.out.println(item + ", ");
-	System.out.println(Arrays.toString(arr));
-	System.out.println(Arrays.asList(arr));
-	Arrays.asList(arr).stream().forEach(item -> System.out.println(item));
-	```
+  
+  ```java
+  Object[] arr;
+  for (int i = 0; i < arr.length; i++)
+      System.out.print(arr[i] + ", "); 
+  for(Object item: arr) 
+      System.out.println(item + ", ");
+  System.out.println(Arrays.toString(arr));
+  System.out.println(Arrays.asList(arr));
+  Arrays.asList(arr).stream().forEach(item -> System.out.println(item));
+  ```
 
 ## 集合类
 
@@ -24155,42 +24145,40 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 + 计数哈希表构建：map.put(val, map.getOrDefault(val, 0) + 1);
 
 + 哈希表（复杂value）获取key并操作，eg：
-
-	```java
-	Map<Integer, PriorityQueue<Character>> map = new HashMap<>();
-	map.computeIfAbsent(key, key -> new PriorityQueue<>()).offer(ch);
-	```
+  
+  ```java
+  Map<Integer, PriorityQueue<Character>> map = new HashMap<>();
+  map.computeIfAbsent(key, key -> new PriorityQueue<>()).offer(ch);
+  ```
 
 + 大顶堆：new PriorityQueue<>(Collections.reverseOrder());或者new PriorityQueue<>((x,y)->y-x);
-
-
 - 复杂Map遍历
-
-	```java
-	// 例如Map<Integer, int[]>
-	for (Map.Entry<Integer, int[]> entry : map.entrySet()) {
-	    int[] arr = entry.getValue();
-	    //...
-	}
-	```
+  
+  ```java
+  // 例如Map<Integer, int[]>
+  for (Map.Entry<Integer, int[]> entry : map.entrySet()) {
+      int[] arr = entry.getValue();
+      //...
+  }
+  ```
 
 - List求和（流）
-
-	```java
-	long sum = list.stream().mapToLong(User::getAge).sum(); // List<User>
-	long sum = list.stream().reduce(Integer::sum).orElse(0); // List<Integer>
-	```
+  
+  ```java
+  long sum = list.stream().mapToLong(User::getAge).sum(); // List<User>
+  long sum = list.stream().reduce(Integer::sum).orElse(0); // List<Integer>
+  ```
 
 - 栈和队列
-
-	```java
-	// 栈（DFS非递归常用）
-	Deque<T> stack = new LinkedList<>(); // push/pop/peek
-	// 队列（BFS常用）
-	Queue<T> q = new LinkedList<>(); // offer/poll
-	// 通用
-	LinkedList<T> l = new LinkedList<>(); // +first/+last
-	```
+  
+  ```java
+  // 栈（DFS非递归常用）
+  Deque<T> stack = new LinkedList<>(); // push/pop/peek
+  // 队列（BFS常用）
+  Queue<T> q = new LinkedList<>(); // offer/poll
+  // 通用
+  LinkedList<T> l = new LinkedList<>(); // +first/+last
+  ```
 
 ## 位运算类
 
@@ -24207,35 +24195,35 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 - x & ~x <=> 0
 
 - 指定位置的位运算
-	将X最右边的n位清零：x & (~0 << n)
-	获取x的第n位值：(x >> n) & 1
-	获取x的第n位的幂值：x & (1 << n)
-	仅将第n位置为1：x | (1 << n)
-	仅将第n位置为0：x & (~(1 << n))
-	将x最高位至第n位（含）清零：x & ((1 << n) - 1)
-	将第n位至第0位（含）清零：x & (~((1 << (n + 1)) - 1))
+    将X最右边的n位清零：x & (~0 << n)
+    获取x的第n位值：(x >> n) & 1
+    获取x的第n位的幂值：x & (1 << n)
+    仅将第n位置为1：x | (1 << n)
+    仅将第n位置为0：x & (~(1 << n))
+    将x最高位至第n位（含）清零：x & ((1 << n) - 1)
+    将第n位至第0位（含）清零：x & (~((1 << (n + 1)) - 1))
 
 - 异或结合律
-
-	(类似点乘法结合律)
-
-	x ^ 0 = x, x ^ x = 0
-	x ^ (~0) = ~x, x ^ (~x) = ~0
-	a ^ b = c, a ^ c = b, b ^ c = a
-
-	字母表示：(a ^ b) ^ c = a ^ (b ^ c)
-	图形表示：(☆ ^ ◇) ^ △ = ☆ ^ (◇ ^ △)
+  
+    (类似点乘法结合律)
+  
+    x ^ 0 = x, x ^ x = 0
+    x ^ (~0) = ~x, x ^ (~x) = ~0
+    a ^ b = c, a ^ c = b, b ^ c = a
+  
+    字母表示：(a ^ b) ^ c = a ^ (b ^ c)
+    图形表示：(☆ ^ ◇) ^ △ = ☆ ^ (◇ ^ △)
 
 - 大小字母位运算技巧
-
-	大写变小写、小写变大写：字符 ^= 32 （大写 ^= 32 相当于 +32，小写 ^= 32 相当于 -32）
-	大写变小写、小写变小写：字符 |= 32 （大写 |= 32 就相当于+32，小写 |= 32 不变）
-	大写变大写、小写变大写：字符 &= -33 （大写 ^= -33 不变，小写 ^= -33 相当于 -32）
+  
+    大写变小写、小写变大写：字符 ^= 32 （大写 ^= 32 相当于 +32，小写 ^= 32 相当于 -32）
+    大写变小写、小写变小写：字符 |= 32 （大写 |= 32 就相当于+32，小写 |= 32 不变）
+    大写变大写、小写变大写：字符 &= -33 （大写 ^= -33 不变，小写 ^= -33 相当于 -32）
 
 - int整数表示字符串字母集合（不考虑char出现的频数）：对每个ch计算mask |= (1 << (ch - 'a'))
 
 - int的bit数
-
+  
   ```java
   public int countOnes(int x) {
       // return Integer.bitCount(x);
@@ -24250,14 +24238,14 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
   ```
 
 - [Integer常用函数和位运算技巧](https://blog.csdn.net/youyou1543724847/article/details/52385775)
-
+  
   ```java
   前导0计数:Integer.numberOfLeadingZeros
   后缀0计数:Integer.numberOfTailingZeros（最后一个1的位置）
   ```
 
 - 二进制子集遍历
-
+  
   ```java
   for (int x = mask; x != 0; x = (x - 1) & mask) {
       System.out.println(x);
@@ -24269,22 +24257,22 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 - 判断字符是否是数字：Character.isDigit(ch)
 
 - 获取随机数
-
-	```java
-	int x = (int)(Math.random() * total) + 1;
-	```
+  
+  ```java
+  int x = (int)(Math.random() * total) + 1;
+  ```
 
 - Math计算判断整数
-
-	```java
-	Math.abs(x - Math.round(x)) < Math.pow(10, -14);
-	```
+  
+  ```java
+  Math.abs(x - Math.round(x)) < Math.pow(10, -14);
+  ```
 
 - 求模防止溢出（X是一个可能溢出的计算式）
-
-	```java
-	(int)((long)X % MOD)
-	```
+  
+  ```java
+  (int)((long)X % MOD)
+  ```
 
 # 未完成
 
