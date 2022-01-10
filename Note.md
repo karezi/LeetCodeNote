@@ -23056,10 +23056,91 @@ class Solution {
 > 数组，字符串
 
 ```java
-
+class Solution {
+    public char slowestKey(int[] releaseTimes, String keysPressed) {
+        char res = keysPressed.charAt(0);
+        int max = releaseTimes[0];
+        int[] cnt = new int[26];
+        cnt[res - 'a'] = max;
+        for (int i = 1; i < keysPressed.length(); ++i) {
+            char c = keysPressed.charAt(i);
+            int offset = c - 'a';
+            int time = releaseTimes[i] - releaseTimes[i - 1];
+            if (time == max && c > res) {
+                res = c;
+            } else if (time > max) {
+                max = time;
+                res = c;
+            }
+        }
+        return res;
+    }
+}
 ```
 
+## [306. 累加数](https://leetcode-cn.com/problems/additive-number/)
 
+> 字符串，枚举，回溯，高精度，深度优先搜索，剪枝
+
+```java
+class Solution {
+    public boolean isAdditiveNumber(String num) {
+        // 确定前两个数的长度[1,(n-1)/2][1,(n-1)/2]
+        int n = num.length();
+        int half = (n - 1) / 2;
+        for (int i = 1; i <= half; ++i) {
+            for (int j = 1; i + j < n; ++j) {
+                if (num.charAt(i) == '0' && j > 1)
+                    continue;
+                if (check(num, 0, i, i + j))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean check(String num, int a, int b, int c) {
+        if (c >= num.length()) return false;
+        String cur1 = num.substring(a, b);
+        String cur2 = num.substring(b, c);
+        if (cur1.startsWith("0") && !cur1.equals("0") || cur2.startsWith("0") && !cur2.equals("0"))
+            return false;
+        String sum = add(cur1, cur2);
+        int d = c + sum.length();
+        if (d > num.length()) return false;
+        if (num.substring(c, d).equals(sum)) {
+            if (d == num.length()) return true;
+            return check(num, b, c, d);
+        } else {
+            return false;
+        }
+    }
+
+    private String add(String a, String b) {
+        int carry = 0, lena = a.length(), lenb = b.length(), max = Math.max(lena, lenb);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < max; ++i) {
+            int aa = 0, bb = 0;
+            if (i < lena) {
+                aa = a.charAt(lena - 1 - i) - '0';
+            }
+            if (i < lenb) {
+                bb = b.charAt(lenb - 1 - i) - '0';
+            }
+            int sum = aa + bb + carry;
+            if (sum >= 10) {
+                carry = 1;
+                sb.insert(0, sum - 10);
+            } else {
+                carry = 0;
+                sb.insert(0, sum);
+            }
+        }
+        if (carry == 1) sb.insert(0, 1);
+        return sb.toString();
+    }
+}
+```
 
 # Java算法模板
 
