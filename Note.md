@@ -23142,6 +23142,29 @@ class Solution {
 }
 ```
 
+## [334. 递增的三元子序列](https://leetcode-cn.com/problems/increasing-triplet-subsequence/)
+
+> 贪心，数组
+
+```java
+class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int first = nums[0], second = Integer.MAX_VALUE;
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] > second) {
+                return true;
+            } else if (nums[i] > first) {
+                second = nums[i];
+            } else {
+                first = nums[i];
+            }
+        }
+        return false;
+    }
+}
+```
+TODO 最长上升子序列LIS（贪心+二分）；序列DP超时；左右最小值数组
+
 # Java算法模板
 
 ## BFS
@@ -24436,3 +24459,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [1044. 最长重复子串](https://leetcode-cn.com/problems/longest-duplicate-substring/)
 
 ## [913. 猫和老鼠](https://leetcode-cn.com/problems/cat-and-mouse/)
+
+## [1036. 逃离大迷宫](https://leetcode-cn.com/problems/escape-a-large-maze/)
