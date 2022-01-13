@@ -23165,6 +23165,28 @@ class Solution {
 ```
 TODO 最长上升子序列LIS（贪心+二分）；序列DP超时；左右最小值数组
 
+## [747. 至少是其他数字两倍的最大数](https://leetcode-cn.com/problems/largest-number-at-least-twice-of-others/)
+
+> 数组，排序
+
+```java
+class Solution {
+    public int dominantIndex(int[] nums) {
+        int max = -1, nextMax = -1, idx = -1;
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] > max) {
+                nextMax = max;
+                max = nums[i];
+                idx = i;
+            } else if (nums[i] > nextMax) {
+                nextMax = nums[i];
+            }
+        }
+        return max >= nextMax * 2 ? idx : -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
