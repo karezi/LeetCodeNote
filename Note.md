@@ -23187,6 +23187,26 @@ class Solution {
 }
 ```
 
+# [1716. 计算力扣银行的钱](https://leetcode-cn.com/problems/calculate-money-in-leetcode-bank/)
+> 
+```java
+class Solution {
+    public int totalMoney(int n) {
+        // 所有完整周钱
+        int x = n / 7;
+        int firstWeek = 28;
+        int lastWeek = firstWeek + 7 * (x - 1);
+        int week = (firstWeek + lastWeek) * x / 2;
+        // 剩下的
+        int y = n % 7;
+        int firstDay = 1 + x;
+        int lastDay = firstDay + y - 1;
+        int day = (firstDay + lastDay) * y / 2;
+        return week + day;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -24483,3 +24503,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [913. 猫和老鼠](https://leetcode-cn.com/problems/cat-and-mouse/)
 
 ## [1036. 逃离大迷宫](https://leetcode-cn.com/problems/escape-a-large-maze/)
+
+## [373. 查找和最小的 K 对数字](https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums/)
