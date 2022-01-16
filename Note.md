@@ -23187,7 +23187,7 @@ class Solution {
 }
 ```
 
-# [1716. 计算力扣银行的钱](https://leetcode-cn.com/problems/calculate-money-in-leetcode-bank/)
+## [1716. 计算力扣银行的钱](https://leetcode-cn.com/problems/calculate-money-in-leetcode-bank/)
 > 
 ```java
 class Solution {
@@ -23203,6 +23203,51 @@ class Solution {
         int lastDay = firstDay + y - 1;
         int day = (firstDay + lastDay) * y / 2;
         return week + day;
+    }
+}
+```
+
+## [382. 链表随机节点](https://leetcode-cn.com/problems/linked-list-random-node/)
+
+> 蓄水池抽样，链表，数学，随机化
+
+```java
+class Solution {
+    private List<Integer> list = new ArrayList<>();
+    private Random rand = new Random();;
+
+    public Solution(ListNode head) {
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+    }
+    
+    public int getRandom() {
+        return list.get(rand.nextInt(list.size()));
+    }
+}
+```
+未知数量的随机可以用蓄水池/水塘抽样
+```java
+class Solution {
+    ListNode head;
+    Random random;
+
+    public Solution(ListNode head) {
+        this.head = head;
+        random = new Random();
+    }
+
+    public int getRandom() {
+        int i = 1, ans = 0;
+        for (ListNode p = head; p != null; p = p.next) {
+            if (random.nextInt(i) == 0) { // 1/i 的概率选中（替换为答案）
+                ans = p.val;
+            }
+            ++i;
+        }
+        return ans;
     }
 }
 ```
