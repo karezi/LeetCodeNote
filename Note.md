@@ -23252,6 +23252,32 @@ class Solution {
 }
 ```
 
+## [539. 最小时间差](https://leetcode-cn.com/problems/minimum-time-difference/)
+
+> 数组，数学，鸽巢原理，字符串，排序
+
+```java
+class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        int n = timePoints.size();
+        if (n > 1440) return 0;
+        Collections.sort(timePoints);
+        int min = 1440;
+        for (int i = 1; i < n; ++i) {
+            if (timePoints.get(i).equals(timePoints.get(i - 1))) return 0;
+            min = Math.min(min, getIntTime(timePoints.get(i)) - getIntTime(timePoints.get(i - 1)));
+        }
+        min = Math.min(min, 1440 - getIntTime(timePoints.get(n - 1)) + getIntTime(timePoints.get(0)));
+        return min;
+    }
+
+    private int getIntTime(String str) {
+        String[] ss = str.split(":");
+        return Integer.parseInt(ss[0]) * 60 + Integer.parseInt(ss[1]);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -24550,3 +24576,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [1036. 逃离大迷宫](https://leetcode-cn.com/problems/escape-a-large-maze/)
 
 ## [373. 查找和最小的 K 对数字](https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums/)
+
+## [1220. 统计元音字母序列的数目](https://leetcode-cn.com/problems/count-vowels-permutation/)
