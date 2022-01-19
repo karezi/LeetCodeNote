@@ -23278,6 +23278,41 @@ class Solution {
 }
 ```
 
+## [219. 存在重复元素 II](https://leetcode-cn.com/problems/contains-duplicate-ii/)
+
+> 数组，哈希表，滑动窗口
+
+执行用时：17 ms, 在所有 Java 提交中击败了93.76%的用户
+内存消耗：47.4 MB, 在所有 Java 提交中击败了73.06%的用户
+
+```java
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        int n = nums.length;
+        if (k >= n) {
+            Set tmp = new HashSet<>();
+            for (int num: nums) {
+                tmp.add(num);
+            }
+            return tmp.size() != n;
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i <= k; ++i) {
+            set.add(nums[i]);
+        }
+        if (set.size() < k + 1) return true;
+        for (int i = k + 1; i < n; ++i) {
+            set.remove(nums[i - k - 1]);
+            set.add(nums[i]);
+            if (set.size() < k + 1)
+                return true;
+        }
+        return false;
+    }
+}
+```
+TODO 滑动窗口，哈希表
+
 # Java算法模板
 
 ## BFS
