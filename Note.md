@@ -23313,6 +23313,25 @@ class Solution {
 ```
 TODO 滑动窗口，哈希表
 
+## [1332. 删除回文子序列](https://leetcode-cn.com/problems/remove-palindromic-subsequences/)
+
+> 双指针，字符串，回文串
+
+```java
+class Solution {
+    public int removePalindromeSub(String s) {
+        // 只有本身就是回文串（1次）和2次两种可能
+        int n = s.length();
+        for (int i = 0; i < n / 2; ++i) {
+            if (s.charAt(i) != s.charAt(n - i - 1)) {
+                return 2;
+            }
+        }
+        return 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -24613,3 +24632,7 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [373. 查找和最小的 K 对数字](https://leetcode-cn.com/problems/find-k-pairs-with-smallest-sums/)
 
 ## [1220. 统计元音字母序列的数目](https://leetcode-cn.com/problems/count-vowels-permutation/)
+
+## [2029. 石子游戏 IX](https://leetcode-cn.com/problems/stone-game-ix/)
+
+## [跳跃游戏 IV](https://leetcode-cn.com/problems/jump-game-iv/solution/tiao-yue-you-xi-iv-by-leetcode-solution-zsix/)
