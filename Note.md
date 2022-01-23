@@ -23332,6 +23332,50 @@ class Solution {
 }
 ```
 
+## [2034. 股票价格波动](https://leetcode-cn.com/problems/stock-price-fluctuation/submissions/)
+
+> 设计，哈希表，数据流，有序列表，堆，优先队列
+
+```java
+class StockPrice {
+    private int currentTime;
+    private Map<Integer, Integer> map; // <时间,价格>
+    private TreeMap<Integer, Integer> treeMap; // <价格,时间个数>
+
+    public StockPrice() {
+        map = new HashMap<>();
+        treeMap = new TreeMap<>();
+    }
+    
+    public void update(int timestamp, int price) {
+        currentTime = Math.max(currentTime, timestamp);
+        if (map.containsKey(timestamp)) {
+            int old = map.get(timestamp);
+            int cnt = treeMap.get(old);
+            if (cnt == 1) {
+                treeMap.remove(old);
+            } else {
+                treeMap.put(old, cnt - 1);
+            }
+        }
+        map.put(timestamp, price);
+        treeMap.put(price, treeMap.getOrDefault(price, 0) + 1);
+    }
+    
+    public int current() {
+        return map.get(currentTime);
+    }
+    
+    public int maximum() {
+        return treeMap.lastKey();
+    }
+    
+    public int minimum() {
+        return treeMap.firstKey();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
