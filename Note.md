@@ -23375,6 +23375,66 @@ class StockPrice {
     }
 }
 ```
+## [2013. 检测正方形](https://leetcode-cn.com/problems/detect-squares/)
+
+> 数组，哈希，设计，计数
+
+```java
+class DetectSquares {
+    Map<Integer, List<Integer>> lineMap;
+    Map<String, Integer> map;
+
+    public DetectSquares() {
+        lineMap = new HashMap<>();
+        map = new HashMap<>();
+    }
+    
+    public void add(int[] point) {
+        int x = point[0], y = point[1];
+        String str = x + "," + y;
+        map.put(str, map.getOrDefault(str, 0) + 1);
+        if (lineMap.containsKey(x)) {
+            List<Integer> list = lineMap.get(x);
+            list.add(y);
+        } else {
+            List<Integer> list = new ArrayList<>();
+            list.add(y);
+            lineMap.put(x, list);
+        }
+    }
+    
+    public int count(int[] point) {
+        int ret = 0;
+        int x = point[0], y = point[1];
+        if (lineMap.containsKey(x)) {
+            for (Integer y2: lineMap.get(x)) {
+                if (y != y2) {
+                    int delta = Math.abs(y - y2);
+                    // 左边
+                    String l1Str = (x - delta) + "," + y;
+                    String l2Str = (x - delta) + "," + y2;
+                    ret += map.getOrDefault(l1Str, 0) * map.getOrDefault(l2Str, 0);
+                    // 右边
+                    String r1Str = (x + delta) + "," + y;
+                    String r2Str = (x + delta) + "," + y2;
+                    int[] r1 = new int[]{x + delta, y};
+                    int[] r2 = new int[]{x + delta, y2};
+                    ret += map.getOrDefault(r1Str, 0) * map.getOrDefault(r2Str, 0);
+                }
+            }
+        }
+        return ret;
+    }
+}
+
+/**
+ * Your DetectSquares object will be instantiated and called as such:
+ * DetectSquares obj = new DetectSquares();
+ * obj.add(point);
+ * int param_2 = obj.count(point);
+ */
+```
+TODO Map<x, Map<y, 个数>>更简单
 
 # Java算法模板
 
@@ -24680,3 +24740,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [2029. 石子游戏 IX](https://leetcode-cn.com/problems/stone-game-ix/)
 
 ## [跳跃游戏 IV](https://leetcode-cn.com/problems/jump-game-iv/solution/tiao-yue-you-xi-iv-by-leetcode-solution-zsix/)
+
+## [2045. 到达目的地的第二短时间](https://leetcode-cn.com/problems/second-minimum-time-to-reach-destination/)
