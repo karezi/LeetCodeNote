@@ -23436,6 +23436,51 @@ class DetectSquares {
 ```
 TODO Map<x, Map<y, 个数>>更简单
 
+## [884. 两句话中的不常见单词](https://leetcode-cn.com/problems/uncommon-words-from-two-sentences/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public String[] uncommonFromSentences(String s1, String s2) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(s1).append(" ").append(s2);
+        String[] strs = sb.toString().split(" ");
+        HashMap<String, Integer> map = new HashMap();
+        for (String str: strs) {
+            map.put(str, map.getOrDefault(str, 0) + 1);
+        }
+        List<String> list = new ArrayList<>();
+        for (String str: map.keySet()) {
+            if (map.get(str) == 1)
+                list.add(str);
+        }
+        return list.toArray(new String[0]);
+    }
+}
+```
+
+## [181. 超过经理收入的员工](https://leetcode-cn.com/problems/employees-earning-more-than-their-managers/)
+
+> 数据库，自关联查询
+
+```sql
+SELECT e.Name AS Employee FROM Employee e LEFT JOIN Employee m ON m.Id = e.ManagerId WHERE e.Salary > m.Salary
+```
+
+## [183. 从不订购的客户](https://leetcode-cn.com/problems/customers-who-never-order/)
+
+> 数据库
+
+子查询
+```sql
+SELECT Name AS Customers FROM Customers WHERE Id NOT IN (SELECT CustomerId FROM Orders);
+```
+关联查询
+```sql
+ELECT c.Name AS Customers FROM Customers c LEFT JOIN Orders o ON o.CustomerId = c.Id WHERE o.CustomerId IS NULL
+```
+
 # Java算法模板
 
 ## BFS
@@ -24404,6 +24449,18 @@ String[] stringArr = stringList.toArray(new String[0]);
 String.join("", stringArr)
 ```
 
+- `Set<String>`转`String[]`
+
+```java
+String[] string = set.toArray(new String[set.size()]);
+```
+
+- `String[]` 转 `Set<String>`
+
+```java
+Set<String> set = new HashSet<String>(Arrays.asList(strings));
+```
+
 - `String`转`Integer`
 
 ```java
@@ -24421,6 +24478,35 @@ String str = new String(charArr)
 
 ```java
 String str = String.valueOf(i)
+```
+
+- `Map.values`转`List`
+
+```java
+ArrayList<Object> list = new ArrayList(resultMap.values());
+```
+
+- `Map`转`Set`
+
+```java
+map.keySet();
+map.entrySet();
+```
+
+- `Set`转`Map`
+遍历添加暂无简洁方法
+
+- `List`转`Set`
+
+```java
+HashSet<String> set = new HashSet<String>(list);
+```
+
+- `Set`转`List`
+
+```java
+List<T> list = new ArrayList<>();
+list.addAll(set);
 ```
 
 ## 字符串类
@@ -24742,3 +24828,7 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [跳跃游戏 IV](https://leetcode-cn.com/problems/jump-game-iv/solution/tiao-yue-you-xi-iv-by-leetcode-solution-zsix/)
 
 ## [2045. 到达目的地的第二短时间](https://leetcode-cn.com/problems/second-minimum-time-to-reach-destination/)
+
+## [1996. 游戏中弱角色的数量](https://leetcode-cn.com/problems/the-number-of-weak-characters-in-the-game/)
+
+## [1765. 地图中的最高点](https://leetcode-cn.com/problems/map-of-highest-peak/)
