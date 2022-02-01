@@ -23481,6 +23481,46 @@ SELECT Name AS Customers FROM Customers WHERE Id NOT IN (SELECT CustomerId FROM 
 ELECT c.Name AS Customers FROM Customers c LEFT JOIN Orders o ON o.CustomerId = c.Id WHERE o.CustomerId IS NULL
 ```
 
+## []()
+
+> 位运算，哈希表，字符串，滑动窗口
+
+```java
+class Solution {
+    public String longestNiceSubstring(String s) {
+        int n = s.length();
+        String ret = "";
+        int max = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                String str = s.substring(i, j + 1);
+                int len = check(str);
+                if (len > max) {
+                    max = len;
+                    ret = str;
+                }
+            }
+        }
+        return ret;
+    }
+
+    private int check(String str) {
+        boolean[] cs = new boolean[64];
+        for (char c: str.toCharArray()) {
+            if ('A' <= c && c <= 'Z' && cs[c - 'A' + 32] == false) cs[c - 'A' + 32] = true;
+            if ('a' <= c && c <= 'z' && cs[c - 'a'] == false) cs[c - 'a'] = true;
+        }
+        for (int i = 0; i < 32; ++i) {
+            if (cs[i] != cs[i + 32])
+                return 0;
+        }
+        return str.length();
+    }
+}
+```
+
+TODO 分治，滑动窗口，位运算
+
 # Java算法模板
 
 ## BFS
