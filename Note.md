@@ -23521,6 +23521,40 @@ class Solution {
 
 TODO 分治，滑动窗口，位运算
 
+## [2000. 反转单词前缀](https://leetcode-cn.com/problems/reverse-prefix-of-word/)
+
+> 双指针，字符串
+
+```java
+class Solution {
+    public String reversePrefix(String word, char ch) {
+        int index = word.indexOf(ch);
+        if (index == -1) return word;
+        StringBuilder sb = new StringBuilder(word.substring(0, index + 1));
+        return sb.reverse().toString() + word.substring(index + 1, word.length());
+    }
+}
+```
+直接用字符数组双指针
+```java
+class Solution {
+    public String reversePrefix(String word, char ch) {
+        int index = word.indexOf(ch);
+        if (index == -1) return word;
+        char[] cs = word.toCharArray();
+        int left = 0, right = index;
+        while (left < right) {
+            char tmp = cs[left];
+            cs[left] = cs[right];
+            cs[right] = tmp;
+            left++;
+            right--;
+        }
+        return new String(cs);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
