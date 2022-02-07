@@ -23555,6 +23555,40 @@ class Solution {
 }
 ```
 
+## [1405. 最长快乐字符串](https://leetcode-cn.com/problems/longest-happy-string/)
+
+> 贪心，字符串，优先队列
+
+```java
+class Solution {
+    public String longestDiverseString(int a, int b, int c) {
+        StringBuilder sb = new StringBuilder();
+        // 每次从最大开始尝试加，加到不能加加次大
+        PriorityQueue<int[]> q = new PriorityQueue<>((x, y) -> y[1] - x[1]);
+        if (a != 0) q.add(new int[]{0, a});
+        if (b != 0) q.add(new int[]{1, b});
+        if (c != 0) q.add(new int[]{2, c});
+        while (!q.isEmpty()) {
+            int[] max = q.poll();
+            int n = sb.length();
+            if (n >= 2 && sb.charAt(n - 1) == max[0] + 'a' && sb.charAt(n - 2) == max[0] + 'a') {
+                // 不能再加了，加次大
+                if (q.isEmpty()) break;
+                int[] medium = q.poll();
+                sb.append((char)(medium[0] + 'a'));
+                if (--medium[1] > 0) q.add(medium);
+                q.add(max);
+            } else {
+                // 可以加
+                sb.append((char)(max[0] + 'a'));
+                if (--max[1] > 0) q.add(max);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
