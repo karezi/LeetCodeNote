@@ -23481,7 +23481,7 @@ SELECT Name AS Customers FROM Customers WHERE Id NOT IN (SELECT CustomerId FROM 
 ELECT c.Name AS Customers FROM Customers c LEFT JOIN Orders o ON o.CustomerId = c.Id WHERE o.CustomerId IS NULL
 ```
 
-## []()
+## [1763. 最长的美好子字符串](https://leetcode-cn.com/problems/longest-nice-substring/)
 
 > 位运算，哈希表，字符串，滑动窗口
 
@@ -23555,6 +23555,50 @@ class Solution {
 }
 ```
 
+## [1725. 可以形成最大正方形的矩形数目](https://leetcode-cn.com/problems/number-of-rectangles-that-can-form-the-largest-square/)
+
+> 数组
+
+```java
+class Solution {
+    public int countGoodRectangles(int[][] rectangles) {
+        int cnt = 0, maxLen = 0;
+        for (int[] rec: rectangles) {
+            int len = Math.min(rec[0], rec[1]);
+            if (len > maxLen) {
+                maxLen = len;
+                cnt = 1;
+            } else if (len == maxLen) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+}
+```
+
+## [1748. 唯一元素的和](https://leetcode-cn.com/problems/sum-of-unique-elements/)
+
+> 数组，哈希表，计数
+
+```java
+class Solution {
+    public int sumOfUnique(int[] nums) {
+        int[] cnt = new int[100];
+        for (int i: nums) {
+            cnt[i - 1]++;
+        }
+        int ans = 0;
+        for (int i = 0; i < 100; ++i) {
+            if (cnt[i] == 1) {
+                ans += i + 1;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 ## [1405. 最长快乐字符串](https://leetcode-cn.com/problems/longest-happy-string/)
 
 > 贪心，字符串，优先队列
@@ -23588,6 +23632,29 @@ class Solution {
     }
 }
 ```
+
+## [2006. 差的绝对值为 K 的数对数目](https://leetcode-cn.com/problems/count-number-of-pairs-with-absolute-difference-k/)
+
+> 数组，哈希表，计数
+
+```java
+class Solution {
+    public int countKDifference(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num: nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        int res = 0;
+        for (int i: map.keySet()) {
+            res += map.getOrDefault(i, 0) * (map.getOrDefault(i + k, 0) + map.getOrDefault(i - k, 0));
+            map.put(i, 0);
+        }
+        return res;
+    }
+}
+```
+
+TODO 一次遍历
 
 # Java算法模板
 
@@ -24940,3 +25007,9 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [1996. 游戏中弱角色的数量](https://leetcode-cn.com/problems/the-number-of-weak-characters-in-the-game/)
 
 ## [1765. 地图中的最高点](https://leetcode-cn.com/problems/map-of-highest-peak/)
+
+## [1414. 和为 K 的最少斐波那契数字数目](https://leetcode-cn.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/)
+
+## [1219. 黄金矿工](https://leetcode-cn.com/problems/path-with-maximum-gold/)
+
+## [1001. 网格照明](https://leetcode-cn.com/problems/grid-illumination/)
