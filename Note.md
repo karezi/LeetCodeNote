@@ -23656,6 +23656,43 @@ class Solution {
 
 TODO 一次遍历
 
+## [1447. 最简分数](https://leetcode-cn.com/problems/simplified-fractions/)
+
+> 数学，字符串，数论
+
+执行用时：12 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：42.1 MB, 在所有 Java 提交中击败了14.90%的用户
+```java
+class Solution {
+    public List<String> simplifiedFractions(int n) {
+        List<String> res = new ArrayList<>();
+        dfs(n, res);
+        return res;
+    }
+    
+    private void dfs(int n, List<String> list) {
+        if (n == 1) {
+            return;
+        }
+        if (n == 2) {
+            list.add("1/2");
+            return;
+        }
+        for (int i = 1; i < n; ++i) {
+            if (gcd(n, i) == 1) {
+                list.add(i + "/" + n);
+            }
+        }
+        dfs(n - 1, list);
+    }
+
+    private int gcd(int a, int b) {
+        return b > 0 ? gcd(b, a % b) : a;
+    }
+}
+```
+TODO GCD的求解方法：欧几里得算法、更相减损法、stein算法
+
 # Java算法模板
 
 ## BFS
