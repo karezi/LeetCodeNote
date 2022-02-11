@@ -23693,6 +23693,25 @@ class Solution {
 ```
 TODO GCD的求解方法：欧几里得算法、更相减损法、stein算法
 
+## [1984. 学生分数的最小差值](https://leetcode-cn.com/problems/minimum-difference-between-highest-and-lowest-of-k-scores/)
+
+> 数组，排序，滑动窗口
+
+执行用时：4 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.7 MB, 在所有 Java 提交中击败了5.17%的用户
+```java
+class Solution {
+    public int minimumDifference(int[] nums, int k) {
+        Arrays.sort(nums);
+        int res = Integer.MAX_VALUE;
+        for (int i = k - 1; i < nums.length; ++i) {
+            res = Math.min(res, nums[i] - nums[i - k + 1]);
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
