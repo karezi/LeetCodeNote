@@ -23712,6 +23712,49 @@ class Solution {
 }
 ```
 
+## [1020. 飞地的数量](https://leetcode-cn.com/problems/number-of-enclaves/)
+
+> 广度优先搜索，数组，矩阵，并查集，多源BFS
+
+```java
+class Solution {
+    private int total = 0, m = 0, n = 0;
+
+    public int numEnclaves(int[][] grid) {
+        m = grid.length;
+        n = grid[0].length;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] == 1) total += 1;
+            }
+        }
+        boolean[][] vis = new boolean[m][n];
+        for (int i = 0; i < m; ++i) {
+            bfs(grid, i, 0, vis);
+            bfs(grid, i, n - 1, vis);
+        }
+        for (int j = 0; j < n; ++j) {
+            bfs(grid, 0, j, vis);
+            bfs(grid, m - 1, j, vis);
+        }
+        return total;
+    }
+
+    private void bfs(int[][] grid, int i, int j, boolean[][] vis) {
+        if (i < 0 || i >= m || j < 0 || j >= n || vis[i][j] || grid[i][j] == 0) {
+            return;
+        }
+        vis[i][j] = true;
+        total -= 1;
+        int[][] directions = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        for (int[] d: directions) {
+            bfs(grid, i + d[0], j + d[1], vis);
+        }
+    }
+}
+```
+TODO 并查集
+
 # Java算法模板
 
 ## BFS
