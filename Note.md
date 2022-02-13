@@ -23755,6 +23755,32 @@ class Solution {
 ```
 TODO 并查集
 
+## [1189. “气球” 的最大数量](https://leetcode-cn.com/problems/maximum-number-of-balloons/)
+
+> 哈希表，字符串，计数
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.4 MB, 在所有 Java 提交中击败了12.81%的用户
+```java
+class Solution {
+    public int maxNumberOfBalloons(String text) {
+        int[] cnt = new int[26];
+        for (char c: text.toCharArray()) {
+            cnt[c - 'a']++;
+        }
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < 26; ++i) {
+            if (i == 0 || i == 1 || i == 13) {
+                res = Math.min(res, cnt[i]);
+            } else if (i == 11 || i == 14) {
+                res = Math.min(res, cnt[i] / 2);
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
