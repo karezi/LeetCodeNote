@@ -23781,6 +23781,33 @@ class Solution {
 }
 ```
 
+## [540. 有序数组中的单一元素](https://leetcode-cn.com/problems/single-element-in-a-sorted-array/)
+
+> 数组，二分查找
+
+```java
+class Solution {
+    public int singleNonDuplicate(int[] nums) {
+        int n = nums.length, l = 0, r = n - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (mid == l || mid == 0 || mid == n - 1) return nums[mid];
+            if (nums[mid] == nums[mid - 1]) {
+                if (((mid - l) & 1) != 0) l = mid + 1;
+                else r = mid;
+            } else if (nums[mid] == nums[mid + 1]) {
+                if (((r - mid) & 1) != 0) r = mid - 1;
+                else l = mid;
+            } else {
+                return nums[mid];
+            }
+        }
+        return nums[l];
+    }
+}
+```
+TODO 异或/偶数位优化
+
 # Java算法模板
 
 ## BFS
