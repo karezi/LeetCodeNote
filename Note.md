@@ -23808,6 +23808,39 @@ class Solution {
 ```
 TODO 异或/偶数位优化
 
+## [1380. 矩阵中的幸运数](https://leetcode-cn.com/problems/lucky-numbers-in-a-matrix/)
+
+> 数组，矩阵
+
+```java
+class Solution {
+    public List<Integer> luckyNumbers (int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        Set<Integer> mins = new HashSet<>();
+        for (int i = 0; i < m; ++ i) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < n; ++j) {
+                min = Math.min(min, matrix[i][j]);
+            }
+            mins.add(min);
+        }
+        Set<Integer> maxs = new HashSet<>();
+        for (int j = 0; j < n; ++ j) {
+            int max = 0;
+            for (int i = 0; i < m; ++i) {
+                max = Math.max(max, matrix[i][j]);
+            }
+            maxs.add(max);
+        }
+        Set<Integer> resSet = new HashSet<>();
+        resSet.addAll(mins);
+        resSet.retainAll(maxs);
+        return new ArrayList<>(resSet);
+    }
+}
+```
+TODO 直接用数组预处理即可
+
 # Java算法模板
 
 ## BFS
