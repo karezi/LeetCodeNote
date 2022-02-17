@@ -23841,6 +23841,40 @@ class Solution {
 ```
 TODO 直接用数组预处理即可
 
+## [688. 骑士在棋盘上的概率](https://leetcode-cn.com/problems/knight-probability-in-chessboard/)
+
+> 动态规划，三维DP
+
+```java
+class Solution {
+    public double knightProbability(int n, int k, int row, int column) {
+        // dp[k][i][j]表示k步从i,j出发的概率
+        // dp[k][i][j]=∑dp[k-1][i+x][j+y]*1/8,(x,y)是8个方向
+        // dp[0][i][j]=1
+        // dp[k][row][column]
+        int[][] directions = new int[][]{{2, 1}, {2, -1}, {1, 2}, {1, -2}, {-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}};
+        double[][][] dp = new double[k + 1][n][n];
+        for (int s = 0; s <= k; ++s) {
+            for (int i = 0; i < n; ++i) {
+                for (int j = 0; j < n; ++j) {
+                    if (s == 0) {
+                        dp[0][i][j] = 1;
+                    } else {
+                        for (int[] d: directions) {
+                            int xi = i + d[0], yi = j + d[1];
+                            if (xi >= 0 && xi < n && yi >= 0 && yi < n) {
+                                dp[s][i][j] += dp[s - 1][xi][yi] / 8.0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return dp[k][row][column];
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -25198,3 +25232,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [1219. 黄金矿工](https://leetcode-cn.com/problems/path-with-maximum-gold/)
 
 ## [1001. 网格照明](https://leetcode-cn.com/problems/grid-illumination/)
+
+## [1719. 重构一棵树的方案数](https://leetcode-cn.com/problems/number-of-ways-to-reconstruct-a-tree/)
