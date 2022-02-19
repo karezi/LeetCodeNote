@@ -23888,6 +23888,44 @@ class Solution {
 }
 ```
 
+## [969. 煎饼排序](https://leetcode-cn.com/problems/pancake-sorting/)
+
+> 贪心，数组，双指针，排序，煎饼排序
+
+```java
+class Solution {
+    public List<Integer> pancakeSort(int[] arr) {
+        List<Integer> res = new ArrayList<>();
+        int n = arr.length;
+        for (int i = n; i > 0; --i) {
+            int j = 0, max = 0, maxIdx = 0;
+            for (; j < i; ++j) {
+                if (arr[j] > max) {
+                    max = arr[j];
+                    maxIdx = j;
+                }
+            }
+            reverse(arr, maxIdx);
+            res.add(maxIdx + 1);
+            reverse(arr, i - 1);
+            res.add(i);
+        }
+        return res;
+    }
+
+    private void reverse(int[] arr, int r) {
+        int l = 0;
+        while (l < r) {
+            int tmp = arr[r];
+            arr[r] = arr[l];
+            arr[l] = tmp;
+            l++;
+            r--;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
