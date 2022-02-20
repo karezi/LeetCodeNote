@@ -23926,6 +23926,22 @@ class Solution {
 }
 ```
 
+## [2114. 句子中的最多单词数](https://leetcode-cn.com/problems/maximum-number-of-words-found-in-sentences/)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int mostWordsFound(String[] sentences) {
+        int most = 0;
+        for (String sen: sentences) {
+            most = Math.max(most, sen.split(" ").length);
+        }
+        return most;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
