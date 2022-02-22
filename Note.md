@@ -25301,3 +25301,7 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [1001. 网格照明](https://leetcode-cn.com/problems/grid-illumination/)
 
 ## [1719. 重构一棵树的方案数](https://leetcode-cn.com/problems/number-of-ways-to-reconstruct-a-tree/)
+
+## [838. 推多米诺](https://leetcode-cn.com/problems/push-dominoes/)
+
+## [1994. 好子集的数目](https://leetcode-cn.com/problems/the-number-of-good-subsets/)
