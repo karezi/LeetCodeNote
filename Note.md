@@ -23942,6 +23942,37 @@ class Solution {
 }
 ```
 
+## [917. 仅仅反转字母](https://leetcode-cn.com/problems/reverse-only-letters/)
+
+> 双指针，字符串
+
+```java
+class Solution {
+    public String reverseOnlyLetters(String s) {
+        int l = 0, r = s.length() - 1, n = s.length();
+        char[] arr = s.toCharArray();
+        while (l < r) {
+            while (l < n && !Character.isLetter(s.charAt(l))) l++;
+            while (r >= 0 && !Character.isLetter(s.charAt(r))) r--;
+            if (l < r) {
+                swap(arr, l, r);
+                l++;
+                r--;
+            } else {
+                break;
+            }
+        }
+        return new String(arr);
+    }
+
+    private void swap(char[] arr, int l, int r) {
+        char tmp = arr[l];
+        arr[l] = arr[r];
+        arr[r] = tmp;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -24975,7 +25006,14 @@ list.addAll(set);
 - 判断字符是否为字母或者数字
 
 ```java
-Character.isLetterOrDigit(c)
+Character.isLetterOrDigit(c) 两者
+Character.isLetter(c) 字母
+Character.isDigit(c) 数字
+```
+
+- 判断字符是否为空白符
+```java
+Character.isWhitespace(c)
 ```
 
 - 字符转化为大小写
