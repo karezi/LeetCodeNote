@@ -23973,6 +23973,41 @@ class Solution {
 }
 ```
 
+## [1706. 球会落何处](https://leetcode-cn.com/problems/where-will-the-ball-fall/)
+
+> 深度优先搜索，数组，动态规划，矩阵，模拟
+
+```java
+class Solution {
+    public int[] findBall(int[][] grid) {
+        int m = grid.length, n = grid[0].length; // m i row, n j column
+        int[] res = new int[n];
+        for (int j = 0; j < n; ++j) {
+            int x = j;
+            for (int i = 0; i < m; ++i) {
+                if (grid[i][x] == 1) {
+                    if (x + 1 == n || x + 1 < n && grid[i][x + 1] == -1) {
+                        res[j] = -1;
+                        break;
+                    } else {
+                        x++;
+                    }
+                } else {
+                    if (x == 0 || x >= 0 && grid[i][x - 1] == 1) {
+                        res[j] = -1;
+                        break;
+                    } else {
+                        x--;
+                    }
+                }
+                res[j] = x;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
