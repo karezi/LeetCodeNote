@@ -24008,6 +24008,31 @@ class Solution {
 }
 ```
 
+## [537. 复数乘法](https://leetcode-cn.com/problems/complex-number-multiplication/)
+
+> 数学，字符串，模拟
+
+```java
+class Solution {
+    public String complexNumberMultiply(String num1, String num2) {
+        int[] ab = new int[4], cd = new int[4];
+        ab = parse(num1);
+        cd = parse(num2);
+        StringBuilder sb = new StringBuilder();
+        sb.append(ab[0] * cd[0] - ab[1] * cd[1]).append('+').append(ab[0] * cd[1] + ab[1] * cd[0]).append('i');
+        return sb.toString();
+    }
+
+    private int[] parse(String num) {
+        int[] ret = new int[2];
+        String[] ns = num.split("\\+");
+        ret[0] = Integer.parseInt(ns[0]);
+        ret[1] = Integer.parseInt(ns[1].split("i")[0]);
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
