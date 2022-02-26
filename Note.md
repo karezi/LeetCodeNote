@@ -24033,6 +24033,44 @@ class Solution {
 }
 ```
 
+## [2016. 增量元素之间的最大差值](https://leetcode-cn.com/problems/maximum-difference-between-increasing-elements/)
+
+> 数组
+
+暴力
+```java
+class Solution {
+    public int maximumDifference(int[] nums) {
+        int n = nums.length;
+        int res = -1;
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (nums[j] > nums[i]) {
+                    res = Math.max(res, nums[j] - nums[i]);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+前缀最小值
+```java
+class Solution {
+    public int maximumDifference(int[] nums) {
+        int n = nums.length, res = -1, min = nums[0];
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] > min) {
+                res = Math.max(res, nums[i] - min);
+            } else if (nums[i] < min) {
+                min = nums[i];
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
