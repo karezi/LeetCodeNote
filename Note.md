@@ -24071,6 +24071,32 @@ class Solution {
 }
 ```
 
+## [553. 最优除法](https://leetcode-cn.com/problems/optimal-division/)
+
+> 数组，数学，脑筋急转弯
+
+```java
+class Solution {
+    public String optimalDivision(int[] nums) {
+        // 均保留第一个数，后续的加上括号
+        int n = nums.length;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; ++i) {
+            if (i == 0) {
+                sb.append(nums[i]);
+                continue;
+            } else if (i == 1 && n > 2) {
+                sb.append("/(").append(nums[i]);
+            } else {
+                sb.append('/').append(nums[i]);
+            }
+            if (i == n - 1 && n > 2) sb.append(')');
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
