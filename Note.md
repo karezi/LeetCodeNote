@@ -24097,6 +24097,36 @@ class Solution {
 }
 ```
 
+## [2160. 拆分数位后四位数字的最小和](https://leetcode-cn.com/problems/minimum-sum-of-four-digit-number-after-splitting-digits/)
+
+> 贪心，数学，排序
+
+```java
+class Solution {
+    public int minimumSum(int num) {
+        int[] nums = new int[4];
+        nums[0] = num % 10;
+        nums[1] = (num / 10) % 10;
+        nums[2] = (num / 100) % 10;
+        nums[3] = (num / 1000) % 10;
+        Arrays.sort(nums);
+        return (nums[0] + nums[1]) * 10 + nums[2] + nums[3];
+    }
+}
+```
+直接用字符数组
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：38.5 MB, 在所有 Java 提交中击败了19.28%的用户
+```java
+class Solution {
+    public int minimumSum(int num) {
+        char[] cs = String.valueOf(num).toCharArray();
+        Arrays.sort(cs);
+        return (cs[0] + cs[1]) * 10 + cs[2] + cs[3] - 1056;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -25467,3 +25497,9 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [838. 推多米诺](https://leetcode-cn.com/problems/push-dominoes/)
 
 ## [1994. 好子集的数目](https://leetcode-cn.com/problems/the-number-of-good-subsets/)
+
+## [1601. 最多可达成的换楼请求数目](https://leetcode-cn.com/problems/maximum-number-of-achievable-transfer-requests/)
+
+## [6. Z 字形变换](https://leetcode-cn.com/problems/zigzag-conversion/)
+
+## [564. 寻找最近的回文数](https://leetcode-cn.com/problems/find-the-closest-palindrome/)
