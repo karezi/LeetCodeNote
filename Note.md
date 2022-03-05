@@ -24127,6 +24127,19 @@ class Solution {
 }
 ```
 
+## [521. 最长特殊序列 Ⅰ](https://leetcode-cn.com/problems/longest-uncommon-subsequence-i/)
+
+> 字符串，脑筋急转弯
+
+```java
+class Solution {
+    public int findLUSlength(String a, String b) {
+        if (a.equals(b)) return -1;
+        return Math.max(a.length(), b.length());
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -25503,3 +25516,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [6. Z 字形变换](https://leetcode-cn.com/problems/zigzag-conversion/)
 
 ## [564. 寻找最近的回文数](https://leetcode-cn.com/problems/find-the-closest-palindrome/)
+
+## [2104. 子数组范围和](https://leetcode-cn.com/problems/sum-of-subarray-ranges/)
