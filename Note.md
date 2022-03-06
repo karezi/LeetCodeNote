@@ -24140,6 +24140,50 @@ class Solution {
 }
 ```
 
+## [2100. 适合打劫银行的日子](https://leetcode-cn.com/problems/find-good-days-to-rob-the-bank/)
+
+> 数组，动态规划，前缀和
+
+执行用时：6 ms, 在所有 Java 提交中击败了92.53%的用户
+内存消耗：60.5 MB, 在所有 Java 提交中击败了5.13%的用户
+```java
+class Solution {
+    public List<Integer> goodDaysToRobBank(int[] security, int time) {
+        int n = security.length;
+        List<Integer> ret = new ArrayList<>();
+        if (time == 0) {
+            for (int i = 0; i < n; ++i) {
+                ret.add(i);
+            }
+            return ret;
+        }
+        boolean[] goodDays = new boolean[n];
+        int cnt = 0;
+        for (int i = 1; i < n; ++i) {
+            if (security[i] <= security[i - 1]) {
+                cnt++;
+                if (cnt >= time)
+                    goodDays[i] = true;
+            } else {
+                cnt = 0;
+            }
+        }
+        cnt = 0;
+        for (int i = n - 2; i >= 0; --i) {
+            if (security[i] <= security[i + 1]) {
+                cnt++;
+                if (cnt >= time && goodDays[i]) {
+                    ret.add(i);
+                }
+            } else {
+                cnt = 0;
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
