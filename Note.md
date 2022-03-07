@@ -24184,6 +24184,30 @@ class Solution {
 }
 ```
 
+## [504. 七进制数](https://leetcode-cn.com/problems/base-7/)
+
+> 数学
+
+```java
+class Solution {
+    public String convertToBase7(int num) {
+        StringBuilder sb = new StringBuilder();
+        if (num < 0) {
+            sb.append("-").append(convertToBase7(-num));
+            return sb.toString();
+        }
+        if (num == 0) {
+            return "0";
+        }
+        while (num > 0) {
+            sb.append(num % 7);
+            num /= 7;
+        }
+        return sb.reverse().toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
