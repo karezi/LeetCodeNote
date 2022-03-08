@@ -24208,6 +24208,54 @@ class Solution {
 }
 ```
 
+## [2055. 蜡烛之间的盘子](https://leetcode-cn.com/problems/plates-between-candles/)
+
+> 数组，字符串，前缀和
+
+```java
+class Solution {
+    public int[] platesBetweenCandles(String s, int[][] queries) {
+        int n = s.length();
+        int[] preStar = new int[n + 1], ll = new int[n], rl = new int[n];
+        preStar[0] = s.charAt(0) == '*' ? 1 : 0;
+        ll[0] = s.charAt(0) == '*' ? Integer.MAX_VALUE : 0;
+        for (int i = 1; i <= n; ++i) {
+            preStar[i] = s.charAt(i - 1) == '*' ? preStar[i - 1] + 1 : preStar[i - 1];
+            if (i < n) {
+                if (s.charAt(i) == '|') {
+                    ll[i] = 0;
+                } else {
+                    if (ll[i - 1] == Integer.MAX_VALUE) ll[i] = Integer.MAX_VALUE;
+                    else ll[i] = ll[i - 1] + 1;
+                }
+            }
+        }
+        rl[n - 1] = s.charAt(n - 1) == '*' ? Integer.MAX_VALUE : 0;
+        for (int i = n - 2; i >= 0; --i) {
+            if (s.charAt(i) == '|') {
+                rl[i] = 0;
+            } else {
+                if (rl[i + 1] == Integer.MAX_VALUE) rl[i] = Integer.MAX_VALUE;
+                else rl[i] = rl[i + 1] + 1;
+            }
+        }
+        int m = queries.length;
+        int[] ret = new int[m];
+        for (int i = 0; i < m; ++i) {
+            int l = queries[i][0], r = queries[i][1];
+            if (rl[l] == Integer.MAX_VALUE || ll[r] == Integer.MAX_VALUE) {
+                ret[i] = 0;
+            } else {
+                ret[i] = preStar[r + 1] - preStar[l] - rl[l] - ll[r];
+                ret[i] = ret[i] <= 0 ? 0 : ret[i];
+            }
+        }
+        return ret;
+    }
+}
+```
+TODO 小技巧优化
+
 # Java算法模板
 
 ## BFS
