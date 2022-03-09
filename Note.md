@@ -24256,6 +24256,48 @@ class Solution {
 ```
 TODO 小技巧优化
 
+## [798. 得分最高的最小轮调](https://leetcode-cn.com/problems/smallest-rotation-with-highest-score/)
+
+> 数组，差分数组，前缀和
+
+执行用时：7 ms, 在所有 Java 提交中击败了32.86%的用户
+内存消耗：56.5 MB, 在所有 Java 提交中击败了5.71%的用户
+```java
+class Solution {
+    public int bestRotation(int[] nums) {
+        // 两种情况：翻后面ni=i+(n-k)[k>i] 或者 翻前面ni=i-k[k<=i]
+        // 且满足：n>ni>=nums[i]
+        // 求得k取值的两个可能的区间[0,n)∩[i+1,i+n-nums[i]]或者[0,n)∩[0,i-nums[i]]，记为[a,b]||[0,c]
+        int n = nums.length;
+        int[] delta = new int[n];
+        for (int i = 0; i < n; ++i) {
+            int a = i + 1;
+            int b = Math.min(n - 1, i + n - nums[i]);
+            int c = Math.min(n - 1, i - nums[i]);
+            if (a <= b) {
+                delta[a]++;
+                if (b + 1 < n)
+                    delta[b + 1]--;
+            }
+            if (c >= 0 && c < a) {
+                delta[0]++;
+                if (c + 1 < n)
+                    delta[c + 1]--;
+            }
+        }
+        int ret = 0, max = 0, cur = 0;
+        for (int i = 1; i < n; ++i) {
+            cur += delta[i];
+            if (cur > max) {
+                max = cur;
+                ret = i;
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
