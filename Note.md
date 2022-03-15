@@ -24342,6 +24342,145 @@ class Solution {
 }
 ```
 
+## [590. N 叉树的后序遍历](https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/)
+
+> 栈，树，深度优先搜索
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> children;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, List<Node> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+    public List<Integer> postorder(Node root) {
+        List<Integer> ret = new ArrayList<>();
+        dfs(ret, root);
+        return ret;
+    }
+
+    private void dfs(List<Integer> list, Node root) {
+        if (root == null) {
+            return;
+        }
+        for (Node node: root.children) {
+            dfs(list, node);
+        }
+        list.add(root.val);
+    }
+}
+```
+
+## [393. UTF-8 编码验证](https://leetcode-cn.com/problems/utf-8-validation/)
+
+> 位运算，数组
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.6 MB, 在所有 Java 提交中击败了40.81%的用户
+```java
+class Solution {
+    public boolean validUtf8(int[] data) {
+        int n = data.length, i = 0;
+        while (i < n) {
+            int d = data[i];
+            if ((d & (1 << 7)) > 0) {
+                int cnt = 8;
+                for (int j = 6; j >= 0; --j) {
+                    if ((d & (1 << j)) == 0) {
+                        cnt = 7 - j;
+                        break;
+                    }
+                }
+                if (cnt == 1 || cnt > 4 || cnt > n - i) {
+                    return false;
+                }
+                for (int k = 0; k < cnt - 1; ++k) {
+                    i++;
+                    if ((data[i] & (1 << 7)) == 0 || (data[i] & (1 << 6)) > 0) {
+                        return false;
+                    }
+                }
+            }
+            i++;
+        }
+        return true;
+    }
+}
+```
+
+## [599. 两个列表的最小索引总和](https://leetcode-cn.com/problems/minimum-index-sum-of-two-lists/)
+
+> 数组，哈希表，字符串
+
+```java
+class Solution {
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        int min = Integer.MAX_VALUE;
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < list1.length; ++i) {
+            for (int j = 0; j < list2.length; ++j) {
+                if (list1[i].equals(list2[j])) {
+                    if (i + j < min) {
+                        min = i + j;
+                        list.clear();
+                    }
+                    if (i + j <= min) {
+                        list.add(list1[i]);
+                    }
+                }
+            }
+        }
+        return list.toArray(new String[list.size()]);
+    }
+}
+```
+TODO hashmap
+
+## [2044. 统计按位或能得到最大值的子集数目](https://leetcode-cn.com/problems/count-number-of-maximum-bitwise-or-subsets/)
+
+> 位运算，数组，回溯
+
+```java
+class Solution {
+    private int cnt = 0, max = 0;
+    private int[] _nums;
+
+    public int countMaxOrSubsets(int[] nums) {
+        _nums = nums;
+        dfs(0, 0); // 当前位置，状态
+        return cnt;
+    }
+
+    private void dfs(int idx, int val) {
+        if (idx == _nums.length) {
+            if (val > max) {
+                max = val;
+                cnt = 1;
+            } else if (val == max) {
+                cnt++;
+            }
+            return;
+        }
+        dfs(idx + 1, val);
+        dfs(idx + 1, val | _nums[idx]);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -25720,3 +25859,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [564. 寻找最近的回文数](https://leetcode-cn.com/problems/find-the-closest-palindrome/)
 
 ## [2104. 子数组范围和](https://leetcode-cn.com/problems/sum-of-subarray-ranges/)
+
+## [2049. 统计最高分的节点数目](https://leetcode-cn.com/problems/count-nodes-with-the-highest-score/)
