@@ -24481,6 +24481,69 @@ class Solution {
 }
 ```
 
+## [720. 词典中最长的单词](https://leetcode-cn.com/problems/longest-word-in-dictionary/)
+
+> 字典树，数组，字符串，哈希
+
+```java
+class Solution {
+    private String res = "";
+
+    class Trie {
+        TrieNode root;
+
+        class TrieNode {
+            String word = "";
+            TrieNode[] children = new TrieNode[26];
+        }
+
+        public Trie() {
+            root = new TrieNode();
+        }
+
+        public void insert(String s) {
+            TrieNode p = root;
+            for (int i = 0; i < s.length(); ++i) {
+                int u = s.charAt(i) - 'a';
+                if (p.children[u] == null) {
+                    p.children[u] = new TrieNode();
+                }
+                p = p.children[u];
+            }
+            p.word = s;
+        }
+
+        public void dfs(TrieNode root) {
+            if (root == null || root.word.length() == 0) {
+                return;
+            }
+            if (root.word.length() > res.length()) {
+                res = root.word;
+            } else if (root.word.length() == res.length()) {
+                res = res.compareTo(root.word) <= 0 ? res : root.word;
+            }
+            for (int i = 0; i < 26; ++i) {
+                if (root.children[i] != null) {
+                    dfs(root.children[i]);
+                }
+            }
+        }
+    }
+
+    public String longestWord(String[] words) {
+        Trie trie = new Trie();
+        for (String word: words) {
+            trie.insert(word);
+        }
+        for (int i = 0; i < 26; ++i) {
+            trie.dfs(trie.root.children[i]);
+        }
+        return res;
+    }
+}
+```
+TODO 哈希
+
 # Java算法模板
 
 ## BFS
@@ -25861,3 +25924,5 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 ## [2104. 子数组范围和](https://leetcode-cn.com/problems/sum-of-subarray-ranges/)
 
 ## [2049. 统计最高分的节点数目](https://leetcode-cn.com/problems/count-nodes-with-the-highest-score/)
+
+## [432. 全 O(1) 的数据结构](https://leetcode-cn.com/problems/all-oone-data-structure/)
