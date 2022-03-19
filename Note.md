@@ -24599,6 +24599,44 @@ class Bank {
  */
 ```
 
+## [606. 根据二叉树创建字符串](https://leetcode-cn.com/problems/construct-string-from-binary-tree/)
+
+> 二叉树，深度优先搜索，树，字符串
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.1 MB, 在所有 Java 提交中击败了33.42%的用户
+```java
+class Solution {
+    private StringBuilder sb;
+
+    public String tree2str(TreeNode root) {
+        sb = new StringBuilder();
+        dfs(root);
+        return sb.toString();
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        sb.append(root.val);
+        if (root.left != null) {
+            sb.append('(');
+            dfs(root.left);
+            sb.append(')');
+        }
+        if (root.right != null) {
+            if (root.left == null) {
+                sb.append("()");
+            }
+            sb.append('(');
+            dfs(root.right);
+            sb.append(')');
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
