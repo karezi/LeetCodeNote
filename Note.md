@@ -24684,7 +24684,7 @@ class Solution {
     }
 }
 ```
-TODO 用数组实现邻接表*
+TODO 用数组实现邻接表（链式前向星）+static优化
 
 # Java算法模板
 
@@ -25200,6 +25200,50 @@ public Node build(int[] a, int l, int r) {
 ### 树状数组
 
 ## 图
+
+### 建图
+#### 邻接矩阵
+
+#### 邻接表
+
+#### 边数组
+
+#### 链式前向星
+```java
+// 无向图双向边，所以*2
+static int N = 100010, M = N * 2;
+static int[] head = new int[N], to = new int[M], next = new int[M];
+int idx = 0;
+void add(int f, int t) {
+    to[idx] = t; // 本边的终止节点
+    next[idx] = head[f]; // 本边指向之前的头边，形成新的头边（类似链表头插）
+    head[f] = idx++; // 指针指向新头边
+}
+// 从编号0的点开始BFS，求从0到所有点的路径长度
+static INF = 0x3f3f3f3f;
+static int[] dist = new int[N];
+void bfs() {
+    Arrays.fill(head, -1);
+    Arrays.fill(dist, INF);
+    for (int[] e : edges) {
+        // 无向图记得add两次
+        add(e[0], e[1]);
+        add(e[1], e[0]);
+    }
+    Deque<Integer> d = new ArrayDeque<>();
+    d.addLast(0);
+    dist[0] = 0;
+    while (!d.isEmpty()) {
+        int t = d.pollFirst();
+        for (int i = head[t]; i != -1; i = next[i]) {
+            int j = to[i];
+            if (dist[j] != INF) continue;
+            dist[j] = dist[t] + 1;
+            d.addLast(j);
+        }
+    }
+}
+```
 
 ### Dijkstra算法
 
