@@ -24637,6 +24637,55 @@ class Solution {
 }
 ```
 
+## [2039. 网络空闲的时刻](https://leetcode-cn.com/problems/the-time-when-the-network-becomes-idle/)
+
+> 深度优先搜索，图，数组
+
+```java
+class Solution {
+    public int networkBecomesIdle(int[][] edges, int[] patience) {
+        // 构建邻接表
+        int n = patience.length;
+        List<Integer>[] adj = new List[n];
+        // 初始化
+        for (int i = 0; i < n; ++i) {
+            adj[i] = new ArrayList<>();
+        }
+        for (int[] edge: edges) {
+            adj[edge[0]].add(edge[1]);
+            adj[edge[1]].add(edge[0]);
+        }
+        // BFS
+        boolean[] visited = new boolean[n];
+        Queue<Integer> q = new ArrayDeque<>();
+        // 推入初始节点
+        visited[0] = true;
+        q.offer(0);
+        int dist = 1;
+        int ans = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; ++i) {
+                int cur = q.poll();
+                for (int j: adj[cur]) {
+                    if (visited[j]) {
+                        continue;
+                    }
+                    int time = patience[j] * ((dist * 2 - 1) / patience[j]) + 2 * dist + 1;
+                    ans = Math.max(ans, time);
+                    q.offer(j);
+                    visited[j] = true;
+                }
+            }
+            // 深度+1
+            dist++;
+        }
+        return ans;
+    }
+}
+```
+TODO 用数组实现邻接表*
+
 # Java算法模板
 
 ## BFS
@@ -25453,6 +25502,8 @@ https://zhuanlan.zhihu.com/p/107793995
 
 ## Deque 双端队列
 
+> Deque继承Queue，实现了ArrayDeque和LinkedList
+
 ![image-20210221013330334](https://i.loli.net/2021/02/21/kEis72yF9G3Q8HM.png)
 
 - add/addAll/addFirst/addLast/offer/offerFirst/offerLast/push 添加
@@ -25463,6 +25514,11 @@ https://zhuanlan.zhihu.com/p/107793995
 - size 容量
 
 ArrayDeque 双端队列数组实现（几乎没有容量限制，线程不安全，禁止null）
+
+```java
+Queue<Integer> queue = new ArrayDeque<>(); // 队列常用 直接offer和poll即可
+Deque<Integer> deque = new ArrayDeque<>(); // 作为栈：push开头添加，pop开头删除，peek开头返回；作为双端队列：用offerXXX和pollXXX
+```
 
 - 作为队列FIFO：add=addLast, offer=offerLast, remove=removeFirst, poll=pollFirst, element=getFirst, peek=peekFirst
 - 作为堆栈FILO（替代Stack）：push=addFirst, pop=removeFirst, peek=peekFirst
