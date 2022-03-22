@@ -24686,6 +24686,70 @@ class Solution {
 ```
 TODO 用数组实现邻接表（链式前向星）+static优化
 
+## [653. 两数之和 IV - 输入 BST](https://leetcode-cn.com/problems/two-sum-iv-input-is-a-bst/)
+
+> 树，深度优先搜索，广度优先搜索，二叉搜索树，双指针
+
+```java
+class Solution {
+    private Set<Integer> set;
+
+    public boolean findTarget(TreeNode root, int k) {
+        set = new HashSet<>();
+        dfs(root);
+        for (int x: set) {
+            if (k - x != x && set.contains(k - x)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        set.add(root.val);
+        dfs(root.left);
+        dfs(root.right);
+    }
+}
+```
+优化
+```java
+class Solution {
+    private Set<Integer> set = new HashSet<>();
+
+    public boolean findTarget(TreeNode root, int k) {
+        if (root == null) return false;
+        if (set.contains(k - root.val)) return true;
+        set.add(root.val);
+        return findTarget(root.left, k) || findTarget(root.right, k);
+    }
+}
+```
+TODO BST上双指针
+
+## [2038. 如果相邻两个颜色均相同则删除当前颜色](https://leetcode-cn.com/problems/remove-colored-pieces-if-both-neighbors-are-the-same-color/)
+
+> 脑筋急转弯，博弈，贪心，数学，字符串
+
+```java
+class Solution {
+    public boolean winnerOfGame(String colors) {
+        // 求除了2端之外的可删除的A的数和B的数，谁大则谁赢
+        int n = colors.length(), cnt = 0;
+        char[] cs = colors.toCharArray();
+        for (int i = 1; i < n - 1; ++i) {
+            if (cs[i - 1] == cs[i] && cs[i] == cs[i + 1]) {
+                cnt += cs[i] == 'A' ? 1 : -1;
+            }
+        }
+        return cnt > 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
