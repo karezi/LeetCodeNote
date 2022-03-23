@@ -24750,6 +24750,69 @@ class Solution {
 }
 ```
 
+## [440. 字典序的第K小数字](https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/)
+
+> 字典树
+
+会超时
+```java
+class Solution {
+    public int findKthNumber(int n, int k) {
+        PriorityQueue<String> pq = new PriorityQueue<>(k, Comparator.reverseOrder());
+        for (int i = 1; i <= k; ++i) {
+            pq.offer(String.valueOf(i));
+        }
+        for (int i = k + 1; i <= n; ++i) {
+            String x = String.valueOf(i);
+            if (x.compareTo(pq.peek()) < 0) {
+                pq.poll();
+                pq.offer(x);
+            }
+        }
+        return Integer.parseInt(pq.poll());
+    }
+}
+```
+字典树
+```java
+class Solution {
+    // O(log^2(n))/O(1)
+    public int findKthNumber(int n, int k) {
+        // 字典树，getStep
+        int cur = 1;
+        k--;
+        while (k > 0) {
+            // 获取当前cur节点的子节点总个数
+            int step = getStep(cur, n);
+            if (step <= k) {
+                // 在右边节点找
+                cur++;
+                // 直接跳过step步
+                k -= step;
+            } else {
+                // 从子节点最左边找
+                cur *= 10;
+                // 跳过一步
+                k--;
+            }
+        }
+        return cur;
+    }
+
+    private int getStep(int cur, int n) {
+        // cur下层范围为[cur * 10, cur * 10 + 9]，再下层依次类推，右侧被n限制住
+        int res = 0;
+        long left = cur, right = cur;
+        while (left <= n) {
+            res += Math.min(right, n) - left + 1;
+            left *= 10;
+            right = right * 10 + 9;
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
