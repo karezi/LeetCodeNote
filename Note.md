@@ -24813,6 +24813,34 @@ class Solution {
 }
 ```
 
+## [661. 图片平滑器](https://leetcode-cn.com/problems/image-smoother/)
+
+> 数组，矩阵
+
+```java
+class Solution {
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length;
+        int[][] res = new int[m][n];
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int cnt = 1, sum = img[i][j];
+                int[][] dirs = new int[][]{{0, 1}, {0, -1}, {-1, 1}, {-1, 0}, {-1, -1}, {1, 1}, {1, 0}, {1, -1}};
+                for (int k = 0; k < dirs.length; ++k) {
+                    int x = i + dirs[k][0], y = j + dirs[k][1];
+                    if (x >= 0 && y >= 0 && x < m && y < n) {
+                        sum += img[x][y];
+                        cnt++;
+                    }
+                }
+                res[i][j] = sum / cnt;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
