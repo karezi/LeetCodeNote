@@ -8655,6 +8655,60 @@ class Solution {
     }
 }
 ```
+list+steam
+```java
+class Solution {
+    public int calPoints(String[] ops) {
+        int res = 0;
+        List<Integer> scores = new ArrayList<>();
+        for (String op: ops) {
+            int size = scores.size();
+            if (op.equals("+")) {
+                scores.add(scores.get(size - 1) + scores.get(size - 2));
+            } else if (op.equals("D")) {
+                scores.add(2 * scores.get(size - 1));
+            } else if (op.equals("C")) {
+                scores.remove(scores.get(size - 1));
+            } else {
+                scores.add(Integer.parseInt(op));
+            }
+        }
+        return scores.stream().reduce(Integer::sum).orElse(0);
+    }
+}
+```
+数组+switch
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.5 MB, 在所有 Java 提交中击败了34.12%的用户
+```java
+class Solution {
+    public int calPoints(String[] ops) {
+        int res = 0, idx = 0;
+        int[] scores = new int[1001];
+        for (String op: ops) {
+            idx++;
+            switch (op.charAt(0)) {
+                case '+':
+                    scores[idx] = scores[idx - 1] + scores[idx - 2];
+                    res += scores[idx - 1] + scores[idx - 2];
+                    break;
+                case 'D':
+                    scores[idx] = 2 * scores[idx - 1];
+                    res += 2 * scores[idx - 1];
+                    break;
+                case 'C':
+                    res -= scores[--idx];
+                    idx--;
+                    break;
+                default:
+                    scores[idx] = Integer.parseInt(op);
+                    res += scores[idx];
+            }
+        }
+        return res;
+    }
+}
+```
 
 ## [1438. 绝对差不超过限制的最长连续子数组](https://leetcode-cn.com/problems/longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit/)
 
@@ -24841,6 +24895,27 @@ class Solution {
 }
 ```
 
+## [101. 对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+
+> 树，深度优先搜索，二叉树
+
+```java
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        return dfs(root.left, root.right);
+    }
+
+    private boolean dfs(TreeNode l, TreeNode r) {
+        if (l == null && r == null) {
+            return true;
+        } else if (l == null || r == null) {
+            return false;
+        }
+        return l.val == r.val && dfs(l.right, r.left) && dfs(l.left, r.right);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -26130,6 +26205,17 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
       System.out.println(x);
   }
   ```
+
+## 流类
+
+- 求ArrayList的和
+
+```java
+// List<Integer>类型
+list.stream().reduce(Integer::sum).orElse(0);
+// List<User>类型
+list.stream().mapToInt(User::getScore).sum();
+```
 
 ## 其他类
 
