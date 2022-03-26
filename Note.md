@@ -26138,6 +26138,8 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 
 - 判断奇偶：(x & 1) == 1, (x & 1) == 0
 
+- 求模：x & (y - 1) <=> x % y
+
 - 位移代替除法：x >> 1 <=> x / 2
 
 - 最低位的1变成0：x &= (x - 1)
@@ -26190,6 +26192,8 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
       return ones;
   }
   ```
+
+- [位运算的奇技淫巧（二） - RioTian - 博客园](https://www.cnblogs.com/RioTian/p/13598747.html)
 
 - [Integer常用函数和位运算技巧](https://blog.csdn.net/youyou1543724847/article/details/52385775)
   
