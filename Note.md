@@ -24916,6 +24916,61 @@ class Solution {
 }
 ```
 
+## [2028. 找出缺失的观测数据](https://leetcode-cn.com/problems/find-missing-observations/)
+
+> 数组，数学，模拟
+
+```java
+执行用时：2 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：59 MB, 在所有 Java 提交中击败了24.32%的用户
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int mSum = 0;
+        for (int i = 0; i < rolls.length; ++i) {
+            mSum += rolls[i];
+        }
+        int nSum = (rolls.length + n) * mean - mSum;
+        int avg = nSum / n;
+        if (avg < 1 || avg > 6 || (avg == 6 && nSum % n != 0)) {
+            return new int[0];
+        }
+        int rest = nSum - avg * n;
+        int[] res = new int[n];
+        for (int i = 0; i < rest; ++i) {
+            res[i] = avg + 1;
+        }
+        for (int i = rest; i < n; ++i) {
+            res[i] = avg;
+        }
+        return res;
+    }
+}
+```
+写法更简单
+```java
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        // 求总和
+        int sum = (rolls.length + n) * mean;
+        // 求前n的和
+        for (int i: rolls) {
+            sum -= i;
+        }
+        // 前n的和不满足题意
+        if (n > sum || sum > 6 * n) {
+            return new int[0];
+        }
+        // 用平均值打底，然后余下的值前几项再+1
+        int[] res = new int[n];
+        int avg = sum / n, point = sum % n;
+        for (int i = 0; i < n; ++i) {
+            res[i] = avg + (i < point ? 1 : 0);
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
