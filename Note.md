@@ -24971,6 +24971,37 @@ class Solution {
 }
 ```
 
+## [693. 交替位二进制数](https://leetcode-cn.com/problems/binary-number-with-alternating-bits/)
+
+> 位运算
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：38.4 MB, 在所有 Java 提交中击败了17.60%的用户
+```java
+class Solution {
+    public boolean hasAlternatingBits(int n) {
+        boolean flag = (n & 1) == 1;
+        n >>= 1;
+        while (n > 0) {
+            if (((n & 1) == 1) == flag) {
+                return false;
+            }
+            flag = !flag;
+            n >>= 1;
+        }
+        return true;
+    }
+}
+```
+位运算技巧
+```java
+class Solution {
+    public boolean hasAlternatingBits(int n) {
+        int x = n ^ (n >> 1);
+        return (x & (x + 1)) == 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -26202,6 +26233,8 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
 - 得到最低位的1的值(lowbit)，形如100...0：**x & -x**（常用）; x & (x ^ (x - 1))【常应用于树状数组，状压DP，二进制或位运算题中】
 
 - 0和1翻转：n ^= 1
+
+- 判断是否全1：(n & (n + 1)) == 0
 
 - x & ~x <=> 0
 
