@@ -25002,6 +25002,41 @@ class Solution {
 }
 ```
 
+## [2024. 考试的最大困扰度](https://leetcode-cn.com/problems/maximize-the-confusion-of-an-exam/)
+
+> 字符串，二分查找，前缀和，滑动窗口
+
+```java
+class Solution {
+    public int maxConsecutiveAnswers(String answerKey, int k) {
+        // 滑动窗口 T则求窗口内F的数量<=k满足题意，否则不满足，滑动
+        int n = answerKey.length();
+        int maxLen = 0;
+        char[] cs = new char[]{'T', 'F'};
+        for (int i = 0; i < 2; ++i) {
+            int l = 0, r = 0, curLen = 0;
+            while (r < n) {
+                // 更新r状态
+                if (answerKey.charAt(r) == cs[i]) {
+                    curLen++;
+                }
+                while (curLen > k) {
+                    // 更新l状态
+                    if (answerKey.charAt(l) == cs[i]) {
+                        curLen--;
+                    }
+                    l++;
+                }
+                // 更新最值
+                maxLen = Math.max(maxLen, r - l + 1);
+                r++;
+            }
+        }
+        return maxLen;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
