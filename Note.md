@@ -25037,6 +25037,36 @@ class Solution {
 }
 ```
 
+## [728. 自除数](https://leetcode-cn.com/problems/self-dividing-numbers/)
+
+> 模拟
+
+```java
+class Solution {
+    public List<Integer> selfDividingNumbers(int left, int right) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = left; i <= right; ++i) {
+            if (check(i)) {
+                list.add(i);
+            }
+        }
+        return list;
+    }
+
+    private boolean check(int i) {
+        int o = i;
+        while (i > 0) {
+            int x = i % 10;
+            if (x == 0 || o % x != 0) {
+                return false;
+            }
+            i /= 10;
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -26487,3 +26517,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2049. 统计最高分的节点数目](https://leetcode-cn.com/problems/count-nodes-with-the-highest-score/)
 
 ## [432. 全 O(1) 的数据结构](https://leetcode-cn.com/problems/all-oone-data-structure/)
+
+## [1606. 找到处理最多请求的服务器](https://leetcode-cn.com/problems/find-servers-that-handled-most-number-of-requests/)
