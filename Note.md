@@ -25067,6 +25067,34 @@ class Solution {
 }
 ```
 
+## [954. 二倍数对数组](https://leetcode-cn.com/problems/array-of-doubled-pairs/)
+
+> 贪心，数组，哈希表，排序
+
+执行用时：22 ms, 在所有 Java 提交中击败了92.78%的用户
+内存消耗：49.1 MB, 在所有 Java 提交中击败了12.88%
+```java
+class Solution {
+    public boolean canReorderDoubled(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int x: arr) {
+            map.put(x, map.getOrDefault(x, 0) + 1);
+        }
+        List<Integer> list = new ArrayList<>(map.keySet());
+        Collections.sort(list, (x, y) -> Math.abs(x) - Math.abs(y));
+        for (int i: list) {
+            int m = i * 2;
+            if (map.getOrDefault(m, 0) >= map.get(i)) {
+                map.put(m, map.getOrDefault(m, 0) - map.get(i));
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
