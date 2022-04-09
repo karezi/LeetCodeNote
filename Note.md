@@ -25095,6 +25095,173 @@ class Solution {
 }
 ```
 
+## [744. 寻找比目标字母大的最小字母](https://leetcode-cn.com/problems/find-smallest-letter-greater-than-target/)
+
+> 数组，二分查找
+
+```java
+class Solution {
+    public char nextGreatestLetter(char[] letters, char target) {
+        int l = 0, r = letters.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (letters[mid] > target) {
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+        if (letters[l] > target) {
+            return letters[l];
+        } else {
+            return l + 1 < letters.length ? letters[l + 1] : letters[0];
+        }
+    }
+}
+```
+
+## [762. 二进制表示中质数个计算置位](https://leetcode-cn.com/problems/prime-number-of-set-bits-in-binary-representation/)
+
+> 位运算，数学
+
+```java
+class Solution {
+    public int countPrimeSetBits(int left, int right) {
+        int ans = 0;
+        for (int i = left; i <= right; ++i) {
+            if (isPrime(Integer.bitCount(i))) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    private boolean isPrime(int x) {
+        if (x < 2) return false;
+        for (int i = 2; i * i <= x; ++i) {
+            if (x % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+TODO 直接利用有限质数判断
+```java
+class Solution {
+    public int countPrimeSetBits(int left, int right) {
+        int ans = 0;
+        for (int x = left; x <= right; ++x) {
+            // 20位以内质数：2,3,5,7,11,13,17,19->(10100010100010101100)2
+            if (((1 << Integer.bitCount(x)) & 665772) != 0) {
+                ++ans;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [796. 旋转字符串](https://leetcode-cn.com/problems/rotate-string/)
+
+> 字符串，字符串匹配
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：38.7 MB, 在所有 Java 提交中击败了76.45%的用户
+```java
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        int n = s.length();
+        if (n != goal.length()) return false;
+        for (int i = 0; i < n; ++i) {
+            if (goal.equals(s.substring(i, n) + s.substring(0, i))) return true;
+        }
+        return false;
+    }
+}
+```
+s+s的巧妙解法 TODO
+```java
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(s).append(s);
+        return goal.length() == s.length() && sb.toString().contains(goal);
+    }
+}
+```
+
+## [429. N 叉树的层序遍历](https://leetcode-cn.com/problems/n-ary-tree-level-order-traversal/)
+
+> 数，广度优先搜索
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+        Deque<Node> q = new ArrayDeque<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            List<Integer> tmp = new ArrayList<>();
+            int len = q.size();
+            for (int i = 0; i < len; ++i) {
+                Node node = q.poll();
+                tmp.add(node.val);
+                for (Node child: node.children) {
+                    q.offer(child);
+                }
+            }
+            res.add(tmp);
+        }
+        return res;
+    }
+}
+```
+TODO dfs
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> res = new ArrayList<>();
+        dfs(root, 0, res);
+        return res;
+    }
+
+    public void dfs(Node root, int deep, List<List<Integer>> res){
+        if(root == null) return;
+        deep++;
+        if(deep > res.size()){
+            res.add(new ArrayList<>());
+        }
+        res.get(deep - 1).add(root.val);
+        for(Node child: root.children){
+            dfs(child, deep, res);
+        }
+    }
+}
+```
+
+## [780. 到达终点](https://leetcode-cn.com/problems/reaching-points/)
+
+> 数学，脑筋急转弯
+
+```java
+class Solution {
+    public boolean reachingPoints(int sx, int sy, int tx, int ty) {
+        // 从(tx, ty)反推到(sx, sy)
+        while (tx > sx && ty > sy) {
+            // 类似辗转相除反向消减，用大数不断减小数
+            if (ty > tx) ty %= tx;
+            else tx %= ty;
+        }
+        // 减完后比原数还小
+        if (tx < sx || ty < sy) return false;
+        return tx == sx ? (ty - sy) % tx == 0 : (tx - sx) % ty == 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -26363,7 +26530,6 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
   
   ```java
   public int countOnes(int x) {
-      // return Integer.bitCount(x);
       int ones = 0;
       while (x > 0) {
           x &= (x - 1); // 法1：最低位的1变成0
@@ -26372,6 +26538,8 @@ Character.isLowerCase(c) / Character.isUpperCase(c)
       }
       return ones;
   }
+  // 或者
+  Integer.bitCount(x)
   ```
 
 - [位运算的奇技淫巧（二） - RioTian - 博客园](https://www.cnblogs.com/RioTian/p/13598747.html)
@@ -26547,3 +26715,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [432. 全 O(1) 的数据结构](https://leetcode-cn.com/problems/all-oone-data-structure/)
 
 ## [1606. 找到处理最多请求的服务器](https://leetcode-cn.com/problems/find-servers-that-handled-most-number-of-requests/)
+
+## [420. 强密码检验器](https://leetcode-cn.com/problems/strong-password-checker/)
+
+## [307. 区域和检索 - 数组可修改](https://leetcode-cn.com/problems/range-sum-query-mutable/)
+
+## [310. 最小高度树](https://leetcode-cn.com/problems/minimum-height-trees/)
