@@ -25307,6 +25307,22 @@ BEGIN
 END
 ```
 
+## [178. 分数排名](https://leetcode-cn.com/problems/rank-scores/)
+
+> 数据库，窗口函数
+
+```sql
+SELECT score, DENSE_RANK() OVER (ORDER BY score DESC) `rank` FROM Scores;
+```
+
+## [193. 有效电话号码](https://leetcode-cn.com/problems/valid-phone-numbers/)
+
+> Shell，正则表达式
+
+```bash
+grep -P '^(\(\d{3}\) |\d{3}-)\d{3}-\d{4}$' file.txt
+```
+
 # Java算法模板
 
 ## BFS
