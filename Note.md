@@ -25262,6 +25262,27 @@ class Solution {
 }
 ```
 
+## [804. 唯一摩尔斯密码词](https://leetcode-cn.com/problems/unique-morse-code-words/)
+
+> 数组，哈希表，字符串
+
+```java
+class Solution {
+    public int uniqueMorseRepresentations(String[] words) {
+        Set<String> translations = new HashSet<>();
+        String[] codes = new String[]{".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+        for (String word: words) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < word.length(); ++i) {
+                sb.append(codes[word.charAt(i) - 'a']);
+            }
+            translations.add(sb.toString());
+        }
+        return translations.size();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
