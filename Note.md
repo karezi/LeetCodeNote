@@ -25283,6 +25283,30 @@ class Solution {
 }
 ```
 
+## [176. 第二高的薪水](https://leetcode-cn.com/problems/second-highest-salary/)
+
+> 数据库, IFNULL, LIMIT
+
+```sql
+SELECT IFNULL((SELECT DISTINCT salary FROM Employee ORDER BY salary DESC LIMIT 1, 1), NULL) AS SecondHighestSalary
+```
+
+## [177. 第N高的薪水](https://leetcode-cn.com/problems/nth-highest-salary/)
+
+> 数据库, IFNULL, LIMIT，函数
+
+执行用时：371 ms, 在所有 MySQL 提交中击败了82.24%的用户
+内存消耗：0 B, 在所有 MySQL 提交中击败了100.00%的用户
+```sql
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  SET N = N - 1;
+  RETURN (
+    SELECT IFNULL((SELECT DISTINCT salary FROM Employee ORDER BY salary DESC LIMIT N,1), NULL)
+  );
+END
+```
+
 # Java算法模板
 
 ## BFS
