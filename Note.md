@@ -25323,6 +25323,30 @@ SELECT score, DENSE_RANK() OVER (ORDER BY score DESC) `rank` FROM Scores;
 grep -P '^(\(\d{3}\) |\d{3}-)\d{3}-\d{4}$' file.txt
 ```
 
+## [357. 统计各位数字都不同的数字个数](https://leetcode-cn.com/problems/count-numbers-with-unique-digits/submissions/)
+
+> 数学，排列组合
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：37.4 MB, 在所有 Java 提交中击败了81.34%的用户
+```java
+class Solution {
+    public int countNumbersWithUniqueDigits(int n) {
+        // 0位:1; 1位:9; 2位:9*9; 3位:9*9*8
+        int ans = 1;
+        for (int i = 0; i < n; ++i) {
+            int tmp = 9;
+            for (int j = 0; j < i; ++j) {
+                tmp *= 9 - j;
+            }
+            ans += tmp;
+        }
+        return ans;
+    }
+}
+```
+TODO 数位DP
+
 # Java算法模板
 
 ## BFS
