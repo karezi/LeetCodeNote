@@ -25347,6 +25347,41 @@ class Solution {
 ```
 TODO 数位DP
 
+## [806. 写字符串需要的行数](https://leetcode-cn.com/problems/number-of-lines-to-write-string/)
+
+> 数组，字符串
+
+模拟
+```java
+class Solution {
+    public int[] numberOfLines(int[] widths, String s) {
+        int ans = 0, lines = 1;
+        for (int i = 0; i < s.length(); ++i) {
+            int cur = widths[s.charAt(i) - 'a'];
+            ans += cur;
+            if (ans > 100) {
+                ans = cur;
+                lines++;
+            }
+        }
+        return new int[]{lines, ans};
+    }
+}
+```
+
+## [196. 删除重复的电子邮箱](https://leetcode-cn.com/problems/delete-duplicate-emails/)
+
+> 数据库, DELETE
+
+自连接（没索引效率低）
+```sql
+DELETE p1 FROM Person p1, Person p2 WHERE p1.email = p2.email AND p1.id > p2.id;
+```
+子查询
+```sql
+DELETE FROM Person WHERE id NOT IN (SELECT * FROM (SELECT MIN(id) FROM Person GROUP BY Email) AS t)
+```
+
 # Java算法模板
 
 ## BFS
