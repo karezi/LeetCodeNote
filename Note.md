@@ -25382,6 +25382,59 @@ DELETE p1 FROM Person p1, Person p2 WHERE p1.email = p2.email AND p1.id > p2.id;
 DELETE FROM Person WHERE id NOT IN (SELECT * FROM (SELECT MIN(id) FROM Person GROUP BY Email) AS t)
 ```
 
+## [380. O(1) 时间插入、删除和获取随机元素](https://leetcode-cn.com/problems/insert-delete-getrandom-o1/)
+
+> 设计，数组，哈希表，数学，随机化
+
+```java
+class RandomizedSet {
+    private List<Integer> list;
+    private Map<Integer, Integer> map;
+    private Random r;
+
+    public RandomizedSet() {
+        list = new ArrayList<>();
+        map = new HashMap<>();
+        r = new Random();
+    }
+    
+    public boolean insert(int val) {
+        if (map.containsKey(val)) {
+            return false;
+        }
+        int size = list.size();
+        map.put(val, size);
+        list.add(val);
+        return true;
+    }
+    
+    public boolean remove(int val) {
+        if (map.containsKey(val)) {
+            int idx = map.get(val);
+            int last = list.get(list.size() - 1);
+            map.put(last, idx);
+            list.set(idx, last);
+            list.remove(list.size() - 1);
+            map.remove(val);
+            return true;
+        }
+        return false;
+    }
+    
+    public int getRandom() {
+        return list.get(r.nextInt(list.size()));
+    }
+}
+```
+
+## [197. 上升的温度](https://leetcode-cn.com/problems/rising-temperature/)
+
+> 数据库，非等值连接
+
+```sql
+SELECT t1.id FROM Weather t1, Weather t2 WHERE t1.Temperature > t2.Temperature AND DATEDIFF(t1.recordDate, t2.recordDate) = 1
+```
+
 # Java算法模板
 
 ## BFS
