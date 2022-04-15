@@ -25435,6 +25435,72 @@ class RandomizedSet {
 SELECT t1.id FROM Weather t1, Weather t2 WHERE t1.Temperature > t2.Temperature AND DATEDIFF(t1.recordDate, t2.recordDate) = 1
 ```
 
+## [1141. 查询近30天活跃用户数](https://leetcode-cn.com/problems/user-activity-for-the-past-30-days-i/)
+
+> 数据库，聚合
+
+```sql
+SELECT activity_date AS day, COUNT(DISTINCT user_id) AS active_users FROM Activity WHERE DATEDIFF('2019-07-27', activity_date) < 30 GROUP BY activity_date
+```
+
+## [1148. 文章浏览 I](https://leetcode-cn.com/problems/article-views-i/submissions/)
+
+> 数据库
+
+```sql
+SELECT DISTINCT author_id AS id FROM Views WHERE author_id = viewer_id ORDER BY author_id
+```
+
+## [385. 迷你语法分析器](https://leetcode-cn.com/problems/mini-parser/)
+
+> 栈，深度优先搜索，字符串
+
+```java
+class Solution {
+    public NestedInteger deserialize(String s) {
+        if (!s.startsWith("[")) {
+            return new NestedInteger(Integer.parseInt(s));
+        } else {
+            NestedInteger ni = new NestedInteger();
+            String tmp = s.substring(1, s.length() - 1);
+            StringBuilder sb = new StringBuilder();
+            int flag = 0;
+            for (int i = 0; i < tmp.length(); ++i) {
+                char c = tmp.charAt(i);
+                if (c == ',') {
+                    if (sb.length() > 0 && flag == 0) {
+                        // 前方是整数，传下去
+                        ni.add(deserialize(sb.toString()));
+                        sb = new StringBuilder();
+                    } else if (sb.length() == 0) {
+                        // 前方刚刚清空sb，直接跳过
+                        continue;
+                    } else {
+                        // 半路
+                        sb.append(c);
+                    }
+                } else {
+                    sb.append(c);
+                    if (c == '[') {
+                        flag++;
+                    } else if (c == ']') {
+                        flag--;
+                        if (flag == 0) {
+                            ni.add(deserialize(sb.toString()));
+                            sb = new StringBuilder();
+                        }
+                    }
+                }
+            }
+            if (sb.length() > 0) {
+                ni.add(deserialize(sb.toString()));
+            }
+            return ni;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
