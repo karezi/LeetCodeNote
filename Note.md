@@ -25536,6 +25536,65 @@ class Solution {
 }
 ```
 
+## [819. 最常见的单词](https://leetcode-cn.com/problems/most-common-word/)
+
+> 哈希表，字符串，计数
+
+执行用时：6 ms, 在所有 Java 提交中击败了78.94%的用户
+内存消耗：41 MB, 在所有 Java 提交中击败了76.86%的用户
+```java
+class Solution {
+    public String mostCommonWord(String paragraph, String[] banned) {
+        String res = "";
+        int max = 0;
+        StringBuilder sb = new StringBuilder();
+        Map<String, Integer> map = new HashMap<>();
+        Set<String> bannedWords = new HashSet<>();
+        for (String b: banned) {
+            bannedWords.add(b);
+        }
+        paragraph += " ";
+        for (int i = 0; i < paragraph.length(); ++i) {
+            if (!Character.isLetter(paragraph.charAt(i))) {
+                if (sb.length() > 0) {
+                    String key = sb.toString();
+                    if (!bannedWords.contains(key)) {
+                        int val = map.getOrDefault(key, 0) + 1;
+                        map.put(key, val);
+                        if (val > max) {
+                            max = val;
+                            res = key;
+                        }
+                    }
+                    sb = new StringBuilder();
+                }
+            } else {
+                sb.append(Character.toLowerCase(paragraph.charAt(i)));
+            }
+        }
+        return res;
+    }
+}
+```
+
+## [595. 大的国家](https://leetcode-cn.com/problems/big-countries/)
+
+> 数据库
+
+```java
+SELECT name, population, area FROM World WHERE area >= 3000000 OR population >= 25000000;
+```
+
+## [195. 第十行](https://leetcode-cn.com/problems/tenth-line/)
+
+> Shell
+
+```sh
+cat file.txt | tail -n +10 | head -n 1 # 或者tail -n +10 file.txt | head -1
+sed -n '10,1p' file.txt # 或者sed -n 10p file.txt
+awk 'NR==10' file.txt
+```
+
 # Java算法模板
 
 ## BFS
@@ -26845,9 +26904,6 @@ list.stream().mapToInt(User::getScore).sum();
 ```
 
 ## 其他类
-
-- 判断字符是否是数字：Character.isDigit(ch)
-
 - 获取随机数
   
   ```java
