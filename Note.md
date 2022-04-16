@@ -25501,6 +25501,41 @@ class Solution {
 }
 ```
 
+## [479. 最大回文数乘积](https://leetcode-cn.com/problems/largest-palindrome-product/)
+
+> 数学
+
+```java
+class Solution {
+    public int largestPalindrome(int n) {
+        // 回文数最多2n位，枚举前n位，然后看结果是否可以分解
+        if (n == 1) return 9;
+        int ans = 0;
+        int upper = (int)Math.pow(10, n) - 1; // 上界
+        for (int i = upper; i > 0; --i) {
+            // 构造回文数
+            long t = i;
+            int y = i;
+            while (y > 0) {
+                t = t * 10 + y % 10;
+                y /= 10;
+            }
+            // 寻找这个回文数可能的因子，正好从upper开始，注意是long
+            for (long j = upper; j * j >= t; --j) {
+                if (t % j == 0) {
+                    ans = (int)(t % 1337);
+                    break;
+                }
+            }
+            if (ans != 0) {
+                break;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
