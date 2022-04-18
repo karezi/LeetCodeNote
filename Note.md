@@ -25643,6 +25643,29 @@ class Solution {
     }
 }
 ```
+DFS2
+```java
+class Solution {
+    private List<Integer> res;
+
+    public List<Integer> lexicalOrder(int n) {
+        res = new ArrayList<>(n);
+        for(int i = 1; i <= 9; i++){
+            dfs(i, n);
+        }
+        return res;
+    }
+
+    public void dfs(int start, int n){
+        if (start > n) return;
+        res.add(start);
+        for (int i = 0; i <= 9; i++){
+            if (start * 10 + i > n) break;
+            dfs(start * 10 + i, n);
+        }
+    }
+}
+```
 
 # Java算法模板
 
