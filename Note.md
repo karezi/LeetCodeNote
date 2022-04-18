@@ -25595,6 +25595,55 @@ sed -n '10,1p' file.txt # 或者sed -n 10p file.txt
 awk 'NR==10' file.txt
 ```
 
+## [386. 字典序排数](https://leetcode-cn.com/problems/lexicographical-numbers/)
+
+> 深度优先搜索，字典树
+
+PriorityQueue不满足O(1)但是能过
+```java
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((x, y) -> {
+            return String.valueOf(x).compareTo(String.valueOf(y));
+        });
+        for (int i = 1; i <= n; ++i) {
+            pq.offer(i);
+        }
+        List<Integer> ret = new ArrayList<>();
+        while (!pq.isEmpty()) {
+            ret.add(pq.poll());
+        }
+        return ret;
+    }
+}
+```
+DFS
+```java
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        // 下一个
+        // 先尝试cur*10，如果cur*10<=n，则next=cur*10
+        // 否则cur%10==9||cur+1>n，回溯cur=cur/10
+        // cur++
+        // 加了n个数则停止
+        List<Integer> list = new ArrayList<>();
+        int cur = 1;
+        for (int i = 0; i < n; ++i) {
+            list.add(cur);
+            if (cur * 10 <= n) {
+                cur *= 10;
+            } else {
+                // 最后一位走到头了
+                while (cur % 10 == 9 || cur + 1 > n)
+                    cur /= 10;
+                cur++;
+            }
+        }
+        return list;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
