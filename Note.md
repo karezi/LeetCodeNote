@@ -25667,6 +25667,38 @@ class Solution {
 }
 ```
 
+## [821. 字符的最短距离](https://leetcode-cn.com/problems/shortest-distance-to-a-character/)
+
+> 数组，双指针，字符串
+
+执行用时：1 ms, 在所有 Java 提交中击败了98.08%的用户
+内存消耗：41.3 MB, 在所有 Java 提交中击败了47.38%的用户
+```java
+class Solution {
+    public int[] shortestToChar(String s, char c) {
+        int n = s.length();
+        int[] res = new int[n];
+        for (int i = 0; i < n; ++i) {
+            if (s.charAt(i) == c) {
+                res[i] = 0;
+            } else {
+                if (i == 0) res[i] = Integer.MAX_VALUE;
+                else res[i] = res[i - 1] == Integer.MAX_VALUE ? Integer.MAX_VALUE : res[i - 1] + 1;
+            }
+        }
+        for (int i = n - 1; i >= 0; --i) {
+            if (s.charAt(i) == c) {
+                res[i] = 0;
+            } else {
+                if (i == n - 1) res[i] = Math.min(res[i], Integer.MAX_VALUE);
+                else res[i] = Math.min(res[i], res[i + 1] + 1);
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
