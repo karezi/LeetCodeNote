@@ -25699,6 +25699,63 @@ class Solution {
 }
 ```
 
+## [824. 山羊拉丁文](https://leetcode-cn.com/problems/goat-latin/)
+
+> 字符串
+
+```java
+class Solution {
+    private static Character[] CHARS = new Character[]{'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+
+    public String toGoatLatin(String sentence) {
+        int idx = 1;
+        boolean start = true;
+        String end = "";
+        StringBuilder sb = new StringBuilder();
+        Set<Character> set = new HashSet<>() {{
+            add('a');add('e');add('i');add('o');add('u');add('A');add('E');add('I');add('O');add('U');
+        }};
+        for (int i = 0; i < sentence.length(); ++i) {
+            char c = sentence.charAt(i);
+            if (i == sentence.length() - 1) {
+                sb.append(c);
+                if (i == 0 || sentence.charAt(i - 1) == ' ') {
+                    sb.append("ma");
+                } else {
+                    sb.append(end);
+                }
+                for (int j = 0; j < idx; ++j) {
+                    sb.append('a');
+                }
+                break;
+            }
+            if (start) {
+                if (set.contains(c)) {
+                    end = "ma";
+                    sb.append(c);
+                } else {
+                    end = c + "ma";
+                }
+                start = false;
+            } else if (c == ' ') {
+                sb.append(end);
+                for (int j = 0; j < idx; ++j) {
+                    sb.append('a');
+                }
+                sb.append(c);
+                idx++;
+                start = true;
+                end = "";
+            } else {
+                sb.append(c);
+                start = false;
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -27155,3 +27212,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [307. 区域和检索 - 数组可修改](https://leetcode-cn.com/problems/range-sum-query-mutable/)
 
 ## [310. 最小高度树](https://leetcode-cn.com/problems/minimum-height-trees/)
+
+## [388. 文件的最长绝对路径](https://leetcode-cn.com/problems/longest-absolute-file-path/)
