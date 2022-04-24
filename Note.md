@@ -25756,6 +25756,62 @@ class Solution {
 }
 ```
 
+## [868. 二进制间距](https://leetcode-cn.com/problems/binary-gap/submissions/)
+
+> 位运算，数学
+
+复杂了
+执行用时：1 ms, 在所有 Java 提交中击败了33.33%的用户
+内存消耗：38.5 MB, 在所有 Java 提交中击败了37.79%的用户
+```java
+class Solution {
+    private static HashMap<Long, Integer> map = new HashMap<>();
+
+    static {
+        int i = 1;
+        long res = 1;
+        while (res < 10e9) {
+            map.put(res, i);
+            res <<= 1;
+            i++;
+        }
+    }
+
+    public int binaryGap(int n) {
+        int gap = 0, last = 0;
+        while (n > 0) {
+            int x = map.get((long)(n & -n));
+            if (last != 0) {
+                gap = Math.max(gap, x - last);
+            }
+            last = x;
+            n &= (n - 1);
+        }
+        return gap;
+    }
+}
+```
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：38.4 MB, 在所有 Java 提交中击败了51.97%的用户
+```java
+class Solution {
+    public int binaryGap(int n) {
+        int gap = 0, last = 0, i = 1;
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                if (last != 0) {
+                    gap = Math.max(gap, i - last);
+                }
+                last = i;
+            }
+            i++;
+            n >>= 1;
+        }
+        return gap;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -27214,3 +27270,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [310. 最小高度树](https://leetcode-cn.com/problems/minimum-height-trees/)
 
 ## [388. 文件的最长绝对路径](https://leetcode-cn.com/problems/longest-absolute-file-path/)
+
+## [396. 旋转函数](https://leetcode-cn.com/problems/rotate-function/)
+
+## [587. 安装栅栏](https://leetcode-cn.com/problems/erect-the-fence/)
