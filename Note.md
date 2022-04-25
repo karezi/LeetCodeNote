@@ -25812,6 +25812,56 @@ class Solution {
 }
 ```
 
+## [398. 随机数索引](https://leetcode-cn.com/problems/random-pick-index/)
+
+> 水塘抽样，哈希表，数学，随机化
+
+哈希表+随机（空间复杂度高）
+```java
+class Solution {
+    private HashMap<Integer, List<Integer>> map;
+    private Random r;
+
+    public Solution(int[] nums) {
+        r = new Random();
+        map = new HashMap<>();
+        for (int i = 0; i < nums.length; ++i) {
+            map.putIfAbsent(nums[i], new ArrayList<Integer>());
+            map.get(nums[i]).add(i);
+        }
+    }
+    
+    public int pick(int target) {
+        List<Integer> tmp = map.get(target);
+        return tmp.get(r.nextInt(tmp.size()));
+    }
+}
+```
+蓄水池抽样（不定长数据流）
+```java
+class Solution {
+    private int[] _nums;
+    private Random r;
+
+    public Solution(int[] nums) {
+        this._nums = nums;
+        r = new Random();
+    }
+    
+    public int pick(int target) {
+        int res = 0;
+        for (int i = 0, cnt = 0; i < _nums.length; ++i) {
+            if (target == _nums[i]) {
+                // 找到时，选择概率为0~cnt
+                cnt++;
+                if (r.nextInt(cnt) == 0) res = i;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -26554,6 +26604,46 @@ for (int i = n - 1; i >= 0; --i) { // 经典子串遍历
 ### 贪心
 
 ## 单调栈
+
+## 字符串
+### KMP
+```java
+public class Kmp {
+    /**
+     * KMP 匹配
+     */
+    public static int kmp(String str, String pattern){
+        // 计算前缀长度表
+        int[] prefixLens = calPrefixLen(pattern);
+        // 查找匹配位置
+        for(int i = 0, j = 0; i < str.length(); i++){
+            while(j > 0 && str.charAt(i) != pattern.charAt(j))
+                j = prefixLens[j - 1];
+            if(str.charAt(i) == pattern.charAt(j))
+                j++;
+            if(j == pattern.length())
+                return i - j + 1;
+        }
+        return -1;
+    }
+
+    /**
+     * 计算前缀长度表
+     */
+    public static int[] calPrefixLen(String pattern){
+        int[] prefixLens = new int[pattern.length()];
+        prefixLens[0] = 0;
+        for(int i = 1, j = 0; i < pattern.length(); i++){
+            while(j > 0 && pattern.charAt(j) != pattern.charAt(i))
+                j = next[j - 1];
+            if(pattern.charAt(i) == pattern.charAt(j))
+                j++;
+            prefixLens[i] = j;
+        }
+        return prefixLens;
+    }
+}
+```
 
 ## 数学
 
