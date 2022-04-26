@@ -25862,6 +25862,29 @@ class Solution {
 }
 ```
 
+## [883. 三维形体投影面积](https://leetcode-cn.com/problems/projection-area-of-3d-shapes/)
+
+> 几何，数组，数学，矩阵
+
+```java
+class Solution {
+    public int projectionArea(int[][] grid) {
+        int n = grid.length, top = 0, front = 0, side = 0;
+        for (int i = 0; i < n; ++i) {
+            int lineMax = 0, rowMax = 0;
+            for (int j = 0; j < n; ++j) {
+                if (grid[i][j] != 0) top++;
+                lineMax = Math.max(lineMax, grid[i][j]);
+                rowMax = Math.max(rowMax, grid[j][i]);
+            }
+            side += lineMax;
+            front += rowMax;
+        }
+        return top + front + side;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
