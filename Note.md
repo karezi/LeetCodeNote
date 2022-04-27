@@ -25885,6 +25885,124 @@ class Solution {
 }
 ```
 
+## [417. 太平洋大西洋水流问题](https://leetcode-cn.com/problems/pacific-atlantic-water-flow/submissions/)
+
+> DFS，BFS，数组，矩阵
+
+```java
+class Solution {
+    private List<List<Integer>> po = new ArrayList<>(), ao = new ArrayList<>();
+    private int m, n;
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        // 反向dfs
+        m = heights.length;
+        n = heights[0].length;
+        boolean isPo = true;
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; ++i) {
+            dfs(heights, i, 0, visited, isPo);
+        }
+        for (int j = 1; j < n; ++j) {
+            dfs(heights, 0, j, visited, isPo);
+        }
+        visited = new boolean[m][n];
+        for (int i = 0; i < m; ++i) {
+            dfs(heights, i, n - 1, visited, !isPo);
+        }
+        for (int j = 0; j < n - 1; ++j) {
+            dfs(heights, m - 1, j, visited, !isPo);
+        }
+        // 比较两个list取出都有的
+        List<List<Integer>> ret = new ArrayList<>();
+        Set<String> cache = new HashSet<>();
+        for (int i = 0; i < po.size(); ++i) {
+            for (int j = 0; j < ao.size(); ++j) {
+                List<Integer> pol = po.get(i);
+                List<Integer> aol = ao.get(j);
+                if (pol.get(0).equals(aol.get(0)) && pol.get(1).equals(aol.get(1))) {
+                    String tmp = pol.get(0) + "," + pol.get(1);
+                    if (!cache.contains(tmp)) {
+                        cache.add(tmp);
+                        ret.add(pol);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    private void dfs(int[][] heights, int x, int y, boolean[][] visited, boolean isPo) {
+        visited[x][y] = true;
+        if (isPo) {
+            po.add(new ArrayList<>(){{add(x);add(y);}});
+        } else {
+            ao.add(new ArrayList<>(){{add(x);add(y);}});
+        }
+        int[][] directions = new int[][]{{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+        for (int[] d: directions) {
+            int nx = x + d[0], ny = y + d[1];
+            if (nx >= 0 && nx < m && ny >= 0 && ny < n && !visited[nx][ny] && heights[nx][ny] >= heights[x][y]) {
+                dfs(heights, nx, ny, visited, isPo);
+            }
+        }
+    }
+}
+```
+TODO 只用boolean数组
+```java
+class Solution {
+    static int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    int[][] heights;
+    int m, n;
+
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        this.heights = heights;
+        this.m = heights.length;
+        this.n = heights[0].length;
+        boolean[][] pacific = new boolean[m][n];
+        boolean[][] atlantic = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            dfs(i, 0, pacific);
+        }
+        for (int j = 1; j < n; j++) {
+            dfs(0, j, pacific);
+        }
+        for (int i = 0; i < m; i++) {
+            dfs(i, n - 1, atlantic);
+        }
+        for (int j = 0; j < n - 1; j++) {
+            dfs(m - 1, j, atlantic);
+        }
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    List<Integer> cell = new ArrayList<Integer>();
+                    cell.add(i);
+                    cell.add(j);
+                    result.add(cell);
+                }
+            }
+        }
+        return result;
+    }
+
+    public void dfs(int row, int col, boolean[][] ocean) {
+        if (ocean[row][col]) {
+            return;
+        }
+        ocean[row][col] = true;
+        for (int[] dir : dirs) {
+            int newRow = row + dir[0], newCol = col + dir[1];
+            if (newRow >= 0 && newRow < m && newCol >= 0 && newCol < n && heights[newRow][newCol] >= heights[row][col]) {
+                dfs(newRow, newCol, ocean);
+            }
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
