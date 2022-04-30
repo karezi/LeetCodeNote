@@ -26003,6 +26003,93 @@ class Solution {
 }
 ```
 
+## [905. 按奇偶排序数组](https://leetcode-cn.com/problems/sort-array-by-parity/)
+
+> 数组，双指针，排序
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：42 MB, 在所有 Java 提交中击败了69.49%的用户
+```java
+class Solution {
+    public int[] sortArrayByParity(int[] nums) {
+        int last = -1;
+        for (int i = 0; i < nums.length; ++i) {
+            if ((nums[i] & 1) == 0) {
+                if (++last <= i) {
+                    swap(nums, last, i);
+                }
+            }
+        }
+        return nums;
+    }
+
+    private void swap(int[] num, int x, int y) {
+        int tmp = num[x];
+        num[x] = num[y];
+        num[y] = tmp;
+    }
+}
+```
+
+## [427. 建立四叉树](https://leetcode-cn.com/problems/construct-quad-tree/)
+
+> 树，数组，分治，矩阵
+
+```java
+class Solution {
+    public Node construct(int[][] grid) {
+        int n = grid.length;
+        if (n == 1) {
+            return new Node(grid[0][0] == 1, true);
+        }
+        return helper(grid, 0, 0, n);
+    }
+
+    private Node helper(int[][] grid, int x, int y, int w) {
+        if (w == 1) {
+            return new Node(grid[x][y] == 1, true);
+        }
+        boolean same = true;
+        for (int i = x; i < x + w; ++i) {
+            for (int j = y; j < y + w; ++j) {
+                if (grid[i][j] != grid[x][y]) {
+                    same = false;
+                    break;
+                }
+            }
+            if (!same) break;
+        }
+        if (same) {
+            return new Node(grid[x][y] == 1, true);
+        }
+        int nw = w >> 1;
+        Node n1 = helper(grid, x, y, nw); // topLeft
+        Node n2 = helper(grid, x, y + nw, nw); // topRight
+        Node n3 = helper(grid, x + nw, y, nw); // bottomLeft
+        Node n4 = helper(grid, x + nw, y + nw, nw); // bottomRight
+        return new Node(true, false, n1, n2, n3, n4);
+    }
+}
+```
+
+## [908. 最小差值 I](https://leetcode-cn.com/problems/smallest-range-i/submissions/)
+
+> 数组，数学
+
+```java
+class Solution {
+    public int smallestRangeI(int[] nums, int k) {
+        // 最低点的最大值，最高点的最小值
+        int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+        for (int num: nums) {
+            min = Math.min(min, num + k);
+            max = Math.max(max, num - k);
+        }
+        return Math.max(0, max - min);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
