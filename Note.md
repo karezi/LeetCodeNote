@@ -26090,6 +26090,52 @@ class Solution {
 }
 ```
 
+## [1305. 两棵二叉搜索树中的所有元素](https://leetcode-cn.com/problems/all-elements-in-two-binary-search-trees/submissions/)
+
+> 树，深度优先搜索，二叉搜索树，二叉树，排序
+
+```java
+class Solution {
+    private List<Integer> list1 = new ArrayList<>();
+    private List<Integer> list2 = new ArrayList<>();
+    private List<Integer> ret = new ArrayList<>();
+
+    public List<Integer> getAllElements(TreeNode root1, TreeNode root2) {
+        dfs(root1, list1);
+        dfs(root2, list2);
+        merge();
+        return ret;
+    }
+
+    private void dfs(TreeNode root, List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        dfs(root.left, list);
+        list.add(root.val);
+        dfs(root.right, list);
+    }
+
+    private void merge() {
+        int i = 0, j = 0, n1 = list1.size(), n2 = list2.size();
+        while (i < n1 && j < n2) {
+            while (i < n1 && j < n2 && list1.get(i) >= list2.get(j)) {
+                ret.add(list2.get(j++));
+            }
+            while (i < n1 && j < n2 && list1.get(i) <= list2.get(j)) {
+                ret.add(list1.get(i++));
+            }
+        }
+        if (i < n1) {
+            for (int k = i; k < n1; ++k) ret.add(list1.get(k));
+        }
+        if (j < n2) {
+            for (int k = j; k < n2; ++k) ret.add(list2.get(k));
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
