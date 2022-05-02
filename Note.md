@@ -26136,6 +26136,216 @@ class Solution {
 }
 ```
 
+## [591. 标签验证器](https://leetcode-cn.com/problems/tag-validator/submissions/)
+
+> 栈，字符串
+
+通过'<'开始进行条件判断，获取到的有效标签进行出入站操作，CDATA特殊处理
+注意以下两个用例是不合法的
+1.不能开新标签，整个字符串只能包含一套嵌套的标签，即
+"<A></A><B></B>"不合法
+"<A><B></B></A>"合法
+2.不在<TAG>标签内的CDATA不合法，即
+"<![CDATA[wahaha]]]>"不合法
+"<DIV><![CDATA[wahaha]]]></DIV>"合法
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.6 MB, 在所有 Java 提交中击败了65.28%的用户
+```java
+class Solution {
+    public boolean isValid(String code) {
+        Deque<String> tags = new ArrayDeque<>();
+        int i = 0, n = code.length();
+        while (i < n) {
+            if (code.charAt(i) == '<') {
+                // i + 1开始是标签
+                if (i == n - 1) return false;
+                else {
+                    if (code.charAt(i + 1) == '/') {
+                        // i+2开始是闭合标签
+                        // 找到右>位置
+                        int j = code.indexOf('>', i + 2);
+                        // TAG_NAME长度范围不对
+                        if (j < 0 || j - i > 11 || j - i <= 2) return false;
+                        String tag = code.substring(i + 2, j);
+                        // 栈不匹配
+                        if (tags.isEmpty() || !tags.peek().equals(tag)) return false;
+                        // 匹配成功出栈
+                        tags.pop();
+                        // 更新下标
+                        i = j + 1;
+                    } else if (code.charAt(i + 1) == '!') {
+                        // i+2开始是CDATA
+                        // 必须在标签内
+                        if (tags.isEmpty()) return false;
+                        // 判别[i+2,i+9)为[CDATA[
+                        if (i + 9 > n) return false;
+                        String test = code.substring(i + 2, i + 9);
+                        if (!test.equals("[CDATA[")) return false;
+                        // 找到右]]>位置
+                        int j = code.indexOf("]]>", i + 9);
+                        if (j < 0) return false;
+                        // 更新下标
+                        i = j + 3;
+                    } else {
+                        // i+1开始是起始标签
+                        // 不能新开标签
+                        if (i != 0 && tags.isEmpty()) return false;
+                        // 找到右>位置
+                        int j = code.indexOf('>', i + 1);
+                        // TAG_NAME长度范围不对
+                        if (j < 0 || j - i > 10 || j - i <= 1) return false;
+                        String tag = code.substring(i + 1, j);
+                        if (!checkUpper(tag)) return false;
+                        // 合法标签入栈
+                        tags.push(tag);
+                        // 更新小标
+                        i = j + 1;
+                    }
+                }
+            } else {
+                // 非标签
+                if (tags.isEmpty()) return false;
+                i++;
+            }
+        }
+        return tags.isEmpty();
+    }
+
+    private boolean checkUpper(String str) {
+        for (char c: str.toCharArray()) {
+            if (!Character.isUpperCase(c))
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+## [2243. 计算字符串的数字和](https://leetcode-cn.com/problems/calculate-digit-sum-of-a-string/)
+
+> 字符串，模拟
+
+```java
+class Solution {
+    public String digitSum(String s, int k) {
+        if (k > s.length()) return s;
+        while (s.length() > k) {
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            while (i + k < s.length()) {
+                int sum = 0;
+                for (int j = 0; j < k; ++j) {
+                    sum += s.charAt(i + j) - '0';
+                }
+                sb.append(String.valueOf(sum));
+                i += k;
+            }
+            if (i < s.length()) {
+                int sum = 0;
+                for (int j = i; j < s.length(); ++j) {
+                    sum += s.charAt(j) - '0';
+                }
+                sb.append(String.valueOf(sum));
+            }
+            s = sb.toString();
+        }
+        return s;
+    }
+}
+```
+TODO 递归
+
+## [2244. 完成所有任务需要的最少轮数](https://leetcode-cn.com/problems/minimum-rounds-to-complete-all-tasks/)
+
+> 贪心，数组，哈希表，计数
+
+```java
+class Solution {
+    public int minimumRounds(int[] tasks) {
+        Arrays.sort(tasks);
+        int ans = 0, cnt = 1, n = tasks.length;
+        if (n == 1) return -1;
+        for (int i = 1; i < n; ++i) {
+            if (tasks[i] == tasks[i - 1]) {
+                cnt++;
+                if (i == n - 1) ans += cnt / 3 + (cnt % 3 == 0 ? 0 : 1);
+            } else {
+                if (i == n - 1) return -1;
+                if (cnt == 1) return -1;
+                ans += cnt / 3 + (cnt % 3 == 0 ? 0 : 1);
+                cnt = 1;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## [2245. 转角路径的乘积中最多能有几个尾随零](https://leetcode-cn.com/problems/maximum-trailing-zeros-in-a-cornered-path/)
+
+> 数组，矩阵，前缀和
+
+```java
+class Solution {
+    public int maxTrailingZeros(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][][] map = new int[m][n][2];
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                map[i][j] = count25(grid[i][j]);
+            }
+        }
+        int ret = 0;
+        int[][][][] cache = new int[m + 2][n + 2][4][2]; // [x][y][上左下右][2数量/5数量]
+        for (int i = 1; i < m + 1; ++i) {
+            for (int j = 1; j < n + 1; ++j) {
+                cache[i][j][0][0] = cache[i - 1][j][0][0] + map[i - 1][j - 1][0];
+                cache[i][j][1][0] = cache[i][j - 1][1][0] + map[i - 1][j - 1][0];
+                cache[i][j][0][1] = cache[i - 1][j][0][1] + map[i - 1][j - 1][1];
+                cache[i][j][1][1] = cache[i][j - 1][1][1] + map[i - 1][j - 1][1];
+            }
+        }
+        for (int i = m; i > 0; --i) {
+            for (int j = n; j > 0; --j) {
+                cache[i][j][2][0] = cache[i + 1][j][2][0] + map[i - 1][j - 1][0];
+                cache[i][j][3][0] = cache[i][j + 1][3][0] + map[i - 1][j - 1][0];
+                cache[i][j][2][1] = cache[i + 1][j][2][1] + map[i - 1][j - 1][1];
+                cache[i][j][3][1] = cache[i][j + 1][3][1] + map[i - 1][j - 1][1];
+            }
+        }
+        for (int i = 1; i < m + 1; ++i) {
+            for (int j = 1; j < n + 1; ++j) {
+                int[] tmp = new int[4];
+                tmp[0] = Math.min(cache[i][j][0][0] + cache[i][j][1][0] - map[i - 1][j - 1][0], cache[i][j][0][1] + cache[i][j][1][1] - map[i - 1][j - 1][1]);
+                tmp[1] = Math.min(cache[i][j][0][0] + cache[i][j][3][0] - map[i - 1][j - 1][0], cache[i][j][0][1] + cache[i][j][3][1] - map[i - 1][j - 1][1]);
+                tmp[2] = Math.min(cache[i][j][1][0] + cache[i][j][2][0] - map[i - 1][j - 1][0], cache[i][j][1][1] + cache[i][j][2][1] - map[i - 1][j - 1][1]);
+                tmp[3] = Math.min(cache[i][j][2][0] + cache[i][j][3][0] - map[i - 1][j - 1][0], cache[i][j][2][1] + cache[i][j][3][1] - map[i - 1][j - 1][1]);
+                ret = Math.max(ret, Arrays.stream(tmp).max().getAsInt());
+            }
+        }
+        return ret;
+    }
+    
+    private int[] count25(int x) {
+        int a = x, ans1 = 0;
+        while (a > 0) {
+            if (a % 2 == 0) ans1++;
+            else break;
+            a /= 2;
+        }
+        int b = x, ans2 = 0;
+        while (b > 0) {
+            if (b % 5 == 0) ans2++;
+            else break;
+            b /= 5;
+        }
+        return new int[]{ans1, ans2};
+    }
+}
+```
+TODO 枚举最长的L型即可，采用前缀和优化
+
 # Java算法模板
 
 ## BFS
