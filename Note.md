@@ -26346,6 +26346,48 @@ class Solution {
 ```
 TODO 枚举最长的L型即可，采用前缀和优化
 
+## [937. 重新排列日志文件](https://leetcode-cn.com/problems/reorder-data-in-log-files/)
+
+> 数组，字符串，排序
+
+执行用时：3 ms, 在所有 Java 提交中击败了95.54%的用户
+内存消耗：41.8 MB, 在所有 Java 提交中击败了47.44%的用户
+```java
+class Solution {
+    public String[] reorderLogFiles(String[] logs) {
+        Arrays.sort(logs, (str1, str2) -> {
+            int si1 = str1.indexOf(' ');
+            int si2 = str2.indexOf(' ');
+            String id1 = str1.substring(0, si1);
+            String content1 = str1.substring(si1 + 1);
+            String id2 = str2.substring(0, si2);
+            String content2 = str2.substring(si2 + 1);
+            if (Character.isDigit(content1.charAt(0)) && Character.isLetter(content2.charAt(0))) {
+                // 第一个数字，第二个字母，交换
+                return 1;
+            }
+            if (Character.isDigit(content1.charAt(0)) && Character.isDigit(content2.charAt(0))) {
+                // 两个都是数字，什么都不做
+                return 0;
+            }
+            if (Character.isLetter(content1.charAt(0)) && Character.isLetter(content2.charAt(0))) {
+                // 两个都是字母
+                if (content1.compareTo(content2) > 0) {
+                    // 第一个内容大，交换
+                    return 1;
+                } else if (content1.compareTo(content2) == 0) {
+                    // 内容一样大，按标识符顺序排序
+                    return id1.compareTo(id2);
+                }
+            }
+            // 其他情况，升序排列
+            return -1;
+        });
+        return logs;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
