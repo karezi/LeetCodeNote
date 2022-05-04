@@ -26388,6 +26388,72 @@ class Solution {
 }
 ```
 
+## [1823. 找出游戏的获胜者](https://leetcode-cn.com/problems/find-the-winner-of-the-circular-game/)
+
+> 递归，队列，数组，数学，模拟，约瑟夫环
+
+模拟
+```java
+class Solution {
+    class Node {
+        public int val;
+        public Node next, last;
+
+        public Node(int val) {
+            this.val = val;
+        }
+    }
+
+    public int findTheWinner(int n, int k) {
+        if (k == 1) return n;
+        Node root = new Node(1), p = root;
+        for (int i = 2; i <= n; ++i) {
+            Node node = new Node(i);
+            node.last = p;
+            p.next = node;
+            p = p.next;
+        }
+        p.next = root;
+        root.last = p;
+        p = root;
+        int cnt = k - 1;
+        while (p.next != p) {
+            while(p.next != p && cnt > 1) {
+                p = p.next;
+                cnt--;
+            }
+            p.next = p.next.next;
+            p = p.next;
+            cnt = k - 1;
+        }
+        return p.val;
+    }
+}
+```
+递归
+```java
+class Solution {
+    // 从n个人，隔k个杀转化为n-1个人，隔k个杀（往前推k个）
+    public int findTheWinner(int n, int k) {
+        if (n == 1) return 1;
+        int ans = (findTheWinner(n - 1, k) + k) % n;
+        return ans == 0 ? n : ans;
+    }
+}
+```
+TODO 迭代
+```java
+class Solution {
+    public int findTheWinner(int n, int k) {
+        int id = 0;
+        for (int i = 2; i <= n; ++i) {
+            id = (id + k) % i;
+        }
+        return id + 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
