@@ -26454,6 +26454,31 @@ class Solution {
 }
 ```
 
+## [713. 乘积小于 K 的子数组](https://leetcode-cn.com/problems/subarray-product-less-than-k/)
+
+> 数组，滑动窗口
+
+```java
+class Solution {
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        if (k <= 1) return 0;
+        int ans = 0, mul = 1, l = 0, r = 0;
+        while (r < nums.length) {
+            // 更新状态
+            mul *= nums[r];
+            while (l <= r && mul >= k) { // 错误
+                mul /= nums[l];
+                l++;
+            }
+            ans += r - l + 1; // 更新结果
+            r++;
+        }
+        return ans;
+    }
+}
+```
+TODO 二分查找
+
 # Java算法模板
 
 ## BFS
