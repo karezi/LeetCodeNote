@@ -26479,6 +26479,46 @@ class Solution {
 ```
 TODO 二分查找
 
+## [933. 最近的请求次数](https://leetcode-cn.com/problems/number-of-recent-calls/)
+
+> 设计，队列，数据流
+
+```java
+class RecentCounter {
+    private List<Integer> pingTimes;
+
+    public RecentCounter() {
+        pingTimes = new ArrayList<>();
+    }
+    
+    public int ping(int t) {
+        pingTimes.add(t);
+        int ans = 0;
+        int end = Math.max(0, t - 3000);
+        for (int i = pingTimes.size() - 1; i >= 0 && pingTimes.get(i) >= t - 3000; --i) {
+            ans++;
+        }
+        return ans;
+    }
+}
+```
+优化
+```java
+class RecentCounter {
+    private int[] times = new int[10005];
+    private int l = 0, r = 0;
+
+    public RecentCounter() {
+    }
+    
+    public int ping(int t) {
+        times[r++] = t;
+        while (times[l] < t - 3000) l++;
+        return r - l;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
