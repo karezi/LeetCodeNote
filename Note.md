@@ -26519,6 +26519,53 @@ class RecentCounter {
 }
 ```
 
+## [433. 最小基因变化](https://leetcode-cn.com/problems/minimum-genetic-mutation/)
+
+> 广度优先搜索，哈希表，字符串
+
+```java
+class Solution {
+    public int minMutation(String start, String end, String[] bank) {
+        Set<String> bankSet = new HashSet<>();
+        for (String b: bank) {
+            bankSet.add(b);
+        }
+        if (!bankSet.contains(end)) return -1;
+        int step = 0;
+        Deque<String> q = new ArrayDeque<>();
+        q.push(start);
+        char[] cc = new char[]{'A', 'C', 'G', 'T'};
+        while (!q.isEmpty()) {
+            int size = q.size();
+            boolean isAllFailed = true;
+            for (int i = 0; i < size; ++i) {
+                String str = q.pop();
+                for (int j = 0; j < 8; ++j) {
+                    for (int k = 0; k < 4; ++k) {
+                        StringBuilder sb = new StringBuilder(str);
+                        if (sb.charAt(j) != cc[k]) {
+                            sb.setCharAt(j, cc[k]);
+                            String tmp = sb.toString();
+                            if (tmp.equals(end)) {
+                                return step + 1;
+                            } else if (bankSet.contains(tmp)) {
+                                q.push(tmp);
+                                isAllFailed = false;
+                                bankSet.remove(tmp);
+                            }
+                        }
+                    }
+                }
+            }
+            if (isAllFailed) return -1;
+            step++;
+        }
+        return step;
+    }
+}
+```
+TODO 预处理优化，双向BFS，建图，A*
+
 # Java算法模板
 
 ## BFS
@@ -27663,6 +27710,13 @@ Character.toLowerCase(c) / Character.toUpperCase(c)
 
 ```java
 Character.isLowerCase(c) / Character.isUpperCase(c)
+```
+
+- 修改字符串某一位
+
+```java
+StringBuilder sb = new StringBuilder(str);
+sb.setCharAt(1, 'a');
 ```
 
 ## 数组类
