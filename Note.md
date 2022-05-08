@@ -26566,6 +26566,72 @@ class Solution {
 ```
 TODO 预处理优化，双向BFS，建图，A*
 
+## [442. 数组中重复的数据](https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        Set<Integer> ret = new HashSet<>();
+        for (int num: nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        for (int i: map.keySet()) {
+            if (map.get(i) == 2) {
+                ret.add(i);
+            }
+        }
+        return new ArrayList<>(ret);
+    }
+}
+```
+TODO 交换
+```java
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> ret = new ArrayList<>();
+        int n = nums.length;
+        for (int i = 0; i < n; ++i) {
+            while (nums[i] != nums[nums[i] - 1]) {
+                swap(nums, i, nums[i] - 1);
+            }
+        }
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] - 1 != i) {
+                ret.add(nums[i]);
+            }
+        }
+        return ret;
+    }
+
+    private void swap(int[] nums, int a, int b) {
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+}
+```
+TODO 使用负号
+```java
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        int n = nums.length;
+        List<Integer> ans = new ArrayList<Integer>();
+        for (int i = 0; i < n; ++i) {
+            int x = Math.abs(nums[i]);
+            if (nums[x - 1] > 0) {
+                nums[x - 1] = -nums[x - 1];
+            } else {
+                ans.add(x);
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
