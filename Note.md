@@ -26632,6 +26632,57 @@ class Solution {
 }
 ```
 
+## [942. 增减字符串匹配](https://leetcode.cn/problems/di-string-match/)
+
+> 贪心，数组，数学，双指针，字符串，脑筋急转弯
+
+```java
+class Solution {
+    public int[] diStringMatch(String s) {
+        int n = s.length();
+        Map<Integer, List<Integer>> map = new HashMap<>(); // <前面有几个相等的,位置>
+        char[] cs = s.toCharArray();
+        int cnt = 0;
+        List<Integer> list0 = map.getOrDefault(cnt, new ArrayList<>());
+        list0.add(0);
+        map.put(0, list0);
+        for (int i = 0; i < n; ++i) {
+            if (s.charAt(i) == 'I') cnt++;
+            else cnt--;
+            List<Integer> list = map.getOrDefault(cnt, new ArrayList<>());
+            list.add(i + 1);
+            map.put(cnt, list);
+        }
+        int[] ret = new int[n + 1];
+        List<Integer> keys = new ArrayList<>(map.keySet());
+        Collections.sort(keys);
+        int tmp = 0;
+        for (int key: keys) {
+            int size = map.get(key).size();
+            for (int i = 0; i < size; ++i) {
+                ret[map.get(key).get(i)] = tmp++;
+            }
+        }
+        return ret;
+    }
+}
+```
+贪心
+```java
+class Solution {
+    public int[] diStringMatch(String s) {
+        // 每次都贪心，去掉后子问题都一样
+        int l = 0, h = s.length(), n = h;
+        int[] ret = new int[n + 1];
+        for (int i = 0; i < n; ++i) {
+            ret[i] = s.charAt(i) == 'I' ? l++ : h--;
+        }
+        ret[n] = l;
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
