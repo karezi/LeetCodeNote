@@ -26683,6 +26683,27 @@ class Solution {
 }
 ```
 
+## [1859. 将句子排序](https://leetcode.cn/problems/sorting-the-sentence/)
+
+> 字符串，排序
+
+```java
+class Solution {
+    public String sortSentence(String s) {
+        String[] splitStrs = s.split(" ");
+        Arrays.sort(splitStrs, (s1, s2) -> {
+            return s1.charAt(s1.length() - 1) - s2.charAt(s2.length() - 1);
+        });
+        StringBuilder sb = new StringBuilder();
+        for (String str: splitStrs) {
+            sb.append(str.substring(0, str.length() - 1)).append(" ");
+        }
+        return sb.toString().trim();
+    }
+}
+```
+TODO 可以不排序
+
 # Java算法模板
 
 ## BFS
