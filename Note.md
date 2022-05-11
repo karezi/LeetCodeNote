@@ -26704,6 +26704,145 @@ class Solution {
 ```
 TODO 可以不排序
 
+## [449. 序列化和反序列化二叉搜索树](https://leetcode.cn/problems/serialize-and-deserialize-bst/submissions/)
+
+> 树，深度优先搜索，广度优先搜索，设计，二叉搜索树，字符串，二叉树
+
+```java
+public class Codec {
+    List<String> list = new ArrayList<>();
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        preorder(root);
+        return String.join(",", list);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] dataStrs = data.split(",");
+        Deque<String> datas = new ArrayDeque<>();
+        for (String str: dataStrs) {
+            datas.offerLast(str);
+        }
+        return createTree(datas);
+    }
+
+    /* 先序遍历 */
+    private void preorder(TreeNode root) {
+        if (root == null) {
+            list.add("#");
+            return;
+        }
+        list.add(String.valueOf(root.val));
+        preorder(root.left);
+        preorder(root.right);
+    }
+
+    private TreeNode createTree(Deque<String> datas) {
+        if (datas.isEmpty()) return null;
+        String valStr = datas.pollFirst();
+        if (!valStr.equals("#")) {
+            TreeNode node = new TreeNode(Integer.parseInt(valStr));
+            node.left = createTree(datas);
+            node.right = createTree(datas);
+            return node;
+        }
+        return null;
+    }
+}
+```
+根据有序性优化
+```java
+public class Codec {
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        preorder(root, list);
+        String str = list.toString();
+        return str.substring(1, str.length() - 1);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if (data.length() == 0) return null;
+        String[] dataStrs = data.split(", ");
+        Deque<Integer> datas = new ArrayDeque<>();
+        for (String str: dataStrs) {
+            datas.offerLast(Integer.parseInt(str));
+        }
+        return construct(0, Integer.MAX_VALUE, datas);
+    }
+
+    /* 先序遍历 */
+    private void preorder(TreeNode root, List<Integer> list) {
+        if (root == null) return;
+        list.add(root.val);
+        preorder(root.left, list);
+        preorder(root.right, list);
+    }
+
+    private TreeNode construct(int lower, int upper, Deque<Integer> datas) {
+        if (datas.isEmpty() || datas.peekFirst() < lower || datas.peekFirst() > upper) return null;
+        int val = datas.pollFirst();
+        TreeNode node = new TreeNode(val);
+        node.left = construct(lower, val, datas);
+        node.right = construct(val, upper, datas);
+        return node;
+    }
+}
+```
+
+## [297. 二叉树的序列化与反序列化](https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/)
+
+> 数，深度优先搜索，广度优先搜索，设计，字符串，二叉树
+
+```java
+public class Codec {
+    List<String> list = new ArrayList<>();
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        preorder(root);
+        return String.join(",", list);
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        String[] dataStrs = data.split(",");
+        Deque<String> datas = new ArrayDeque<>();
+        for (String str: dataStrs) {
+            datas.offerLast(str);
+        }
+        return createTree(datas);
+    }
+
+    /* 先序遍历 */
+    private void preorder(TreeNode root) {
+        if (root == null) {
+            list.add("#");
+            return;
+        }
+        list.add(String.valueOf(root.val));
+        preorder(root.left);
+        preorder(root.right);
+    }
+
+    private TreeNode createTree(Deque<String> datas) {
+        if (datas.isEmpty()) return null;
+        String valStr = datas.pollFirst();
+        if (!valStr.equals("#")) {
+            TreeNode node = new TreeNode(Integer.parseInt(valStr));
+            node.left = createTree(datas);
+            node.right = createTree(datas);
+            return node;
+        }
+        return null;
+    }
+}
+```
+TODO 括号表示编码 + 递归下降解码
+
 # Java算法模板
 
 ## BFS
