@@ -26843,6 +26843,28 @@ public class Codec {
 ```
 TODO 括号表示编码 + 递归下降解码
 
+## [944. 删列造序](https://leetcode.cn/problems/delete-columns-to-make-sorted/submissions/)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int minDeletionSize(String[] strs) {
+        int n = strs[0].length();
+        int delCnt = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 1; j < strs.length; ++j) {
+                if (strs[j].charAt(i) < strs[j - 1].charAt(i)) {
+                    delCnt++;
+                    break;
+                }
+            }
+        }
+        return delCnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
