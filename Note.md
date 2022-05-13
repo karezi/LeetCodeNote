@@ -26587,14 +26587,14 @@ class Solution {
     }
 }
 ```
-TODO 交换
+交换
 ```java
 class Solution {
     public List<Integer> findDuplicates(int[] nums) {
         List<Integer> ret = new ArrayList<>();
         int n = nums.length;
         for (int i = 0; i < n; ++i) {
-            while (nums[i] != nums[nums[i] - 1]) {
+            while (nums[i] != nums[nums[i] - 1]) { // 当前i位置不是应该的数
                 swap(nums, i, nums[i] - 1);
             }
         }
@@ -28419,3 +28419,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [396. 旋转函数](https://leetcode-cn.com/problems/rotate-function/)
 
 ## [587. 安装栅栏](https://leetcode-cn.com/problems/erect-the-fence/)
+
+## [691. 贴纸拼词](https://leetcode.cn/problems/stickers-to-spell-word/)
