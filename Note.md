@@ -26865,6 +26865,51 @@ class Solution {
 }
 ```
 
+## [面试题 01.05. 一次编辑](https://leetcode.cn/problems/one-away-lcci/)
+
+> 双指针，字符串
+
+执行用时：1 ms, 在所有 Java 提交中击败了97.69%的用户
+内存消耗：41.3 MB, 在所有 Java 提交中击败了48.91%的用户
+```java
+class Solution {
+    public boolean oneEditAway(String first, String second) {
+        if (first.equals(second)) return true;
+        int fn = first.length(), sn = second.length();
+        if (Math.abs(fn - sn) > 1) return false;
+        if (fn == sn) {
+            // 相等，某一个字符替换即可
+            boolean flag = false;
+            for (int i = 0; i < fn; ++i) {
+                if (first.charAt(i) != second.charAt(i)) {
+                    if (flag) return false;
+                    else flag = true;
+                }
+            }
+        } else {
+            // 相差1个，长的字符串需要删除1位
+            boolean snSmaller = fn > sn;
+            boolean flag = false;
+            for (int i = 0, j = 0; i < fn && j < sn;) {
+                if (first.charAt(i) != second.charAt(j)) {
+                    if (flag) {
+                        return false;
+                    } else {
+                        if (snSmaller) i++;
+                        else j++;
+                        flag = true;
+                    }
+                } else {
+                    i++;
+                    j++;
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
