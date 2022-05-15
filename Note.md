@@ -26910,6 +26910,35 @@ class Solution {
 }
 ```
 
+## [812. 最大三角形面积](https://leetcode.cn/problems/largest-triangle-area/)
+
+> 几何，数学，数组
+
+暴力
+```java
+class Solution {
+    public double largestTriangleArea(int[][] points) {
+        // S = 1/2(x1y2-x2y1 + x2y3-x3y2 + x3y1-x1y3)
+        double max = 0d;
+        int n = points.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                for (int k = 0; k < n; k++) {
+                    if (i != j && i != k) {
+                        int x1 = points[i][0], y1 = points[i][1];
+                        int x2 = points[j][0], y2 = points[j][1];
+                        int x3 = points[k][0], y3 = points[k][1];
+                        max = Math.max(max, x1 * y2 - x2 * y1 + x2 * y3 - x3 * y2 + x3 * y1 - x1 * y3);
+                    }
+                }
+            }
+        }
+        return max / 2;
+    }
+}
+```
+TODO 凸包优化
+
 # Java算法模板
 
 ## BFS
