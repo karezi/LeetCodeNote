@@ -26939,6 +26939,72 @@ class Solution {
 ```
 TODO 凸包优化
 
+## [面试题 04.06. 后继者](https://leetcode.cn/problems/successor-lcci/)
+
+> 树，深度优先搜索，二叉搜索树，二叉树，BST
+
+```java
+class Solution {
+    private TreeNode ret;
+    private boolean next = false;;
+
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        dfs(root, p);
+        return ret;
+    }
+
+    private void dfs(TreeNode root, TreeNode p) {
+        if (root == null) return;
+        dfs(root.left, p);
+        if (next) {
+            ret = root;
+            next = false;
+            return;
+        }
+        if (root == p) {
+            next = true;
+        }
+        dfs(root.right, p);
+    }
+}
+```
+依据排序特点优化
+执行用时：2 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：42 MB, 在所有 Java 提交中击败了79.51%的用户
+```java
+class Solution {
+    private TreeNode ret;
+
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        dfs(root, p);
+        return ret;
+    }
+
+    private void dfs(TreeNode node, TreeNode p) {
+        if (node == null || p == null) return;
+        if (node.val > p.val) {
+            // 必然是本节点或者本节点的左子树下
+            ret = node;
+            dfs(node.left, p);
+        } else {
+            // 必然在本节点右子树下
+            dfs(node.right, p);
+        }
+    }
+}
+```
+TODO 精简版
+```java
+class Solution {
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        if (root == null) return null;
+        if (root.val <= p.val) return inorderSuccessor(root.right, p);
+        TreeNode ans = inorderSuccessor(root.left, p);
+        return ans == null ? root : ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
