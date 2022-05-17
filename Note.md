@@ -27005,6 +27005,35 @@ class Solution {
 }
 ```
 
+## [953. 验证外星语词典](https://leetcode.cn/problems/verifying-an-alien-dictionary/)
+
+> 数组，哈希表，字符串
+
+```java
+class Solution {
+    public boolean isAlienSorted(String[] words, String order) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < order.length(); ++i) {
+            map.put(order.charAt(i), i);
+        }
+        for (int i = 1; i < words.length; ++i) {
+            if (!check(words[i - 1], words[i], map)) return false;
+        }
+        return true;
+    }
+
+    // a,b按照字典序a<=b true;a>b false
+    private boolean check(String a, String b, Map<Character, Integer> map) {
+        int na = a.length(), nb = b.length();
+        for (int i = 0; i < na && i < nb; ++i) {
+            if (map.get(a.charAt(i)) > map.get(b.charAt(i))) return false;
+            else if (map.get(a.charAt(i)) < map.get(b.charAt(i))) return true;
+        }
+        return na <= nb;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
