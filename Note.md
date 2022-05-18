@@ -27034,6 +27034,55 @@ class Solution {
 }
 ```
 
+## [668. 乘法表中第k小的数](https://leetcode.cn/problems/kth-smallest-number-in-multiplication-table/)
+
+> 二分查找
+
+暴力（超时）
+```java
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k, (x, y) -> y - x);
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= m && j <= k / i; ++j) {
+                int tmp = i * j;
+                if (pq.size() == k && tmp < pq.peek()) {
+                    pq.poll();
+                    pq.offer(tmp);
+                } else if (pq.size() < k) {
+                    pq.offer(tmp);
+                }
+            }
+        }
+        return pq.peek();
+    }
+}
+```
+二分
+```java
+class Solution {
+    public int findKthNumber(int m, int n, int k) {
+        // [1,mn]二分查找
+        // 乘法表中某个数x的位次时：\sum[1..m](min(x/i, n))【每一行计数后求和】
+        // 进一步简化前几行可能都取，x/n*n+\sum[x/n+1..m](x/i)
+        int l = 1, r = m * n;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            int pos = mid / n * n;
+            for (int i = mid / n + 1; i <= m; ++i) {
+                pos += mid / i;
+            }
+            if (pos < k) {
+                l = mid + 1;
+            } else {
+                r = mid;
+            }
+        }
+        return l;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -27225,11 +27274,11 @@ void QuickSort(int arr, int left, int right) {
         return;
     int i = left, j = right, pivot = arr[left];
     while(i < j) {
-                while(i<j && arr[j] >= pivot) j--;
-            arr[i] = arr[j];
-        while(i<j && arr[i] <= pivot) i++;
-            arr[j] = arr[i];
-        }
+        while(i < j && arr[j] >= pivot) j--;
+        arr[i] = arr[j];
+        while(i < j && arr[i] <= pivot) i++;
+        arr[j] = arr[i];
+    }
     arr[i] = pivot;
     QuickSort(arr, left, i - 1);
     QuickSort(arr, i + 1, right);
