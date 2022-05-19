@@ -27083,6 +27083,46 @@ class Solution {
 }
 ```
 
+## [462. 最少移动次数使数组元素相等 II](https://leetcode.cn/problems/minimum-moves-to-equal-array-elements-ii/)
+
+> 数组，数学，排序
+
+前缀和
+```java
+class Solution {
+    public int minMoves2(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        long[] lsum = new long[n], rsum = new long[n];
+        for (int i = 1; i < n; ++i) {
+            lsum[i] = lsum[i - 1] + (nums[i] - nums[i - 1]) * i;
+        }
+        for (int i = n - 2; i >= 0; --i) {
+            rsum[i] = rsum[i + 1] + (nums[i + 1] - nums[i]) * (n - i - 1);
+        }
+        long ans = Long.MAX_VALUE;
+        for (int i = 0; i < n; ++i) {
+            ans = Math.min(ans, lsum[i] + rsum[i]);
+        }
+        return (int)ans;
+    }
+}
+```
+取中位数时最小
+```java
+class Solution {
+    public int minMoves2(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length, x = nums[n / 2], ans = 0;
+        for (int i = 0; i < n; ++i) {
+            ans += Math.abs(x - nums[i]);
+        }
+        return ans;
+    }
+}
+```
+TODO 不排序快速选择算法求中位数
+
 # Java算法模板
 
 ## BFS
