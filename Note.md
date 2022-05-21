@@ -27123,6 +27123,150 @@ class Solution {
 ```
 TODO 不排序快速选择算法求中位数
 
+## [436. 寻找右区间](https://leetcode.cn/problems/find-right-interval/)
+
+> 数组，二分查找，排序
+
+```java
+class Solution {
+    class Interval {
+        public int start;
+        public int end;
+        public int idx;
+        public Interval(int start, int end, int idx) {
+            this.start = start;
+            this.end = end;
+            this.idx = idx;
+        }
+    }
+
+    public int[] findRightInterval(int[][] intervals) {
+        int n = intervals.length;
+        Interval[] its = new Interval[n];
+        for (int i = 0; i < n; ++i) {
+            its[i] = new Interval(intervals[i][0], intervals[i][1], i);
+        }
+        Arrays.sort(its, (a, b) -> {
+            return a.start - b.start;
+        });
+        int[] next = new int[n];
+        for (int i = 0; i < n; ++i) {
+            next[its[i].idx] = -1;
+            int j = i;
+            while (j < n) {
+                if (its[j].start >= its[i].end) {
+                    next[its[i].idx] = its[j].idx;
+                    break;
+                }
+                j++;
+            }
+        }
+        return next;
+    }
+}
+```
+双指针
+```java
+class Solution {
+    public int[] findRightInterval(int[][] intervals) {
+        int n = intervals.length;
+        int[][] ss = new int[n][2];
+        for (int i = 0; i < n; ++i) {
+            ss[i] = new int[]{intervals[i][0], i};
+        }
+        Arrays.sort(ss, (a, b) -> a[0] - b[0]);
+        int[] ret = new int[n];
+        for (int i = 0; i < n; ++i) {
+            int target = intervals[i][1];
+            int l = 0, r = n - 1;
+            while(l < r) {
+                int mid = l + (r - l) / 2;
+                if (ss[mid][0] >= target) r = mid;
+                else l = mid + 1;
+            }
+            ret[i] = l < n && ss[l][0] >= target ? ss[l][1] : -1;
+        }
+        return ret;
+    }
+}
+```
+
+## [961. 在长度 2N 的数组中找出重复 N 次的元素](https://leetcode.cn/problems/n-repeated-element-in-size-2n-array/)
+
+> 数组，哈希表
+
+排序
+```java
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] == nums[i - 1]) return nums[i];
+        }
+        return -1;
+    }
+}
+```
+计数数组
+```java
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        int[] cnt = new int[10001];
+        for (int i = 0; i < nums.length; ++i) {
+            if (cnt[nums[i]] != 0) return nums[i];
+            else cnt[nums[i]]++;
+        }
+        return -1;
+    }
+}
+```
+哈希表
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.8 MB, 在所有 Java 提交中击败了74.56%的用户
+```java
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int num: nums) {
+            if (set.contains(num)) return num;
+            else set.add(num);
+        }
+        return -1;
+    }
+}
+```
+数学
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.9 MB, 在所有 Java 提交中击败了64.29%的用户
+```java
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        int n = nums.length;
+        for (int gap = 1; gap <= 3; ++gap) {
+            for (int i = 0; i + gap < n; ++i) {
+                if (nums[i] == nums[i + gap]) return nums[i];
+            }
+        }
+        return -1;
+    }
+}
+```
+随机选择
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：42.1 MB, 在所有 Java 提交中击败了46.58%的用户
+```java
+class Solution {
+    public int repeatedNTimes(int[] nums) {
+        int n = nums.length;
+        Random r = new Random();
+        while(true) {
+            int i = r.nextInt(n), j = r.nextInt(n);
+            if (i != j && nums[i] == nums[j]) return nums[i];
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
