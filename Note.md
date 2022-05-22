@@ -27267,6 +27267,44 @@ class Solution {
 }
 ```
 
+## [464. 我能赢吗](https://leetcode.cn/problems/can-i-win/)
+
+> 位运算，记忆化搜索，数学，动态规划，状态压缩，博弈
+
+```java
+class Solution {
+    Map<Integer, Boolean> mem = new HashMap<>();
+
+    public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
+        // dfs搜索，最多20位，所以可以用状压，Integer转二进制表示选择状态，记忆化搜索
+        if ((1 + maxChoosableInteger) * (maxChoosableInteger - 1) < desiredTotal) return false;
+        if (desiredTotal <= maxChoosableInteger) return true;
+        return dfs(maxChoosableInteger, desiredTotal, 0, 0);
+    }
+
+    // 选择状态，当前累积的值
+    private boolean dfs(int mci, int dt, int status, int cur) {
+        if (!mem.containsKey(status)) {
+            boolean res = false;
+            for (int i = 0; i < mci; ++i) {
+                if (((status >> i) & 1) == 0) { // 第i个数没有用
+                    if (cur + i + 1 >= dt) { // 选完就赢了
+                        res = true;
+                        break;
+                    }
+                    if (!dfs(mci, dt, status | (1 << i), cur + i + 1)) { // 下一个人必输
+                        res = true;
+                        break;
+                    }
+                }
+            }
+            mem.put(status, res);
+        }
+        return mem.get(status);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
