@@ -27305,6 +27305,24 @@ class Solution {
 }
 ```
 
+## [965. 单值二叉树](https://leetcode.cn/problems/univalued-binary-tree/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public boolean isUnivalTree(TreeNode root) {
+        return dfs(root.left, root.val) && dfs(root.right, root.val);
+    }
+
+    private boolean dfs(TreeNode root, int val) {
+        if (root == null) return true;
+        if (root.val != val) return false;
+        return dfs(root.left, val) && dfs(root.right, val);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -28816,3 +28834,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [587. 安装栅栏](https://leetcode-cn.com/problems/erect-the-fence/)
 
 ## [691. 贴纸拼词](https://leetcode.cn/problems/stickers-to-spell-word/)
+
+## [675. 为高尔夫比赛砍树](https://leetcode.cn/problems/cut-off-trees-for-golf-event/)
