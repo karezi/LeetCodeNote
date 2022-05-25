@@ -27323,6 +27323,37 @@ class Solution {
 }
 ```
 
+## [467. 环绕字符串中唯一的子字符串](https://leetcode.cn/problems/unique-substrings-in-wraparound-string/)
+
+> 字符串，动态规划
+
+```java
+class Solution {
+    public int findSubstringInWraproundString(String p) {
+        // cnt[c]表示以c字符结尾的最大长度
+        // cnt[c]=max(所有位置上为c的最大长度)
+        int cur = 1;
+        int[] cnt = new int[26];
+        cnt[p.charAt(0) - 'a'] = 1;
+        for (int i = 1; i < p.length(); ++i) {
+            char c = p.charAt(i);
+            char cl = p.charAt(i - 1);
+            if (c == cl + 1 || c == 'a' && cl == 'z') {
+                cur++;
+            } else {
+                cur = 1;
+            }
+            cnt[c - 'a'] = Math.max(cnt[c - 'a'], cur);
+        }
+        int ans = 0;
+        for (int i = 0; i < 26; ++i) {
+            ans += cnt[i];
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
