@@ -27354,6 +27354,35 @@ class Solution {
 }
 ```
 
+## [699. 掉落的方块](https://leetcode.cn/problems/falling-squares/)
+
+> 数组，有序集合，线段树
+
+```java
+class Solution {
+    public List<Integer> fallingSquares(int[][] positions) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < positions.length; ++i) {
+            int il = positions[i][0], ir = positions[i][0] + positions[i][1] - 1;
+            int maxHeight = positions[i][1];
+            for (int j = 0; j < i; ++j) {
+                int jl = positions[j][0], jr = positions[j][0] + positions[j][1] - 1;
+                // i方块和j方块有交集，i叠在j上面
+                if (il <= jr && ir >= jl) {
+                    maxHeight = Math.max(maxHeight, list.get(j) + positions[i][1]);
+                }
+            }
+            list.add(maxHeight);
+        }
+        for (int i = 1; i < list.size(); ++i) {
+            list.set(i, Math.max(list.get(i), list.get(i - 1)));
+        }
+        return list;
+    }
+}
+```
+TODO 有序集合，线段树
+
 # Java算法模板
 
 ## BFS
