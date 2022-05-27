@@ -27479,6 +27479,29 @@ class Solution {
 }
 ```
 
+## [面试题 17.11. 单词距离](https://leetcode.cn/problems/find-closest-lcci/)
+
+> 数组，字符串
+执行用时：10 ms, 在所有 Java 提交中击败了95.69%的用户
+内存消耗：49.3 MB, 在所有 Java 提交中击败了22.59%的用户
+```java
+class Solution {
+    public int findClosest(String[] words, String word1, String word2) {
+        int l1 = -1, l2 = -1, min = Integer.MAX_VALUE;
+        for (int i = 0; i < words.length; ++i) {
+            if (word1.equals(words[i])) {
+                if (l2 != -1) min = Math.min(min, i - l2);
+                l1 = i;
+            } else if (word2.equals(words[i])) {
+                if (l1 != -1) min = Math.min(min, i - l1);
+                l2 = i;
+            }
+        }
+        return min;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
