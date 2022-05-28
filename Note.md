@@ -27502,6 +27502,47 @@ class Solution {
 }
 ```
 
+## [1021. 删除最外层的括号](https://leetcode.cn/problems/remove-outermost-parentheses/)
+
+> 栈，字符串
+
+```java
+class Solution {
+    public String removeOuterParentheses(String s) {
+        StringBuilder sb = new StringBuilder();
+        Deque<Character> dq = new ArrayDeque<>();
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
+            if (c == ')') {
+                if (dq.size() > 1) sb.append(c);
+                dq.pop();
+            } else if (c == '(') {
+                if (!dq.isEmpty()) sb.append(c);
+                dq.push(c);
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+通过子数组和
+```java
+class Solution {
+    public String removeOuterParentheses(String s) {
+        int ans = 0;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
+            // 注意顺序
+            if (c == ')') ans--;
+            if (ans > 0) sb.append(c);
+            if (c == '(') ans++;  
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
