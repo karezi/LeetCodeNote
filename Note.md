@@ -27543,6 +27543,33 @@ class Solution {
 }
 ```
 
+## [1022. 从根到叶的二进制数之和](https://leetcode.cn/problems/sum-of-root-to-leaf-binary-numbers/)
+
+> 树，深度优先搜索，二叉树
+
+```java
+class Solution {
+    private int sum = 0;
+
+    public int sumRootToLeaf(TreeNode root) {
+        dfs(root, 0);
+        return sum;
+    }
+
+    private void dfs(TreeNode root, int cur) {
+        if (root == null) return;
+        if (root.left == null && root.right == null) {
+            sum += (cur << 1) + root.val;
+            return;
+        }
+        cur = (cur << 1) + root.val;
+        dfs(root.left, cur);
+        dfs(root.right, cur);
+    }
+}
+```
+TODO 迭代
+
 # Java算法模板
 
 ## BFS
