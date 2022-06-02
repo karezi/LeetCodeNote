@@ -27570,6 +27570,38 @@ class Solution {
 ```
 TODO 迭代
 
+## [450. 删除二叉搜索树中的节点](https://leetcode.cn/problems/delete-node-in-a-bst/)
+
+> 树，二叉搜索树，二叉树，递归
+
+```java
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) {
+            return null;
+        }
+        if (root.val > key) {
+            root.left = deleteNode(root.left, key);
+            return root;
+        } else if (root.val < key) {
+            root.right = deleteNode(root.right, key);
+            return root;
+        } else {
+            if (root.left == null && root.right == null) return null;
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+            TreeNode successor = root.right;
+            // 得到右子树的最小节点
+            while (successor.left != null) successor = successor.left;
+            root.right = deleteNode(root.right, successor.val);
+            successor.left = root.left;
+            successor.right = root.right;
+            return successor;
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -28748,7 +28780,7 @@ sb.setCharAt(1, 'a');
   Arrays.sort(A, (a, b) -> Integer.signum(a.length() - b.length()));
   Arrays.sort(A, Comparator.comparingInt(String::length));
   Arrays.sort(A, (a, b) -> a.length() - b.length());
-  Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length());
+  Arrays.sort(A, (String a, String b) -> { return Integer.signum(a.length() - b.length())});
   // 二维数组排序
   Arrays.sort(AA, new Comparator<?>() {
       @Override
@@ -29083,3 +29115,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [691. 贴纸拼词](https://leetcode.cn/problems/stickers-to-spell-word/)
 
 ## [675. 为高尔夫比赛砍树](https://leetcode.cn/problems/cut-off-trees-for-golf-event/)
+
+## [剑指 Offer II 114. 外星文字典](https://leetcode.cn/problems/Jf1JuT/)
+
+## [473. 火柴拼正方形](https://leetcode.cn/problems/matchsticks-to-square/)
