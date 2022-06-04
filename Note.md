@@ -27649,6 +27649,228 @@ class Solution {
 }
 ```
 
+## [226. 翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) return null;
+        TreeNode tn = root.left;
+        root.left = invertTree(root.right);
+        root.right = invertTree(tn);
+        return root;
+    }
+}
+```
+
+## [617. 合并二叉树](https://leetcode.cn/problems/merge-two-binary-trees/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null) return root2;
+        if (root2 == null) return root1;
+        int sum = root1.val + root2.val;
+        return new TreeNode(sum, mergeTrees(root1.left, root2.left), mergeTrees(root1.right, root2.right));
+    }
+}
+```
+
+## [739. 每日温度](https://leetcode.cn/problems/daily-temperatures/)
+
+> 栈，单调栈，数组
+
+```java
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        Deque<int[]> dq = new ArrayDeque<>();
+        int n = temperatures.length;
+        int[] ret = new int[n];
+        for (int i = 0; i < n; ++i) {
+            if (!dq.isEmpty() && dq.peek()[0] < temperatures[i]) {
+                while (!dq.isEmpty() && dq.peek()[0] < temperatures[i]) {
+                    int idx = dq.pop()[1];
+                    ret[idx] = i - idx;
+                }
+            }
+            dq.push(new int[]{temperatures[i], i});
+        }
+        while (!dq.isEmpty()) {
+            int idx = dq.pop()[1];
+            ret[idx] = 0;
+        }
+        return ret;
+    }
+}
+```
+
+## [5. 最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/)
+
+> 字符串，动态规划，Manacher
+
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+        // dp[i][j]表示以[i,j]是否为回文串
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int l = 0, r = 0, maxLen = 1;
+        for (int gap = 1; gap <= n; ++gap) {
+            for (int start = 0; start + gap - 1 < n; start++) {
+                int end = start + gap - 1;
+                if (gap == 1) {
+                    dp[start][end] = true;
+                } else if (gap == 2) {
+                    if (s.charAt(start) == s.charAt(end)) dp[start][end] = true;
+                    else dp[start][end] = false;
+                } else {
+                    dp[start][end] = dp[start + 1][end - 1] & (s.charAt(start) == s.charAt(end));
+                }
+                if (dp[start][end] && gap > maxLen) {
+                    maxLen = gap;
+                    l = start;
+                    r = end;
+                }
+            }
+        }
+        return s.substring(l, r + 1);
+    }
+}
+```
+TODO 中心扩展法，Manacher算法
+
+## [142. 环形链表 II](https://leetcode.cn/problems/linked-list-cycle-ii/)
+
+```java
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null) return null;
+        ListNode fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                // 注意通过公式推导出相遇点离相交点差从起点到相交点的距离
+                fast = head;
+                while (fast != slow) {
+                    fast = fast.next;
+                    slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
+}
+```
+
+## [78. 子集](https://leetcode.cn/problems/subsets/)
+
+> 位运算，数组，回溯，递归
+
+```java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        int n = nums.length;
+        int upper = 1 << n;
+        for (int i = 0; i < upper; ++i) {
+            List<Integer> tmp = new ArrayList<>();
+            for (int j = 0; j < 10; ++j) {
+                if (((i >> j) & 1) == 1) {
+                    tmp.add(nums[j]);
+                }
+            }
+            ret.add(tmp);
+        }
+        return ret;
+    }
+}
+```
+TODO 递归
+
+## [46. 全排列](https://leetcode.cn/problems/permutations/)
+
+> 数组，回溯
+
+```java
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();
+        boolean[] vis = new boolean[nums.length];
+        backtrace(nums, 0, vis, cur, ret);
+        return ret;
+    }
+
+    private void backtrace(int[] nums, int pos, boolean[] vis, List<Integer> cur, List<List<Integer>> ret) {
+        int n = nums.length;
+        if (pos >= n) {
+            // 一定要new ArrayList<>()取当前快照，不然后续cur会回溯为空
+            ret.add(new ArrayList<>(cur));
+            return;
+        }
+        for (int i = 0; i < n; ++i) {
+            if (!vis[i]) {
+                vis[i] = true;
+                cur.add(nums[i]);
+                backtrace(nums, pos + 1, vis, cur, ret);
+                cur.remove(cur.size() - 1);
+                vis[i] = false;
+            }
+        }
+    }
+}
+```
+
+## [114. 二叉树展开为链表](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
+
+> 栈，树，深度优先搜索，链表，二叉树，递归
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：40.7 MB, 在所有 Java 提交中击败了87.48%的用户
+```java
+class Solution {
+    public void flatten(TreeNode root) {
+        // 空或者叶子节点退出
+        if (root == null || root.left == null && root.right == null) return;
+        // 右分支捋直
+        flatten(root.right);
+        // 左分支捋直
+        flatten(root.left);
+        // 左分支不为空，找到左分支最后一个节点后连接右分支，然后原地将根重置，即根的右分支置为左分支，左分支置为null
+        if (root.left != null) {
+            TreeNode p = root.left;
+            while (p.right != null) {
+                p = p.right;
+            }
+            p.right = root.right;
+            root.right = root.left;
+            root.left = null;
+        }
+    }
+}
+```
+反向前序遍历更简单
+```java
+class Solution {
+    TreeNode post = null;
+
+    public void flatten(TreeNode root) {
+        if (root == null) return;
+        flatten(root.right);
+        flatten(root.left);
+        root.right = post;
+        root.left = null;
+        post = root;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
