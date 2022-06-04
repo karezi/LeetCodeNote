@@ -27602,6 +27602,53 @@ class Solution {
 }
 ```
 
+## [929. 独特的电子邮件地址](https://leetcode.cn/problems/unique-email-addresses/)
+
+> 数组，哈希表，字符串
+
+```java
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        Set<String> set = new HashSet<>();
+        for (String email: emails) {
+            String[] tmp = email.split("@");
+            tmp[0] = tmp[0].replaceAll("\\.", "");
+            tmp[0] = tmp[0].replaceAll("\\+.+", "");
+            StringBuilder sb = new StringBuilder();
+            sb.append(tmp[0]).append("@").append(tmp[1]);
+            set.add(sb.toString());
+        }
+        return set.size();
+    }
+}
+```
+效率更高
+```java
+class Solution {
+    public int numUniqueEmails(String[] emails) {
+        Set<String> set = new HashSet<>();
+        for (String email: emails) {
+            StringBuilder sb = new StringBuilder();
+            boolean isLocal = true;
+            for (int i = 0; i < email.length(); ++i) {
+                char c = email.charAt(i);
+                if (isLocal && c == '.') continue;
+                else if (isLocal && c == '+') {
+                    while (email.charAt(i + 1) != '@') i++;
+                } else if (c == '@') {
+                    isLocal = false;
+                    sb.append(c);
+                } else {
+                    sb.append(c);
+                }
+            }
+            set.add(sb.toString());
+        }
+        return set.size();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
