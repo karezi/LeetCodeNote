@@ -11812,23 +11812,21 @@ class Solution {
     }
 }
 ```
-
-二分 TODO
-
+二分
 ```java
 class Solution {
     public int findMin(int[] nums) {
-        int low = 0;
-        int high = nums.length - 1;
-        while (low < high) {
-            int pivot = low + (high - low) / 2;
-            if (nums[pivot] < nums[high]) {
-                high = pivot;
+        int n = nums.length;
+        int l = 0, r = n - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] < nums[r]) {
+                r = mid;
             } else {
-                low = pivot + 1;
+                l = mid + 1;
             }
         }
-        return nums[low];
+        return nums[l];
     }
 }
 ```
@@ -27871,6 +27869,120 @@ class Solution {
 }
 ```
 
+## [1038. 从二叉搜索树到更大和树](https://leetcode.cn/problems/binary-search-tree-to-greater-sum-tree/)
+## [538. 把二叉搜索树转换为累加树](https://leetcode.cn/problems/convert-bst-to-greater-tree/)
+
+> 树，深度优先搜索，二叉搜索树，二叉树，反序中序遍历
+
+```java
+class Solution {
+    private int ans = 0;
+
+    public TreeNode bstToGst(TreeNode root) {
+        // 反序中序遍历并累加和
+        if (root == null) return null;
+        bstToGst(root.right);
+        ans += root.val;
+        root.val = ans;
+        bstToGst(root.left);
+        return root;
+    }
+}
+```
+
+## [剑指 Offer 21. 调整数组顺序使奇数位于偶数前面](https://leetcode.cn/problems/diao-zheng-shu-zu-shun-xu-shi-qi-shu-wei-yu-ou-shu-qian-mian-lcof/)
+
+> 数组，双指针，排序
+
+```java
+class Solution {
+    public int[] exchange(int[] nums) {
+        int n = nums.length;
+        int i = 0, j = nums.length - 1;
+        while (i < j) {
+            while (i < n && (nums[i] & 1) == 1) i++;
+            while (j >= 0 && (nums[j] & 1) == 0) j--;
+            if (i < j) {
+                swap(nums, i, j);
+                i++;
+                j--;
+            }
+        }
+        return nums;
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+}
+```
+
+## [113. 路径总和 II](https://leetcode.cn/problems/path-sum-ii/)
+
+> 树，深度优先搜索，回溯，二叉树
+
+```java
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();
+        backtrace(root, targetSum, ret, cur, 0);
+        return ret;
+    }
+
+    private void backtrace(TreeNode root, int targetSum, List<List<Integer>> ret, List<Integer> cur, int curSum) {
+        if (root == null) return;
+        if (root.left == null && root.right == null) {
+            if (curSum + root.val == targetSum) {
+                cur.add(root.val);
+                ret.add(new ArrayList(cur));
+                cur.remove(cur.size() - 1); // 重要
+            }
+            return;
+        }
+        curSum += root.val;
+        cur.add(root.val);
+        backtrace(root.left, targetSum, ret, cur, curSum);
+        backtrace(root.right, targetSum, ret, cur, curSum);
+        cur.remove(cur.size() - 1);
+        curSum -= root.val;
+    }
+}
+```
+
+## [39. 组合总和](https://leetcode.cn/problems/combination-sum/)
+
+> 数组，回溯
+
+```java
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();
+        backtrace(candidates, target, cur, ret, 0);
+        return ret;
+    }
+
+    private void backtrace(int[] candidates, int target, List<Integer> cur, List<List<Integer>> ret, int idx) {
+        if (idx == candidates.length) return;
+        if (target == 0) {
+            ret.add(new ArrayList<>(cur));
+            return;
+        }
+        // 跳过当前数
+        backtrace(candidates, target, cur, ret, idx + 1);
+        // 选择当前数
+        if (target >= candidates[idx]) {
+            cur.add(candidates[idx]);
+            backtrace(candidates, target - candidates[idx], cur, ret, idx);
+            cur.remove(cur.size() - 1);
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -29388,3 +29500,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [剑指 Offer II 114. 外星文字典](https://leetcode.cn/problems/Jf1JuT/)
 
 ## [473. 火柴拼正方形](https://leetcode.cn/problems/matchsticks-to-square/)
+
+## [732. 我的日程安排表 III](https://leetcode.cn/problems/my-calendar-iii/)
