@@ -27983,6 +27983,18 @@ class Solution {
 }
 ```
 
+## [1037. 有效的回旋镖](https://leetcode.cn/problems/valid-boomerang/)
+
+> 几何，数组，数学
+
+```java
+class Solution {
+    public boolean isBoomerang(int[][] points) {
+        return (points[1][1] - points[0][1]) * (points[2][0] - points[1][0]) != (points[2][1] - points[1][1]) * (points[1][0] - points[0][0]);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
