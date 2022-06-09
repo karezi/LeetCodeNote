@@ -27995,6 +27995,58 @@ class Solution {
 }
 ```
 
+## [497. 非重叠矩形中的随机点](https://leetcode.cn/problems/random-point-in-non-overlapping-rectangles/)
+
+> 二分查找，随机化，前缀和，水塘抽样，别名抽样
+
+```java
+class Solution {
+    private int[] preSum;
+    private Random r;
+    private int[][] rects;
+
+    public Solution(int[][] rects) {
+        this.rects = rects;
+        int n = rects.length;
+        preSum = new int[n + 1];
+        preSum[0] = 0;
+        for (int i = 1; i <= n; ++i) {
+            int tt = (rects[i - 1][2] - rects[i - 1][0] + 1) * (rects[i - 1][3] - rects[i - 1][1] + 1);
+            preSum[i] = preSum[i - 1] + tt;
+        }
+        r = new Random();
+    }
+    
+    public int[] pick() {
+        int selectId = r.nextInt(preSum[preSum.length - 1]); // [0..sum)
+        int rectId = bs(selectId + 1) - 1;
+        int[] rect = rects[rectId];
+        int w = rect[2] - rect[0] + 1;
+        int rest = selectId - preSum[rectId];
+        int nh = rest / w;
+        int x = rect[0] + rest - w * nh;
+        int y = rect[1] + nh;
+        return new int[]{x, y};
+    }
+
+    private int bs(int target) {
+        int l = 0, r = preSum.length - 1;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            if (preSum[mid] == target) {
+                return mid;
+            } else if (preSum[mid] < target) {
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+}
+```
+TODO 水塘抽样，别名抽样
+
 # Java算法模板
 
 ## BFS
