@@ -28047,6 +28047,57 @@ class Solution {
 ```
 TODO 水塘抽样，别名抽样
 
+## [730. 统计不同回文子序列](https://leetcode.cn/problems/count-different-palindromic-subsequences/)
+
+> 字符串，动态规划
+
+```java
+class Solution {
+    public int countPalindromicSubsequences(String s) {
+        // 表示以x为左右端点的不同非空回文子串
+        // dp[x][i][j]=\sum(dp[y][i+1][j-1])+2/dp[x][i][j-1]/dp[x][i+1][j]/dp[x][i+1][j-1]
+        // 初始化：dp[x][i][i]=0(s[i]!=x)/1(s[i]==x)
+        // dp[x][i][j]=0(i<j)
+        // \sum_x dp[x][0][n-1]
+        int MOD = 1000000007;
+        int n = s.length();
+        int[][][] dp = new int[4][n][n];
+        for (int gap = 0; gap < n; ++gap) {
+            for (int i = 0; i + gap < n; ++i) {
+                if (gap == 0) {
+                    for (int x = 0; x < 4; ++x) {
+                        dp[x][i][i] = s.charAt(i) == (char)(x + 'a') ? 1 : 0;
+                    }
+                    continue;
+                }
+                int j = i + gap;
+                for (int x = 0; x < 4; ++x) {
+                    char c = (char)(x + 'a');
+                    if (s.charAt(i) == s.charAt(j) && s.charAt(i) == c) {
+                        for (int z = 0; z < 4; ++z) {
+                            dp[x][i][j] = (dp[x][i][j] + dp[z][i + 1][j - 1]) % MOD; 
+                        }
+                        dp[x][i][j] += 2;
+                    } else if (s.charAt(i) == c) {
+                        dp[x][i][j] = dp[x][i][j - 1];
+                    } else if (s.charAt(j) == c) {
+                        dp[x][i][j] = dp[x][i + 1][j];
+                    } else {
+                        dp[x][i][j] = dp[x][i + 1][j - 1];
+                    }
+                }
+            }
+        }
+        int sum = 0;
+        for (int z = 0; z < 4; ++z) {
+            sum = (sum + dp[z][0][n - 1]) % MOD;
+        }
+        return sum;
+    }
+}
+```
+TODO 二维优化
+
 # Java算法模板
 
 ## BFS
