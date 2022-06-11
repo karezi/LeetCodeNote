@@ -28098,6 +28098,29 @@ class Solution {
 ```
 TODO 二维优化
 
+## [926. 将字符串翻转到单调递增](https://leetcode.cn/problems/flip-string-to-monotone-increasing/)
+
+> 字符串，动态规划
+
+```java
+class Solution {
+    public int minFlipsMonoIncr(String s) {
+        // dp[i][0]表示s[0..i]且翻转后s[i]结果为0的所求，dp[i][1]表示s[0..i]且翻转后s[i]结果为1的所求
+        // dp[i][0]=dp[i-1][0]+II(s[i]==1)
+        // dp[i][1]=min(dp[i-1][0], dp[i-1][1])+II(s[i]==0)
+        // dp[0][0]=II(s[0]==1)/dp[0][1]==II(s[1]==0)
+        // min(dp[n-1][0],dp[n-1][1])
+        // 可以用滚动优化
+        int dp_i_0 = 0, dp_i_1 = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            dp_i_1 = Math.min(dp_i_0, dp_i_1) + '1' - s.charAt(i);
+            dp_i_0 += s.charAt(i) - '0';
+        }
+        return Math.min(dp_i_0, dp_i_1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
