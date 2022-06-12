@@ -28121,6 +28121,51 @@ class Solution {
 }
 ```
 
+## [890. 查找和替换模式](https://leetcode.cn/problems/find-and-replace-pattern/)
+
+> 数组，哈希表，字符串，归一化
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.9 MB, 在所有 Java 提交中击败了94.87%的用户
+```java
+class Solution {
+    public List<String> findAndReplacePattern(String[] words, String pattern) {
+        int[] parr = getParr(pattern);
+        int n = pattern.length();
+        List<String> ret = new ArrayList<>();
+        for (String word: words) {
+            if (word.length() == n) {
+                int[] warr = getParr(word);
+                boolean isSame = true;
+                for (int i = 0; i < n; ++i) {
+                    if (parr[i] != warr[i]) {
+                        isSame = false;
+                        break;
+                    }
+                }
+                if (isSame) ret.add(word);
+            }
+        }
+        return ret;
+    }
+
+    private int[] getParr(String p) {
+        int[] poses = new int[26];
+        int n = p.length();
+        int[] ret = new int[n];
+        for (int i = 0; i < n; ++i) {
+            if (poses[p.charAt(i) - 'a'] == 0) {
+                poses[p.charAt(i) - 'a'] = i + 1;
+                ret[i] = i + 1;
+            } else {
+                ret[i] = poses[p.charAt(i) - 'a'];
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
