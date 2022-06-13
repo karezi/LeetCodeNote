@@ -28166,6 +28166,52 @@ class Solution {
 }
 ```
 
+## [1051. 高度检查器](https://leetcode.cn/problems/height-checker/)
+
+> 数组，计数排序，排序
+
+暴力
+```java
+class Solution {
+    public int heightChecker(int[] heights) {
+        int n = heights.length;
+        int[] newHeights = new int[n];
+        System.arraycopy(heights, 0, newHeights, 0, n);
+        Arrays.sort(newHeights);
+        int cnt = 0;
+        for (int i = 0; i < n; ++i) {
+            cnt += newHeights[i] != heights[i] ? 1 : 0;
+        }
+        return cnt;
+    }
+}
+```
+计数排序
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.1 MB, 在所有 Java 提交中击败了68.13%的用户
+```java
+class Solution {
+    public int heightChecker(int[] heights) {
+        int[] hc = new int[101];
+        for (int height: heights) {
+            hc[height]++;
+        }
+        int cnt = 0, pos = 0, i = 0;
+        while (i < heights.length) {
+            while (hc[pos] == 0) pos++;
+            while (hc[pos] > 0) {
+                if (pos != heights[i]) {
+                    cnt++;
+                }
+                ++i;
+                hc[pos]--;
+            }
+        }
+        return cnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
