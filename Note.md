@@ -28212,6 +28212,58 @@ class Solution {
 }
 ```
 
+## [498. 对角线遍历](https://leetcode.cn/problems/diagonal-traverse/)
+
+> 数组，矩阵，模拟
+
+模拟
+执行用时：2 ms, 在所有 Java 提交中击败了78.95%的用户
+内存消耗：43.2 MB, 在所有 Java 提交中击败了46.15%的用户
+```java
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        int m = mat.length, n = mat[0].length, cnt = m * n;
+        int x = 0, y = 0, nx = 0, ny = 0, pos = 1;
+        int[][] dirs = new int[][]{{-1, 1}, {1, -1}};
+        int next = 0;
+        int[] ret = new int[cnt];
+        ret[0] = mat[0][0];
+        while (pos < cnt) {
+            nx = x + dirs[next][0];
+            ny = y + dirs[next][1];
+            if (nx < 0 && ny < n) {
+                // 上三角越界，右移
+                y++;
+                ret[pos++] = mat[x][y];
+                next = 1;
+            } else if (ny < 0 && nx < m) {
+                // 左三角越界，下移
+                x++;
+                ret[pos++] = mat[x][y];
+                next = 0;
+            } else if (ny >= n) {
+                // 右三角越界，下移
+                x++;
+                ret[pos++] = mat[x][y];
+                next = 1;
+            } else if (nx >= m) {
+                // 下三角越界，右移
+                y++;
+                ret[pos++] = mat[x][y];
+                next = 0;
+            } else {
+                // 不越界，方向保持不变
+                x = nx;
+                y = ny;
+                ret[pos++] = mat[x][y];
+            }
+        }
+        return ret;
+    }
+}
+```
+TODO 根据奇偶优化
+
 # Java算法模板
 
 ## BFS
