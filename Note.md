@@ -28264,6 +28264,40 @@ class Solution {
 ```
 TODO 根据奇偶优化
 
+## [719. 找出第 K 小的数对距离](https://leetcode.cn/problems/find-k-th-smallest-pair-distance/)
+
+> 数组，双指针，二分查找，排序
+
+```java
+class Solution {
+    public int smallestDistancePair(int[] nums, int k) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        int l = 0, r = nums[n - 1] - nums[0]; // 差值上下限
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+            int cnt = getCnt(nums, mid); // 和为mid时有多少个数对
+            if (cnt < k) {
+                l = mid + 1;
+            } else if (cnt >= k) {
+                r = mid - 1;
+            }
+        }
+        return l;
+    }
+
+    private int getCnt(int[] nums, int target) {
+        int n = nums.length, ans = 0;
+        // 固定右边，收缩左边
+        for (int i = 0, j = 0; j < n; ++j) {
+            while (nums[j] - nums[i] > target) i++;
+            ans += j - i;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
