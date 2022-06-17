@@ -28298,6 +28298,199 @@ class Solution {
 }
 ```
 
+## [532. 数组中的 k-diff 数对](https://leetcode.cn/problems/k-diff-pairs-in-an-array/)
+
+> 数组，哈希表，双指针，二分查找，排序
+
+```java
+class Solution {
+    private Set<String> set = new HashSet<>();
+
+    public int findPairs(int[] nums, int k) {
+        Map<Integer, TreeSet<Integer>> map = new HashMap<>();
+        int n = nums.length;
+        for (int i = 0; i < n; ++i) {
+            TreeSet<Integer> ts = map.containsKey(nums[i]) ? map.get(nums[i]) : new TreeSet<>();
+            ts.add(i);
+            map.put(nums[i], ts);
+        }
+        for (int i = 0; i < n; ++i) {
+            getNewPairCnt(nums, map, nums[i] + k, i);
+            getNewPairCnt(nums, map, nums[i] - k, i);
+        }
+        return set.size();
+    }
+
+    private void getNewPairCnt(int[] nums, Map<Integer, TreeSet<Integer>> map, int x, int pos) {
+        if (!map.containsKey(x)) {
+            return;
+        }
+        TreeSet<Integer> otherPoses = map.get(x);
+        Set<Integer> headSet = otherPoses.headSet(pos);
+        for (Integer i: headSet) {
+            String str = Math.min(nums[i], nums[pos]) + "," + Math.max(nums[i], nums[pos]);
+            if (!set.contains(str)) {
+                set.add(str);
+            }
+        }
+        Set<Integer> tailSet = otherPoses.tailSet(pos);
+        for (Integer i: tailSet) {
+            if (i != pos) {
+                String str = Math.min(nums[i], nums[pos]) + "," + Math.max(nums[i], nums[pos]);
+                if (!set.contains(str)) {
+                    set.add(str);
+                }
+            }
+        }
+    }
+}
+```
+简化
+```java
+class Solution {
+    public int findPairs(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>(); // 找到后放入小的
+        Set<Integer> vis = new HashSet<>(); // 访问过的数
+        for (int num: nums) {
+            if (vis.contains(num - k)) {
+                set.add(num - k);
+            }
+            if (vis.contains(num + k)) {
+                set.add(num);
+            }
+            vis.add(num);
+        }
+        return set.size();
+    }
+}
+```
+TODO 排序
+
+## [958. 二叉树的完全性检验](https://leetcode.cn/problems/check-completeness-of-a-binary-tree/)
+
+> 树，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public boolean isCompleteTree(TreeNode root) {
+        // 层序遍历，如果遇到null后遇到的都是null，则是完全二叉树，否则不是
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.add(root);
+        boolean isEnd = false;
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            for (int i = 0; i < size; ++i) {
+                TreeNode p = dq.poll();
+                if (p.left != null) {
+                    if (isEnd) return false;
+                    dq.offer(p.left);
+                } else {
+                    isEnd = true;
+                }
+                if (p.right != null) {
+                    if (isEnd) return false;
+                    dq.offer(p.right);
+                } else {
+                    isEnd = true;
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+TODO 采用编号
+
+## [63. 不同路径 II](https://leetcode.cn/problems/unique-paths-ii/)
+
+> 数组，动态规划，矩阵
+
+DFS
+```java
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length, n = obstacleGrid[0].length;
+        int[][] mem = new int[m][n];
+        for (int i = 0; i < m; ++i) {
+            Arrays.fill(mem[i], -1);
+        }
+        return dfs(obstacleGrid, m, n, 0, 0, mem);
+    }
+
+    private int dfs(int[][] grid, int m, int n, int cx, int cy, int[][] mem) {
+        if (cx < 0 || cy < 0 || cx >= m || cy >= n || grid[cx][cy] == 1) {
+            return 0;
+        }
+        if (cx == m - 1 && cy == n - 1) {
+            return 1;
+        }
+        if (mem[cx][cy] != -1) return mem[cx][cy];
+        int sum = dfs(grid, m, n, cx + 1, cy, mem);
+        sum += dfs(grid, m, n, cx, cy + 1, mem);
+        mem[cx][cy] = sum;
+        return sum;
+    }
+}
+```
+DP
+```java
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        // dp[i][j]=og[i][j]==1?0:dp[i-1][j]+dp[i][j-1]
+        // dp[0][0]=og[i][j]==1?0:1;
+        // dp[m-1][n-1]
+        int m = obstacleGrid.length, n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+        if (obstacleGrid[0][0] == 1) return 0;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (i == 0 && j == 0) {
+                    dp[i][j] = 1;
+                    continue;
+                }
+                if (obstacleGrid[i][j] == 1) {
+                    dp[i][j] = 0;
+                    continue;
+                }
+                int sum = 0;
+                if (i > 0) sum += dp[i - 1][j];
+                if (j > 0) sum += dp[i][j - 1];
+                dp[i][j] = sum;
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+}
+```
+TODO 降为一维数组优化
+
+## [124. 二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)
+
+> 树，深度优先搜索，动态规划，二叉树
+
+```java
+class Solution {
+    private int max = -1001;
+    
+    public int maxPathSum(TreeNode root) {
+        dfs(root);
+        return max;
+    }
+
+    private int dfs(TreeNode root) {
+        if (root == null) return -10001;
+        int a = dfs(root.left);
+        int b = dfs(root.right);
+        int c = root.val;
+        // 最大贡献只能自己/自己+左节点最大贡献/自己+右节点最大贡献
+        int ret = Math.max(c, Math.max(a + c, b + c));
+        // 最大值可以再包括左+自己+右
+        max = Math.max(max, Math.max(a + b + c, ret));
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
