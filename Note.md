@@ -28491,6 +28491,36 @@ class Solution {
 }
 ```
 
+## [1089. 复写零](https://leetcode.cn/problems/duplicate-zeros/)
+
+> 数组，双指针
+
+```java
+class Solution {
+    public void duplicateZeros(int[] arr) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0; i < arr.length; ++i) {
+            if (!dq.isEmpty()) {
+                int x = dq.pollFirst();
+                if (arr[i] == 0) {
+                    dq.offerLast(0);
+                    dq.offerLast(0);
+                } else {
+                    dq.offerLast(arr[i]);
+                }
+                arr[i] = x;
+            } else {
+                if (arr[i] == 0) {
+                    dq.offerLast(0);
+                }
+            }
+        }
+        return;
+    }
+}
+```
+TODO 双指针
+
 # Java算法模板
 
 ## BFS
