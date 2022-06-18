@@ -28521,6 +28521,59 @@ class Solution {
 ```
 TODO 双指针
 
+## [剑指 Offer II 029. 排序的循环链表](https://leetcode.cn/problems/4ueAj6/)
+
+> 链表
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _next) {
+        val = _val;
+        next = _next;
+    }
+};
+*/
+
+class Solution {
+    public Node insert(Node head, int insertVal) {
+        if (head == null) {
+            head = new Node(insertVal);
+            head.next = head;
+            return head;
+        } else {
+            Node h = head;
+            while (true) {
+                Node next = head.next;
+                boolean flag = false;
+                if (next.val != head.val) {
+                    flag = true;
+                }
+                if (!flag && next == h ||
+                    next.val < head.val && (insertVal <= next.val || insertVal >= head.val) ||
+                    insertVal <= next.val && head.val <= insertVal) {
+                    // 三种情况：全一样，直接插入/在节点处，插入节点/满足序列顺序插入两者之间
+                    head.next = new Node(insertVal);
+                    head.next.next = next;
+                    return h;
+                }
+                head = head.next;
+            }
+        }
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
