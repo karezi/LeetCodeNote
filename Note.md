@@ -28574,6 +28574,40 @@ class Solution {
 }
 ```
 
+## [508. 出现次数最多的子树元素和](https://leetcode.cn/problems/most-frequent-subtree-sum/)
+
+> 树，深度优先搜索，哈希表，二叉树
+
+```java
+class Solution {
+    private Map<Integer, Integer> map = new HashMap<>();
+    private int max = 0;
+
+    public int[] findFrequentTreeSum(TreeNode root) {
+        dfs(root);
+        List<Integer> list = new ArrayList<>();
+        for (int key: map.keySet()) {
+            if (map.get(key) == max) {
+                list.add(key);
+            }
+        }
+        int[] ret = new int[list.size()];
+        for (int i = 0; i < list.size(); ++i) {
+            ret[i] = list.get(i);
+        }
+        return ret;
+    }
+
+    private int dfs(TreeNode root) {
+        if (root == null) return 0;
+        int sum = root.val + dfs(root.left) + dfs(root.right);
+        map.put(sum, map.getOrDefault(sum, 0) + 1);
+        max = Math.max(max, map.get(sum));
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
