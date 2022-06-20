@@ -28608,6 +28608,46 @@ class Solution {
 }
 ```
 
+## [337. 打家劫舍 III](https://leetcode.cn/problems/house-robber-iii/)
+
+> 树，深度优先搜索，动态规划，二叉树
+
+```java
+class Solution {
+    public int rob(TreeNode root) {
+        int[] ret = dfs(root);
+        return Math.max(ret[0], ret[1]);
+    }
+
+    private int[] dfs(TreeNode root) {
+        if (root == null) {
+            return new int[]{0, 0};
+        }
+        int[] l = dfs(root.left);
+        int[] r = dfs(root.right);
+        int s = root.val + l[1] + r[1];
+        int ns = Math.max(l[0], l[1]) + Math.max(r[0], r[1]);
+        return new int[]{s, ns};
+    }
+}
+```
+
+## [96. 不同的二叉搜索树](https://leetcode.cn/problems/unique-binary-search-trees/)
+
+> 树，二叉搜索树，数学，动态规划，二叉树，Catalan数
+
+```java
+class Solution {
+    public int numTrees(int n) {
+        long ans = 1;
+        for (int i = 0; i < n; ++i) {
+            ans = ans * (4 * i + 2) / (i + 2);
+        }
+        return (int)ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30127,3 +30167,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [473. 火柴拼正方形](https://leetcode.cn/problems/matchsticks-to-square/)
 
 ## [732. 我的日程安排表 III](https://leetcode.cn/problems/my-calendar-iii/)
+
+## [715. Range 模块](https://leetcode.cn/problems/range-module/)
