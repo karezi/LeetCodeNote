@@ -28648,6 +28648,71 @@ class Solution {
 }
 ```
 
+## [513. 找树左下角的值](https://leetcode.cn/problems/find-bottom-left-tree-value/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+层次遍历
+```java
+class Solution {
+    public int findBottomLeftValue(TreeNode root) {
+        List<Integer> cur = new ArrayList<>();
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.add(root);
+        cur.add(root.val);
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            boolean needClear = true;
+            while (size-- > 0) {
+                TreeNode tn = dq.pollFirst();
+                if (tn.left != null) {
+                    if (needClear) {
+                        needClear = false;
+                        cur.clear();
+                    }
+                    cur.add(tn.left.val);
+                    dq.offerLast(tn.left);
+                }
+                if (tn.right != null) {
+                    if (needClear) {
+                        needClear = false;
+                        cur.clear();
+                    }
+                    cur.add(tn.right.val);
+                    dq.offerLast(tn.right);
+                }
+            }
+        }
+        return cur.get(0);
+    }
+}
+```
+DFS
+```java
+class Solution {
+    private int maxLevel = 0;
+    private int ret = 0;
+
+    public int findBottomLeftValue(TreeNode root) {
+        ret = root.val;
+        dfs(root, 0);
+        return ret;
+    }
+
+    private void dfs(TreeNode root, int level) {
+        if (root == null) {
+            return;
+        }
+        if (level > maxLevel) {
+            maxLevel = level;
+            ret = root.val;
+        }
+        dfs(root.left, level + 1);
+        dfs(root.right, level + 1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
