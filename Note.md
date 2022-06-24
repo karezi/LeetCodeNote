@@ -28713,6 +28713,33 @@ class Solution {
 }
 ```
 
+## [515. 在每个树行中找最大值](https://leetcode.cn/problems/find-largest-value-in-each-tree-row/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> ret = new ArrayList<>();
+        if (root == null) return ret;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.offerLast(root);
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            int max = Integer.MIN_VALUE;
+            while (size-- > 0) {
+                TreeNode tn = dq.pollFirst();
+                max = Math.max(max, tn.val);
+                if (tn.left != null) dq.offerLast(tn.left);
+                if (tn.right != null) dq.offerLast(tn.right);
+            }
+            ret.add(max);
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30234,3 +30261,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [732. 我的日程安排表 III](https://leetcode.cn/problems/my-calendar-iii/)
 
 ## [715. Range 模块](https://leetcode.cn/problems/range-module/)
+
+## [30. 串联所有单词的子串](https://leetcode.cn/problems/substring-with-concatenation-of-all-words/)
