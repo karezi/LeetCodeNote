@@ -28789,6 +28789,44 @@ class Solution {
 }
 ```
 
+## [710. 黑名单中的随机数](https://leetcode.cn/problems/random-pick-with-blacklist/)
+
+> 哈希表，数学，随机化，映射
+
+将黑名单映射到后面的白名单
+```java
+class Solution {
+    private int ww = 0;
+    private Map<Integer, Integer> map;
+    private Random r;
+
+    public Solution(int n, int[] blacklist) {
+        ww = n - blacklist.length;
+        r = new Random();
+        map = new HashMap<>();
+        int start = ww;
+        Set<Integer> rbs = new HashSet<>();
+        for (int i: blacklist) {
+            if (i >= ww) rbs.add(i);
+        }
+        for (int i: blacklist) {
+            if (i < ww) {
+                while (rbs.contains(start)) start++;
+                map.put(i, start);
+                start++;
+            }
+        }
+    }
+    
+    public int pick() {
+        int ni = r.nextInt(ww);
+        if (map.containsKey(ni)) return map.get(ni);
+        else return ni;
+    }
+}
+```
+TODO 白名单线段计数列表->前缀和+二分
+
 # Java算法模板
 
 ## BFS
