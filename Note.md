@@ -28827,6 +28827,43 @@ class Solution {
 ```
 TODO 白名单线段计数列表->前缀和+二分
 
+## [522. 最长特殊序列 II](https://leetcode.cn/problems/longest-uncommon-subsequence-ii/)
+
+> 数组，哈希表，双指针，字符串，排序，LCS
+
+```java
+class Solution {
+    public int findLUSlength(String[] strs) {
+        int n = strs.length, maxLen = -1;
+        for (int i = 0; i < n; ++i) { // 枚举候选独有子序列
+            if (strs[i].length() < maxLen) continue;
+            boolean canUpdate = true;
+            for (int j = 0; j < n; ++j) {
+                if (i != j && strs[i].length() <= strs[j].length() && isSub(strs[i], strs[j])) { // 是其他某个字符串的子序列，不符合题意
+                    canUpdate = false;
+                }
+            }
+            if (canUpdate) {
+                maxLen = strs[i].length();
+            }
+        }
+        return maxLen;
+    }
+
+    private boolean isSub(String s0, String s1) {
+        int p0 = 0, p1 = 0;
+        while (p0 < s0.length() && p1 < s1.length()) {
+            if (s0.charAt(p0) != s1.charAt(p1)) p1++;
+            else {
+                p0++;
+                p1++;
+            }
+        }
+        return p0 >= s0.length();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
