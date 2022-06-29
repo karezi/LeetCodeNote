@@ -28864,6 +28864,34 @@ class Solution {
 }
 ```
 
+## [535. TinyURL 的加密与解密](https://leetcode.cn/problems/encode-and-decode-tinyurl/submissions/)
+
+> 设计，哈希表，字符串，哈希函数
+
+```java
+public class Codec {
+    Map<Integer, String> map = new HashMap<>();
+    Random r = new Random();
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        int key = 0;
+        while (map.containsKey(key)) {
+            key = r.nextInt(100000);
+        }
+        map.put(key, longUrl);
+        return "http://tinyurl.com/" + key;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        int idx = shortUrl.lastIndexOf('/') + 1;
+        int key = Integer.parseInt(shortUrl.substring(idx));
+        return map.getOrDefault(key, null);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30387,3 +30415,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [715. Range 模块](https://leetcode.cn/problems/range-module/)
 
 ## [30. 串联所有单词的子串](https://leetcode.cn/problems/substring-with-concatenation-of-all-words/)
+
+## [324. 摆动排序 II](https://leetcode.cn/problems/wiggle-sort-ii/)
