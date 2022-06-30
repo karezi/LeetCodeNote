@@ -28892,6 +28892,44 @@ public class Codec {
 }
 ```
 
+## [1175. 质数排列](https://leetcode.cn/problems/prime-arrangements/)
+
+> 数学，欧拉筛，排列组合
+
+```java
+class Solution {
+    private static int MOD = (int)1e9 + 7;
+
+    public int numPrimeArrangements(int n) {
+        // A合数XA质数
+        // 欧拉筛
+        boolean[] check = new boolean[n + 1];
+        for (int i = 2; i <= n; ++i) {
+            if (!check[i]) {
+                for (int j = 2 * i; j <= n; j += i) {
+                    check[j] = true;
+                }
+            }
+        }
+        int zCnt = 0;
+        for (int i = 2; i <= n; ++i) {
+            if (!check[i]) zCnt++;
+        }
+        long ret = aa(zCnt) * aa(n - zCnt) % MOD;
+        return (int)ret;
+    }
+
+    private long aa(int cnt) {
+        long ret = 1L;
+        for (int i = cnt; i >= 2; --i) {
+            ret *= i;
+            ret %= MOD;
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
