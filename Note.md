@@ -28930,6 +28930,51 @@ class Solution {
 }
 ```
 
+## [241. 为运算表达式设计优先级](https://leetcode.cn/problems/different-ways-to-add-parentheses/)
+
+> DFS，记忆化搜索，递归，字符串，数学，动态规划，表达式
+
+```java
+class Solution {
+    private char[] cs;
+
+    public List<Integer> diffWaysToCompute(String expression) {
+        cs = expression.toCharArray();
+        return dfs(0, cs.length - 1);
+    }
+
+    private List<Integer> dfs(int l, int r) {
+        List<Integer> ret = new ArrayList<>();
+        for (int i = l; i <= r; ++i) {
+            if (cs[i] >= '0' && cs[i] <= '9') continue;
+            List<Integer> l1 = dfs(l, i - 1), l2 = dfs(i + 1, r);
+            for (int a: l1) {
+                for (int b: l2) {
+                    switch(cs[i]) {
+                        case '+':
+                            ret.add(a + b);
+                            break;
+                        case '-':
+                            ret.add(a - b);
+                            break;
+                        default:
+                            ret.add(a * b);
+                    }
+                }
+            }
+        }
+        if (ret.isEmpty()) {
+            // 只有数字
+            int number = 0;
+            for (int j = l; j <= r; ++j) number = number * 10 + (cs[j] - '0');
+            ret.add(number);
+        }
+        return ret;
+    }
+}
+```
+TODO 记忆化搜索，动态规划
+
 # Java算法模板
 
 ## BFS
