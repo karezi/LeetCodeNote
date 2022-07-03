@@ -28975,6 +28975,47 @@ class Solution {
 ```
 TODO 记忆化搜索，动态规划
 
+## [556. 下一个更大元素 III](https://leetcode.cn/problems/next-greater-element-iii/)
+
+> 数学，双指针，字符串，模拟
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：38.2 MB, 在所有 Java 提交中击败了61.82%的用户
+```java
+class Solution {
+    public int nextGreaterElement(int n) {
+        // 从后往前找到s[i]<s[j]的第一个，然后从后往前找到第一个比s[i]大的，调换i和j，然后s[i+1,n-1]逆序
+        char[] nums = Integer.toString(n).toCharArray();
+        int len = nums.length;
+        int i = len - 1;
+        while (i >= 1) {
+            if (nums[i - 1] < nums[i]) break;
+            i--;
+        }
+        if (i == 0) return -1;
+        char x = nums[i - 1];
+        int j = len - 1;
+        while (nums[j] <= x) {
+            j--;
+        }
+        // swap
+        nums[i - 1] = nums[j];
+        nums[j] = x;
+        // reverse
+        for (int l = i, r = len - 1; l < r; ++l, --r) {
+            char t = nums[l];
+            nums[l] = nums[r];
+            nums[r] = t;
+        }
+        String num = new String(nums);
+        long nn = Long.parseLong(num);
+        if (nn > Integer.MAX_VALUE) return -1;
+        else return (int)nn;
+    }
+}
+```
+TODO 空间优化
+
 # Java算法模板
 
 ## BFS
@@ -30500,3 +30541,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [30. 串联所有单词的子串](https://leetcode.cn/problems/substring-with-concatenation-of-all-words/)
 
 ## [324. 摆动排序 II](https://leetcode.cn/problems/wiggle-sort-ii/)
+
+## [871. 最低加油次数](https://leetcode.cn/problems/minimum-number-of-refueling-stops/)
