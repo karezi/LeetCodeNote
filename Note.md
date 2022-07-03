@@ -29016,6 +29016,34 @@ class Solution {
 ```
 TODO 空间优化
 
+## [1200. 最小绝对差](https://leetcode.cn/problems/minimum-absolute-difference/submissions/)
+
+> 数组，排序
+
+```java
+class Solution {
+    public List<List<Integer>> minimumAbsDifference(int[] arr) {
+        Arrays.sort(arr);
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i < arr.length; ++i) {
+            int delta = arr[i] - arr[i - 1];
+            if (delta < min) min = delta;
+        }
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 1; i < arr.length; ++i) {
+            int delta = arr[i] - arr[i - 1];
+            if (delta == min) {
+                List<Integer> tmp = new ArrayList<>();
+                tmp.add(arr[i - 1]);
+                tmp.add(arr[i]);
+                ret.add(tmp);
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
