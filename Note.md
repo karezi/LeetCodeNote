@@ -29044,6 +29044,85 @@ class Solution {
 }
 ```
 
+## [736. Lisp 语法解析](https://leetcode.cn/problems/parse-lisp-expression/)
+
+> 栈，递归，哈希表，字符串
+
+```java
+class Solution {
+    private Map<String, Deque<Integer>> map = new HashMap<>();
+
+    public int evaluate(String expression) {
+        if (expression.startsWith("(")) {
+            // 表达式
+            if (expression.startsWith("(let")) {
+                int lastSpaceIdx = getLastSpaceIdx(expression);
+                String params = expression.substring(5, lastSpaceIdx);
+                int startIdx = 0;
+                Set<String> keys = new HashSet<>();
+                while (startIdx < params.length()) {
+                    int idx1 = getFirstSpaceIdx(params, startIdx);
+                    String key = params.substring(startIdx, idx1);
+                    keys.add(key);
+                    int idx2 = getFirstSpaceIdx(params, idx1 + 1);
+                    int value = evaluate(params.substring(idx1 + 1, idx2));
+                    if (map.containsKey(key)) {
+                        map.get(key).push(value);
+                    } else {
+                        Deque<Integer> dq = new ArrayDeque<>();
+                        dq.push(value);
+                        map.put(key, dq);
+                    }
+                    startIdx = idx2 + 1;
+                }
+                int ret = evaluate(expression.substring(lastSpaceIdx + 1, expression.length() - 1));
+                for (String usedKey: keys) {
+                    map.get(usedKey).pop();
+                }
+                return ret;
+            } else if (expression.startsWith("(add")) {
+                int idx = getFirstSpaceIdx(expression, 5);
+                return evaluate(expression.substring(5, idx)) 
+                + evaluate(expression.substring(idx + 1, expression.length() - 1));
+            } else {
+                int idx = getFirstSpaceIdx(expression, 6);
+                return evaluate(expression.substring(6, idx)) 
+                * evaluate(expression.substring(idx + 1, expression.length() - 1));
+            }
+        } else if (expression.charAt(0) >= '0' && expression.charAt(0) <= '9' || expression.charAt(0) == '-') {
+            // 数字
+            return Integer.parseInt(expression);
+        } else {
+            // 变量
+            return map.get(expression).peek();
+        }
+    }
+
+    private int getFirstSpaceIdx(String str, int start) {
+        int cnt = 0;
+        int i = start;
+        for (; i < str.length(); ++i) {
+            char c = str.charAt(i);
+            if (c == ' ' && cnt == 0) return i;
+            else if (c == '(') cnt++;
+            else if (c == ')') cnt--;
+        }
+        return i;
+    }
+
+    private int getLastSpaceIdx(String str) {
+        int cnt = 0;
+        for (int i = str.length() - 2; i >= 0; --i) {
+            char c = str.charAt(i);
+            if (c == ' ' && cnt == 0) return i;
+            else if (c == '(') cnt--;
+            else if (c == ')') cnt++;
+        }
+        return 0;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30571,3 +30650,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [324. 摆动排序 II](https://leetcode.cn/problems/wiggle-sort-ii/)
 
 ## [871. 最低加油次数](https://leetcode.cn/problems/minimum-number-of-refueling-stops/)
+
+## [729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/) - 线段树
