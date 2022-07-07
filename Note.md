@@ -29123,6 +29123,35 @@ class Solution {
 }
 ```
 
+## [648. 单词替换](https://leetcode.cn/problems/replace-words/)
+
+> 字典树，数组，哈希，字符串
+
+暴力
+```java
+class Solution {
+    public String replaceWords(List<String> dictionary, String sentence) {
+        Collections.sort(dictionary, (x, y) -> {
+            return x.length() - y.length();
+        });
+        String[] sens = sentence.split(" ");
+        for (int i = 0; i < sens.length; ++i) {
+            for (int j = 0; j < dictionary.size(); ++j) {
+                if (sens[i].startsWith(dictionary.get(j))) {
+                    sens[i] = dictionary.get(j);
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < sens.length; ++i) {
+            sb.append(sens[i]);
+            if (i < sens.length - 1) sb.append(" ");
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -29615,6 +29644,68 @@ class Trie {
             p = p.child[u]; 
         }
         return true;
+    }
+}
+```
+字典树
+执行用时：5 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：52.4 MB, 在所有 Java 提交中击败了37.98%的用户
+```java
+class Solution {
+    class Trie {
+        private TrieNode root;
+
+        class TrieNode {
+            TrieNode[] children = new TrieNode[26];
+            String word;
+        }
+
+        Trie () {
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            TrieNode p = root;
+            for (int i = 0; i < word.length(); ++i) {
+                int idx = word.charAt(i) - 'a';
+                if (p.children[idx] == null) p.children[idx] = new TrieNode();
+                p = p.children[idx];
+            }
+            p.word = word;
+        }
+
+        public String getRoot(String word) {
+            TrieNode p = root;
+            for (int i = 0; i < word.length(); ++i) {
+                int idx = word.charAt(i) - 'a';
+                if (p.children[idx] != null) {
+                    if (p.children[idx].word != null) return p.children[idx].word;
+                } else {
+                    return null;
+                }
+                p = p.children[idx];
+            }
+            return null;
+        }
+    }
+
+    public String replaceWords(List<String> dictionary, String sentence) {
+        Trie trie = new Trie();
+        for (String root: dictionary) {
+            trie.insert(root);
+        }
+        String[] sens = sentence.split(" ");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < sens.length; ++i) {
+            String x = trie.getRoot(sens[i]);
+            if (x != null) {
+                sb.append(x);
+            } else {
+                sb.append(sens[i]);
+            }
+            if (i < sens.length - 1) sb.append(" ");
+        }
+        return sb.toString();
     }
 }
 ```
