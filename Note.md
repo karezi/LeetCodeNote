@@ -29152,6 +29152,26 @@ class Solution {
 }
 ```
 
+## [1217. 玩筹码](https://leetcode.cn/problems/minimum-cost-to-move-chips-to-the-same-position/)
+
+> 贪心，数组，数学
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.4 MB, 在所有 Java 提交中击败了16.34%的用户
+```java
+class Solution {
+    public int minCostToMoveChips(int[] position) {
+        // 移动到同奇偶的位置上的时候无损，所以计算奇数位上数量和偶数位上数量的最小值即可
+        int sum1 = 0, sum2 = 0;
+        for (int item: position) {
+            if ((item & 1) == 0) sum1++;
+            else sum2++;
+        }
+        return Math.min(sum1, sum2);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
