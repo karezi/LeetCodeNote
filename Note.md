@@ -29172,6 +29172,71 @@ class Solution {
 }
 ```
 
+## [873. 最长的斐波那契子序列的长度](https://leetcode.cn/problems/length-of-longest-fibonacci-subsequence/)
+
+> 数组，哈希表，动态规划
+
+暴力
+```java
+class Solution {
+    public int lenLongestFibSubseq(int[] arr) {
+        Set<Integer> set = new HashSet<>();
+        for (int i: arr) set.add(i);
+        int n = arr.length, max = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                int next = arr[i] + arr[j];
+                if (set.contains(next)) {
+                    int pre = arr[j];
+                    int cnt = 3;
+                    while (true) {
+                        int nnext = next + pre;
+                        if (!set.contains(nnext)) break;
+                        pre = next;
+                        next = nnext;
+                        cnt++;
+                    }
+                    max = Math.max(max, cnt);
+                }
+            }
+        }
+        return max;
+    }
+}
+```
+dp
+```java
+class Solution {
+    public int lenLongestFibSubseq(int[] arr) {
+        // 利用序列最后两个数来构建dp
+        // dp[j][i]表示以arr[i],arr[j]作为最后两个子序列的最大长度
+        // dp[j][i]=max(dp[k][j]+1,3)存在k使得arr[k]=arr[i]-arr[j]；0，不存在k
+        // dp[j][i]=0
+        // max(dp[j][i])
+        int ans = 0, n = arr.length;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; ++i) {
+            map.put(arr[i], i);
+        }
+        int[][] dp = new int[n][n];
+        for (int i = 0; i < n; ++i) {
+            for (int j = i - 1; j >= 0 && arr[j] * 2 > arr[i]; j--) {
+                int k = map.getOrDefault(arr[i] - arr[j], -1);
+                if (k >= 0) {
+                    // 存在
+                    dp[j][i] = Math.max(dp[k][j] + 1, 3);
+                } else {
+                    // 不存在
+                    dp[j][i] = 0;
+                }
+                ans = Math.max(ans, dp[j][i]);
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
