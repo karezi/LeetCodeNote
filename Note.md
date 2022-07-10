@@ -30828,3 +30828,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [871. 最低加油次数](https://leetcode.cn/problems/minimum-number-of-refueling-stops/)
 
 ## [729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/) - 线段树
+
+## [741. 摘樱桃](https://leetcode.cn/problems/cherry-pickup/)
