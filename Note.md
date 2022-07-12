@@ -29237,6 +29237,52 @@ class Solution {
 }
 ```
 
+## [1252. 奇数值单元格的数目](https://leetcode.cn/problems/cells-with-odd-values-in-a-matrix/)
+
+> 数组，数学，模拟
+
+```java
+class Solution {
+    public int oddCells(int m, int n, int[][] indices) {
+        Map<Integer, Integer> rmap = new HashMap<>();
+        Map<Integer, Integer> cmap = new HashMap<>();
+        for (int[] indice: indices) {
+            rmap.put(indice[0], rmap.getOrDefault(indice[0], 0) + 1);
+            cmap.put(indice[1], cmap.getOrDefault(indice[1], 0) + 1);
+        }
+        int cnt = 0;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                cnt += ((rmap.getOrDefault(i, 0) + cmap.getOrDefault(j, 0)) & 1) == 1 ? 1 : 0;
+            }
+        }
+        return cnt;
+    }
+}
+```
+优化
+```java
+class Solution {
+    public int oddCells(int m, int n, int[][] indices) {
+        int[] row = new int[m], col = new int[n];
+        for (int[] indice: indices) {
+            row[indice[0]]++;
+            col[indice[1]]++;
+        }
+        // res = oddx * (n - oddy) + oddy * (m - oddx)
+        // 奇=奇+偶
+        int oddx = 0, oddy = 0;
+        for (int i = 0; i < m; ++i) {
+            oddx += (row[i] & 1) == 1 ? 1 : 0;
+        }
+        for (int j = 0; j < n; ++j) {
+            oddy += (col[j] & 1) == 1 ? 1 : 0;
+        }
+        return oddx * (n - oddy) + oddy * (m - oddx);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30830,3 +30876,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [729. 我的日程安排表 I](https://leetcode.cn/problems/my-calendar-i/) - 线段树
 
 ## [741. 摘樱桃](https://leetcode.cn/problems/cherry-pickup/)
+
+## [676. 实现一个魔法字典](https://leetcode.cn/problems/implement-magic-dictionary/)
