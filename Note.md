@@ -29283,6 +29283,34 @@ class Solution {
 }
 ```
 
+## [735. 行星碰撞](https://leetcode.cn/problems/asteroid-collision/)
+
+> 栈，数组
+
+```java
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int ast: asteroids) {
+            boolean isAlive = true;
+            while (isAlive && ast < 0 && !dq.isEmpty() && dq.peek() > 0) { // 正数直接入栈，负数则判断栈顶各自是否爆炸
+                isAlive = dq.peek() < -ast; // 当前元素是否存活
+                if (dq.peek() <= -ast) { // 栈顶元素是否存活
+                    dq.pop();
+                }
+            }
+            if (isAlive) dq.push(ast);
+        }
+        int size = dq.size();
+        int[] ret = new int[size];
+        for (int i = size - 1; i >= 0; --i) {
+            ret[i] = dq.pop();
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
