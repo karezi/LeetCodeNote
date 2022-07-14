@@ -30906,3 +30906,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [741. 摘樱桃](https://leetcode.cn/problems/cherry-pickup/)
 
 ## [676. 实现一个魔法字典](https://leetcode.cn/problems/implement-magic-dictionary/)
+
+## [745. 前缀和后缀搜索](https://leetcode.cn/problems/prefix-and-suffix-search/)
