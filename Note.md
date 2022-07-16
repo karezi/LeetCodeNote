@@ -29311,6 +29311,33 @@ class Solution {
 }
 ```
 
+## [剑指 Offer II 041. 滑动窗口的平均值](https://leetcode.cn/problems/qIsx9U/)
+
+> 设计，队列，数组，数据流，滑动窗口
+
+```java
+class MovingAverage {
+    private Deque<Integer> q;
+    private double sum = 0d;
+    private int size;
+
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+        q = new ArrayDeque<>();
+        this.size = size;
+    }
+    
+    public double next(int val) {
+        sum += val;
+        if (q.size() == this.size) {
+            sum -= q.pollFirst();
+        }
+        q.offerLast(val);
+        return sum / q.size();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30908,3 +30935,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [676. 实现一个魔法字典](https://leetcode.cn/problems/implement-magic-dictionary/)
 
 ## [745. 前缀和后缀搜索](https://leetcode.cn/problems/prefix-and-suffix-search/)
+
+## [558. 四叉树交集](https://leetcode.cn/problems/logical-or-of-two-binary-grids-represented-as-quad-trees/)
