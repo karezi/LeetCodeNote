@@ -29338,6 +29338,29 @@ class MovingAverage {
 }
 ```
 
+## [565. 数组嵌套](https://leetcode.cn/problems/array-nesting/)
+
+> 深度优先搜索，数组，图
+
+```java
+class Solution {
+    public int arrayNesting(int[] nums) {
+        int n = nums.length, ans = 0;
+        for (int i = 0; i < n; ++i) {
+            int len = 0;
+            while (nums[i] < n) {
+                int num = nums[i];
+                nums[i] = n;
+                i = num;
+                len++;
+            }
+            ans = Math.max(ans, len);
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
