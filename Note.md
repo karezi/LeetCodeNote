@@ -29361,6 +29361,42 @@ class Solution {
 }
 ```
 
+## [1260. 二维网格迁移](https://leetcode.cn/problems/shift-2d-grid/)
+
+> 数组，矩阵，模拟
+
+```java
+class Solution {
+    public List<List<Integer>> shiftGrid(int[][] grid, int k) {
+        int m = grid.length, n = grid[0].length;
+        int total = m * n;
+        k %= total;
+        List<List<Integer>> ret = new ArrayList<>();
+        List<Integer> cur = new ArrayList<>();;
+        int p = total - k;
+        if (p >= total) p = 0;
+        for (int i = 0; i < total; ++i) {
+            int x = p / n, y = p % n;
+            if (i == 0) {
+                cur.add(grid[x][y]);
+                p++;
+                if (p == total) p = 0;
+                continue;
+            }
+            if (i % n == 0) {
+                ret.add(cur);
+                cur = new ArrayList<>();
+            }
+            cur.add(grid[x][y]);
+            p++;
+            if (p == total) p = 0;
+        }
+        ret.add(cur);
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -30960,3 +30996,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [745. 前缀和后缀搜索](https://leetcode.cn/problems/prefix-and-suffix-search/)
 
 ## [558. 四叉树交集](https://leetcode.cn/problems/logical-or-of-two-binary-grids-represented-as-quad-trees/)
+
+## [749. 隔离病毒](https://leetcode.cn/problems/contain-virus/)
+
+## [731. 我的日程安排表 II](https://leetcode.cn/problems/my-calendar-ii/)
