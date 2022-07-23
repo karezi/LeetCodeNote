@@ -29397,6 +29397,27 @@ class Solution {
 }
 ```
 
+## [1184. 公交站间的距离](https://leetcode.cn/problems/distance-between-bus-stops/)
+
+> 数组
+
+```java
+class Solution {
+    public int distanceBetweenBusStops(int[] distance, int start, int destination) {
+        int total = 0;
+        for (int i: distance) {
+            total += i;
+        }
+        int min = Math.min(start, destination), max = Math.max(start, destination);
+        int sum = 0;
+        for (int i = min; i < max; ++i) {
+            sum += distance[i];
+        }
+        return Math.min(sum, total - sum);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31000,3 +31021,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [749. 隔离病毒](https://leetcode.cn/problems/contain-virus/)
 
 ## [731. 我的日程安排表 II](https://leetcode.cn/problems/my-calendar-ii/)
+
+## [757. 设置交集大小至少为2](https://leetcode.cn/problems/set-intersection-size-at-least-two/)
+
+## [814. 二叉树剪枝](https://leetcode.cn/problems/binary-tree-pruning/)
+
+## [剑指 Offer II 115. 重建序列](https://leetcode.cn/problems/ur2n8P/)
