@@ -29418,6 +29418,99 @@ class Solution {
 }
 ```
 
+## [919. 完全二叉树插入器](https://leetcode.cn/problems/complete-binary-tree-inserter/)
+
+> 树，广度优先搜索，设计，二叉树
+
+```java
+class CBTInserter {
+    TreeNode root;
+    Deque<TreeNode> dq;
+    TreeNode parent;
+
+    public CBTInserter(TreeNode root) {
+        this.root = root;
+        dq = new ArrayDeque<>();
+    }
+    
+    public int insert(int val) {
+        if (parent != null && parent.right == null) {
+            parent.right = new TreeNode(val);
+            return parent.val;
+        }
+        parent = root;
+        dq.push(root);
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            while (size-- > 0) {
+                parent = dq.poll();
+                if (parent.left == null) {
+                    parent.left = new TreeNode(val);
+                    return parent.val;
+                } else if (parent.right == null) {
+                    parent.right = new TreeNode(val);
+                    return parent.val;
+                }
+                dq.offer(parent.left);
+                dq.offer(parent.right);
+            }
+        }
+        return parent.val;
+    }
+    
+    public TreeNode get_root() {
+        return root;
+    }
+}
+```
+用另一个队列记录倒数两排没排满的节点
+```java
+class CBTInserter {
+    TreeNode root;
+    Deque<TreeNode> dq;
+
+    public CBTInserter(TreeNode root) {
+        this.root = root;
+        dq = new ArrayDeque<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+            if (!(node.left != null && node.right != null)) {
+                dq.offer(node);
+            }
+        }
+    }
+    
+    public int insert(int val) {
+        TreeNode node = dq.peek();
+        if (node.left == null) {
+            node.left = new TreeNode(val);
+            dq.offer(node.left);
+            return node.val;
+        }
+        if (node.right == null) {
+            node.right = new TreeNode(val);
+            dq.offer(node.right);
+            dq.poll();
+            return node.val;
+        }
+        return node.val;
+    }
+    
+    public TreeNode get_root() {
+        return root;
+    }
+}
+```
+TODO 二进制
+
 # Java算法模板
 
 ## BFS
