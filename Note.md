@@ -29511,6 +29511,45 @@ class CBTInserter {
 ```
 TODO 二进制
 
+## [592. 分数加减运算](https://leetcode.cn/problems/fraction-addition-and-subtraction/)
+
+> 数学，字符串，模拟
+
+```java
+class Solution {
+    public String fractionAddition(String expression) {
+        if (!expression.startsWith("-")) expression = '+' + expression;
+        int n = expression.length();
+        int i = 0;
+        long up = 0, down = 1L;
+        while (i < n) {
+            boolean isNeg = expression.charAt(i) == '-';
+            int cup = 0;
+            i++;
+            while (expression.charAt(i) != '/') {
+                cup = cup * 10 + (expression.charAt(i) - '0');
+                i++;
+            }
+            i++;
+            int cdown = 0;
+            while (i < n && expression.charAt(i) != '-' && expression.charAt(i) != '+') {
+                cdown = cdown * 10 + (expression.charAt(i) - '0');
+                i++;
+            }
+            up = isNeg ? cdown * up - cup * down : cdown * up + cup * down;
+            down *= cdown;
+        }
+        if (up == 0) return "0/1";
+        long g = gcd(Math.abs(up), down);
+        return Long.toString(up / g) + "/" + Long.toString(down / g);
+    }
+
+    private long gcd(long a, long b) {
+        return b > 0 ? gcd(b, a % b) : a;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31120,3 +31159,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [814. 二叉树剪枝](https://leetcode.cn/problems/binary-tree-pruning/)
 
 ## [剑指 Offer II 115. 重建序列](https://leetcode.cn/problems/ur2n8P/)
+
+## [1206. 设计跳表](https://leetcode.cn/problems/design-skiplist/)
