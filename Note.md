@@ -29550,6 +29550,57 @@ class Solution {
 }
 ```
 
+## [1331. 数组序号转换](https://leetcode.cn/problems/rank-transform-of-an-array/)
+
+> 数组，哈希表，排序
+
+```java
+class Solution {
+    public int[] arrayRankTransform(int[] arr) {
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        int n = arr.length;
+        for (int i = 0; i < n; ++i) {
+            if (map.containsKey(arr[i])) {
+                map.get(arr[i]).add(i);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(i);
+                map.put(arr[i], list);
+            }
+        }
+        int[] ret = new int[n];
+        List<Integer> list = new ArrayList<>(map.keySet());
+        Collections.sort(list);
+        int cnt = 1;
+        for (int i = 0; i < list.size(); ++i) {
+            for (int k: map.get(list.get(i))) {
+                ret[k] = cnt;
+            }
+            cnt++;
+        }
+        return ret;
+    }
+}
+```
+简化
+```java
+class Solution {
+    public int[] arrayRankTransform(int[] arr) {
+        int[] clone = arr.clone();
+        Arrays.sort(clone);
+        int n = arr.length;
+        Map<Integer, Integer> map = new HashMap<>();
+        int idx = 1;
+        for (int item: clone) {
+            if (!map.containsKey(item)) map.put(item, idx++);
+        }
+        int[] ret = new int[n];
+        for (int i = 0; i < n; ++i) ret[i] = map.get(arr[i]);
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
