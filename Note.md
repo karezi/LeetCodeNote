@@ -29601,6 +29601,31 @@ class Solution {
 }
 ```
 
+## [593. 有效的正方形](https://leetcode.cn/problems/valid-square/)
+
+> 几何，数学
+
+```java
+class Solution {
+    public boolean validSquare(int[] p1, int[] p2, int[] p3, int[] p4) {
+        int[] arr = new int[]{
+            distance(p1, p2),
+            distance(p2, p3),
+            distance(p3, p4),
+            distance(p4, p1),
+            distance(p1, p3),
+            distance(p2, p4)
+        };
+        Arrays.sort(arr);
+        return arr[0] != 0 && arr[0] == arr[3] && arr[4] == arr[5] && arr[0] * 2 == arr[4];
+    }
+
+    private int distance(int[] a, int[] b) {
+        return (b[0] - a[0]) * (b[0] - a[0]) + (b[1] - a[1]) * (b[1] - a[1]);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
