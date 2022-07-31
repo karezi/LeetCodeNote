@@ -29626,6 +29626,45 @@ class Solution {
 }
 ```
 
+## [1161. 最大层内元素和](https://leetcode.cn/problems/maximum-level-sum-of-a-binary-tree/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public int maxLevelSum(TreeNode root) {
+        if (root == null) return 0;
+        int level = 1, max = root.val, maxLevel = 1;
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.offer(root);
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            int curSum = 0;
+            boolean hasLevel = false;
+            while (size-- > 0) {
+                TreeNode tn = dq.poll();
+                if (tn.left != null) {
+                    hasLevel = true;
+                    curSum += tn.left.val;
+                    dq.offer(tn.left);
+                }
+                if (tn.right != null) {
+                    hasLevel = true;
+                    curSum += tn.right.val;
+                    dq.offer(tn.right);
+                }
+            }
+            level++;
+            if (hasLevel && curSum > max) {
+                max = curSum;
+                maxLevel = level;
+            }
+        }
+        return maxLevel;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31237,3 +31276,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [剑指 Offer II 115. 重建序列](https://leetcode.cn/problems/ur2n8P/)
 
 ## [1206. 设计跳表](https://leetcode.cn/problems/design-skiplist/)
+
+## [952. 按公因数计算最大组件大小](https://leetcode.cn/problems/largest-component-size-by-common-factor/)
