@@ -29665,6 +29665,41 @@ class Solution {
 }
 ```
 
+## [1374. 生成每种字符都是奇数个的字符串](https://leetcode.cn/problems/generate-a-string-with-characters-that-have-odd-counts/)
+
+> 字符串
+
+```java
+class Solution {
+    public String generateTheString(int n) {
+        StringBuilder sb = new StringBuilder();
+        if ((n & 1) == 0) {
+            // 偶数
+            sb.append("b");
+            n--;
+        }
+        while (n-- > 0) {
+            sb.append("a");
+        }
+        return sb.toString();
+    }
+}
+```
+简化写法
+```java
+class Solution {
+    public String generateTheString(int n) {
+        // 或者一句话：
+        // return (n & 1) == 1 ? "a".repeat(n) : "a".repeat(n - 1) + "b";
+        StringBuilder sb = new StringBuilder();
+        if ((n & 1) == 1) {
+            return sb.append("a".repeat(n)).toString();
+        }
+        return sb.append("a".repeat(n - 1)).append("b").toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
