@@ -29700,6 +29700,70 @@ class Solution {
 }
 ```
 
+### [640. 求解方程](https://leetcode.cn/problems/solve-the-equation/)
+
+> 数学，字符串，模拟
+
+```java
+class Solution {
+    public String solveEquation(String equation) {
+        boolean isLeft = true;
+        int xs = 0, v = 0, n = equation.length(), i = 0, cn = 0;
+        while (i < n) {
+            char c = equation.charAt(i);
+            if (c == '=') {
+                if (cn != 0) {
+                    v -= cn;
+                    cn = 0;
+                }
+                isLeft = false;
+                i++;
+                continue;
+            }
+            if (c == 'x') {
+                if (i == 0) {
+                    xs = 1;
+                } else {
+                    char cb = equation.charAt(i - 1);
+                    if (cb == '+' || cb == '=') {
+                        xs += isLeft ? 1 : -1;
+                    } else if (cb == '-') {
+                        xs += isLeft ? -1 : 1;
+                    } else {
+                        xs = isLeft ? (xs + cn) : (xs - cn);
+                        cn = 0;
+                    }
+                }
+                i++;
+                continue;
+            } else {
+                if (cn != 0) {
+                    v = isLeft ? (v - cn) : (v + cn);
+                    cn = 0;
+                }
+                boolean isNeg = false;
+                if (c == '-') isNeg = true;
+                if (c == '-' || c == '+') i++;
+                while (i < n && Character.isDigit(equation.charAt(i))) {
+                    cn *= 10;
+                    cn += equation.charAt(i) - '0';
+                    i++;
+                }
+                if (isNeg) cn = -cn;
+                System.out.println("cn,v=" + cn + "," + v);
+            }
+        }
+        if (cn != 0) {
+            v += cn;
+        }
+        if (xs == 0 && v != 0) return "No solution";
+        if (xs == 0 && v == 0) return "Infinite solutions";
+        return "x=" + v / xs;
+    }
+}
+```
+TODO 可以优化下算法复杂度
+
 # Java算法模板
 
 ## BFS
