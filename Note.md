@@ -29764,6 +29764,36 @@ class Solution {
 ```
 TODO 可以优化下算法复杂度
 
+## [1417. 重新格式化字符串](https://leetcode.cn/problems/reformat-the-string/)
+
+> 字符串
+
+```java
+class Solution {
+    public String reformat(String s) {
+        StringBuilder dsb = new StringBuilder(), csb = new StringBuilder();
+        for (char c: s.toCharArray()) {
+            if (Character.isDigit(c)) dsb.append(c);
+            else csb.append(c);
+        }
+        if (Math.abs(dsb.length() - csb.length()) > 1) return "";
+        StringBuilder ret = new StringBuilder();
+        int i = 0, j = 0;
+        while (i < dsb.length() && j < csb.length()) {
+            ret.append(dsb.charAt(i)).append(csb.charAt(j));
+            i++;
+            j++;
+        }
+        if (i < dsb.length()) {
+            ret.append(dsb.charAt(i));
+        } else if (j < csb.length()) {
+            ret.insert(0, csb.charAt(j));
+        }
+        return ret.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
