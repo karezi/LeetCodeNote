@@ -31313,3 +31313,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1206. 设计跳表](https://leetcode.cn/problems/design-skiplist/)
 
 ## [952. 按公因数计算最大组件大小](https://leetcode.cn/problems/largest-component-size-by-common-factor/)
+
+## [622. 设计循环队列](https://leetcode.cn/problems/design-circular-queue/)
+
+## [899. 有序队列](https://leetcode.cn/problems/orderly-queue/)
+
+## [1403. 非递增顺序的最小子序列](https://leetcode.cn/problems/minimum-subsequence-in-non-increasing-order/)
