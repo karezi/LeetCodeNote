@@ -29700,6 +29700,60 @@ class Solution {
 }
 ```
 
+## [1403. 非递增顺序的最小子序列](https://leetcode.cn/problems/minimum-subsequence-in-non-increasing-order/)
+
+> 贪心，数组，排序
+
+```java
+class Solution {
+    public List<Integer> minSubsequence(int[] nums) {
+        Arrays.sort(nums);
+        int sum = 0, n = nums.length;
+        for (int i = 0; i < n; ++i) {
+            sum += nums[i];
+        }
+        List<Integer> ret = new ArrayList<>();
+        int s = 0, half = sum / 2;
+        for (int i = n - 1; i >= 0; i--) {
+            s += nums[i];
+            ret.add(nums[i]);
+            if (s > half) {
+                break;
+            }
+        }
+        return ret;
+    }
+}
+```
+
+## [1408. 数组中的字符串匹配](https://leetcode.cn/problems/string-matching-in-an-array/)
+
+> 字符串，字符串匹配，KMP
+
+```java
+class Solution {
+    public List<String> stringMatching(String[] words) {
+        Set<String> ret = new HashSet<>();
+        int n = words.length;
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (!words[i].equals(words[j])) {
+                    if (words[j].indexOf(words[i]) != -1) {
+                        ret.add(words[i]);
+                        break;
+                    }
+                    if (words[i].indexOf(words[j]) != -1) {
+                        ret.add(words[j]);
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(ret);
+    }
+}
+```
+TODO KMP
+
 ### [640. 求解方程](https://leetcode.cn/problems/solve-the-equation/)
 
 > 数学，字符串，模拟
@@ -29764,6 +29818,27 @@ class Solution {
 ```
 TODO 可以优化下算法复杂度
 
+## [1413. 逐步求和得到正数的最小值](https://leetcode.cn/problems/minimum-value-to-get-positive-step-by-step-sum/)
+
+> 数组，前缀和
+
+```java
+class Solution {
+    public int minStartValue(int[] nums) {
+        int n = nums.length;
+        int[] preSum = new int[n];
+        preSum[0] = nums[0];
+        int min = nums[0];
+        for (int i = 1; i < n; ++i) {
+            preSum[i] = preSum[i - 1] + nums[i];
+            min = Math.min(min, preSum[i]);
+        }
+        return min >= 0 ? 1 : (-min + 1);
+    }
+}
+```
+TODO 不用前缀和也行，还能用二分
+
 ## [1417. 重新格式化字符串](https://leetcode.cn/problems/reformat-the-string/)
 
 > 字符串
@@ -29793,6 +29868,33 @@ class Solution {
     }
 }
 ```
+
+## [1422. 分割字符串的最大得分](https://leetcode.cn/problems/maximum-score-after-splitting-a-string/)
+
+> 字符串
+
+```java
+class Solution {
+    public int maxScore(String s) {
+        int n = s.length();
+        int[] la = new int[n], ra = new int[n];
+        la[0] = s.charAt(0) == '0' ? 1 : 0;
+        ra[n - 1] = s.charAt(n - 1) == '1' ? 1 : 0;
+        for (int i = 1; i < n - 1; ++i) {
+            la[i] = la[i - 1] + (s.charAt(i) == '0' ? 1 : 0);
+        }
+        for (int i = n - 2; i >= 1; --i) {
+            ra[i] = ra[i + 1] + (s.charAt(i) == '1' ? 1 : 0);
+        }
+        int ret = 0;
+        for (int i = 0; i < n - 1; ++i) {
+            ret = Math.max(ret, la[i] + ra[i + 1]);
+        }
+        return ret;
+    }
+}
+```
+TODO 从左到右遍历即可
 
 # Java算法模板
 
@@ -31412,4 +31514,14 @@ list.stream().mapToInt(User::getScore).sum();
 
 ## [899. 有序队列](https://leetcode.cn/problems/orderly-queue/)
 
-## [1403. 非递增顺序的最小子序列](https://leetcode.cn/problems/minimum-subsequence-in-non-increasing-order/)
+## [623. 在二叉树中增加一行](https://leetcode.cn/problems/add-one-row-to-tree/)
+
+## [636. 函数的独占时间](https://leetcode.cn/problems/exclusive-time-of-functions/)
+
+## [761. 特殊的二进制序列](https://leetcode.cn/problems/special-binary-string/)
+
+## [640. 求解方程](https://leetcode.cn/problems/solve-the-equation/)
+
+## [1282. 用户分组](https://leetcode.cn/problems/group-the-people-given-the-group-size-they-belong-to/)
+
+## [768. 最多能完成排序的块 II](https://leetcode.cn/problems/max-chunks-to-make-sorted-ii/)
