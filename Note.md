@@ -29896,6 +29896,69 @@ class Solution {
 ```
 TODO 从左到右遍历即可
 
+## [641. 设计循环双端队列](https://leetcode.cn/problems/design-circular-deque/)
+
+> 设计，队列，数组，链表，循环队列
+
+```java
+class MyCircularDeque {
+    private int[] elements;
+    private int rear, front;
+    private int capacity;
+
+    public MyCircularDeque(int k) {
+        capacity = k + 1;
+        rear = front = 0;
+        elements = new int[capacity];
+    }
+    
+    public boolean insertFront(int value) {
+        if (isFull()) return false;
+        front = (front - 1 + capacity) % capacity;
+        elements[front] = value;
+        return true; 
+    }
+    
+    public boolean insertLast(int value) {
+        if (isFull()) return false;
+        elements[rear] = value;
+        rear = (rear + 1) % capacity;
+        return true;
+    }
+    
+    public boolean deleteFront() {
+        if (isEmpty()) return false;
+        front = (front + 1) % capacity;
+        return true;
+    }
+    
+    public boolean deleteLast() {
+        if (isEmpty()) return false;
+        rear = (rear - 1 + capacity) % capacity;
+        return true;
+    }
+    
+    public int getFront() {
+        if (isEmpty()) return -1;
+        return elements[front];
+    }
+    
+    public int getRear() {
+        if (isEmpty()) return -1;
+        return elements[(rear - 1 + capacity) % capacity];
+    }
+    
+    public boolean isEmpty() {
+        return front == rear;
+    }
+    
+    public boolean isFull() {
+        return (rear + 1) % capacity == front;
+    }
+}
+```
+TODO 链表
+
 # Java算法模板
 
 ## BFS
