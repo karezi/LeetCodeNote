@@ -29959,6 +29959,31 @@ class MyCircularDeque {
 ```
 TODO 链表
 
+## [1656. 设计有序流](https://leetcode.cn/problems/design-an-ordered-stream/)
+
+> 设计，数组，哈希表，数据流
+
+```java
+class OrderedStream {
+    private String[] arr;
+    private int ptr;
+
+    public OrderedStream(int n) {
+        ptr = 1;
+        arr = new String[n + 1];
+    }
+    
+    public List<String> insert(int idKey, String value) {
+        List<String> ret = new ArrayList<>();
+        arr[idKey] = value;
+        while (ptr < arr.length && arr[ptr] != null) {
+            ret.add(arr[ptr++]);
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
