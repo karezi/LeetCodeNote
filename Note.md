@@ -29984,6 +29984,56 @@ class OrderedStream {
 }
 ```
 
+## [1302. 层数最深叶子节点的和](https://leetcode.cn/problems/deepest-leaves-sum/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树，层次遍历
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int deepestLeavesSum(TreeNode root) {
+        if (root == null) return 0;
+        Queue<TreeNode> dq = new ArrayDeque<>();
+        dq.offer(root);
+        int ret = root.val;
+        while (!dq.isEmpty()) {
+            int size = dq.size();
+            boolean hasNode = false;
+            int cur = 0;
+            while (size-- > 0) {
+                TreeNode tn = dq.poll();
+                cur += tn.val;
+                if (tn.left != null) {
+                    hasNode = true;
+                    dq.offer(tn.left);
+                }
+                if (tn.right != null) {
+                    hasNode = true;
+                    dq.offer(tn.right);
+                }
+            }
+            ret = cur;
+            if (!hasNode) break;
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
