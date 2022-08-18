@@ -31663,3 +31663,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1282. 用户分组](https://leetcode.cn/problems/group-the-people-given-the-group-size-they-belong-to/)
 
 ## [768. 最多能完成排序的块 II](https://leetcode.cn/problems/max-chunks-to-make-sorted-ii/)
+
+## [1224. 最大相等频率](https://leetcode.cn/problems/maximum-equal-frequency/)
