@@ -30034,6 +30034,14 @@ class Solution {
 }
 ```
 
+## [1757. 可回收且低脂的产品](https://leetcode.cn/problems/recyclable-and-low-fat-products/)
+
+> 数据库
+
+```SQL
+SELECT product_id FROM Products WHERE low_fats = 'Y' AND recyclable = 'Y'
+```
+
 # Java算法模板
 
 ## BFS
@@ -31665,3 +31673,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [768. 最多能完成排序的块 II](https://leetcode.cn/problems/max-chunks-to-make-sorted-ii/)
 
 ## [1224. 最大相等频率](https://leetcode.cn/problems/maximum-equal-frequency/)
+
+## [654. 最大二叉树](https://leetcode.cn/problems/maximum-binary-tree/)
