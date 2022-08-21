@@ -30042,6 +30042,37 @@ class Solution {
 SELECT product_id FROM Products WHERE low_fats = 'Y' AND recyclable = 'Y'
 ```
 
+## [1455. 检查单词是否为句中其他单词的前缀](https://leetcode.cn/problems/check-if-a-word-occurs-as-a-prefix-of-any-word-in-a-sentence/)
+
+> 字符串，字符串匹配
+
+```java
+class Solution {
+    public int isPrefixOfWord(String sentence, String searchWord) {
+        int wordCnt = 1;
+        for (int i = 0; i < sentence.length(); ++i) {
+            int id = check(sentence, i, searchWord);
+            if (id == i) return wordCnt;
+            i = id;
+            wordCnt++;
+        }
+        return -1;
+    }
+
+    private int check(String sentence, int id, String searchWord) {
+        int i = id;
+        for (int j = 0; j < searchWord.length(); ++j) {
+            if (sentence.charAt(i) != searchWord.charAt(j)) {
+                while (i < sentence.length() && sentence.charAt(i) != ' ') i++;
+                return i;
+            }
+            i++;
+        }
+        return id;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
