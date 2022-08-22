@@ -30073,6 +30073,62 @@ class Solution {
 }
 ```
 
+## [655. 输出二叉树](https://leetcode.cn/problems/print-binary-tree/)
+
+> 树，深度优先搜索，广度优先搜索，二叉树
+
+```java
+class Solution {
+    public List<List<String>> printTree(TreeNode root) {
+        int h = dfs(root, 0);
+        h--;
+        List<List<String>> ret = new ArrayList<>();
+        if (root == null) return ret;
+        int m = h + 1, n = (int)Math.pow(2, h + 1) - 1;
+        String[][] mn = new String[m][n];
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        dq.push(root);
+        mn[0][(n - 1) / 2] = root.val + "";
+        Map<TreeNode, String> cache = new HashMap<>();
+        cache.put(root, 0 + "," + (n - 1) / 2);
+        while (!dq.isEmpty()) {
+            TreeNode tn = dq.poll();
+            String[] pos = cache.get(tn).split(",");
+            int x = Integer.parseInt(pos[0]), y = Integer.parseInt(pos[1]);
+            if (tn.left != null) {
+                dq.offer(tn.left);
+                int xn = x + 1, yn = y - (int)Math.pow(2, h - x - 1);
+                cache.put(tn.left, xn + "," + yn);
+                mn[xn][yn] = tn.left.val + "";
+            }
+            if (tn.right != null) {
+                dq.offer(tn.right);
+                int xn = x + 1, yn = y + (int)Math.pow(2, h - x - 1);
+                cache.put(tn.right, xn + "," + yn);
+                mn[xn][yn] = tn.right.val + "";
+            }
+        }
+        for (int i = 0; i < m; ++i) {
+            List<String> rr = new ArrayList<>();
+            for (int j = 0; j < n; ++j) {
+                if (mn[i][j] == null) rr.add("");
+                else rr.add(mn[i][j]);
+            }
+            ret.add(rr);
+        }
+        return ret;
+    }
+
+    private int dfs(TreeNode root, int h) {
+        if (root == null) {
+            return h;
+        }
+        return Math.max(dfs(root.left, h + 1), dfs(root.right, h + 1));
+    }
+}
+```
+TODO 都用DFS或BFS
+
 # Java算法模板
 
 ## BFS
