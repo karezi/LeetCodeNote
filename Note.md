@@ -30129,6 +30129,20 @@ class Solution {
 ```
 TODO 都用DFS或BFS
 
+## [1460. 通过翻转子数组使两个数组相等](https://leetcode.cn/problems/make-two-arrays-equal-by-reversing-sub-arrays/)
+
+> 数组，哈希表，排序
+
+```java
+class Solution {
+    public boolean canBeEqual(int[] target, int[] arr) {
+        Arrays.sort(target);
+        Arrays.sort(arr);
+        return Arrays.equals(target, arr);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31344,6 +31358,11 @@ StringBuilder sb = new StringBuilder(str);
 sb.setCharAt(1, 'a');
 ```
 
+- 比较数组是否相等
+```java
+Arrays.equals(arr1, arr2);
+```
+
 ## 数组类
 
 + 数组初始化：Arrays.fill(arr, Integer.MAX_VALUE)
@@ -31762,3 +31781,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1224. 最大相等频率](https://leetcode.cn/problems/maximum-equal-frequency/)
 
 ## [654. 最大二叉树](https://leetcode.cn/problems/maximum-binary-tree/)
+
+## [782. 变为棋盘](https://leetcode.cn/problems/transform-to-chessboard/)
