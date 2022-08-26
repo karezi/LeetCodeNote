@@ -30143,6 +30143,37 @@ class Solution {
 }
 ```
 
+## [1464. 数组中两元素的最大乘积](https://leetcode.cn/problems/maximum-product-of-two-elements-in-an-array/)
+
+> 数组，排序，堆
+
+```java
+class Solution {
+    public int maxProduct(int[] nums) {
+        int a = 0, b = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (a == 0) a = nums[i];
+            else if (b == 0) {
+                if (nums[i] > a) {
+                    b = a;
+                    a = nums[i];
+                } else {
+                    b = nums[i];
+                }
+            } else if (nums[i] > b) {
+                if (nums[i] > a) {
+                    b = a;
+                    a = nums[i];
+                } else {
+                    b = nums[i];
+                }
+            }
+        }
+        return (a - 1) * (b - 1);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31783,3 +31814,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [654. 最大二叉树](https://leetcode.cn/problems/maximum-binary-tree/)
 
 ## [782. 变为棋盘](https://leetcode.cn/problems/transform-to-chessboard/)
+
+## [658. 找到 K 个最接近的元素](https://leetcode.cn/problems/find-k-closest-elements/)
+
+## [662. 二叉树最大宽度](https://leetcode.cn/problems/maximum-width-of-binary-tree/)
