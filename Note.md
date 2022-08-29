@@ -30174,6 +30174,18 @@ class Solution {
 }
 ```
 
+## [2236. 判断根结点是否等于子结点之和](https://leetcode.cn/problems/root-equals-sum-of-children/)
+
+> 树，二叉树
+
+```java
+class Solution {
+    public boolean checkTree(TreeNode root) {
+        return root.val == root.left.val + root.right.val;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31818,3 +31830,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [658. 找到 K 个最接近的元素](https://leetcode.cn/problems/find-k-closest-elements/)
 
 ## [662. 二叉树最大宽度](https://leetcode.cn/problems/maximum-width-of-binary-tree/)
+
+## [793. 阶乘函数后 K 个零](https://leetcode.cn/problems/preimage-size-of-factorial-zeroes-function/)
