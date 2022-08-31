@@ -30186,6 +30186,26 @@ class Solution {
 }
 ```
 
+## [946. 验证栈序列](https://leetcode.cn/problems/validate-stack-sequences/)
+
+> 栈，数组，模拟
+
+```java
+class Solution {
+    public boolean validateStackSequences(int[] pushed, int[] popped) {
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = 0, j = 0; i < pushed.length; ++i) {
+            dq.push(pushed[i]);
+            while (!dq.isEmpty() && popped[j] == dq.peek()) {
+                dq.pop();
+                j++;
+            }
+        }
+        return dq.isEmpty();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -31832,3 +31852,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [662. 二叉树最大宽度](https://leetcode.cn/problems/maximum-width-of-binary-tree/)
 
 ## [793. 阶乘函数后 K 个零](https://leetcode.cn/problems/preimage-size-of-factorial-zeroes-function/)
+
+## [998. 最大二叉树 II](https://leetcode.cn/problems/maximum-binary-tree-ii/)
