@@ -30206,6 +30206,102 @@ class Solution {
 }
 ```
 
+## [1475. 商品折扣后的最终价格](https://leetcode.cn/problems/final-prices-with-a-special-discount-in-a-shop/)
+
+> 栈，数组，单调栈
+
+遍历
+```java
+class Solution {
+    public int[] finalPrices(int[] prices) {
+        int n = prices.length;
+        int[] ret = new int[n];
+        for (int i = 0; i < n; ++i) {
+            int discount = 0;
+            for (int j = i + 1; j < n; ++j) {
+                if (prices[j] <= prices[i]) {
+                    discount = prices[j];
+                    break;
+                }
+            }
+            ret[i] = prices[i] - discount;
+        }
+        return ret;
+    }
+}
+```
+单调栈
+```java
+class Solution {
+    public int[] finalPrices(int[] prices) {
+        int n = prices.length;
+        int[] ret = new int[n];
+        Deque<Integer> dq = new ArrayDeque<>();
+        for (int i = n - 1; i >= 0; --i) {
+            while (!dq.isEmpty() && dq.peek() > prices[i]) dq.pop();
+            ret[i] = dq.isEmpty() ? prices[i] : prices[i] - dq.peek();
+            dq.push(prices[i]);
+        }
+        return ret;
+    }
+}
+```
+
+## [687. 最长同值路径](https://leetcode.cn/problems/longest-univalue-path/)
+
+> 树，深度优先搜索，二叉树
+
+```java
+class Solution {
+    private int ans = 0;
+
+    public int longestUnivaluePath(TreeNode root) {
+        dfs(root);
+        return ans;
+    }
+
+    // 以root作为起点往下的最长路径（仅一边）
+    private int dfs(TreeNode root) {
+        if (root == null) return 0;
+        int left = dfs(root.left), right = dfs(root.right);
+        int left1 = 0, right1 = 0;
+        if (root.left != null && root.left.val == root.val) {
+            left1 = left + 1;
+        }
+        if (root.right != null && root.right.val == root.val) {
+            right1 = right + 1;
+        }
+        ans = Math.max(ans, left1 + right1);
+        return Math.max(left1, right1);
+    }
+
+```
+
+## [646. 最长数对链](https://leetcode.cn/problems/maximum-length-of-pair-chain/)
+
+> 贪心，数组，动态规划，排序
+
+```java
+class Solution {
+    public int findLongestChain(int[][] pairs) {
+        Arrays.sort(pairs, (x, y) -> x[0] - y[0]);
+        int ans = 1;
+        int n = pairs.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < n; ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (pairs[j][1] < pairs[i][0]) {
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        return dp[n - 1];
+    }
+}
+```
+TODO dp+二分，贪心
+
 # Java算法模板
 
 ## BFS
