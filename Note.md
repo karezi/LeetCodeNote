@@ -30302,6 +30302,38 @@ class Solution {
 ```
 TODO dp+二分，贪心
 
+## [1592. 重新排列单词间的空格](https://leetcode.cn/problems/rearrange-spaces-between-words/)
+
+> 字符串
+
+```java
+class Solution {
+    public String reorderSpaces(String text) {
+        String[] strs = text.trim().split("\s+");
+        int strCnt = 0;
+        for (String str: strs) strCnt += str.length();
+        StringBuilder sb = new StringBuilder();
+        if (strs.length == 1) {
+            sb.append(strs[0]);
+            int rest = text.length() - sb.length();
+            while (rest-- > 0) sb.append(' ');
+            return sb.toString();
+        }
+        int spaceGap = (text.length() - strCnt) / (strs.length - 1);
+        for (int i = 0; i < strs.length - 1; ++i) {
+            sb.append(strs[i]);
+            int x = spaceGap;
+            while (x-- > 0) sb.append(' ');
+        }
+        sb.append(strs[strs.length - 1]);
+        int len = text.length() - sb.length();
+        while (len-- > 0) sb.append(" ");
+        return sb.toString();
+    }
+}
+```
+TODO 双指针
+
 # Java算法模板
 
 ## BFS
@@ -31950,3 +31982,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [793. 阶乘函数后 K 个零](https://leetcode.cn/problems/preimage-size-of-factorial-zeroes-function/)
 
 ## [998. 最大二叉树 II](https://leetcode.cn/problems/maximum-binary-tree-ii/)
+
+## [1582. 二进制矩阵中的特殊位置](https://leetcode.cn/problems/special-positions-in-a-binary-matrix/)
+
+## [652. 寻找重复的子树](https://leetcode.cn/problems/find-duplicate-subtrees/)
+
+## [828. 统计子串中的唯一字符](https://leetcode.cn/problems/count-unique-characters-of-all-substrings-of-a-given-string/)
