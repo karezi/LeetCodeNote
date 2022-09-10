@@ -30334,6 +30334,50 @@ class Solution {
 ```
 TODO 双指针
 
+## [1598. 文件夹操作日志搜集器](https://leetcode.cn/problems/crawler-log-folder/)
+
+> 栈，数组，字符串
+
+```java
+class Solution {
+    public int minOperations(String[] logs) {
+        int deep = 0;
+        for (String str: logs) {
+            if (str.equals("./")) {
+                continue;
+            } else if (str.equals("../")) {
+                deep -= 1;
+                if (deep < 0) deep = 0;
+            } else {
+                deep += 1;
+            }
+        }
+        return deep;
+    }
+}
+```
+
+## [669. 修剪二叉搜索树](https://leetcode.cn/problems/trim-a-binary-search-tree/)
+
+> 树，深度优先搜索，二叉搜索树，二叉树
+
+```java
+class Solution {
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if (root == null) return null;
+        if (root.val < low) {
+            return trimBST(root.right, low, high);
+        }
+        if (root.val > high) {
+            return trimBST(root.left, low, high);
+        }
+        root.left = trimBST(root.left, low, high);
+        root.right = trimBST(root.right, low, high);
+        return root;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
