@@ -30378,6 +30378,27 @@ class Solution {
 }
 ```
 
+## [1608. 特殊数组的特征值](https://leetcode.cn/problems/special-array-with-x-elements-greater-than-or-equal-x/)
+
+> 数组，二分查找，排序，计数排序
+
+```java
+class Solution {
+    public int specialArray(int[] nums) {
+        Arrays.sort(nums);
+        if (nums[nums.length - 1] == 0) return -1;
+        int ans = 0;
+        for (int i = nums.length - 1; i > 0; --i) {
+            ans++;
+            if (nums[i - 1] < ans && ans <= nums[i]) return ans;
+            else if (nums[i] < ans) return -1;
+        }
+        return ans + 1;
+    }
+}
+```
+TODO 二分查找，计数排序
+
 # Java算法模板
 
 ## BFS
@@ -32032,3 +32053,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [652. 寻找重复的子树](https://leetcode.cn/problems/find-duplicate-subtrees/)
 
 ## [828. 统计子串中的唯一字符](https://leetcode.cn/problems/count-unique-characters-of-all-substrings-of-a-given-string/)
+
+## [857. 雇佣 K 名工人的最低成本](https://leetcode.cn/problems/minimum-cost-to-hire-k-workers/)
