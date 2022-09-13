@@ -30399,6 +30399,18 @@ class Solution {
 ```
 TODO 二分查找，计数排序
 
+## [2235. 两整数相加](https://leetcode.cn/problems/add-two-integers/)
+
+> 数学
+
+```java
+class Solution {
+    public int sum(int num1, int num2) {
+        return num1 + num2;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
