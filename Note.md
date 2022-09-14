@@ -30411,6 +30411,28 @@ class Solution {
 }
 ```
 
+## [1619. 删除某些元素后的数组均值](https://leetcode.cn/problems/mean-of-array-after-removing-some-elements/)
+
+> 数组，排序
+
+```java
+class Solution {
+    public double trimMean(int[] arr) {
+        int n = arr.length;
+        int start = (int)(n * 0.05);
+        int rest = n - start * 2;
+        Arrays.sort(arr);
+        int sum = 0;
+        int end = n - start;
+        for (int i = start; i < end; i++) {
+            sum += arr[i];
+        }
+        return sum / (double)rest;
+    }
+}
+```
+TODO 用通分后的19/20
+
 # Java算法模板
 
 ## BFS
