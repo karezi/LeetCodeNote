@@ -30433,6 +30433,26 @@ class Solution {
 ```
 TODO 用通分后的19/20
 
+## [1624. 两个相同字符之间的最长子字符串](https://leetcode.cn/problems/largest-substring-between-two-equal-characters/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public int maxLengthBetweenEqualCharacters(String s) {
+        int max = -1;
+        int[] ids = new int[26];
+        Arrays.fill(ids, -1);
+        for (int i = 0; i < s.length(); ++i) {
+            int id = s.charAt(i) - 'a';
+            if (ids[id] == -1) ids[id] = i;
+            else max = Math.max(max, i - ids[id] - 1);
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32089,3 +32109,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [828. 统计子串中的唯一字符](https://leetcode.cn/problems/count-unique-characters-of-all-substrings-of-a-given-string/)
 
 ## [857. 雇佣 K 名工人的最低成本](https://leetcode.cn/problems/minimum-cost-to-hire-k-workers/)
+
+## [672. 灯泡开关 Ⅱ](https://leetcode.cn/problems/bulb-switcher-ii/)
+
+## [850. 矩形面积 II](https://leetcode.cn/problems/rectangle-area-ii/)
