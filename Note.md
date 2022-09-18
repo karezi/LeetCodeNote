@@ -32113,3 +32113,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [672. 灯泡开关 Ⅱ](https://leetcode.cn/problems/bulb-switcher-ii/)
 
 ## [850. 矩形面积 II](https://leetcode.cn/problems/rectangle-area-ii/)
+
+## [827. 最大人工岛](https://leetcode.cn/problems/making-a-large-island/)
