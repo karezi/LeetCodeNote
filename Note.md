@@ -30453,6 +30453,46 @@ class Solution {
 }
 ```
 
+## [1636. 按照频率将数组升序排序](https://leetcode.cn/problems/sort-array-by-increasing-frequency/)
+
+> 数组，哈希表，排序
+
+```java
+class Solution {
+    public int[] frequencySort(int[] nums) {
+        int n = nums.length;
+        int[] cnt = new int[201];
+        for (int i = 0; i < n; ++i) {
+            cnt[nums[i] + 100]++;
+        }
+        ArrayList[] lists = new ArrayList[101];
+        for (int i = 200; i >= 0; --i) {
+            if (cnt[i] != 0) {
+                if (lists[cnt[i]] == null) {
+                    lists[cnt[i]] = new ArrayList<>();
+                }
+                lists[cnt[i]].add(i - 100);
+            }
+        }
+        int[] ret = new int[n];
+        int j = 0;
+        for (int i = 0; i < 101; ++i) {
+            if (lists[i] != null) {
+                List<Integer> list = lists[i];
+                for (int item: list) {
+                    int size = i;
+                    while (size-- > 0) {
+                        ret[j++] = item;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+}
+```
+TODO Collection
+
 # Java算法模板
 
 ## BFS
