@@ -30493,6 +30493,32 @@ class Solution {
 ```
 TODO Collection
 
+## [1640. 能否连接形成数组](https://leetcode.cn/problems/check-array-formation-through-concatenation/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public boolean canFormArray(int[] arr, int[][] pieces) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = arr.length, m = pieces.length;
+        for (int i = 0; i < m; ++i) {
+            map.put(pieces[i][0], i);
+        }
+        for (int i = 0; i < n;) {
+            if (!map.containsKey(arr[i])) return false;
+            int idx = map.get(arr[i]);
+            int len = pieces[idx].length;
+            for (int j = 0; j < len; ++j) {
+                if (arr[i + j] != pieces[idx][j]) return false;
+            }
+            i += len;
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32155,3 +32181,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [850. 矩形面积 II](https://leetcode.cn/problems/rectangle-area-ii/)
 
 ## [827. 最大人工岛](https://leetcode.cn/problems/making-a-large-island/)
+
+## [698. 划分为k个相等的子集](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/)
+
+## [854. 相似度为 K 的字符串](https://leetcode.cn/problems/k-similar-strings/)
