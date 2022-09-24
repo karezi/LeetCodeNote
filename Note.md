@@ -30519,6 +30519,76 @@ class Solution {
 }
 ```
 
+## [1652. 拆炸弹](https://leetcode.cn/problems/defuse-the-bomb/)
+
+> 数组，循环数组，滑动窗口
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：41.7 MB, 在所有 Java 提交中击败了27.50%的用户
+```java
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int n = code.length;
+        int[] res = new int[n];
+        int[] tmp = new int[2 * n];
+        for (int i = 0; i < n; ++i) {
+            tmp[i] = code[i];
+            tmp[n + i] = code[i];
+        }
+        int l = 0, r = 0;
+        if (k > 0) {
+            l = 1;
+            r = k;
+        } else if (k < 0) {
+            l = n + k;
+            r = n - 1;
+        }
+        if (k != 0) {
+            for (int j = l; j <= r; ++j) {
+                res[0] += tmp[j];
+            }
+        }
+        for (int i = 1; i < n; ++i) {
+            if (k != 0) {
+                res[i] = res[i - 1] + tmp[++r] - tmp[l++];
+            } else {
+                res[i] = 0;
+            }
+        }
+        return res;
+    }
+}
+```
+
+## [788. 旋转数字](https://leetcode.cn/problems/rotated-digits/)
+
+> 数学，动态规划
+
+```java
+class Solution {
+    public int rotatedDigits(int n) {
+        // 0|1|8(0...n-1) & 至少 2|5|6|9中的一个
+        int ans = 0;
+        for (int i = 1; i <= n; ++i) {
+            String str = Integer.toString(i);
+            boolean flag = true, hasOne = false;
+            for (char c: str.toCharArray()) {
+                int x = c - '0';
+                if (x == 2 || x == 5 || x == 6 || x == 9) {
+                    hasOne = true;
+                } else if (x != 0 && x != 1 && x != 8) {
+                    flag = false;
+                    break;
+                }
+            }
+            ans += flag & hasOne ? 1 : 0;
+        }
+        return ans;
+    }
+}
+```
+TODO 数位DP
+
 # Java算法模板
 
 ## BFS
@@ -32185,3 +32255,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [698. 划分为k个相等的子集](https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/)
 
 ## [854. 相似度为 K 的字符串](https://leetcode.cn/problems/k-similar-strings/)
+
+## [707. 设计链表](https://leetcode.cn/problems/design-linked-list/)
