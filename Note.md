@@ -30589,6 +30589,29 @@ class Solution {
 ```
 TODO 数位DP
 
+## [面试题 17.19. 消失的两个数字](https://leetcode.cn/problems/missing-two-lcci/)
+
+> 位运算，数组，哈希
+
+```java
+class Solution {
+    public int[] missingTwo(int[] nums) {
+        int n = nums.length;
+        int sum1 = (n + 3) * (n + 2) / 2, sum2 = 0, first = 0;
+        for (int i = 0; i < nums.length; ++i) sum2 += nums[i];
+        int twoSum = sum1 - sum2;
+        int l = twoSum / 2;
+        int sum3 = l * (l + 1) / 2, sum4 = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] <= l) sum4 += nums[i];
+        }
+        first = sum3 - sum4;
+        return new int[]{first, twoSum - first};
+    }
+}
+```
+TODO 位运算
+
 # Java算法模板
 
 ## BFS
