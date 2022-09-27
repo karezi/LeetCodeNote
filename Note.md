@@ -30612,6 +30612,28 @@ class Solution {
 ```
 TODO 位运算
 
+## [面试题 01.02. 判定是否互为字符重排](https://leetcode.cn/problems/check-permutation-lcci/)
+
+> 哈希表，字符串，排序
+
+```java
+class Solution {
+    public boolean CheckPermutation(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+        int[] cnt = new int[26];
+        for (int i = 0; i < s1.length(); ++i) {
+            cnt[s1.charAt(i) - 'a']++;
+            cnt[s2.charAt(i) - 'a']--;
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (cnt[i] != 0) return false;
+        }
+        return true;
+    }
+}
+```
+TODO 排序
+
 # Java算法模板
 
 ## BFS
