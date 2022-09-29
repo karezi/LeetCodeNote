@@ -30634,6 +30634,19 @@ class Solution {
 ```
 TODO 排序
 
+## [面试题 01.09. 字符串轮转](https://leetcode.cn/problems/string-rotation-lcci/)
+
+> 字符串，字符串匹配
+
+```java
+class Solution {
+    public boolean isFlipedString(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+        return (s1 + s1).contains(s2);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32302,3 +32315,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [854. 相似度为 K 的字符串](https://leetcode.cn/problems/k-similar-strings/)
 
 ## [707. 设计链表](https://leetcode.cn/problems/design-linked-list/)
+
+## [面试题 17.09. 第 k 个数](https://leetcode.cn/problems/get-kth-magic-number-lcci/)
