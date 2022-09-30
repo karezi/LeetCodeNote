@@ -30647,6 +30647,37 @@ class Solution {
 }
 ```
 
+## [1694. 重新格式化电话号码](https://leetcode.cn/problems/reformat-phone-number/)
+
+> 字符串
+
+```java
+class Solution {
+    public String reformatNumber(String number) {
+        StringBuilder sb = new StringBuilder();
+        int cnt = 0;
+        for (int i = 0; i < number.length(); ++i) {
+            if (Character.isDigit(number.charAt(i))) {
+                if (cnt == 3) {
+                    cnt = 1;
+                    sb.append('-').append(number.charAt(i) - '0');
+                } else {
+                    cnt++;
+                    sb.append(number.charAt(i) - '0');
+                }
+            }
+        }
+        int n = sb.length();
+        if (sb.charAt(n - 2) == '-') {
+            char c = sb.charAt(n - 3);
+            sb.setCharAt(n - 3, '-');
+            sb.setCharAt(n - 2, c);
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32317,3 +32348,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [707. 设计链表](https://leetcode.cn/problems/design-linked-list/)
 
 ## [面试题 17.09. 第 k 个数](https://leetcode.cn/problems/get-kth-magic-number-lcci/)
+
+## [面试题 01.08. 零矩阵](https://leetcode.cn/problems/zero-matrix-lcci/)
