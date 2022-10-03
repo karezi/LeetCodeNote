@@ -30692,6 +30692,32 @@ class Solution {
 }
 ```
 
+## [921. 使括号有效的最少添加](https://leetcode.cn/problems/minimum-add-to-make-parentheses-valid/)
+
+> 栈，贪心，字符串
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.5 MB, 在所有 Java 提交中击败了51.53%的用户
+```java
+class Solution {
+    public int minAddToMakeValid(String s) {
+        int cnt = 0, cntL = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '(') {
+                cntL++;
+            } else {
+                if (cntL > 0) {
+                    cntL--;
+                } else {
+                    cnt++;
+                }
+            }
+        }
+        return cnt + cntL;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
