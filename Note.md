@@ -30678,6 +30678,20 @@ class Solution {
 }
 ```
 
+## [1784. 检查二进制字符串字段](https://leetcode.cn/problems/check-if-binary-string-has-at-most-one-segment-of-ones/)
+
+> 字符串
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.5 MB, 在所有 Java 提交中击败了57.34%的用户
+```java
+class Solution {
+    public boolean checkOnesSegment(String s) {
+        return !s.contains("01");
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32350,3 +32364,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [面试题 17.09. 第 k 个数](https://leetcode.cn/problems/get-kth-magic-number-lcci/)
 
 ## [面试题 01.08. 零矩阵](https://leetcode.cn/problems/zero-matrix-lcci/)
+
+## [777. 在LR字符串中交换相邻字符](https://leetcode.cn/problems/swap-adjacent-in-lr-string/)
