@@ -30718,6 +30718,35 @@ class Solution {
 }
 ```
 
+## [811. 子域名访问计数](https://leetcode.cn/problems/subdomain-visit-count/)
+
+> 数组，哈希表，字符串，计数
+
+```java
+class Solution {
+    public List<String> subdomainVisits(String[] cpdomains) {
+        Map<String, Integer> counts = new HashMap<>();
+        for (String cpdomain: cpdomains) {
+            String[] sp = cpdomain.split(" ");
+            int count = Integer.parseInt(sp[0]);
+            String domain = sp[1];
+            counts.put(domain, counts.getOrDefault(domain, 0) + count);
+            for (int i = 0; i < domain.length(); ++i) {
+                if (domain.charAt(i) == '.') {
+                    String subDomain = domain.substring(i + 1);
+                    counts.put(subDomain, counts.getOrDefault(subDomain, 0) + count);
+                }
+            }
+        }
+        List<String> ret = new ArrayList<>();
+        for (String key: counts.keySet()) {
+            ret.add(counts.get(key) + " " + key);
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
