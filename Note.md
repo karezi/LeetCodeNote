@@ -30747,6 +30747,27 @@ class Solution {
 }
 ```
 
+## [1800. 最大升序子数组和](https://leetcode.cn/problems/maximum-ascending-subarray-sum/)
+
+> 数组
+
+```java
+class Solution {
+    public int maxAscendingSum(int[] nums) {
+        int max = nums[0], sum = nums[0];
+        for (int i = 1; i < nums.length; ++i) {
+            if (nums[i] > nums[i - 1]) {
+                sum += nums[i];
+                max = Math.max(max, sum);
+            } else {
+                sum = nums[i];
+            }
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32421,3 +32442,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [面试题 01.08. 零矩阵](https://leetcode.cn/problems/zero-matrix-lcci/)
 
 ## [777. 在LR字符串中交换相邻字符](https://leetcode.cn/problems/swap-adjacent-in-lr-string/)
+
+## [927. 三等分](https://leetcode.cn/problems/three-equal-parts/)
