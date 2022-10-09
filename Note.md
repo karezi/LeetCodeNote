@@ -30768,6 +30768,25 @@ class Solution {
 }
 ```
 
+## [856. 括号的分数](https://leetcode.cn/problems/score-of-parentheses/)
+
+> 栈，字符串
+
+```java
+class Solution {
+    public int scoreOfParentheses(String s) {
+        // 只需要计算()深度2^depth
+        int depth = 0, res = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            depth += (s.charAt(i) == '(' ? 1 : -1);
+            if (s.charAt(i) == ')' && s.charAt(i - 1) == '(') res += 1 << depth;
+        }
+        return res;
+    }
+}
+```
+TODO 分治，栈
+
 # Java算法模板
 
 ## BFS
@@ -32444,3 +32463,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [777. 在LR字符串中交换相邻字符](https://leetcode.cn/problems/swap-adjacent-in-lr-string/)
 
 ## [927. 三等分](https://leetcode.cn/problems/three-equal-parts/)
+
+## [870. 优势洗牌](https://leetcode.cn/problems/advantage-shuffle/)
