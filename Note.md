@@ -30787,6 +30787,37 @@ class Solution {
 ```
 TODO 分治，栈
 
+## [1790. 仅执行一次字符串交换能否使两个字符串相等](https://leetcode.cn/problems/check-if-one-string-swap-can-make-strings-equal/)
+
+> 哈希表，字符串，计数
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.9 MB, 在所有 Java 提交中击败了30.28%的用户
+```java
+class Solution {
+    public boolean areAlmostEqual(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
+        if (s1.equals(s2)) return true;
+        int cnt = 0;
+        char a = 0, b = 0;
+        for (int i = 0; i < s1.length(); ++i) {
+            if (s1.charAt(i) != s2.charAt(i)) {
+                cnt++;
+                if (cnt > 2) return false;
+                if (cnt == 1) {
+                    a = s1.charAt(i);
+                    b = s2.charAt(i);
+                } else {
+                    if (!(s1.charAt(i) == b && s2.charAt(i) == a))
+                        return false;
+                }
+            }
+        }
+        return cnt == 2;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32465,3 +32496,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [927. 三等分](https://leetcode.cn/problems/three-equal-parts/)
 
 ## [870. 优势洗牌](https://leetcode.cn/problems/advantage-shuffle/)
+
+## [801. 使序列递增的最小交换次数](https://leetcode.cn/problems/minimum-swaps-to-make-sequences-increasing/)
