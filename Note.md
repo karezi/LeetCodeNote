@@ -30818,6 +30818,25 @@ class Solution {
 }
 ```
 
+## [769. 最多能完成排序的块](https://leetcode.cn/problems/max-chunks-to-make-sorted/)
+
+> 贪心，数组
+
+```java
+class Solution {
+    public int maxChunksToSorted(int[] arr) {
+        int curMax = arr[0], res = 1;
+        for (int i = 1; i < arr.length; ++i) {
+            if (arr[i] >= curMax) {
+                curMax = arr[i];
+                res++;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32498,3 +32517,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [870. 优势洗牌](https://leetcode.cn/problems/advantage-shuffle/)
 
 ## [801. 使序列递增的最小交换次数](https://leetcode.cn/problems/minimum-swaps-to-make-sequences-increasing/)
+
+## [817. 链表组件](https://leetcode.cn/problems/linked-list-components/)
