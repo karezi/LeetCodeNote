@@ -30837,6 +30837,34 @@ class Solution {
 }
 ```
 
+## [1441. 用栈操作构建数组](https://leetcode.cn/problems/build-an-array-with-stack-operations/)
+
+> 栈，数组，模拟
+
+```java
+class Solution {
+    public List<String> buildArray(int[] target, int n) {
+        int x = 1;
+        List<String> ret = new ArrayList<>();
+        for (int i: target) {
+            if (i == x) {
+                ret.add("Push");
+                x++;
+            } else if (i > x) {
+                int delta = i - x;
+                for (int j = 0; j < delta; ++j) {
+                    ret.add("Push");
+                    ret.add("Pop");
+                }
+                ret.add("Push");
+                x = i + 1;
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32519,3 +32547,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [801. 使序列递增的最小交换次数](https://leetcode.cn/problems/minimum-swaps-to-make-sequences-increasing/)
 
 ## [817. 链表组件](https://leetcode.cn/problems/linked-list-components/)
+
+## [940. 不同的子序列 II](https://leetcode.cn/problems/distinct-subsequences-ii/)
