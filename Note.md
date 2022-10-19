@@ -30865,6 +30865,127 @@ class Solution {
 }
 ```
 
+## [2413. 最小偶倍数](https://leetcode.cn/problems/smallest-even-multiple/)
+
+> 数学，数论
+
+```java
+class Solution {
+    public int smallestEvenMultiple(int n) {
+        return ((n & 1) == 1) ? 2 * n : n;
+    }
+}
+```
+
+## [8. 字符串转换整数 (atoi)](https://leetcode.cn/problems/string-to-integer-atoi/)
+
+> 字符串
+
+```java
+class Solution {
+    public int myAtoi(String s) {
+        int MAX = Integer.MAX_VALUE, MIN = Integer.MIN_VALUE;
+        long MAX2 = (long)(Integer.MAX_VALUE) + 1L;
+        long res = 0;
+        int start = 0;
+        s = s.trim();
+        if (s.startsWith("-")) {
+            start = 1;
+        }
+        if (s.startsWith("+")) {
+            s = s.substring(1, s.length());
+        }
+        for (int i = start; i < s.length(); ++i) {
+            if (s.charAt(i) > '9' || s.charAt(i) < '0') break;
+            res *= 10;
+            res += (s.charAt(i) - '0');
+            if (res > MAX && start == 0) return MAX;
+            if (res > MAX2 && start == 1) return MIN;
+        }
+        res = start == 0 ? res : -res;
+        if (res > MAX) return MAX;
+        if (res < MIN) return MIN;
+        return (int)res;
+    }
+}
+```
+TODO 有限状态机
+
+## [1700. 无法吃午餐的学生数量](https://leetcode.cn/problems/number-of-students-unable-to-eat-lunch/)
+
+> 栈，队列，数组，模拟
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.3 MB, 在所有 Java 提交中击败了64.06%的用户
+```java
+class Solution {
+    public int countStudents(int[] students, int[] sandwiches) {
+        int one = 0, zero = 0;
+        for (int i: students) {
+            if (i == 0) zero++;
+            else one++;
+        }
+        for (int i = 0; i < sandwiches.length; ++i) {
+            if (sandwiches[i] == 0) {
+                if (zero > 0) zero--;
+                else return one;
+            } else {
+                if (one > 0) one--;
+                else return zero;
+            }
+        }
+        return 0;
+    }
+}
+```
+
+## [2351. 第一个出现两次的字母](https://leetcode.cn/problems/first-letter-to-appear-twice/)
+
+> 哈希表，字符串，计数
+
+```java
+class Solution {
+    public char repeatedCharacter(String s) {
+        Set<Character> set = new HashSet<>();
+        for (char c: s.toCharArray()) {
+            if (set.contains(c)) return c;
+            else set.add(c);
+        }
+        return '0';
+    }
+}
+```
+
+## [2373. 矩阵中的局部最大值](https://leetcode.cn/problems/largest-local-values-in-a-matrix/)
+
+> 数组，矩阵
+
+```java
+class Solution {
+    public int[][] largestLocal(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        int[][] ret = new int[m - 2][n - 2];
+        for (int i = 1; i < m - 1; ++i) {
+            for (int j = 1; j < n - 1; ++j) {
+                ret[i - 1][j - 1] = min(grid, i, j);
+            }
+        }
+        return ret;
+    }
+
+    private int min(int[][] grid, int i, int j) {
+        int max = grid[i][j];
+        for (int x = i - 1; x <= i + 1; ++x) {
+            for (int y = j - 1; y <= j + 1; ++y) {
+                if (x == i && y == j) continue;
+                max = Math.max(max, grid[x][y]);
+            }
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32549,3 +32670,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [817. 链表组件](https://leetcode.cn/problems/linked-list-components/)
 
 ## [940. 不同的子序列 II](https://leetcode.cn/problems/distinct-subsequences-ii/)
+
+## [886. 可能的二分法](https://leetcode.cn/problems/possible-bipartition/)
+
+## [904. 水果成篮](https://leetcode.cn/problems/fruit-into-baskets/)
+
+## [902. 最大为 N 的数字组合](https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/)
