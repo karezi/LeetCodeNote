@@ -30986,6 +30986,26 @@ class Solution {
 }
 ```
 
+## [2315. 统计星号](https://leetcode.cn/problems/count-asterisks/)
+
+> 字符串
+
+执行用时：1 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.4 MB, 在所有 Java 提交中击败了77.23%的用户
+```java
+class Solution {
+    public int countAsterisks(String s) {
+        boolean open = false;
+        int ret = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '|') open = !open;
+            else if (c == '*' && !open) ret++;
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32676,3 +32696,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [904. 水果成篮](https://leetcode.cn/problems/fruit-into-baskets/)
 
 ## [902. 最大为 N 的数字组合](https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/)
+
+## [779. 第K个语法符号](https://leetcode.cn/problems/k-th-symbol-in-grammar/)
+
+## [901. 股票价格跨度](https://leetcode.cn/problems/online-stock-span/)
+
+## [1235. 规划兼职工作](https://leetcode.cn/problems/maximum-profit-in-job-scheduling/)
