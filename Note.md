@@ -31006,6 +31006,48 @@ class Solution {
 }
 ```
 
+## [915. 分割数组](https://leetcode.cn/problems/partition-array-into-disjoint-intervals/)
+
+> 数组
+
+```java
+class Solution {
+    public int partitionDisjoint(int[] nums) {
+        int n = nums.length;
+        int[] la = new int[n], ra = new int[n];
+        la[0] = nums[0];
+        ra[n - 1] = nums[n - 1];
+        for (int i = 1; i < n; ++i) {
+            la[i] = Math.max(la[i - 1], nums[i]);
+        }
+        for (int i = n - 2; i >= 0; --i) {
+            ra[i] = Math.min(ra[i + 1], nums[i]);
+        }
+        for (int i = 0; i < n - 1; ++i) {
+            if (la[i] <= ra[i + 1]) return i + 1;
+        }
+        return 0;
+    }
+}
+```
+一次遍历
+```java
+class Solution {
+    public int partitionDisjoint(int[] nums) {
+        int n = nums.length;
+        int maxLeft = nums[0], curMax = nums[0], pos = 0;
+        for (int i = 1; i < nums.length; ++i) {
+            curMax = Math.max(curMax, nums[i]);
+            if (maxLeft > nums[i]) {
+                maxLeft = curMax;
+                pos = i;
+            }
+        }
+        return pos + 1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
