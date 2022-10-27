@@ -31048,6 +31048,25 @@ class Solution {
 }
 ```
 
+## [344. 反转字符串](https://leetcode.cn/problems/reverse-string/)
+
+> 双指针，字符串
+
+```java
+class Solution {
+    public void reverseString(char[] s) {
+        char tmp = '0';
+        int n = s.length, hn = n / 2;
+        for (int i = 0; i < hn; ++i) {
+            tmp = s[i];
+            s[i] = s[n - i - 1];
+            s[n - i - 1] = tmp;
+        }
+        return;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32744,3 +32763,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [901. 股票价格跨度](https://leetcode.cn/problems/online-stock-span/)
 
 ## [1235. 规划兼职工作](https://leetcode.cn/problems/maximum-profit-in-job-scheduling/)
+
+## [934. 最短的桥](https://leetcode.cn/problems/shortest-bridge/)
+
+## [862. 和至少为 K 的最短子数组](https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/)
