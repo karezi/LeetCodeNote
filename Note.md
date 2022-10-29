@@ -31067,6 +31067,26 @@ class Solution {
 }
 ```
 
+## [2367. 算术三元组的数目](https://leetcode.cn/problems/number-of-arithmetic-triplets/)
+
+> 数组，哈希表，双指针，枚举
+
+```java
+class Solution {
+    public int arithmeticTriplets(int[] nums, int diff) {
+        int n = nums.length;
+        Set<Integer> set = new HashSet<>();
+        for (int i: nums) set.add(i);
+        int ret = 0;
+        for (int i = 0; i < n; ++i) {
+            if (set.contains(nums[i] + diff) && set.contains(nums[i] + 2 * diff)) ret++;
+        }
+        return ret;
+    }
+}
+```
+TODO 三指针
+
 # Java算法模板
 
 ## BFS
@@ -32767,3 +32787,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [934. 最短的桥](https://leetcode.cn/problems/shortest-bridge/)
 
 ## [862. 和至少为 K 的最短子数组](https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/)
+
+## [907. 子数组的最小值之和](https://leetcode.cn/problems/sum-of-subarray-minimums/)
