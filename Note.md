@@ -31087,6 +31087,19 @@ class Solution {
 ```
 TODO 三指针
 
+## [2220. 转换数字的最少位翻转次数](https://leetcode.cn/problems/minimum-bit-flips-to-convert-number/)
+
+> 位运算
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39 MB, 在所有 Java 提交中击败了5.10%的用户
+```java
+class Solution {
+    public int minBitFlips(int start, int goal) {
+        return Integer.bitCount(start ^ goal);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32789,3 +32802,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [862. 和至少为 K 的最短子数组](https://leetcode.cn/problems/shortest-subarray-with-sum-at-least-k/)
 
 ## [907. 子数组的最小值之和](https://leetcode.cn/problems/sum-of-subarray-minimums/)
+
+## [784. 字母大小写全排列](https://leetcode.cn/problems/letter-case-permutation/)
+
+## [481. 神奇字符串](https://leetcode.cn/problems/magical-string/)
