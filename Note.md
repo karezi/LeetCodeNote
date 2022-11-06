@@ -31100,6 +31100,32 @@ class Solution {
 }
 ```
 
+## [1678. 设计 Goal 解析器](https://leetcode.cn/problems/goal-parser-interpretation/)
+
+> 字符串
+
+```java
+class Solution {
+    public String interpret(String command) {
+        int n = command.length();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; ++i) {
+            if (command.charAt(i) == 'G') sb.append('G');
+            else if (command.charAt(i) == '(') {
+                if (command.charAt(i + 1) == ')') {
+                    sb.append('o');
+                    i++;
+                } else {
+                    sb.append("al");
+                    i += 2;
+                }
+            }
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32806,3 +32832,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [784. 字母大小写全排列](https://leetcode.cn/problems/letter-case-permutation/)
 
 ## [481. 神奇字符串](https://leetcode.cn/problems/magical-string/)
+
+## [1620. 网络信号最好的坐标](https://leetcode.cn/problems/coordinate-with-maximum-network-quality/submissions/)
+
+## [1668. 最大重复子字符串](https://leetcode.cn/problems/maximum-repeating-substring/)
+
+## [754. 到达终点数字](https://leetcode.cn/problems/reach-a-number/)
+
+## [1106. 解析布尔表达式](https://leetcode.cn/problems/parsing-a-boolean-expression/)
