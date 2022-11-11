@@ -31144,6 +31144,41 @@ class Solution {
 }
 ```
 
+## [1704. 判断字符串的两半是否相似](https://leetcode.cn/problems/determine-if-string-halves-are-alike/)
+
+> 字符串
+
+```java
+class Solution {
+    public boolean halvesAreAlike(String s) {
+        Set<Character> set = new HashSet<>();
+        set.add('a');
+        set.add('e');
+        set.add('i');
+        set.add('o');
+        set.add('u');
+        set.add('A');
+        set.add('E');
+        set.add('I');
+        set.add('O');
+        set.add('U');
+        int half = s.length() / 2;
+        int ret = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if (set.contains(s.charAt(i))) {
+                if (i < half) {
+                    ret++;
+                } else {
+                    ret--;
+                }
+            }
+        }
+        return ret == 0;
+    }
+}
+```
+TODO 简写
+
 # Java算法模板
 
 ## BFS
@@ -32860,3 +32895,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1106. 解析布尔表达式](https://leetcode.cn/problems/parsing-a-boolean-expression/)
 
 ## [816. 模糊坐标](https://leetcode.cn/problems/ambiguous-coordinates/)
+
+## [764. 最大加号标志](https://leetcode.cn/problems/largest-plus-sign/)
+
+## [864. 获取所有钥匙的最短路径](https://leetcode.cn/problems/shortest-path-to-get-all-keys/)
