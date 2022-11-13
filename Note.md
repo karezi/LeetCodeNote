@@ -31179,6 +31179,36 @@ class Solution {
 ```
 TODO 简写
 
+## [791. 自定义字符串排序](https://leetcode.cn/problems/custom-sort-string/)
+
+> 哈希表，字符串，排序
+
+```java
+class Solution {
+    public String customSortString(String order, String s) {
+        int[] co = new int[26];
+        int idx = 1;
+        for (char c: order.toCharArray()) {
+            co[c - 'a'] = idx;
+            idx++;
+        }
+        char[] ss = s.toCharArray();
+        Character[] cs = new Character[ss.length];
+        for (int i = 0; i < cs.length; ++i) {
+            cs[i] = Character.valueOf(ss[i]);
+        }
+        Arrays.sort(cs, (a, b) -> {
+            return co[a.charValue() - 'a'] - co[b.charValue() - 'a'];
+        });
+        for (int i = 0; i < cs.length; ++i) {
+            ss[i] = cs[i].charValue();
+        }
+        return new String(ss);
+    }
+}
+```
+TODO 计数排序
+
 # Java算法模板
 
 ## BFS
@@ -32899,3 +32929,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [764. 最大加号标志](https://leetcode.cn/problems/largest-plus-sign/)
 
 ## [864. 获取所有钥匙的最短路径](https://leetcode.cn/problems/shortest-path-to-get-all-keys/)
+
+## [790. 多米诺和托米诺平铺](https://leetcode.cn/problems/domino-and-tromino-tiling/)
