@@ -32931,3 +32931,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [864. 获取所有钥匙的最短路径](https://leetcode.cn/problems/shortest-path-to-get-all-keys/)
 
 ## [790. 多米诺和托米诺平铺](https://leetcode.cn/problems/domino-and-tromino-tiling/)
+
+## [805. 数组的均值分割](https://leetcode.cn/problems/split-array-with-same-average/)
