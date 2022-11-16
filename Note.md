@@ -31209,6 +31209,49 @@ class Solution {
 ```
 TODO 计数排序
 
+## [1710. 卡车上的最大单元数](https://leetcode.cn/problems/maximum-units-on-a-truck/)
+
+> 贪心，数组，排序
+
+```java
+class Solution {
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
+        // 贪心，挑大的先上
+        Arrays.sort(boxTypes, (x, y) -> {
+            return y[1] - x[1];
+        });
+        int sum = 0;
+        for (int i = 0; i < boxTypes.length; i++) {
+            if (truckSize > boxTypes[i][0]) {
+                truckSize -= boxTypes[i][0];
+                sum += boxTypes[i][0] * boxTypes[i][1];
+            } else {
+                sum += truckSize * boxTypes[i][1];
+                break;
+            }
+        }
+        return sum;
+    }
+}
+```
+
+## [775. 全局倒置与局部倒置](https://leetcode.cn/problems/global-and-local-inversions/)
+
+> 数组，数学
+
+```java
+class Solution {
+    public boolean isIdealPermutation(int[] nums) {
+        // 是否有间隔1个以上的还倒置的，有返回false
+        int n = nums.length;
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] > i + 1 || nums[i] < i - 1) return false;
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
