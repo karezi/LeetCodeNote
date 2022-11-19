@@ -31252,6 +31252,18 @@ class Solution {
 }
 ```
 
+## [2469. 温度转换](https://leetcode.cn/problems/convert-the-temperature/)
+
+> 数学
+
+```java
+class Solution {
+    public double[] convertTemperature(double celsius) {
+        return new double[]{celsius + 273.15d, celsius * 1.8d + 32d};
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32976,3 +32988,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [790. 多米诺和托米诺平铺](https://leetcode.cn/problems/domino-and-tromino-tiling/)
 
 ## [805. 数组的均值分割](https://leetcode.cn/problems/split-array-with-same-average/)
+
+## [792. 匹配子序列的单词数](https://leetcode.cn/problems/number-of-matching-subsequences/)
+
+## [891. 子序列宽度之和](https://leetcode.cn/problems/sum-of-subsequence-widths/)
