@@ -31264,6 +31264,29 @@ class Solution {
 }
 ```
 
+## [1742. 盒子中小球的最大数量](https://leetcode.cn/problems/maximum-number-of-balls-in-a-box/)
+
+> 哈希表，数学，计数
+
+```java
+class Solution {
+    public int countBalls(int lowLimit, int highLimit) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int max = 0;
+        for (int i = lowLimit; i <= highLimit; ++i) {
+            int x = 0, y = i;
+            while (y > 0) {
+                x += y % 10;
+                y /= 10;
+            }
+            map.put(x, map.getOrDefault(x, 0) + 1);
+            max = Math.max(max, map.get(x));
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -32992,3 +33015,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [792. 匹配子序列的单词数](https://leetcode.cn/problems/number-of-matching-subsequences/)
 
 ## [891. 子序列宽度之和](https://leetcode.cn/problems/sum-of-subsequence-widths/)
+
+## [799. 香槟塔](https://leetcode.cn/problems/champagne-tower/)
+
+## [808. 分汤](https://leetcode.cn/problems/soup-servings/)
+
+## [878. 第 N 个神奇数字](https://leetcode.cn/problems/nth-magical-number/)
