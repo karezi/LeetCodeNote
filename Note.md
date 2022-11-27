@@ -31287,6 +31287,28 @@ class Solution {
 }
 ```
 
+## [1752. 检查数组是否经排序和轮转得到](https://leetcode.cn/problems/check-if-array-is-sorted-and-rotated/)
+
+> 数组
+
+```java
+class Solution {
+    public boolean check(int[] nums) {
+        int start = nums[0];
+        boolean changed = false;
+        for (int i = 1; i < nums.length; ++i) {
+            if (!changed && nums[i] < nums[i - 1]) {
+                changed = true;
+                if (nums[i] > start) return false;
+            } else if (changed && (nums[i] < nums[i - 1] || nums[i] > start)) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33021,3 +33043,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [808. 分汤](https://leetcode.cn/problems/soup-servings/)
 
 ## [878. 第 N 个神奇数字](https://leetcode.cn/problems/nth-magical-number/)
+
+## [795. 区间子数组个数](https://leetcode.cn/problems/number-of-subarrays-with-bounded-maximum/)
+
+## [809. 情感丰富的文字](https://leetcode.cn/problems/expressive-words/)
+
+## [882. 细分图中的可到达节点](https://leetcode.cn/problems/reachable-nodes-in-subdivided-graph/)
