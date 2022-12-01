@@ -31309,6 +31309,70 @@ class Solution {
 }
 ```
 
+## [1758. 生成交替二进制字符串的最少操作数](https://leetcode.cn/problems/minimum-changes-to-make-alternating-binary-string/)
+
+> 字符串
+
+```java
+class Solution {
+    public int minOperations(String s) {
+        int sum1 = 0, sum2 = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if ((i & 1) == 1) { // 奇数：sum1计1的数量，sum2计0的数量
+                sum1 += s.charAt(i) - '0';
+                sum2 += '1' - s.charAt(i);
+            } else { // 偶数：sum1计0的数量，sum2计1的数量
+                sum1 += '1' - s.charAt(i);
+                sum2 += s.charAt(i) - '0';
+            }
+        }
+        return Math.min(sum1, sum2);
+    }
+}
+```
+优化
+```java
+class Solution {
+    public int minOperations(String s) {
+        int sum = 0, n = s.length();
+        for (int i = 0; i < n; ++i) {
+            sum += s.charAt(i) - '0' ^ (i & 1);
+        }
+        return Math.min(sum, n - sum);
+    }
+}
+```
+
+## [1779. 找到最近的有相同 X 或 Y 坐标的点](https://leetcode.cn/problems/find-nearest-point-that-has-the-same-x-or-y-coordinate/)
+
+> 数组
+
+```java
+class Solution {
+    public int nearestValidPoint(int x, int y, int[][] points) {
+        int min = Integer.MAX_VALUE, ret = -1;
+        for (int i = 0; i < points.length; ++i) {
+            if (points[i][0] == x) {
+                int delta = Math.abs(points[i][1] - y);
+                if (delta == 0) return i;
+                if (delta < min) {
+                    min = delta;
+                    ret = i;
+                }
+            } else if (points[i][1] == y) {
+                int delta = Math.abs(points[i][0] - x);
+                if (delta == 0) return i;
+                if (delta < min) {
+                    min = delta;
+                    ret = i;
+                }
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33049,3 +33113,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [809. 情感丰富的文字](https://leetcode.cn/problems/expressive-words/)
 
 ## [882. 细分图中的可到达节点](https://leetcode.cn/problems/reachable-nodes-in-subdivided-graph/)
+
+## [813. 最大平均值和的分组](https://leetcode.cn/problems/largest-sum-of-averages/)
+
+## [895. 最大频率栈](https://leetcode.cn/problems/maximum-frequency-stack/)
