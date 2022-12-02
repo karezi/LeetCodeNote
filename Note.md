@@ -31373,6 +31373,23 @@ class Solution {
 }
 ```
 
+## [2485. 找出中枢整数](https://leetcode.cn/problems/find-the-pivot-integer/)
+
+> 数学
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：38.9 MB, 在所有 Java 提交中击败了21.66%的用户
+```java
+class Solution {
+    public int pivotInteger(int n) {
+        // (1+x)x=(x+n)(n-x+1)=>x^2=-x^2+n^2+n=>x^2=√(n^2+n)/2
+        int a = (n * n + n) / 2;
+        int b = (int)Math.sqrt(a);
+        return b * b == a ? b : -1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
