@@ -31390,6 +31390,30 @@ class Solution {
 }
 ```
 
+## [1796. 字符串中第二大的数字](https://leetcode.cn/problems/second-largest-digit-in-a-string/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public int secondHighest(String s) {
+        int max1 = -1, max2 = -1;
+        for (char c: s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                int x = c - '0';
+                if (x > max1) {
+                    max2 = max1;
+                    max1 = x;
+                } else if (x < max1 && x > max2) {
+                    max2 = x;
+                }
+            }
+        }
+        return max2;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
