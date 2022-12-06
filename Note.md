@@ -31414,6 +31414,41 @@ class Solution {
 }
 ```
 
+## [1805. 字符串中不同整数的数目](https://leetcode.cn/problems/number-of-different-integers-in-a-string/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public int numDifferentIntegers(String word) {
+        Set<String> set = new HashSet<>();
+        StringBuilder sb = new StringBuilder();
+        boolean digStart = true;
+        char[] cs = word.toCharArray();
+        for (int i = 0; i < cs.length; ++i) {
+            if (!Character.isDigit(cs[i])) {
+                digStart = true;
+                if (sb.length() > 0) set.add(sb.toString());
+                sb = new StringBuilder();
+            } else {
+                if (digStart && cs[i] == '0') {
+                    if (i + 1 < cs.length && !Character.isDigit(cs[i + 1]) || i + 1 == cs.length) {
+                        set.add("0");
+                        digStart = false;
+                    }
+                    continue;
+                }
+                digStart = false;
+                sb.append(cs[i]);
+            }
+        }
+        if (sb.length() > 0) set.add(sb.toString());
+        return set.size();
+    }
+}
+```
+TODO 双指针
+
 # Java算法模板
 
 ## BFS
@@ -33158,3 +33193,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [813. 最大平均值和的分组](https://leetcode.cn/problems/largest-sum-of-averages/)
 
 ## [895. 最大频率栈](https://leetcode.cn/problems/maximum-frequency-stack/)
+
+## [1774. 最接近目标价格的甜点成本](https://leetcode.cn/problems/closest-dessert-cost/)
+
+## [1687. 从仓库到码头运输箱子](https://leetcode.cn/problems/delivering-boxes-from-storage-to-ports/)
+
+## [1775. 通过最少操作次数使数组的和相等](https://leetcode.cn/problems/equal-sum-arrays-with-minimum-number-of-operations/)
