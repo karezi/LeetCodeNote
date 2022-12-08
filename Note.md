@@ -31449,6 +31449,19 @@ class Solution {
 ```
 TODO 双指针
 
+## [1812. 判断国际象棋棋盘中一个格子的颜色](https://leetcode.cn/problems/determine-color-of-a-chessboard-square/)
+
+> 数学，字符串
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.6 MB, 在所有 Java 提交中击败了5.21%的用户
+```java
+class Solution {
+    public boolean squareIsWhite(String coordinates) {
+        return (((coordinates.charAt(0) - 'a') & 1) == 1) ^ (((coordinates.charAt(1) - '0') & 1) == 0);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
