@@ -31478,6 +31478,27 @@ class Solution {
 }
 ```
 
+## [1827. 最少操作使数组递增](https://leetcode.cn/problems/minimum-operations-to-make-the-array-increasing/)
+
+> 贪心，数组
+
+```java
+class Solution {
+    public int minOperations(int[] nums) {
+        int next = nums[0] + 1, res = 0;
+        for (int i = 1; i < nums.length; ++i) {
+            if (next >= nums[i]) {
+                res += next - nums[i];
+                next++;
+            } else {
+                next = nums[i] + 1;
+            }
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33228,3 +33249,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1687. 从仓库到码头运输箱子](https://leetcode.cn/problems/delivering-boxes-from-storage-to-ports/)
 
 ## [1775. 通过最少操作次数使数组的和相等](https://leetcode.cn/problems/equal-sum-arrays-with-minimum-number-of-operations/)
+
+## [1691. 堆叠长方体的最大高度](https://leetcode.cn/problems/maximum-height-by-stacking-cuboids/)
