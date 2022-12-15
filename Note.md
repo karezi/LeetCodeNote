@@ -31499,6 +31499,31 @@ class Solution {
 }
 ```
 
+## [1945. 字符串转化后的各位数字之和](https://leetcode.cn/problems/sum-of-digits-of-string-after-convert/)
+
+> 字符串，模拟
+
+```java
+class Solution {
+    public int getLucky(String s, int k) {
+        StringBuilder sb = new StringBuilder();
+        for (char c: s.toCharArray()) {
+            sb.append(c - 'a' + 1);
+        }
+        String tmp = sb.toString();
+        int res = 0;
+        while (k-- > 0) {
+            res = 0;
+            for (char c: tmp.toCharArray()) {
+                res += c - '0';
+            }
+            tmp = String.valueOf(res);
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33251,3 +33276,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1775. 通过最少操作次数使数组的和相等](https://leetcode.cn/problems/equal-sum-arrays-with-minimum-number-of-operations/)
 
 ## [1691. 堆叠长方体的最大高度](https://leetcode.cn/problems/maximum-height-by-stacking-cuboids/)
+
+## [1781. 所有子字符串美丽值之和](https://leetcode.cn/problems/sum-of-beauty-of-all-substrings/)
+
+## [1697. 检查边长度限制的路径是否存在](https://leetcode.cn/problems/checking-existence-of-edge-length-limited-paths/)
