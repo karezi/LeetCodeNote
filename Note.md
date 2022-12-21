@@ -31524,6 +31524,34 @@ class Solution {
 }
 ```
 
+## [1753. 移除石子的最大得分](https://leetcode.cn/problems/maximum-score-from-removing-stones/)
+
+> 贪心，数学，堆
+
+```java
+class Solution {
+    public int maximumScore(int a, int b, int c) {
+        int[] arr = new int[]{a, b, c};
+        Arrays.sort(arr);
+        int delta = arr[2] - arr[1];
+        if (delta >= arr[0]) return arr[0] + arr[1];
+        else {
+            return arr[0] + arr[1] - (arr[0] - delta + 1) / 2;
+        }
+    }
+}
+```
+简化
+```java
+class Solution {
+    public int maximumScore(int a, int b, int c) {
+        int max = Math.max(a, Math.max(b, c));
+        int sum = a + b + c;
+        return Math.min(sum - max, sum / 2);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33280,3 +33308,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1781. 所有子字符串美丽值之和](https://leetcode.cn/problems/sum-of-beauty-of-all-substrings/)
 
 ## [1697. 检查边长度限制的路径是否存在](https://leetcode.cn/problems/checking-existence-of-edge-length-limited-paths/)
+
+## [1785. 构成特定和需要添加的最少元素](https://leetcode.cn/problems/minimum-elements-to-add-to-form-a-given-sum/)
+
+## [1764. 通过连接另一个数组的子数组得到一个数组](https://leetcode.cn/problems/form-array-by-concatenating-subarrays-of-another-array/)
+
+## [1703. 得到连续 K 个 1 的最少相邻交换次数](https://leetcode.cn/problems/minimum-adjacent-swaps-for-k-consecutive-ones/)
+
+## [1971. 寻找图中是否存在路径](https://leetcode.cn/problems/find-if-path-exists-in-graph/)
+
+## [1760. 袋子里最少数目的球](https://leetcode.cn/problems/minimum-limit-of-balls-in-a-bag/)
