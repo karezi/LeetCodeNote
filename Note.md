@@ -31552,6 +31552,29 @@ class Solution {
 }
 ```
 
+## [2500. 删除每行中的最大值](https://leetcode.cn/problems/delete-greatest-value-in-each-row/)
+
+> 数组，矩阵，排序
+
+```java
+class Solution {
+    public int deleteGreatestValue(int[][] grid) {
+        for (int[] arr: grid) {
+            Arrays.sort(arr);
+        }
+        int ret = 0;
+        for (int i = 0; i < grid[0].length; ++i) {
+            int max = 0;
+            for (int j = 0; j < grid.length; ++j) {
+                max = Math.max(max, grid[j][i]);
+            }
+            ret += max;
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33318,3 +33341,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1971. 寻找图中是否存在路径](https://leetcode.cn/problems/find-if-path-exists-in-graph/)
 
 ## [1760. 袋子里最少数目的球](https://leetcode.cn/problems/minimum-limit-of-balls-in-a-bag/)
+
+## [1799. N 次操作后的最大分数和](https://leetcode.cn/problems/maximize-score-after-n-operations/)
+
+## [1754. 构造字典序最大的合并字符串](https://leetcode.cn/problems/largest-merge-of-two-strings/submissions/)
