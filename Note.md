@@ -31575,6 +31575,25 @@ class Solution {
 }
 ```
 
+## [2027. 转换字符串的最少操作次数](https://leetcode.cn/problems/minimum-moves-to-convert-string/)
+
+> 贪心，字符串
+
+```java
+class Solution {
+    public int minimumMoves(String s) {
+        int ret = 0;
+        for (int i = 0; i < s.length(); ++i) {
+            if (s.charAt(i) == 'X') {
+                ret++;
+                i += 2;
+            }
+        }
+        return ret;     
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33345,3 +33364,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1799. N 次操作后的最大分数和](https://leetcode.cn/problems/maximize-score-after-n-operations/)
 
 ## [1754. 构造字典序最大的合并字符串](https://leetcode.cn/problems/largest-merge-of-two-strings/submissions/)
+
+## [1739. 放置盒子](https://leetcode.cn/problems/building-boxes/)
+
+## [1759. 统计同构子字符串的数目](https://leetcode.cn/problems/count-number-of-homogenous-substrings/)
