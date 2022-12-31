@@ -31594,6 +31594,24 @@ class Solution {
 }
 ```
 
+## [2278. 字母在字符串中的百分比](https://leetcode.cn/problems/percentage-of-letter-in-string/)
+
+> 字符串
+
+```java
+class Solution {
+    public int percentageLetter(String s, char letter) {
+        int cnt = 0;
+        for (char c: s.toCharArray()) {
+            if (c == letter) {
+                cnt++;
+            }
+        }
+        return (int)cnt * 100 / s.length();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33043,7 +33061,7 @@ list.stream().mapToInt(User::getScore).sum();
 
 ## [135. 分发糖果](https://leetcode-cn.com/problems/candy/)
 
-## 803. 打砖块
+## [803. 打砖块](https://leetcode.cn/problems/bricks-falling-when-hit/)
 
 ## [1489. 找到最小生成树里的关键边和伪关键边](https://leetcode-cn.com/problems/bricks-falling-when-hit/)
 
@@ -33368,3 +33386,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1739. 放置盒子](https://leetcode.cn/problems/building-boxes/)
 
 ## [1759. 统计同构子字符串的数目](https://leetcode.cn/problems/count-number-of-homogenous-substrings/)
+
+## [1750. 删除字符串两端相同字符后的最短长度](https://leetcode.cn/problems/minimum-length-of-string-after-deleting-similar-ends/)
+
+## [2032. 至少在两个数组中出现的值](https://leetcode.cn/problems/two-out-of-three/)
+
+## [855. 考场就座](https://leetcode.cn/problems/exam-room/)
