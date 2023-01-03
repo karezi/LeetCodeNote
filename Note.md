@@ -31612,6 +31612,59 @@ class Solution {
 }
 ```
 
+## [2103. 环和杆](https://leetcode.cn/problems/rings-and-rods/)
+
+> 哈希表，字符串
+
+执行用时：0 ms, 在所有 Java 提交中击败了100.00%的用户
+内存消耗：39.3 MB, 在所有 Java 提交中击败了70.28%的用户
+```java
+class Solution {
+    public int countPoints(String rings) {
+        boolean[][] arr = new boolean[10][4];
+        int cnt = 0;
+        for (int i = 0; i < rings.length() - 1; i += 2) {
+            int idx = rings.charAt(i + 1) - '0';
+            if (arr[idx][3]) continue; 
+            int colorOffset = 0;
+            if (rings.charAt(i) == 'G') {
+                colorOffset = 1;
+            } else if (rings.charAt(i) == 'B') {
+                colorOffset = 2;
+            }
+            if (!arr[idx][colorOffset]) arr[idx][colorOffset] = true;
+            if (arr[idx][0] && arr[idx][1] && arr[idx][2]) {
+                arr[idx][3] = true;
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+}
+```
+
+## [2042. 检查句子中的数字是否递增](https://leetcode.cn/problems/check-if-numbers-are-ascending-in-a-sentence/)
+
+> 字符串
+
+```java
+class Solution {
+    public boolean areNumbersAscending(String s) {
+        int last = 0, temp = 0;
+        for (char c: s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                temp = temp * 10 + (c - '0');
+            } else if (c == ' ') {
+                if (temp != 0 && temp <= last) return false;
+                if (temp != 0) last = temp;
+                temp = 0;
+            }
+        }
+        return temp == 0 || temp > last;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33392,3 +33445,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2032. 至少在两个数组中出现的值](https://leetcode.cn/problems/two-out-of-three/)
 
 ## [855. 考场就座](https://leetcode.cn/problems/exam-room/)
+
+## [1801. 积压订单中的订单总数](https://leetcode.cn/problems/number-of-orders-in-the-backlog/)
