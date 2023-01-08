@@ -31665,6 +31665,22 @@ class Solution {
 }
 ```
 
+## [2185. 统计包含给定前缀的字符串](https://leetcode.cn/problems/counting-words-with-a-given-prefix/)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int prefixCount(String[] words, String pref) {
+        int ans = 0;
+        for (String word: words) {
+            if (word.startsWith(pref)) ans++;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33447,3 +33463,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [855. 考场就座](https://leetcode.cn/problems/exam-room/)
 
 ## [1801. 积压订单中的订单总数](https://leetcode.cn/problems/number-of-orders-in-the-backlog/)
+
+## [1802. 有界数组中指定下标处的最大值](https://leetcode.cn/problems/maximum-value-at-a-given-index-in-a-bounded-array/)
+
+## [1803. 统计异或值在范围内的数对有多少](https://leetcode.cn/problems/count-pairs-with-xor-in-a-range/)
+
+## [2180. 统计各位数字之和为偶数的整数个数](https://leetcode.cn/problems/count-integers-with-even-digit-sum/)
+
+## [1658. 将 x 减到 0 的最小操作数](https://leetcode.cn/problems/minimum-operations-to-reduce-x-to-zero/)
