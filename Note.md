@@ -31681,6 +31681,27 @@ class Solution {
 }
 ```
 
+## [2283. 判断一个数的数字计数是否等于数位的值](https://leetcode.cn/problems/check-if-number-has-equal-digit-count-and-digit-value/)
+
+> 哈希表，字符串，计数
+
+```java
+class Solution {
+    public boolean digitCount(String num) {
+        int[] cnt = new int[10];
+        int[] cnt2 = new int[10];
+        for (int i = 0; i < num.length(); ++i) {
+            cnt[i] = num.charAt(i) - '0';
+            cnt2[num.charAt(i) - '0']++;
+        }
+        for (int i = 0; i < 10; ++i) {
+            if (cnt[i] != cnt2[i]) return false;
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33471,3 +33492,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2180. 统计各位数字之和为偶数的整数个数](https://leetcode.cn/problems/count-integers-with-even-digit-sum/)
 
 ## [1658. 将 x 减到 0 的最小操作数](https://leetcode.cn/problems/minimum-operations-to-reduce-x-to-zero/)
+
+## [1806. 还原排列的最少操作步数](https://leetcode.cn/problems/minimum-number-of-operations-to-reinitialize-a-permutation/)
+
+## [753. 破解保险箱](https://leetcode.cn/problems/cracking-the-safe/)
