@@ -31702,6 +31702,30 @@ class Solution {
 }
 ```
 
+## [2293. 极大极小游戏](https://leetcode.cn/problems/min-max-game/)
+
+> 数组，模拟
+
+原地修改
+```java
+class Solution {
+    public int minMaxGame(int[] nums) {
+        int len = nums.length;
+        while (len > 1) {
+            boolean flag = true;
+            int idx = 0;
+            for (int i = 0; i < len; i += 2) {
+                nums[idx++] = flag ? Math.min(nums[i], nums[i + 1]) : Math.max(nums[i], nums[i + 1]);
+                flag = !flag;
+            }
+            len /= 2;
+        }
+        return nums[0];
+    }
+}
+```
+TODO 递归
+
 # Java算法模板
 
 ## BFS
@@ -33496,3 +33520,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1806. 还原排列的最少操作步数](https://leetcode.cn/problems/minimum-number-of-operations-to-reinitialize-a-permutation/)
 
 ## [753. 破解保险箱](https://leetcode.cn/problems/cracking-the-safe/)
+
+## [1807. 替换字符串中的括号内容](https://leetcode.cn/problems/evaluate-the-bracket-pairs-of-a-string/)
+
+## [2287. 重排字符形成目标字符串](https://leetcode.cn/problems/rearrange-characters-to-make-target-string/)
+
+## [1819. 序列中不同最大公约数的数目](https://leetcode.cn/problems/number-of-different-subsequences-gcds/)
