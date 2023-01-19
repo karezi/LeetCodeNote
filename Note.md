@@ -33526,3 +33526,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2287. 重排字符形成目标字符串](https://leetcode.cn/problems/rearrange-characters-to-make-target-string/)
 
 ## [1819. 序列中不同最大公约数的数目](https://leetcode.cn/problems/number-of-different-subsequences-gcds/)
+
+## [2299. 强密码检验器 II](https://leetcode.cn/problems/strong-password-checker-ii/)
+
+## [1814. 统计一个数组中好对子的数目](https://leetcode.cn/problems/count-nice-pairs-in-an-array/)
