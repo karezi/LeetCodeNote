@@ -31726,6 +31726,32 @@ class Solution {
 ```
 TODO 递归
 
+## [1817. 查找用户活跃分钟数](https://leetcode.cn/problems/finding-the-users-active-minutes/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public int[] findingUsersActiveMinutes(int[][] logs, int k) {
+        HashMap<Integer, Set<Integer>> map = new HashMap<>();
+        for (int[] log: logs) {
+            Set<Integer> set = map.getOrDefault(log[0], new HashSet<>());
+            set.add(log[1]);
+            map.put(log[0], set);
+            //// 或者简单写法
+            // map.putIfAbsent(log[0], new HashSet<>());
+            // map.get(log[0]).add(log[1]);
+        }
+        int[] ans = new int[k];
+        for (Integer key: map.keySet()) {
+            int active = map.get(key).size();
+            ans[active - 1]++;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
