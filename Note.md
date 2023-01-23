@@ -31752,6 +31752,30 @@ class Solution {
 }
 ```
 
+## [2303. 计算应缴税款总额](https://leetcode.cn/problems/calculate-amount-paid-in-taxes/)
+
+> 数组，模拟
+
+```java
+class Solution {
+    public double calculateTax(int[][] brackets, int income) {
+        double ans = 0, income2 = (double)income;
+        for (int i = 0; i < brackets.length; ++i) {
+            double last = i != 0 ? (double)brackets[i - 1][0] : 0;
+            double delta = brackets[i][0] - last;
+            if (income2 <= delta) {
+                ans += income2 * brackets[i][1] * 0.01;
+                break;
+            } else {
+                ans += delta * brackets[i][1] * 0.01; 
+            }
+            income2 -= delta;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33556,3 +33580,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2299. 强密码检验器 II](https://leetcode.cn/problems/strong-password-checker-ii/)
 
 ## [1814. 统计一个数组中好对子的数目](https://leetcode.cn/problems/count-nice-pairs-in-an-array/)
+
+## [1824. 最少侧跳次数](https://leetcode.cn/problems/minimum-sideway-jumps/)
+
+## [1815. 得到新鲜甜甜圈的最多组数](https://leetcode.cn/problems/maximum-number-of-groups-getting-fresh-donuts/)
