@@ -31726,6 +31726,68 @@ class Solution {
 ```
 TODO 递归
 
+## [2299. 强密码检验器 II](https://leetcode.cn/problems/strong-password-checker-ii/)
+
+> 字符串
+
+```java
+class Solution {
+    public boolean strongPasswordCheckerII(String password) {
+        if (password.length() < 8) return false;
+        boolean[] check = new boolean[4];
+        for (int i = 0; i < password.length(); ++i) {
+            if (!check[0] && Character.isLowerCase(password.charAt(i))) check[0] = true;
+            if (!check[1] && Character.isUpperCase(password.charAt(i))) check[1] = true;
+            if (!check[2] && Character.isDigit(password.charAt(i))) check[2] = true;
+            if (!check[3] && "!@#$%^&*()-+".contains(String.valueOf(password.charAt(i)))) check[3] = true;
+            if (i > 0 && password.charAt(i) == password.charAt(i - 1)) return false;
+        }
+        return check[0] && check[1] && check[2] && check[3];
+    }
+}
+```
+TODO HashSet
+
+## [1669. 合并两个链表](https://leetcode.cn/problems/merge-in-between-linked-lists/)
+
+> 链表
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        ListNode p1 = null, p2 = null, p3 = null, p = list1;
+        int cnt = 0;
+        while (p != null) {
+            if (cnt == a - 1) {
+                p1 = p;
+            } else if (cnt == b) {
+                p2 = p.next;
+                break;
+            }
+            p = p.next;
+            cnt++;
+        }
+        p1.next = list2;
+        p = list2;
+        while (p.next != null) {
+            p = p.next;
+        }
+        p.next = p2;
+        return list1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33526,3 +33588,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2287. 重排字符形成目标字符串](https://leetcode.cn/problems/rearrange-characters-to-make-target-string/)
 
 ## [1819. 序列中不同最大公约数的数目](https://leetcode.cn/problems/number-of-different-subsequences-gcds/)
+
+## [1813. 句子相似性 III](https://leetcode.cn/problems/sentence-similarity-iii/)
+
+## [1825. 求出 MK 平均值](https://leetcode.cn/problems/finding-mk-average/)
