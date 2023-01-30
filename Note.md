@@ -31748,21 +31748,88 @@ class Solution {
 ```
 TODO HashSet
 
+## [1817. 查找用户活跃分钟数](https://leetcode.cn/problems/finding-the-users-active-minutes/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public int[] findingUsersActiveMinutes(int[][] logs, int k) {
+        HashMap<Integer, Set<Integer>> map = new HashMap<>();
+        for (int[] log: logs) {
+            Set<Integer> set = map.getOrDefault(log[0], new HashSet<>());
+            set.add(log[1]);
+            map.put(log[0], set);
+            //// 或者简单写法
+            // map.putIfAbsent(log[0], new HashSet<>());
+            // map.get(log[0]).add(log[1]);
+        }
+        int[] ans = new int[k];
+        for (Integer key: map.keySet()) {
+            int active = map.get(key).size();
+            ans[active - 1]++;
+        }
+        return ans;
+    }
+}
+```
+
+## [2303. 计算应缴税款总额](https://leetcode.cn/problems/calculate-amount-paid-in-taxes/)
+
+> 数组，模拟
+
+```java
+class Solution {
+    public double calculateTax(int[][] brackets, int income) {
+        double ans = 0, income2 = (double)income;
+        for (int i = 0; i < brackets.length; ++i) {
+            double last = i != 0 ? (double)brackets[i - 1][0] : 0;
+            double delta = brackets[i][0] - last;
+            if (income2 <= delta) {
+                ans += income2 * brackets[i][1] * 0.01;
+                break;
+            } else {
+                ans += delta * brackets[i][1] * 0.01; 
+            }
+            income2 -= delta;
+        }
+        return ans;
+    }
+}
+```
+
+## [2309. 兼具大小写的最好英文字母](https://leetcode.cn/problems/greatest-english-letter-in-upper-and-lower-case/)
+
+> 哈希表，字符串，枚举，位运算
+
+```java
+class Solution {
+    public String greatestLetter(String s) {
+        int[] cnt = new int[26];
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
+            if (Character.isLowerCase(c)) {
+                if (cnt[c - 'a'] == 0 || cnt[c - 'a'] == 2) cnt[c - 'a']++;
+            } else {
+                if (cnt[c - 'A'] == 0 || cnt[c - 'A'] == 1) cnt[c - 'A'] += 2;
+            }
+        }
+        for (int i = 25; i >= 0; i--) {
+            if (cnt[i] == 3) {
+                return String.valueOf((char)('A' + i));
+            }
+        }
+        return "";
+    }
+}
+```
+TODO 哈希表，位运算
+
 ## [1669. 合并两个链表](https://leetcode.cn/problems/merge-in-between-linked-lists/)
 
 > 链表
 
 ```java
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
     public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
         ListNode p1 = null, p2 = null, p3 = null, p = list1;
@@ -31784,6 +31851,27 @@ class Solution {
         }
         p.next = p2;
         return list1;
+    }
+}
+```
+
+## [2535. 数组元素和与数字和的绝对差](https://leetcode.cn/problems/difference-between-element-sum-and-digit-sum-of-an-array/)
+
+> 数组，数学
+
+```java
+class Solution {
+    public int differenceOfSum(int[] nums) {
+        int sum = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            int s = 0, tmp = nums[i];
+            while (tmp > 0) {
+                s += tmp % 10;
+                tmp /= 10;
+            }
+            sum += nums[i] - s;
+        }
+        return Math.abs(sum);
     }
 }
 ```
@@ -33591,4 +33679,18 @@ list.stream().mapToInt(User::getScore).sum();
 
 ## [1813. 句子相似性 III](https://leetcode.cn/problems/sentence-similarity-iii/)
 
+## [1814. 统计一个数组中好对子的数目](https://leetcode.cn/problems/count-nice-pairs-in-an-array/)
+
 ## [1825. 求出 MK 平均值](https://leetcode.cn/problems/finding-mk-average/)
+
+## [1824. 最少侧跳次数](https://leetcode.cn/problems/minimum-sideway-jumps/)
+
+## [1815. 得到新鲜甜甜圈的最多组数](https://leetcode.cn/problems/maximum-number-of-groups-getting-fresh-donuts/)
+
+## [1828. 统计一个圆中点的数目](https://leetcode.cn/problems/queries-on-number-of-points-inside-a-circle/)
+
+## [1632. 矩阵转换后的秩](https://leetcode.cn/problems/rank-transform-of-a-matrix/)
+
+## [1663. 具有给定数值的最小字符串](https://leetcode.cn/problems/smallest-string-with-a-given-numeric-value/)
+
+## [1664. 生成平衡数组的方案数](https://leetcode.cn/problems/ways-to-make-a-fair-array/)
