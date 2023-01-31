@@ -31876,6 +31876,28 @@ class Solution {
 }
 ```
 
+## [2319. 判断矩阵是否是一个 X 矩阵](https://leetcode.cn/problems/check-if-matrix-is-x-matrix/)
+
+> 数组，矩阵
+
+```java
+class Solution {
+    public boolean checkXMatrix(int[][] grid) {
+        int m = grid.length;
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < m; ++j) {
+                if (i == j || m - i - 1 == j) {
+                    if (grid[i][j] == 0) return false;
+                } else {
+                    if (grid[i][j] != 0) return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
