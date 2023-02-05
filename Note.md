@@ -31898,6 +31898,21 @@ class Solution {
 }
 ```
 
+## [2331. 计算布尔二叉树的值](https://leetcode.cn/problems/evaluate-boolean-binary-tree/)
+
+> 树，深度优先搜索，二叉树
+
+```java
+class Solution {
+    public boolean evaluateTree(TreeNode root) {
+        if (root.left == null && root.right == null) return root.val == 1;
+        boolean l = evaluateTree(root.left);
+        boolean r = evaluateTree(root.right);
+        return root.val == 2 ? (l | r) : (l & r);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33716,3 +33731,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1663. 具有给定数值的最小字符串](https://leetcode.cn/problems/smallest-string-with-a-given-numeric-value/)
 
 ## [1664. 生成平衡数组的方案数](https://leetcode.cn/problems/ways-to-make-a-fair-array/)
+
+## [2325. 解密消息](https://leetcode.cn/problems/decode-the-message/)
+
+## [1129. 颜色交替的最短路径](https://leetcode.cn/problems/shortest-path-with-alternating-colors/)
+
+## [1145. 二叉树着色游戏](https://leetcode.cn/problems/binary-tree-coloring-game/)
+
+## [1798. 你能构造出连续值的最大数目](https://leetcode.cn/problems/maximum-number-of-consecutive-values-you-can-make/)
+
+## [1210. 穿过迷宫的最少移动次数](https://leetcode.cn/problems/minimum-moves-to-reach-target-with-rotations/)
