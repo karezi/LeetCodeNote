@@ -31913,6 +31913,49 @@ class Solution {
 }
 ```
 
+## [2335. 装满杯子需要的最短总时长](https://leetcode.cn/problems/minimum-amount-of-time-to-fill-cups/)
+
+> 贪心，数组，排序，堆，模拟
+
+模拟
+```java
+class Solution {
+    public int fillCups(int[] amount) {
+        int ans = 0;
+        while (true) {
+            if (amount[0] == 0 && amount[1] == 0 && amount[2] == 0) return ans;
+            Arrays.sort(amount);
+            int delta = amount[1] - amount[0];
+            if (delta == 0) {
+                if (amount[0] == 0) {
+                    ans += amount[2];
+                    break;
+                } else {
+                    amount[0]--;
+                    amount[2]--;
+                    ans++;
+                }
+            } else {
+                amount[1] -= delta;
+                amount[2] -= delta;
+                ans += delta;
+            }
+        }
+        return ans;
+    }
+}
+```
+TODO 贪心+分类讨论
+```java
+class Solution {
+    public int fillCups(int[] amount) {
+        Arrays.sort(amount);
+        if (amount[0] + amount[1] <= amount[2]) return amount[2];
+        return (amount[0] + amount[1] + amount[2] + 1) / 2;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33741,3 +33784,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1798. 你能构造出连续值的最大数目](https://leetcode.cn/problems/maximum-number-of-consecutive-values-you-can-make/)
 
 ## [1210. 穿过迷宫的最少移动次数](https://leetcode.cn/problems/minimum-moves-to-reach-target-with-rotations/)
+
+## [1604. 警告一小时内使用相同员工卡大于等于三次的人](https://leetcode.cn/problems/alert-using-same-key-card-three-or-more-times-in-a-one-hour-period/)
+
+## [1233. 删除子文件夹](https://leetcode.cn/problems/remove-sub-folders-from-the-filesystem/)
+
+## [1797. 设计一个验证系统](https://leetcode.cn/problems/design-authentication-manager/)
+
+## [1223. 掷骰子模拟](https://leetcode.cn/problems/dice-roll-simulation/)
