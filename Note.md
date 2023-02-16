@@ -31956,6 +31956,30 @@ class Solution {
 }
 ```
 
+## [2341. 数组能形成多少数对](https://leetcode.cn/problems/maximum-number-of-pairs-in-array/)
+
+> 数组，哈希表，计数
+
+```java
+class Solution {
+    public int[] numberOfPairs(int[] nums) {
+        int[] cnt = new int[101];
+        int[] ans = new int[2];
+        for (int num: nums) {
+            cnt[num]++;
+        }
+        for (int i = 0; i < 101; ++i) {
+            if (cnt[i] != 0) {
+                if ((cnt[i] & 1) == 1) ans[1]++;
+                ans[0] += cnt[i] / 2;
+            }
+        }
+        return ans;
+    }
+}
+```
+TODO 用计数的奇偶来构造map
+
 # Java算法模板
 
 ## BFS
@@ -33792,3 +33816,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1797. 设计一个验证系统](https://leetcode.cn/problems/design-authentication-manager/)
 
 ## [1223. 掷骰子模拟](https://leetcode.cn/problems/dice-roll-simulation/)
+
+## [1138. 字母板上的路径](https://leetcode.cn/problems/alphabet-board-path/)
+
+## [1234. 替换子串得到平衡字符串](https://leetcode.cn/problems/replace-the-substring-for-balanced-string/)
+
+## [1124. 表现良好的最长时间段](https://leetcode.cn/problems/longest-well-performing-interval/)
+
+## [1250. 检查「好数组」](https://leetcode.cn/problems/check-if-it-is-a-good-array/)
