@@ -31980,6 +31980,29 @@ class Solution {
 ```
 TODO 用计数的奇偶来构造map
 
+## [2347. 最好的扑克手牌](https://leetcode.cn/problems/best-poker-hand/)
+
+> 数组，哈希表，计数
+
+```java
+class Solution {
+    public String bestHand(int[] ranks, char[] suits) {
+        if (suits[0] == suits[1] && suits[1] == suits[2] && suits[2] == suits[3] && suits[3] == suits[4]) return "Flush";
+        int[] cnt = new int[13];
+        for (int c: ranks) {
+            cnt[c - 1]++;
+        }
+        int max = 0;
+        for (int i: cnt) {
+            max = Math.max(max, i);
+        }
+        if (max == 2) return "Pair";
+        else if (max == 1) return "High Card";
+        return "Three of a Kind";
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33824,3 +33847,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1124. 表现良好的最长时间段](https://leetcode.cn/problems/longest-well-performing-interval/)
 
 ## [1250. 检查「好数组」](https://leetcode.cn/problems/check-if-it-is-a-good-array/)
+
+## [1139. 最大的以 1 为边界的正方形](https://leetcode.cn/problems/largest-1-bordered-square/)
+
+## [1237. 找出给定方程的正整数解](https://leetcode.cn/problems/find-positive-integer-solution-for-a-given-equation/)
+
+## [1792. 最大平均通过率](https://leetcode.cn/problems/maximum-average-pass-ratio/)
