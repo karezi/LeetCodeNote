@@ -32003,6 +32003,38 @@ class Solution {
 }
 ```
 
+## [2357. 使数组中所有元素都等于零](https://leetcode.cn/problems/make-array-zero-by-subtracting-equal-amounts/)
+
+> 贪心，数组，哈希表，排序，模拟，堆
+
+排序+模拟
+```java
+class Solution {
+    public int minimumOperations(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length, tmp = 0, ans = 0;
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] == 0 || nums[i] <= tmp) continue;
+            ans++;
+            tmp = nums[i];
+        }
+        return ans;
+    }
+}
+```
+哈希表
+```java
+class Solution {
+    public int minimumOperations(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num: nums) {
+            if (num != 0) set.add(num);
+        }
+        return set.size();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33853,3 +33885,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1237. 找出给定方程的正整数解](https://leetcode.cn/problems/find-positive-integer-solution-for-a-given-equation/)
 
 ## [1792. 最大平均通过率](https://leetcode.cn/problems/maximum-average-pass-ratio/)
+
+## [1326. 灌溉花园的最少水龙头数目](https://leetcode.cn/problems/minimum-number-of-taps-to-open-to-water-a-garden/)
+
+## [1140. 石子游戏 II](https://leetcode.cn/problems/stone-game-ii/)
+
+## [1238. 循环码排列](https://leetcode.cn/problems/circular-permutation-in-binary-representation/)
