@@ -32035,6 +32035,60 @@ class Solution {
 }
 ```
 
+## [2363. 合并相似的物品](https://leetcode.cn/problems/merge-similar-items/)
+
+> 数组，哈希表，有序集合，排序
+
+```java
+class Solution {
+    public List<List<Integer>> mergeSimilarItems(int[][] items1, int[][] items2) {
+        Arrays.sort(items1, (x, y) -> x[0] - y[0]);
+        Arrays.sort(items2, (x, y) -> x[0] - y[0]);
+        List<List<Integer>> ret = new ArrayList<>();
+        int l1 = items1.length, l2 = items2.length, p1 = 0, p2 = 0;
+        while (p1 < l1 && p2 < l2) {
+            List<Integer> it = new ArrayList<>();
+            if (items1[p1][0] < items2[p2][0]) {
+                it.add(items1[p1][0]);
+                it.add(items1[p1][1]);
+                ret.add(it);
+                p1++;
+            } else if (items1[p1][0] > items2[p2][0]) {
+                it.add(items2[p2][0]);
+                it.add(items2[p2][1]);
+                ret.add(it);
+                p2++;
+            } else {
+                it.add(items1[p1][0]);
+                it.add(items1[p1][1] + items2[p2][1]);
+                ret.add(it);
+                p1++;
+                p2++;
+            }
+        }
+        if (p1 < l1) {
+            while (p1 < l1) {
+                List<Integer> it = new ArrayList<>();
+                it.add(items1[p1][0]);
+                it.add(items1[p1][1]);
+                ret.add(it);
+                p1++;
+            }
+        } else if (p2 < l2) {
+            while (p2 < l2) {
+                List<Integer> it = new ArrayList<>();
+                it.add(items2[p2][0]);
+                it.add(items2[p2][1]);
+                ret.add(it);
+                p2++;
+            }
+        }
+        return ret;
+    }
+}
+```
+TODO 哈希表
+
 # Java算法模板
 
 ## BFS
@@ -33891,3 +33945,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1140. 石子游戏 II](https://leetcode.cn/problems/stone-game-ii/)
 
 ## [1238. 循环码排列](https://leetcode.cn/problems/circular-permutation-in-binary-representation/)
+
+## [1247. 交换字符使得字符串相同](https://leetcode.cn/problems/minimum-swaps-to-make-strings-equal/)
+
+## [1255. 得分最高的单词集合](https://leetcode.cn/problems/maximum-score-words-formed-by-letters/)
+
+## [1144. 递减元素使数组呈锯齿状](https://leetcode.cn/problems/decrease-elements-to-make-array-zigzag/)
