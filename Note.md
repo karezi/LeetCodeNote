@@ -32089,6 +32089,33 @@ class Solution {
 ```
 TODO 哈希表
 
+## [2574. 左右元素和的差值](https://leetcode.cn/problems/left-and-right-sum-differences/)
+
+> 数组，前缀和
+
+```java
+class Solution {
+    public int[] leftRigthDifference(int[] nums) {
+        int n = nums.length;
+        int[] ls = new int[n], rs = new int[n];
+        if (n > 1) {
+            for (int i = 1; i < n; ++i) {
+                ls[i] = ls[i - 1] + nums[i - 1];
+            }
+            for (int i = n - 2; i >= 0; --i) {
+                rs[i] = rs[i + 1] + nums[i + 1];
+            }
+        }
+        int[] res = new int[n];
+        for (int i = 0; i < n; ++i) {
+            res[i] = Math.abs(ls[i] - rs[i]);
+        }
+        return res;
+    }
+}
+```
+TODO 先求总和
+
 # Java算法模板
 
 ## BFS
