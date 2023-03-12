@@ -32116,6 +32116,28 @@ class Solution {
 ```
 TODO 先求总和
 
+## [2379. 得到 K 个黑块的最少涂色次数](https://leetcode.cn/problems/minimum-recolors-to-get-k-consecutive-black-blocks/)
+
+> 字符串，滑动窗口
+
+```java
+class Solution {
+    public int minimumRecolors(String blocks, int k) {
+        int cur = 0, min = 0;
+        for (int i = 0; i < k; ++i) {
+            if (blocks.charAt(i) == 'W') cur++;
+        }
+        min = cur;
+        for (int i = k; i < blocks.length(); ++i) {
+            if (blocks.charAt(i - k) == 'W') cur--;
+            if (blocks.charAt(i) == 'W') cur++;
+            min = Math.min(min, cur);
+        }
+        return min;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -33978,3 +34000,23 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1255. 得分最高的单词集合](https://leetcode.cn/problems/maximum-score-words-formed-by-letters/)
 
 ## [1144. 递减元素使数组呈锯齿状](https://leetcode.cn/problems/decrease-elements-to-make-array-zigzag/)
+
+## [面试题 05.02. 二进制数转字符串](https://leetcode.cn/problems/bianry-number-to-string-lcci/)
+
+## [1487. 保证文件名唯一](https://leetcode.cn/problems/making-file-names-unique/)
+
+## [982. 按位与为零的三元组](https://leetcode.cn/problems/triples-with-bitwise-and-equal-to-zero/)
+
+## [1599. 经营摩天轮的最大利润](https://leetcode.cn/problems/maximum-profit-of-operating-a-centennial-wheel/)
+
+## [1653. 使字符串平衡的最少删除次数](https://leetcode.cn/problems/minimum-deletions-to-make-string-balanced/)
+
+## [1096. 花括号展开 II](https://leetcode.cn/problems/brace-expansion-ii/)
+
+## [剑指 Offer 47. 礼物的最大价值](https://leetcode.cn/problems/li-wu-de-zui-da-jie-zhi-lcof/)
+
+## [1590. 使数组和能被 P 整除](https://leetcode.cn/problems/make-sum-divisible-by-p/)
+
+## [面试题 17.05.  字母与数字](https://leetcode.cn/problems/find-longest-subarray-lcci/)
+
+## [1617. 统计子树中城市之间最大距离](https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/)
