@@ -32138,6 +32138,29 @@ class Solution {
 }
 ```
 
+## [2383. 赢得比赛需要的最少训练时长](https://leetcode.cn/problems/minimum-hours-of-training-to-win-a-competition/)
+
+> 贪心，数组
+
+```java
+class Solution {
+    public int minNumberOfHours(int initialEnergy, int initialExperience, int[] energy, int[] experience) {
+        int esum = 0;
+        for (int ex: energy) esum += ex;
+        esum = initialExperience > esum ? 0 : esum - initialEnergy + 1;
+        for (int e : experience) {
+            if (initialExperience <= e) {
+                esum += e - initialExperience + 1;
+                initialExperience = e + 1 + e;
+            } else {
+                initialExperience += e;
+            }
+        }
+        return esum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
