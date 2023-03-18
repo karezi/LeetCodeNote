@@ -32161,6 +32161,38 @@ class Solution {
 }
 ```
 
+## [2389. 和有限的最长子序列](https://leetcode.cn/problems/longest-subsequence-with-limited-sum/)
+
+> 贪心，数组，二分查找，前缀和，排序
+
+```java
+class Solution {
+    public int[] answerQueries(int[] nums, int[] queries) {
+        Arrays.sort(nums);
+        int m = nums.length, n = queries.length;
+        int[] ans = new int[n];
+        int[] pre = new int[m + 1];
+        for (int i = 0; i < m; i++) {
+            pre[i + 1] = pre[i] + nums[i];
+        }
+        for (int i = 0; i < n; i++) {
+            ans[i] = binarySearch(pre, queries[i]) - 1;
+        }
+        return ans;
+    }
+
+    private int binarySearch(int[] pre, int q) {
+        int l = 1, r = pre.length;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (pre[mid] > q) r = mid;
+            else l = mid + 1;
+        }
+        return l;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34043,3 +34075,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [面试题 17.05.  字母与数字](https://leetcode.cn/problems/find-longest-subarray-lcci/)
 
 ## [1617. 统计子树中城市之间最大距离](https://leetcode.cn/problems/count-subtrees-with-max-distance-between-cities/)
+
+## [1605. 给定行和列的和求可行矩阵](https://leetcode.cn/problems/find-valid-matrix-given-row-and-column-sums/)
+
+## [1615. 最大网络秩](https://leetcode.cn/problems/maximal-network-rank/)
+
+## [2488. 统计中位数为 K 的子数组](https://leetcode.cn/problems/count-subarrays-with-median-k/)
+
+## [1616. 分割两个字符串得到回文串](https://leetcode.cn/problems/split-two-strings-to-make-palindrome/)
