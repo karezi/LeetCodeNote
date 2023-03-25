@@ -32193,6 +32193,25 @@ class Solution {
 }
 ```
 
+## [2395. 和相等的子数组](https://leetcode.cn/problems/find-subarrays-with-equal-sum/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public boolean findSubarrays(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        int n = nums.length;
+        for (int i = 0; i < n - 1; ++i) {
+            int sum = nums[i] + nums[i + 1];
+            if (set.contains(sum)) return true;
+            set.add(sum);
+        }
+        return false;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34083,3 +34102,17 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2488. 统计中位数为 K 的子数组](https://leetcode.cn/problems/count-subarrays-with-median-k/)
 
 ## [1616. 分割两个字符串得到回文串](https://leetcode.cn/problems/split-two-strings-to-make-palindrome/)
+
+## [1625. 执行操作后字典序最小的字符串](https://leetcode.cn/problems/lexicographically-smallest-string-after-applying-operations/)
+
+## [1012. 至少有 1 位重复的数字](https://leetcode.cn/problems/numbers-with-repeated-digits/)
+
+## [2469. 温度转换](https://leetcode.cn/problems/convert-the-temperature/)
+
+## [1626. 无矛盾的最佳球队](https://leetcode.cn/problems/best-team-with-no-conflicts/)
+
+## [1630. 等差子数组](https://leetcode.cn/problems/arithmetic-subarrays/)
+
+## [1032. 字符流](https://leetcode.cn/problems/stream-of-characters/)
+
+## [1574. 删除最短的子数组使剩余数组有序](https://leetcode.cn/problems/shortest-subarray-to-be-removed-to-make-array-sorted/)
