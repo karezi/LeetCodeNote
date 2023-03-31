@@ -32212,6 +32212,14 @@ class Solution {
 }
 ```
 
+## [1683. 无效的推文](https://leetcode.cn/problems/invalid-tweets/)
+
+> 数据库
+
+```java
+SELECT tweet_id FROM Tweets WHERE length(content) > 15
+```
+
 # Java算法模板
 
 ## BFS
@@ -34116,3 +34124,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1032. 字符流](https://leetcode.cn/problems/stream-of-characters/)
 
 ## [1574. 删除最短的子数组使剩余数组有序](https://leetcode.cn/problems/shortest-subarray-to-be-removed-to-make-array-sorted/)
+
+## [1638. 统计只差一个字符的子串数目](https://leetcode.cn/problems/count-substrings-that-differ-by-one-character/)
+
+## [1092. 最短公共超序列](https://leetcode.cn/problems/shortest-common-supersequence/)
+
+## [1641. 统计字典序元音字符串的数目](https://leetcode.cn/problems/count-sorted-vowel-strings/)
+
+## [1637. 两点之间不包含任何点的最宽垂直区域](https://leetcode.cn/problems/widest-vertical-area-between-two-points-containing-no-points/)
