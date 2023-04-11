@@ -32220,6 +32220,55 @@ class Solution {
 SELECT tweet_id FROM Tweets WHERE length(content) > 15
 ```
 
+## [2399. 检查相同字母间的距离](https://leetcode.cn/problems/check-distances-between-same-letters/)
+
+> 数组，哈希表，字符串
+
+```java
+class Solution {
+    public boolean checkDistances(String s, int[] distance) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); ++i) {
+            char c = s.charAt(i);
+            if (map.containsKey(c)) {
+                if (distance[c - 'a'] != i - map.get(c) - 1) return false;
+            } else {
+                map.put(c, i);
+            }
+        }
+        return true;
+    }
+}
+```
+
+## [1041. 困于环中的机器人](https://leetcode.cn/problems/robot-bounded-in-circle/)
+
+> 数学，字符串，模拟
+
+```java
+class Solution {
+    public boolean isRobotBounded(String instructions) {
+        // 执行完之后不在原点且朝北
+        int x = 0, y = 0, dir = 0;
+        int[][] direction = new int[][]{{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
+        for (int i = 0; i < instructions.length(); ++i) {
+            char c = instructions.charAt(i);
+            if (c == 'G') {
+                x += direction[dir][0];
+                y += direction[dir][1];
+            } else if (c == 'L') {
+                dir++;
+                if (dir == 4) dir = 0;
+            } else {
+                dir--;
+                if (dir == -1) dir = 3;
+            }
+        }
+        return !(!(x == 0 && y == 0) && dir == 0);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34132,3 +34181,19 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1641. 统计字典序元音字符串的数目](https://leetcode.cn/problems/count-sorted-vowel-strings/)
 
 ## [1637. 两点之间不包含任何点的最宽垂直区域](https://leetcode.cn/problems/widest-vertical-area-between-two-points-containing-no-points/)
+
+## [831. 隐藏个人信息](https://leetcode.cn/problems/masking-personal-information/)
+
+## [1039. 多边形三角剖分的最低得分](https://leetcode.cn/problems/minimum-score-triangulation-of-polygon/)
+
+## [1053. 交换一次的先前排列](https://leetcode.cn/problems/previous-permutation-with-one-swap/)
+
+## [1000. 合并石头的最低成本](https://leetcode.cn/problems/minimum-cost-to-merge-stones/)
+
+## [2427. 公因子的数目](https://leetcode.cn/problems/number-of-common-factors/)
+
+## [1017. 负二进制转换](https://leetcode.cn/problems/convert-to-base-2/submissions/)
+
+## [1125. 最小的必要团队](https://leetcode.cn/problems/smallest-sufficient-team/)
+
+## [1019. 链表中的下一个更大节点](https://leetcode.cn/problems/next-greater-node-in-linked-list/)
