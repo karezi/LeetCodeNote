@@ -32269,6 +32269,33 @@ class Solution {
 }
 ```
 
+## [2404. 出现最频繁的偶数元素](https://leetcode.cn/problems/most-frequent-even-element/)
+
+> 数组，哈希表，计数
+
+```java
+class Solution {
+    public int mostFrequentEven(int[] nums) {
+        Arrays.sort(nums);
+        int cnt = 0, max = 0, ret = -1;
+        for (int i = 0; i < nums.length; ++i) {
+            if ((nums[i] & 1) == 0) {
+                if (i != 0 && nums[i] == nums[i - 1]) cnt++;
+                else cnt = 1;
+                if (cnt > max) {
+                    max = cnt;
+                    ret = nums[i];
+                }
+            } else {
+                cnt = 0;
+            }
+        }
+        return ret;
+    }
+}
+```
+TODO 哈希表计数
+
 # Java算法模板
 
 ## BFS
@@ -34197,3 +34224,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1125. 最小的必要团队](https://leetcode.cn/problems/smallest-sufficient-team/)
 
 ## [1019. 链表中的下一个更大节点](https://leetcode.cn/problems/next-greater-node-in-linked-list/)
+
+## [1147. 段式回文](https://leetcode.cn/problems/longest-chunked-palindrome-decomposition/)
