@@ -32296,6 +32296,18 @@ class Solution {
 ```
 TODO 哈希表计数
 
+## [2620. 计数器](https://leetcode.cn/problems/counter/)
+
+> 闭包
+
+```java
+var createCounter = function(n) {
+    return function() {
+        return n++;
+    };
+};
+```
+
 # Java算法模板
 
 ## BFS
@@ -34226,3 +34238,17 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1019. 链表中的下一个更大节点](https://leetcode.cn/problems/next-greater-node-in-linked-list/)
 
 ## [1147. 段式回文](https://leetcode.cn/problems/longest-chunked-palindrome-decomposition/)
+
+## [1023. 驼峰式匹配](https://leetcode.cn/problems/camelcase-matching/)
+
+## [1042. 不邻接植花](https://leetcode.cn/problems/flower-planting-with-no-adjacent/)
+
+## [1157. 子数组中占绝大多数的元素](https://leetcode.cn/problems/online-majority-element-in-subarray/)
+
+## [2409. 统计共同度过的日子数](https://leetcode.cn/problems/count-days-spent-together/)
+
+## [1026. 节点与其祖先之间的最大差值](https://leetcode.cn/problems/maximum-difference-between-node-and-ancestor/)
+
+## [1043. 分隔数组以得到最大和](https://leetcode.cn/problems/partition-array-for-maximum-sum/)
+
+## [1187. 使数组严格递增](https://leetcode.cn/problems/make-array-strictly-increasing/)
