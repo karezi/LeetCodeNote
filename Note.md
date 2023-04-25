@@ -32308,6 +32308,28 @@ var createCounter = function(n) {
 };
 ```
 
+## [2418. 按身高排序](https://leetcode.cn/problems/sort-the-people/)
+
+> 数组，哈希表，字符串，排序
+
+```java
+class Solution {
+    public String[] sortPeople(String[] names, int[] heights) {
+        int n = names.length;
+        Integer[] indices = new Integer[n];
+        for (int i = 0; i < n; ++i) {
+            indices[i] = i;
+        }
+        Arrays.sort(indices, (x, y) -> heights[y] - heights[x]);
+        String[] res = new String[n];
+        for (int i = 0; i < n; ++i) {
+            res[i] = names[indices[i]];
+        }
+        return res;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34252,3 +34274,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1043. 分隔数组以得到最大和](https://leetcode.cn/problems/partition-array-for-maximum-sum/)
 
 ## [1187. 使数组严格递增](https://leetcode.cn/problems/make-array-strictly-increasing/)
+
+## [1027. 最长等差数列](https://leetcode.cn/problems/longest-arithmetic-subsequence/)
+
+## [1105. 填充书架](https://leetcode.cn/problems/filling-bookcase-shelves/)
+
+## [1163. 按字典序排在最后的子串](https://leetcode.cn/problems/last-substring-in-lexicographical-order/)
