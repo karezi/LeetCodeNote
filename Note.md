@@ -32330,6 +32330,30 @@ class Solution {
 }
 ```
 
+## [2432. 处理用时最长的那个任务的员工](https://leetcode.cn/problems/the-employee-that-worked-on-the-longest-task/)
+
+> 数组
+
+```java
+class Solution {
+    public int hardestWorker(int n, int[][] logs) {
+        int max = logs[0][1], ret = logs[0][0];
+        for (int i = 1; i < logs.length; ++i) {
+            int delta = logs[i][1] - logs[i - 1][1];
+            if (delta > max) {
+                max = delta;
+                ret = logs[i][0];
+            } else if (delta == max) {
+                if (logs[i][0] < ret) {
+                    ret = logs[i][0];
+                }
+            }
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34280,3 +34304,21 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1105. 填充书架](https://leetcode.cn/problems/filling-bookcase-shelves/)
 
 ## [1163. 按字典序排在最后的子串](https://leetcode.cn/problems/last-substring-in-lexicographical-order/)
+
+## [1031. 两个非重叠子数组的最大和](https://leetcode.cn/problems/maximum-sum-of-two-non-overlapping-subarrays/)
+
+## [1048. 最长字符串链](https://leetcode.cn/problems/longest-string-chain/)
+
+## [1172. 餐盘栈](https://leetcode.cn/problems/dinner-plate-stacks/)
+
+## [2423. 删除字符使频率相同](https://leetcode.cn/problems/remove-letter-to-equalize-frequency/)
+
+## [1033. 移动石子直到连续](https://leetcode.cn/problems/moving-stones-until-consecutive/)
+
+## [1376. 通知所有员工所需的时间](https://leetcode.cn/problems/time-needed-to-inform-all-employees/)
+
+## [970. 强整数](https://leetcode.cn/problems/powerful-integers/)
+
+## [1003. 检查替换后的词是否有效](https://leetcode.cn/problems/check-if-word-is-valid-after-substitutions/)
+
+## [2106. 摘水果](https://leetcode.cn/problems/maximum-fruits-harvested-after-at-most-k-steps/)
