@@ -32354,6 +32354,27 @@ class Solution {
 }
 ```
 
+## [2441. 与对应负数同时存在的最大正整数](https://leetcode.cn/problems/largest-positive-integer-that-exists-with-its-negative/)
+
+> 哈希表，数组，双指针，排序
+
+```java
+class Solution {
+    public int findMaxK(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        int max = -1;
+        for (int i: nums) set.add(i);
+        for (int i: nums) {
+            if (i > max && set.contains(-i)) {
+                max = i;
+            }
+        }
+        return max;
+    }
+}
+```
+TODO 排序+双指针
+
 # Java算法模板
 
 ## BFS
@@ -34322,3 +34343,17 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1003. 检查替换后的词是否有效](https://leetcode.cn/problems/check-if-word-is-valid-after-substitutions/)
 
 ## [2106. 摘水果](https://leetcode.cn/problems/maximum-fruits-harvested-after-at-most-k-steps/)
+
+## [1419. 数青蛙](https://leetcode.cn/problems/minimum-number-of-frogs-croaking/)
+
+## [1010. 总持续时间可被 60 整除的歌曲](https://leetcode.cn/problems/pairs-of-songs-with-total-durations-divisible-by-60/)
+
+## [1263. 推箱子](https://leetcode.cn/problems/minimum-moves-to-move-a-box-to-their-target-location/)
+
+## [2437. 有效时间的数目](https://leetcode.cn/problems/number-of-valid-clock-times/)
+
+## [1015. 可被 K 整除的最小整数](https://leetcode.cn/problems/smallest-integer-divisible-by-k/)
+
+## [1016. 子串能表示从 1 到 N 数字的二进制串](https://leetcode.cn/problems/binary-string-with-substrings-representing-1-to-n/)
+
+## [1330. 翻转子数组得到最大的数组值](https://leetcode.cn/problems/reverse-subarray-to-maximize-array-value/)
