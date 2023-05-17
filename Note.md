@@ -32375,6 +32375,47 @@ class Solution {
 ```
 TODO 排序+双指针
 
+## [2667. 创建 Hello World 函数](https://leetcode.cn/problems/create-hello-world-function/)
+
+```java
+var createHelloWorld = function() {
+    return function(...args) {
+        return "Hello World"
+    }
+};
+```
+
+## [2446. 判断两个事件是否存在冲突](https://leetcode.cn/problems/determine-if-two-events-have-conflict/)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        int[] e1 = eval(event1), e2 = eval(event2);
+        return !(e1[1] < e2[0] || e1[0] > e2[1]);
+    }
+
+    private int[] eval(String[] event) {
+        int a1 = trans(event[0]), a2 = trans(event[1]);
+        return new int[]{a1, a2};
+    }
+
+    private int trans(String time) {
+        String[] times = time.split(":");
+        return Integer.parseInt(times[0]) * 60 + Integer.parseInt(times[1]);
+    }
+}
+```
+时间能直接比较!
+```java
+class Solution {
+    public boolean haveConflict(String[] event1, String[] event2) {
+        return !(event1[1].compareTo(event2[0]) < 0 || event1[0].compareTo(event2[1]) > 0);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34357,3 +34398,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1016. 子串能表示从 1 到 N 数字的二进制串](https://leetcode.cn/problems/binary-string-with-substrings-representing-1-to-n/)
 
 ## [1330. 翻转子数组得到最大的数组值](https://leetcode.cn/problems/reverse-subarray-to-maximize-array-value/)
+
+## [1054. 距离相等的条形码](https://leetcode.cn/problems/distant-barcodes/)
+
+## [1072. 按列翻转得到最大值等行数](https://leetcode.cn/problems/flip-columns-for-maximum-number-of-equal-rows/)
+
+## [1335. 工作计划的最低难度](https://leetcode.cn/problems/minimum-difficulty-of-a-job-schedule/)
