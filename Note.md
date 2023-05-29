@@ -32416,6 +32416,26 @@ class Solution {
 }
 ```
 
+## [2455. 可被三整除的偶数的平均值](https://leetcode.cn/problems/average-value-of-even-numbers-that-are-divisible-by-three/)
+
+> 数组，数学
+
+```java
+class Solution {
+    public int averageValue(int[] nums) {
+        int sum = 0, n = 0;
+        for (int i: nums) {
+            if (i % 6 == 0) {
+                sum += i;
+                n++;
+            }
+        }
+        if (n == 0) return 0;
+        return sum / n;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34404,3 +34424,25 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1072. 按列翻转得到最大值等行数](https://leetcode.cn/problems/flip-columns-for-maximum-number-of-equal-rows/)
 
 ## [1335. 工作计划的最低难度](https://leetcode.cn/problems/minimum-difficulty-of-a-job-schedule/)
+
+## [1073. 负二进制数相加](https://leetcode.cn/problems/adding-two-negabinary-numbers/)
+
+## [1079. 活字印刷](https://leetcode.cn/problems/letter-tile-possibilities/)
+
+## [1373. 二叉搜索子树的最大键值和](https://leetcode.cn/problems/maximum-sum-bst-in-binary-tree/)
+
+## [LCP 33. 蓄水](https://leetcode.cn/problems/o8SXZn/)
+
+## [1080. 根到叶路径上的不足节点](https://leetcode.cn/problems/insufficient-nodes-in-root-to-leaf-paths/)
+
+## [1090. 受标签影响的最大值](https://leetcode.cn/problems/largest-values-from-labels/)
+
+## [1377. T 秒后青蛙的位置](https://leetcode.cn/problems/frog-position-after-t-seconds/)
+
+## [2451. 差值数组不同的字符串](https://leetcode.cn/problems/odd-string-difference/)
+
+## [1091. 二进制矩阵中的最短路径](https://leetcode.cn/problems/shortest-path-in-binary-matrix/)
+
+## [1093. 大样本统计](https://leetcode.cn/problems/statistics-from-a-large-sample/)
+
+## [1439. 有序矩阵中的第 k 个最小数组和](https://leetcode.cn/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/)
