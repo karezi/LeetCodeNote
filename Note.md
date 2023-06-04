@@ -32436,6 +32436,24 @@ class Solution {
 }
 ```
 
+## [2465. 不同的平均值数目](https://leetcode.cn/problems/number-of-distinct-averages/)
+
+```java
+class Solution {
+    public int distinctAverages(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        Arrays.sort(nums);
+        int i = 0, j = nums.length - 1;
+        while (i < j) {
+            set.add(nums[i] + nums[j]);
+            i++;
+            j--;
+        }
+        return set.size();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34446,3 +34464,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1093. 大样本统计](https://leetcode.cn/problems/statistics-from-a-large-sample/)
 
 ## [1439. 有序矩阵中的第 k 个最小数组和](https://leetcode.cn/problems/find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows/)
+
+## [1110. 删点成林](https://leetcode.cn/problems/delete-nodes-and-return-forest/)
+
+## [1130. 叶值的最小代价生成树](https://leetcode.cn/problems/minimum-cost-tree-from-leaf-values/)
+
+## [2517. 礼盒的最大甜蜜度](https://leetcode.cn/problems/maximum-tastiness-of-candy-basket/)
+
+## [2559. 统计范围内的元音字符串数](https://leetcode.cn/problems/count-vowel-strings-in-ranges/)
+
+## [1156. 单字符重复子串的最大长度](https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/)
