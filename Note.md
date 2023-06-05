@@ -32477,6 +32477,33 @@ class Solution {
 ```
 TODO swap => 空间O(1)
 
+## [2352. 相等行列对](https://leetcode.cn/problems/equal-row-and-column-pairs/)
+
+```java
+class Solution {
+    public int equalPairs(int[][] grid) {
+        int n = grid.length, ret = 0;
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (eq(grid, i, j, n)) {
+                    ret++;
+                }
+            }
+        }
+        return ret;
+    }
+
+    private boolean eq(int[][] grid, int i, int j, int n) {
+        boolean flag = true;
+        for (int x = 0; x < n; ++x) {
+            if (grid[i][x] != grid[x][j]) flag = false;
+        }
+        return flag;
+    }
+}
+```
+TODO 哈希表
+
 # Java算法模板
 
 ## BFS
