@@ -32504,6 +32504,27 @@ class Solution {
 ```
 TODO 哈希表
 
+## [2475. 数组中不等三元组的数目](https://leetcode.cn/problems/number-of-unequal-triplets-in-array/)
+
+> 数组，哈希表
+
+```java
+class Solution {
+    public int unequalTriplets(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i: nums) {
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+        int cur = 0, ret = 0, n = nums.length;
+        for (int key: map.keySet()) {
+            ret += cur * map.get(key) * (n - cur - map.get(key));
+            cur += map.get(key);
+        }
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34524,3 +34545,15 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2559. 统计范围内的元音字符串数](https://leetcode.cn/problems/count-vowel-strings-in-ranges/)
 
 ## [1156. 单字符重复子串的最大长度](https://leetcode.cn/problems/swap-for-longest-repeated-character-substring/)
+
+## [2611. 老鼠和奶酪](https://leetcode.cn/problems/mice-and-cheese/)
+
+## [1240. 铺瓷砖](https://leetcode.cn/problems/tiling-a-rectangle-with-the-fewest-squares/)
+
+## [2699. 修改图中的边权](https://leetcode.cn/problems/modify-graph-edge-weights/)
+
+## [1170. 比较字符串最小字母出现频次](https://leetcode.cn/problems/compare-strings-by-frequency-of-the-smallest-character/)
+
+## [1171. 从链表中删去总和值为零的连续节点](https://leetcode.cn/problems/remove-zero-sum-consecutive-nodes-from-linked-list/)
+
+## [1483. 树节点的第 K 个祖先](https://leetcode.cn/problems/kth-ancestor-of-a-tree-node/)
