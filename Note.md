@@ -32525,6 +32525,18 @@ class Solution {
 }
 ```
 
+## [2481. 分割圆的最少切割次数](https://leetcode.cn/problems/minimum-cuts-to-divide-a-circle/)
+
+> 几何，数学
+
+```java
+class Solution {
+    public int numberOfCuts(int n) {
+        return n == 1 ? 0 : ((n & 1) == 1 ? n : n / 2);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34557,3 +34569,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1171. 从链表中删去总和值为零的连续节点](https://leetcode.cn/problems/remove-zero-sum-consecutive-nodes-from-linked-list/)
 
 ## [1483. 树节点的第 K 个祖先](https://leetcode.cn/problems/kth-ancestor-of-a-tree-node/)
+
+## [1375. 二进制字符串前缀一致的次数](https://leetcode.cn/problems/number-of-times-binary-string-is-prefix-aligned/)
+
+## [1177. 构建回文串检测](https://leetcode.cn/problems/can-make-palindrome-from-substring/)
+
+## [1494. 并行课程 II](https://leetcode.cn/problems/parallel-courses-ii/)
