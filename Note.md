@@ -32537,6 +32537,50 @@ class Solution {
 }
 ```
 
+## [2496. 数组中字符串的最大值](https://leetcode.cn/problems/maximum-value-of-a-string-in-an-array/)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int maximumValue(String[] strs) {
+        int max = 0;
+        for (String str: strs) {
+            max = Math.max(max, countStrNum(str));
+        }
+        return max;
+    }
+
+    private int countStrNum(String str) {
+        int sum = 0;
+        for (int i = 0; i < str.length(); ++i) {
+            if (Character.isDigit(str.charAt(i))) {
+                sum = sum * 10 + (str.charAt(i) - '0');
+            } else {
+                return str.length();
+            }
+        }
+        return sum;
+    }
+}
+```
+内存消耗优化
+```java
+class Solution {
+    public int maximumValue(String[] strs) {
+        int max = 0;
+        for (String str: strs) {
+            boolean isDigit = true;
+            for (int i = 0; i < str.length(); ++i) {
+                isDigit &= Character.isDigit(str.charAt(i));
+            }
+            max = Math.max(max, isDigit ? Integer.parseInt(str) : str.length());
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34575,3 +34619,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1177. 构建回文串检测](https://leetcode.cn/problems/can-make-palindrome-from-substring/)
 
 ## [1494. 并行课程 II](https://leetcode.cn/problems/parallel-courses-ii/)
+
+## [1254. 统计封闭岛屿的数目](https://leetcode.cn/problems/number-of-closed-islands/)
+
+## [1262. 可被三整除的最大和](https://leetcode.cn/problems/greatest-sum-divisible-by-three/)
+
+## [1595. 连通两组点的最小成本](https://leetcode.cn/problems/minimum-cost-to-connect-two-groups-of-points/)
+
+## [LCP 41. 黑白翻转棋](https://leetcode.cn/problems/fHi6rV/)
+
+## [面试题 16.19. 水域大小](https://leetcode.cn/problems/pond-sizes-lcci/)
