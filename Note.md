@@ -32581,6 +32581,62 @@ class Solution {
 }
 ```
 
+## [2744. 最大字符串配对数目](https://leetcode.cn/problems/find-maximum-number-of-string-pairs/submissions/)
+
+> 字符串
+
+```java
+class Solution {
+    public int maximumNumberOfStringPairs(String[] words) {
+        int num = 0, n = words.length;
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (words[i].equals(reverse(words[j]))) {
+                    num++;
+                }
+            }
+        }
+        return num;
+    }
+
+    private String reverse(String word) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = word.length() - 1; i >= 0; i--) {
+            sb.append(word.charAt(i));
+        }
+        return sb.toString();
+    }
+}
+```
+HashSet
+```java
+class Solution {
+    public int maximumNumberOfStringPairs(String[] words) {
+        int num = 0;
+        Set<String> set = new HashSet<>();
+        for (String str: words) {
+            set.add(str);
+        }
+        for (String word: set) {
+            String rword = reverse(word);
+            if (word.equals(rword)) continue;
+            if (set.contains(rword)) {
+                num++;
+            }
+        }
+        return num / 2;
+    }
+
+    private String reverse(String word) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = word.length() - 1; i >= 0; i--) {
+            sb.append(word.charAt(i));
+        }
+        return sb.toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34629,3 +34685,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [LCP 41. 黑白翻转棋](https://leetcode.cn/problems/fHi6rV/)
 
 ## [面试题 16.19. 水域大小](https://leetcode.cn/problems/pond-sizes-lcci/)
+
+## [1659. 最大化网格幸福感](https://leetcode.cn/problems/maximize-grid-happiness/)
+
+## [1401. 圆和矩形是否有重叠](https://leetcode.cn/problems/circle-and-rectangle-overlapping/)
