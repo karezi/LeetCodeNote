@@ -32637,6 +32637,41 @@ class Solution {
 }
 ```
 
+## [2490. 回环句](https://leetcode.cn/problems/circular-sentence/)
+
+> 字符串
+
+```java
+class Solution {
+    public boolean isCircularSentence(String sentence) {
+        String[] sens = sentence.split(" ");
+        boolean ret = true;
+        for (int i = 1; i < sens.length; ++i) {
+            if (sens[i].charAt(0) != sens[i - 1].charAt(sens[i - 1].length() - 1)) return false;
+        }
+        return sens[sens.length - 1].charAt(sens[sens.length - 1].length() - 1) == sens[0].charAt(0);
+    }
+}
+```
+TODO 用空格前后判断更简单
+
+## [2656. K 个元素的最大和](https://leetcode.cn/problems/maximum-sum-with-exactly-k-elements/description/)
+
+> 贪心，数组
+
+```java
+class Solution {
+    public int maximizeSum(int[] nums, int k) {
+        int max = 0;
+        for (int num: nums) {
+            max = Math.max(max, num);
+        }
+        return (max * 2 + k - 1) * k / 2;
+    }
+}
+```
+TODO 取最大值可以用：Arrays.stream(nums).max().getAsInt();
+
 # Java算法模板
 
 ## BFS
@@ -34689,3 +34724,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1659. 最大化网格幸福感](https://leetcode.cn/problems/maximize-grid-happiness/)
 
 ## [1401. 圆和矩形是否有重叠](https://leetcode.cn/problems/circle-and-rectangle-overlapping/)
+
+## [1186. 删除一次得到子数组最大和](https://leetcode.cn/problems/maximum-subarray-sum-with-one-deletion/)
+
+## [1681. 最小不兼容性](https://leetcode.cn/problems/minimum-incompatibility/)
+
+## [1253. 重构 2 行二进制矩阵](https://leetcode.cn/problems/reconstruct-a-2-row-binary-matrix/)
