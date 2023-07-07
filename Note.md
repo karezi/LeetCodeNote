@@ -32672,6 +32672,21 @@ class Solution {
 ```
 TODO 取最大值可以用：Arrays.stream(nums).max().getAsInt();
 
+## [2600. K 件物品的最大和](https://leetcode.cn/problems/k-items-with-the-maximum-sum/description/)
+
+> 贪心，数学
+
+```java
+class Solution {
+    public int kItemsWithMaximumSum(int numOnes, int numZeros, int numNegOnes, int k) {
+        if (k <= numOnes) return k;
+        else if (numOnes + numZeros > k && k > numOnes) return numOnes;
+        else return numOnes - (k - numOnes - numZeros);
+    }
+}
+```
+TODO return min(numOnes, k) - max(k - numOnes - numZeros, 0)
+
 # Java算法模板
 
 ## BFS
@@ -34730,3 +34745,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1681. 最小不兼容性](https://leetcode.cn/problems/minimum-incompatibility/)
 
 ## [1253. 重构 2 行二进制矩阵](https://leetcode.cn/problems/reconstruct-a-2-row-binary-matrix/)
+
+## [2. 两数相加](https://leetcode.cn/problems/add-two-numbers/description/)
+
+## [445. 两数相加 II](https://leetcode.cn/problems/add-two-numbers-ii/description/)
+
+## [2679. 矩阵中的和](https://leetcode.cn/problems/sum-in-a-matrix/description/)
+
+## [2178. 拆分成最多数目的正偶数之和](https://leetcode.cn/problems/maximum-split-of-positive-even-integers/)
+
+## [2532. 过桥的时间](https://leetcode.cn/problems/time-to-cross-a-bridge/description/)
