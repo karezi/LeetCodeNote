@@ -32687,6 +32687,24 @@ class Solution {
 ```
 TODO return min(numOnes, k) - max(k - numOnes - numZeros, 0)
 
+## [2544. 交替数字和](https://leetcode.cn/problems/alternating-digit-sum/description/)
+
+```java
+class Solution {
+    public int alternateDigitSum(int n) {
+        String ns = Integer.toString(n);
+        boolean flag = true;
+        int sum = 0;
+        for (char c: ns.toCharArray()) {
+            int x = c - '0';
+            sum = flag ? sum + x : sum - x;
+            flag = !flag;
+        }
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34755,3 +34773,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2178. 拆分成最多数目的正偶数之和](https://leetcode.cn/problems/maximum-split-of-positive-even-integers/)
 
 ## [2532. 过桥的时间](https://leetcode.cn/problems/time-to-cross-a-bridge/description/)
+
+## [167. 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+
+## [15. 三数之和](https://leetcode.cn/problems/3sum/description/)
+
+## [16. 最接近的三数之和](https://leetcode.cn/problems/3sum-closest/description/)
+
+## [1911. 最大子序列交替和](https://leetcode.cn/problems/maximum-alternating-subsequence-sum/description/)
+
+## [931. 下降路径最小和](https://leetcode.cn/problems/minimum-falling-path-sum/description/)
