@@ -32705,6 +32705,34 @@ class Solution {
 }
 ```
 
+## [415. 字符串相加](https://leetcode.cn/problems/add-strings/description/)
+
+> 数学，字符串，模拟
+
+```java
+class Solution {
+    public String addStrings(String num1, String num2) {
+        int n1 = num1.length(), n2 = num2.length(), carry = 0, mn = Math.max(n1, n2);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mn; ++i) {
+            int x = 0, y = 0;
+            if (n1 > i) x = num1.charAt(n1 - i - 1) - '0';
+            if (n2 > i) y = num2.charAt(n2 - i - 1) - '0';
+            int s = x + y + carry;
+            if (s > 9) {
+                carry = 1;
+                s -= 10;
+            } else {
+                carry = 0;
+            }
+            sb.append(String.valueOf(s));
+        }
+        if (carry > 0) sb.append("1");
+        return sb.reverse().toString();
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34783,3 +34811,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1911. 最大子序列交替和](https://leetcode.cn/problems/maximum-alternating-subsequence-sum/description/)
 
 ## [931. 下降路径最小和](https://leetcode.cn/problems/minimum-falling-path-sum/description/)
+
+## [18. 四数之和](https://leetcode.cn/problems/4sum/description/)
+
+## [979. 在二叉树中分配硬币](https://leetcode.cn/problems/distribute-coins-in-binary-tree/description/)
+
+## [834. 树中距离之和](https://leetcode.cn/problems/sum-of-distances-in-tree/description/)
