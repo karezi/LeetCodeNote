@@ -32733,6 +32733,44 @@ class Solution {
 }
 ```
 
+## [860. 柠檬水找零](https://leetcode.cn/problems/lemonade-change/description/)
+
+> 贪心，数组
+
+```java
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        if (bills[0] > 5) return false;
+        int a = 1, b = 0;
+        for (int i = 1; i < bills.length; ++i) {
+            if (bills[i] == 5) {
+                a++;
+            } else if (bills[i] == 10) {
+                b++;
+                if (a == 0) return false;
+                else a--;
+            } else {
+                if (b >= 1) {
+                    b--;
+                    if (a >= 1) {
+                        a--;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    if (a >= 3) {
+                        a -= 3;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34817,3 +34855,11 @@ list.stream().mapToInt(User::getScore).sum();
 ## [979. 在二叉树中分配硬币](https://leetcode.cn/problems/distribute-coins-in-binary-tree/description/)
 
 ## [834. 树中距离之和](https://leetcode.cn/problems/sum-of-distances-in-tree/description/)
+
+## [1851. 包含每个查询的最小区间](https://leetcode.cn/problems/minimum-interval-to-include-each-query/description/)
+
+## [874. 模拟行走机器人](https://leetcode.cn/problems/walking-robot-simulation/description/)
+
+## [918. 环形子数组的最大和](https://leetcode.cn/problems/maximum-sum-circular-subarray/description/)
+
+## [1499. 满足不等式的最大值](https://leetcode.cn/problems/max-value-of-equation/description/)
