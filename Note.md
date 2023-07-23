@@ -32771,6 +32771,23 @@ class Solution {
 }
 ```
 
+## [1837. K 进制表示下的各位数字总和](https://leetcode.cn/problems/sum-of-digits-in-base-k/description/)
+
+> 数学
+
+```java
+class Solution {
+    public int sumBase(int n, int k) {
+        int sum = 0;
+        while (n > 0) {
+            sum += n % k;
+            n /= k;
+        }
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
