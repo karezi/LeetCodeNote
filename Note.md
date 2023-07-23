@@ -32788,6 +32788,34 @@ class Solution {
 }
 ```
 
+## [771. 宝石与石头](https://leetcode.cn/problems/jewels-and-stones/description/)
+
+> 哈希表，字符串
+
+```java
+class Solution {
+    public int numJewelsInStones(String jewels, String stones) {
+        int sum = 0;
+        boolean[] status = new boolean[52];
+        for (char c: jewels.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                status[c - 'A'] = true;
+            } else {
+                status[26 + c - 'a'] = true;
+            }
+        }
+        for (char c: stones.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                sum += status[c - 'A'] ? 1 : 0;
+            } else {
+                sum += status[26 + c - 'a'] ? 1 : 0;
+            }
+        }
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
