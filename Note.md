@@ -32816,6 +32816,18 @@ class Solution {
 }
 ```
 
+## [2651. 计算列车到站时间](https://leetcode.cn/problems/calculate-delayed-arrival-time/description/)
+
+> 数学
+
+```java
+class Solution {
+    public int findDelayedArrivalTime(int arrivalTime, int delayedTime) {
+        return (arrivalTime + delayedTime) % 24;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34908,3 +34920,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [918. 环形子数组的最大和](https://leetcode.cn/problems/maximum-sum-circular-subarray/description/)
 
 ## [1499. 满足不等式的最大值](https://leetcode.cn/problems/max-value-of-equation/description/)
+
+## [2208. 将数组和减半的最少操作次数](https://leetcode.cn/problems/minimum-operations-to-halve-array-sum/description/)
+
+## [2569. 更新数组后处理求和查询](https://leetcode.cn/problems/handling-sum-queries-after-update/description/)
