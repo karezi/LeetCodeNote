@@ -32828,6 +32828,18 @@ class Solution {
 }
 ```
 
+## [2769. 找出最大的可达成数字](https://leetcode.cn/problems/find-the-maximum-achievable-number/description/)
+
+> 数学
+
+```java
+class Solution {
+    public int theMaximumAchievableX(int num, int t) {
+        return num + t * 2;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34924,3 +34936,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2208. 将数组和减半的最少操作次数](https://leetcode.cn/problems/minimum-operations-to-halve-array-sum/description/)
 
 ## [2569. 更新数组后处理求和查询](https://leetcode.cn/problems/handling-sum-queries-after-update/description/)
+
+## [2050. 并行课程 III](https://leetcode.cn/problems/parallel-courses-iii/description/)
