@@ -32840,6 +32840,23 @@ class Solution {
 }
 ```
 
+## [2703. 返回传递的参数的长度](https://leetcode.cn/problems/return-length-of-arguments-passed/description/)
+
+> JS
+
+```js
+/**
+ * @return {number}
+ */
+var argumentsLength = function(...args) {
+    return args.length
+};
+
+/**
+ * argumentsLength(1, 2, 3); // 3
+ */
+```
+
 # Java算法模板
 
 ## BFS
@@ -34938,3 +34955,15 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2569. 更新数组后处理求和查询](https://leetcode.cn/problems/handling-sum-queries-after-update/description/)
 
 ## [2050. 并行课程 III](https://leetcode.cn/problems/parallel-courses-iii/description/)
+
+## [2681. 英雄的力量](https://leetcode.cn/problems/power-of-heroes/description/)
+
+## [822. 翻转卡片游戏](https://leetcode.cn/problems/card-flipping-game/)
+
+## [722. 删除注释](https://leetcode.cn/problems/remove-comments/)
+
+## [980. 不同路径 III](https://leetcode.cn/problems/unique-paths-iii/)
+
+## [24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
+
+## [1749. 任意子数组和的绝对值的最大值](https://leetcode.cn/problems/maximum-absolute-sum-of-any-subarray/)
