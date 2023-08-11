@@ -32857,6 +32857,29 @@ var argumentsLength = function(...args) {
  */
 ```
 
+## [1572. 矩阵对角线元素的和](https://leetcode.cn/problems/matrix-diagonal-sum/description/)
+
+> 数组，矩阵
+
+```java
+class Solution {
+    public int diagonalSum(int[][] mat) {
+        int m = mat.length, sum = 0;
+        for (int i = 0; i < m; ++i) {
+            sum += mat[i][i];
+        }
+        for (int i = m - 1; i >= 0; --i) {
+            sum += mat[i][m - i - 1];
+        }
+        if ((m & 1) == 1) {
+            int n = m / 2;
+            sum -= mat[n][n];
+        }
+        return sum;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -34967,3 +34990,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [24. 两两交换链表中的节点](https://leetcode.cn/problems/swap-nodes-in-pairs/)
 
 ## [1749. 任意子数组和的绝对值的最大值](https://leetcode.cn/problems/maximum-absolute-sum-of-any-subarray/)
+
+## [1289. 下降路径最小和 II](https://leetcode.cn/problems/minimum-falling-path-sum-ii/description/)
+
+## [1749. 任意子数组和的绝对值的最大值](https://leetcode.cn/problems/maximum-absolute-sum-of-any-subarray/description/)
