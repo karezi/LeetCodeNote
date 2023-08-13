@@ -32880,6 +32880,18 @@ class Solution {
 }
 ```
 
+## [2396. 严格回文的数字](https://leetcode.cn/problems/strictly-palindromic-number/description/)
+
+> 脑筋急转弯
+
+```java
+class Solution {
+    public boolean isStrictlyPalindromic(int n) {
+        return false;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
