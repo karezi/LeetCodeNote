@@ -32892,6 +32892,30 @@ class Solution {
 }
 ```
 
+## [2807. 在链表中插入最大公约数](https://leetcode.cn/problems/insert-greatest-common-divisors-in-linked-list/description/)
+
+> 数字，链表，数学
+
+```java
+class Solution {
+    public ListNode insertGreatestCommonDivisors(ListNode head) {
+        ListNode p = head;
+        while (p != null && p.next != null) {
+            ListNode nn = new ListNode(gcd(p.val, p.next.val));
+            nn.next = p.next;
+            p.next = nn;
+            p = p.next.next;
+        }
+        return head;
+    }
+
+    private int gcd(int a, int b) {
+        if (b == 0) return a;
+        return gcd(b, a % b);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
