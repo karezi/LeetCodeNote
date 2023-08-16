@@ -32916,6 +32916,33 @@ class Solution {
 }
 ```
 
+## [2682. 找出转圈游戏输家](https://leetcode.cn/problems/find-the-losers-of-the-circular-game/description/)
+
+> 数组，哈希表，模拟
+
+```java
+class Solution {
+    public int[] circularGameLosers(int n, int k) {
+        boolean[] status = new boolean[n];
+        int p = 0;
+        status[0] = true;
+        for (int i = 1; i < n; i++) {
+            p = (p + i * k) % n;
+            if (status[p]) break;
+            else status[p] = true;
+        }
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < n; ++i) {
+            if (!status[i]) list.add(i + 1);
+        }
+        int len = list.size();
+        int[] ret = new int[len];
+        for (int i = 0; i < len; ++i) ret[i] = list.get(i);
+        return ret;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35030,3 +35057,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1289. 下降路径最小和 II](https://leetcode.cn/problems/minimum-falling-path-sum-ii/description/)
 
 ## [1749. 任意子数组和的绝对值的最大值](https://leetcode.cn/problems/maximum-absolute-sum-of-any-subarray/description/)
+
+## [833. 字符串中的查找与替换](https://leetcode.cn/problems/find-and-replace-in-string/description/)
