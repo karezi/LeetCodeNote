@@ -32943,6 +32943,16 @@ class Solution {
 }
 ```
 
+## [2723. 添加两个 Promise 对象](https://leetcode.cn/problems/add-two-promises/description/)
+
+> JS
+
+```javascript
+var addTwoPromises = async function(promise1, promise2) {
+    return await promise1 + await promise2;
+};
+```
+
 # Java算法模板
 
 ## BFS
@@ -35059,3 +35069,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1749. 任意子数组和的绝对值的最大值](https://leetcode.cn/problems/maximum-absolute-sum-of-any-subarray/description/)
 
 ## [833. 字符串中的查找与替换](https://leetcode.cn/problems/find-and-replace-in-string/description/)
+
+## [1444. 切披萨的方案数](https://leetcode.cn/problems/number-of-ways-of-cutting-a-pizza/description/)
+
+## [1388. 3n 块披萨](https://leetcode.cn/problems/pizza-with-3n-slices/description/)
