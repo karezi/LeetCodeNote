@@ -32953,6 +32953,61 @@ var addTwoPromises = async function(promise1, promise2) {
 };
 ```
 
+## [849. 到最近的人的最大距离](https://leetcode.cn/problems/maximize-distance-to-closest-person/description/?lang=pythondata)
+
+> 数组
+
+```java
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int res = 0;
+        int l = 0;
+        while (l < seats.length && seats[l] == 0) {
+            ++l;
+        }
+        res = Math.max(res, l);
+        while (l < seats.length) {
+            int r = l + 1;
+            while (r < seats.length && seats[r] == 0) {
+                ++r;
+            }
+            if (r == seats.length) {
+                res = Math.max(res, r - l - 1);
+            } else {
+                res = Math.max(res, (r - l) / 2);
+            }
+            l = r;
+        }
+        return res;
+    }
+}
+```
+
+## [2511. 最多可以摧毁的敌人城堡数目](https://leetcode.cn/problems/maximum-enemy-forts-that-can-be-captured)
+
+> 数组，双指针
+
+```java
+class Solution {
+    public int captureForts(int[] forts) {
+        // 1和-1之间的0的个数的最大值
+        int pre = -1, i = 0, n = forts.length, max = 0;
+        while (i < n) {
+            if (forts[i] == -1 || forts[i] == 1) {
+                if (pre != -1) {
+                    if (forts[pre] != forts[i]) {
+                        max = Math.max(max, i - pre - 1);
+                    }
+                }
+                pre = i;
+            }
+            i++;
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35073,3 +35128,21 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1444. 切披萨的方案数](https://leetcode.cn/problems/number-of-ways-of-cutting-a-pizza/description/)
 
 ## [1388. 3n 块披萨](https://leetcode.cn/problems/pizza-with-3n-slices/description/)
+
+## [2337. 移动片段得到字符串](https://leetcode.cn/problems/move-pieces-to-obtain-a-string/description/)
+
+## [1782. 统计点对的数目](https://leetcode.cn/problems/count-pairs-of-nodes/description/)
+
+## [1267. 统计参与通信的服务器](https://leetcode.cn/problems/count-servers-that-communicate/description/)
+
+## [1448. 统计二叉树中好节点的数目](https://leetcode.cn/problems/count-good-nodes-in-binary-tree/description/)
+
+## [56. 合并区间](https://leetcode.cn/problems/merge-intervals/description/)
+
+## [823. 带因子的二叉树](https://leetcode.cn/problems/binary-trees-with-factors/description/)
+
+## [1654. 到家的最少跳跃次数](https://leetcode.cn/problems/minimum-jumps-to-reach-home/description/)
+
+## [1761. 一个图中连通三元组的最小度数](https://leetcode.cn/problems/minimum-degree-of-a-connected-trio-in-a-graph/description/)
+
+## [2240. 买钢笔和铅笔的方案数](https://leetcode.cn/problems/number-of-ways-to-buy-pens-and-pencils/)
