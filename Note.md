@@ -33008,6 +33008,29 @@ class Solution {
 }
 ```
 
+## [2605. 从两个数字数组里生成最小数字](https://leetcode.cn/problems/form-smallest-number-from-two-digit-arrays)
+
+> 数组，哈希表，枚举
+
+```java
+class Solution {
+    public int minNumber(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        Set<Integer> set = new HashSet<>();
+        for (int i: nums1) {
+            set.add(i);
+        }
+        for (int i: nums2) {
+            if (set.contains(i)) return i;
+        }
+        int a = Math.min(nums1[0], nums2[0]);
+        int b = Math.max(nums1[0], nums2[0]);
+        return a * 10 + b;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35146,3 +35169,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1761. 一个图中连通三元组的最小度数](https://leetcode.cn/problems/minimum-degree-of-a-connected-trio-in-a-graph/description/)
 
 ## [2240. 买钢笔和铅笔的方案数](https://leetcode.cn/problems/number-of-ways-to-buy-pens-and-pencils/)
+
+## [1921. 消灭怪物的最大数量](https://leetcode.cn/problems/eliminate-maximum-number-of-monsters/)
+
+## [449. 序列化和反序列化二叉搜索树](https://leetcode.cn/problems/serialize-and-deserialize-bst)
