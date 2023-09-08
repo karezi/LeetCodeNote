@@ -33031,6 +33031,22 @@ class Solution {
 }
 ```
 
+## [2798. 满足目标工作时长的员工数目](https://leetcode.cn/problems/number-of-employees-who-met-the-target)
+
+> 数组，枚举
+
+```java
+class Solution {
+    public int numberOfEmployeesWhoMetTarget(int[] hours, int target) {
+        int cnt = 0;
+        for (int hour: hours) {
+            if (hour >= target) cnt++;
+        }
+        return cnt;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35173,3 +35189,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1921. 消灭怪物的最大数量](https://leetcode.cn/problems/eliminate-maximum-number-of-monsters/)
 
 ## [449. 序列化和反序列化二叉搜索树](https://leetcode.cn/problems/serialize-and-deserialize-bst)
+
+## [1123. 最深叶节点的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-deepest-leaves/)
+
+## [2594. 修车的最少时间](https://leetcode.cn/problems/minimum-time-to-repair-cars)
