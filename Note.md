@@ -33047,6 +33047,28 @@ class Solution {
 }
 ```
 
+## [宝石补给](https://leetcode.cn/problems/WHnhjV)
+
+> 模拟
+
+```java
+class Solution {
+    public int giveGem(int[] gem, int[][] operations) {
+        for (int[] op: operations) {
+            int n = gem[op[0]] / 2;
+            gem[op[1]] += n;
+            gem[op[0]] -= n;
+        }
+        int max = gem[0], min = gem[0];
+        for (int i = 1; i < gem.length; ++i) {
+            max = Math.max(max, gem[i]);
+            min = Math.min(min, gem[i]);
+        }
+        return max - min;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35193,3 +35215,20 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1123. 最深叶节点的最近公共祖先](https://leetcode.cn/problems/lowest-common-ancestor-of-deepest-leaves/)
 
 ## [2594. 修车的最少时间](https://leetcode.cn/problems/minimum-time-to-repair-cars)
+
+## [207. 课程表](https://leetcode.cn/problems/course-schedule)
+
+## [210. 课程表 II](https://leetcode.cn/problems/course-schedule-ii)
+
+## [630. 课程表 III](https://leetcode.cn/problems/course-schedule-iii)
+
+## [1462. 课程表 IV](https://leetcode.cn/problems/course-schedule-iv)
+
+## [2596. 检查骑士巡视方案](https://leetcode.cn/problems/check-knight-tour-configuration)
+
+## [可以攻击国王的皇后](https://leetcode.cn/problems/queens-that-can-attack-the-king)
+
+
+
+
+
