@@ -33047,7 +33047,7 @@ class Solution {
 }
 ```
 
-## [宝石补给](https://leetcode.cn/problems/WHnhjV)
+## [LCP50.宝石补给](https://leetcode.cn/problems/WHnhjV)
 
 > 模拟
 
@@ -33065,6 +33065,47 @@ class Solution {
             min = Math.min(min, gem[i]);
         }
         return max - min;
+    }
+}
+```
+
+## [198.打家劫舍](https://leetcode.cn/problems/house-robber)
+
+> 数组，动态规划
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int[][] max = new int[n][2];
+        max[0][0] = 0;
+        max[0][1] = nums[0];
+        for (int i = 1; i < n; ++i) {
+            max[i][0] = Math.max(max[i - 1][1], max[i - 1][0]);
+            max[i][1] = max[i - 1][0] + nums[i];
+        }
+        return Math.max(max[n - 1][0], max[n - 1][1]);
+    }
+}
+```
+一维即可
+```java
+class Solution {
+    public int rob(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+        int length = nums.length;
+        if (length == 1) {
+            return nums[0];
+        }
+        int[] dp = new int[length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0], nums[1]);
+        for (int i = 2; i < length; i++) {
+            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+        }
+        return dp[length - 1];
     }
 }
 ```
