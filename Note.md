@@ -33138,6 +33138,22 @@ class Solution {
 }
 ```
 
+## [2591.将钱分给最多的儿童](https://leetcode.cn/problems/distribute-money-to-maximum-children)
+
+> 贪心，数学
+
+```java
+class Solution {
+    public int distMoney(int money, int children) {
+        if (money < children) return -1;
+        if (money > children * 8) return children - 1;
+        int rest = money - children;
+        int res = rest / 7;
+        return res == 0 ? 0 : ((rest % 7) == 3 ? (children - res > 1 ? res : res - 1) : res);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35297,7 +35313,6 @@ list.stream().mapToInt(User::getScore).sum();
 
 ## [可以攻击国王的皇后](https://leetcode.cn/problems/queens-that-can-attack-the-king)
 
+## [打家劫舍 III](https://leetcode.cn/problems/house-robber-iii)
 
-
-
-
+## [打家劫舍 IV](https://leetcode.cn/problems/house-robber-iv)
