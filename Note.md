@@ -33154,6 +33154,37 @@ class Solution {
 }
 ```
 
+## [2582. 递枕头](https://leetcode.cn/problems/pass-the-pillow)
+
+> 数学，模拟
+
+```java
+class Solution {
+    public int passThePillow(int n, int time) {
+        int x = time / (n - 1);
+        int y = time % (n - 1);
+        return (x & 1) == 1 ? n - y : y + 1;
+    }
+}
+```
+
+## [145. 二叉树的后序遍历](https://leetcode.cn/problems/binary-tree-postorder-traversal)
+
+> 栈，树，DFS，二叉树
+
+```java
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<Integer> list1 = postorderTraversal(root.left);
+        List<Integer> list2 = postorderTraversal(root.right);
+        list1.addAll(list2);
+        list1.add(root.val);
+        return list1;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35316,3 +35347,15 @@ list.stream().mapToInt(User::getScore).sum();
 ## [打家劫舍 III](https://leetcode.cn/problems/house-robber-iii)
 
 ## [打家劫舍 IV](https://leetcode.cn/problems/house-robber-iv)
+
+## [2603. 收集树中金币](https://leetcode.cn/problems/collect-coins-in-a-tree)
+
+## [1993.树上的操作](https://leetcode.cn/problems/operations-on-tree)
+
+## [146. LRU 缓存](https://leetcode.cn/problems/lru-cache)
+
+## [1333. 餐厅过滤器](https://leetcode.cn/problems/filter-restaurants-by-vegan-friendly-price-and-distance)
+
+## [2251. 花期内花的数目](https://leetcode.cn/problems/number-of-flowers-in-full-bloom)
+
+## [2136. 全部开花的最早一天](https://leetcode.cn/problems/earliest-possible-day-of-full-bloom)
