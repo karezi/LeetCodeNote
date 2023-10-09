@@ -33185,6 +33185,27 @@ class Solution {
 }
 ```
 
+## [2578. 最小和分割](https://leetcode.cn/problems/split-with-minimum-sum)
+
+> 贪心，数学，排序
+
+```java
+class Solution {
+    public int splitNum(int num) {
+        String str = String.valueOf(num);
+        char[] chars = str.toCharArray();
+        // char[] chars = Integer.toString(num).toCharArray();
+        Arrays.sort(chars);
+        int a = 0, b = 0, n = chars.length;
+        for (int i = 0; i < n; i += 2) {
+            a = a * 10 + chars[i] - '0';
+            if (i + 1 < n) b = b * 10 + chars[i + 1] - '0';
+        }
+        return a + b;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35359,3 +35380,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2251. 花期内花的数目](https://leetcode.cn/problems/number-of-flowers-in-full-bloom)
 
 ## [2136. 全部开花的最早一天](https://leetcode.cn/problems/earliest-possible-day-of-full-bloom)
+
+## [309. 买卖股票的最佳时机含冷冻期](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown)
