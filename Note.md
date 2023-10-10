@@ -35382,3 +35382,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2136. 全部开花的最早一天](https://leetcode.cn/problems/earliest-possible-day-of-full-bloom)
 
 ## [309. 买卖股票的最佳时机含冷冻期](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown)
+
+## [2731. 移动机器人](https://leetcode.cn/problems/movement-of-robots)
