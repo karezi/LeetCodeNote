@@ -33206,6 +33206,30 @@ class Solution {
 }
 ```
 
+## [2562. 找出数组的串联值](https://leetcode.cn/problems/find-the-array-concatenation-value)
+
+> 数组，双指针，模拟
+
+```java
+class Solution {
+    public long findTheArrayConcVal(int[] nums) {
+        int n = nums.length;
+        long res = 0l;
+        for (int i = 0; i < n; ++i) {
+            if (i > n - i - 1) break;
+            if (i == n - i - 1) {
+                res += nums[i];
+            } else {
+                String tmp = String.valueOf(nums[n - i - 1]);
+                res += nums[i] * (long)Math.pow(10, tmp.length()) + (long)nums[n - i - 1];
+            }
+        }
+        return res;
+    }
+}
+```
+TODO 双指针
+
 # Java算法模板
 
 ## BFS
@@ -35384,3 +35408,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [309. 买卖股票的最佳时机含冷冻期](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown)
 
 ## [2731. 移动机器人](https://leetcode.cn/problems/movement-of-robots)
+
+## [2512. 奖励最顶尖的 K 名学生](https://leetcode.cn/problems/reward-top-k-students)
+
+## [1488. 避免洪水泛滥](https://leetcode.cn/problems/avoid-flood-in-the-city)
