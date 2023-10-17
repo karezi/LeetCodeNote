@@ -33230,6 +33230,31 @@ class Solution {
 ```
 TODO 双指针
 
+## [2652. 倍数求和](https://leetcode.cn/problems/sum-multiples)
+
+> 数学
+
+```java
+class Solution {
+    public int sumOfMultiples(int n) {
+        if (n == 1) return 0;
+        return sumOfMultiples(n - 1) + ((n % 3 == 0 || n % 5 == 0 || n % 7 == 0) ? n : 0);
+    }
+}
+```
+容斥原理
+```java
+class Solution {
+    public int sumOfMultiples(int n) {
+        return f(n, 3) + f(n, 5) + f(n, 7) - f(n, 15) - f(n, 21) - f(n, 35) + f(n, 105);
+    }
+
+    private int f(int n, int m) {
+        return (m + n / m * m) * (n / m) / 2;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35412,3 +35437,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2512. 奖励最顶尖的 K 名学生](https://leetcode.cn/problems/reward-top-k-students)
 
 ## [1488. 避免洪水泛滥](https://leetcode.cn/problems/avoid-flood-in-the-city)
+
+## [137. 只出现一次的数字 II](https://leetcode.cn/problems/single-number-ii)
