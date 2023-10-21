@@ -33255,6 +33255,25 @@ class Solution {
 }
 ```
 
+## [2525. 根据规则将箱子分类](https://leetcode.cn/problems/categorize-box-according-to-criteria)
+
+> 数学
+
+```java
+class Solution {
+    public String categorizeBox(int length, int width, int height, int mass) {
+        boolean isBulky = false, isHeavy = mass >= 100;
+        long volume = (long)length * (long)width * (long)height;
+        if (length >= 1e4 || width >= 1e4 || height >= 1e4 || volume >= 1e9)
+            isBulky = true;
+        if (isBulky && isHeavy) return "Both";
+        if (!isBulky && !isHeavy) return "Neither";
+        if (isBulky && !isHeavy) return "Bulky";
+        return "Heavy";
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35439,3 +35458,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1488. 避免洪水泛滥](https://leetcode.cn/problems/avoid-flood-in-the-city)
 
 ## [137. 只出现一次的数字 II](https://leetcode.cn/problems/single-number-ii)
+
+## [2530. 执行 K 次操作后的最大分数](https://leetcode.cn/problems/maximal-score-after-applying-k-operations)
+
+## [1726. 同积元组](https://leetcode.cn/problems/tuple-with-same-product)
+
+## [2316. 统计无向图中无法互相到达点对数](https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph)
