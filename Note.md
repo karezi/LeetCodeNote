@@ -33274,6 +33274,37 @@ class Solution {
 }
 ```
 
+## [2678. 老人的数目](https://leetcode.cn/problems/number-of-senior-citizens)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int countSeniors(String[] details) {
+        int ans = 0;
+        for (String detail: details) {
+            if ((detail.charAt(11) - '6') >= 0 && !(detail.charAt(11) == '6' && detail.charAt(12) == '0'))
+                ans++;
+        }
+        return ans;
+    }
+}
+```
+用substring
+```java
+class Solution {
+    public int countSeniors(String[] details) {
+        int ans = 0;
+        for (String detail: details) {
+            if (Integer.parseInt(detail.substring(11, 13)) > 60) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35464,3 +35495,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1726. 同积元组](https://leetcode.cn/problems/tuple-with-same-product)
 
 ## [2316. 统计无向图中无法互相到达点对数](https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph)
+
+## [1402. 做菜顺序](https://leetcode.cn/problems/reducing-dishes)
