@@ -33305,6 +33305,23 @@ class Solution {
 }
 ```
 
+## [2520. 统计能整除数字的位数](https://leetcode.cn/problems/count-the-digits-that-divide-a-number)
+
+> 数学
+
+```java
+class Solution {
+    public int countDigits(int num) {
+        int ans = 0, y = num;
+        while (y > 0) {
+            if (num % (y % 10) == 0) ans++;
+            y /= 10;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35497,3 +35514,7 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2316. 统计无向图中无法互相到达点对数](https://leetcode.cn/problems/count-unreachable-pairs-of-nodes-in-an-undirected-graph)
 
 ## [1402. 做菜顺序](https://leetcode.cn/problems/reducing-dishes)
+
+## [1155. 掷骰子等于目标和的方法数](https://leetcode.cn/problems/number-of-dice-rolls-with-target-sum)
+
+## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer)
