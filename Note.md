@@ -33322,6 +33322,23 @@ class Solution {
 }
 ```
 
+## [2558. 从数量最多的堆取走礼物](https://leetcode.cn/problems/take-gifts-from-the-richest-pile)
+
+> 数组，模拟，堆
+
+```java
+class Solution {
+    public long pickGifts(int[] gifts, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
+        for (int i: gifts) pq.offer(i);
+        for (int i = 0; i < k; ++i) pq.offer((int)Math.sqrt(pq.poll()));
+        long ans = 0;
+        while(!pq.isEmpty()) ans += (long)pq.poll();
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35518,3 +35535,5 @@ list.stream().mapToInt(User::getScore).sum();
 ## [1155. 掷骰子等于目标和的方法数](https://leetcode.cn/problems/number-of-dice-rolls-with-target-sum)
 
 ## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer)
+
+## [割后面积最大的蛋糕](https://leetcode.cn/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts)
