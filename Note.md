@@ -33339,6 +33339,30 @@ class Solution {
 }
 ```
 
+## [统计范围内的元音字符串数](https://leetcode.cn/problems/count-the-number-of-vowel-strings-in-range)
+
+> 数组，字符串
+
+```java
+class Solution {
+    public int vowelStrings(String[] words, int left, int right) {
+        Set<Character> set = new HashSet<>();
+        set.add('a');
+        set.add('e');
+        set.add('i');
+        set.add('o');
+        set.add('u');
+        int ans = 0;
+        for (int i = left; i <= right; ++i) {
+            int n = words[i].length();
+            if (set.contains(words[i].charAt(0)) && set.contains(words[i].charAt(n - 1)))
+                ans++;
+        }
+        return ans;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35537,3 +35561,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2698. 求一个整数的惩罚数](https://leetcode.cn/problems/find-the-punishment-number-of-an-integer)
 
 ## [割后面积最大的蛋糕](https://leetcode.cn/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts)
+
+## [2003. 每棵子树内缺失的最小基因值](https://leetcode.cn/problems/smallest-missing-genetic-value-in-each-subtree)
+
+## [2127. 参加会议的最多员工数](https://leetcode.cn/problems/maximum-employees-to-be-invited-to-a-meeting)
+
+## [117. 填充每个节点的下一个右侧节点指针 II](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii)
