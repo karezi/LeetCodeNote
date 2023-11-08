@@ -33363,6 +33363,32 @@ class Solution {
 }
 ```
 
+## [最长平衡子字符串](https://leetcode.cn/problems/find-the-longest-balanced-substring-of-a-binary-string)
+
+> 字符串
+
+```java
+class Solution {
+    public int findTheLongestBalancedSubstring(String s) {
+        int max = 0, zn = 0, on = 0;
+        char[] cs = s.toCharArray();
+        zn = cs[0] == '0' ? 1 : 0;
+        for (int i = 1; i < cs.length; ++i) {
+            if (cs[i] == '0' && cs[i - 1] == '0') {
+                zn++;
+            } else if (cs[i] == '0' && cs[i - 1] == '1') {
+                max = Math.max(max, Math.min(zn, on) * 2);
+                on = 0;
+                zn = 1;
+            } else {
+                on++;
+            }
+        }
+        return Math.max(max, Math.min(zn, on) * 2);
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
