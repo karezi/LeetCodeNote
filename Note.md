@@ -33389,6 +33389,33 @@ class Solution {
 }
 ```
 
+## [2760. 最长奇偶子数组](https://leetcode.cn/problems/longest-even-odd-subarray-with-threshold)
+
+> 数组，滑动窗口
+
+```java
+class Solution {
+    public int longestAlternatingSubarray(int[] nums, int threshold) {
+        int max = 0;
+        for (int i = 0; i < nums.length; ++i) {
+            if (nums[i] % 2 == 0 && nums[i] <= threshold) {
+                int j = i + 1;
+                while (j < nums.length) {
+                    if ((nums[j] % 2 != nums[j - 1] % 2) && nums[j] <= threshold) {
+                        j++;
+                    } else {
+                        break;
+                    }
+                }
+                max = Math.max(max, j - i);
+                i = j - 1;
+            }
+        }
+        return max;
+    }
+}
+```
+
 # Java算法模板
 
 ## BFS
@@ -35593,3 +35620,9 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2127. 参加会议的最多员工数](https://leetcode.cn/problems/maximum-employees-to-be-invited-to-a-meeting)
 
 ## [117. 填充每个节点的下一个右侧节点指针 II](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node-ii)
+
+## [2258. 逃离火灾](https://leetcode.cn/problems/escape-the-spreading-fire)
+
+## [2300. 咒语和药水的成功对数](https://leetcode.cn/problems/successful-pairs-of-spells-and-potions)
+
+## [1334. 阈值距离内邻居最少的城市](https://leetcode.cn/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance)
