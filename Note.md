@@ -33416,6 +33416,26 @@ class Solution {
 }
 ```
 
+## [2824. 统计和小于目标的下标对数目](https://leetcode.cn/problems/count-pairs-whose-sum-is-less-than-target)
+
+> 数组，双指针，排序
+
+```java
+class Solution {
+    public int countPairs(List<Integer> nums, int target) {
+        int n = nums.size(), ans = 0;
+        for (int i = 0; i < n - 1; ++i) {
+            for (int j = i + 1; j < n; ++j) {
+                if (nums.get(i) + nums.get(j) < target)
+                    ans++;
+            }
+        }
+        return ans;
+    }
+}
+```
+TODO 二分/双指针
+
 # Java算法模板
 
 ## BFS
@@ -35626,3 +35646,13 @@ list.stream().mapToInt(User::getScore).sum();
 ## [2300. 咒语和药水的成功对数](https://leetcode.cn/problems/successful-pairs-of-spells-and-potions)
 
 ## [1334. 阈值距离内邻居最少的城市](https://leetcode.cn/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance)
+
+## [2736. 最大和查询](https://leetcode.cn/problems/maximum-sum-queries)
+
+## [2342. 数位和相等数对的最大和](https://leetcode.cn/problems/max-sum-of-a-pair-with-equal-sum-of-digits)
+
+## [2216. 美化数组的最少删除数](https://leetcode.cn/problems/minimum-deletions-to-make-array-beautiful)
+
+## [2304. 网格中的最小路径代价](https://leetcode.cn/problems/minimum-path-cost-in-a-grid)
+
+## [1410. HTML 实体解析器](https://leetcode.cn/problems/html-entity-parser)
